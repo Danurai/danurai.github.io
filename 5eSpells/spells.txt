@@ -4,9 +4,16 @@
 	"name": "Acid Splash"
 
 }, {
+
 	"level": 0,
 	"wizard": 1,
-	"name": "Chill Touch"
+	"name": "Chill Touch",
+	"school": "necromancy",
+	"casting time": "1 action",
+	"range": "120 feet",
+	"components": "V, S",
+	"duration": "1 round",
+	"spell": "You create a ghostly, skeletal hand in the space of a creature within range. Make a ranged spell attack against the creature to assail it with the chill of the grave. On a hit, the target takes 1d8 necrotic damage, and it can’t regain hit points until the start of your next turn. Until then, the hand clings to the target. If you hit an undead target, it also has disadvantage on attack rolls against you until the end of your next turn. This spell’s damage increases by 1d8 when you reach 5th level (2d8), 11th level (3d8), and 17th level (4d8)."
 }, {
 	"level": 0,
 	"wizard": 1,
@@ -316,4 +323,35 @@
 	"components": "V, S, M (a piece of string and a bit of wood)",
 	"duration": "1 hour",
 	"spell": "This spell creates an invisible, mindless, shapeless force that performs simple tasks at your command until the spell ends. The servant springs into existence in an unoccupied space on the ground within range. It has AC 10, 1 hit point, and a Strength of 2, and it can’t attack. If it drops to 0 hit points, the spell ends. Once on each of your turns as a bonus action, you can mentally command the servant to move up to 15 feet and interact with an object. The servant can perform simple tasks that a human servant could do, such as fetching things, cleaning, mending, folding clothes, lighting fires, serving food, and pouring wine. Once you give the command, the servant performs the task to the best of its ability until it completes the task, then waits for your next command. If you command the servant to perform a task that would move it more than 60 feet away from you, the spell ends."
+}, {
+	"level": 1,
+	"name": "Detect Poison and Disease",
+	"school": "divination",
+	"ritual": 1,
+	"casting time": "1 action",
+	"range": "Self",
+	"components": "V, S, M (a yew leaf)",
+	"duration": "Concentration, up to 10 minutes",
+	"spell": "For the duration, you can sense the presence and location of poisons, poisonous creatures, and diseases within 30 feet of you. You also identify the kind of poison, poisonous creature, or disease in each case. The spell can penetrate most barriers, but it is blocked by 1 foot of stone, 1 inch of common metal, a thin sheet of lead, or 3 feet of wood or dirt."
+
+}, {
+	"level": 3,
+	"name": "Fly",
+	"school": "transmutation",
+	"casting time": "1 action",
+	"range": "Touch",
+	"components": "V, S, M (a wing feather from any bird)",
+	"duration": "Concentration, up to 10 minutes",
+	"spell": "You touch a willing creature. The target gains a flying speed of 60 feet for the duration. When the spell ends, the target falls if it is still aloft, unless it can stop the fall. At Higher Levels. When you cast this spell using a spell slot of 4th level or higher, you can target one additional creature for each slot level above 3rd."
+}, {
+	"level": 4,
+	"name": "Greater Invisibility",
+	"school": "illusion",
+	"casting time": "1 action",
+	"range": "Touch",
+	"components": "V, S",
+	"duration": "Concentration, up to 1 minute",
+	"spell": "You or a creature you touch becomes invisible until the spell ends. Anything the target is wearing or carrying is invisible as long as it is on the target’s person."
+
+
 }]
