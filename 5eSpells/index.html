@@ -31,7 +31,7 @@
 				container = $("#spellbody");
 				container.empty();
 				
-				sp_data().order("level").each( function(record, recordnumber) {
+				sp_data().order("level","name").each( function(record, recordnumber) {
 					row = buildrow(record);
 					container.append(row);
 				});
