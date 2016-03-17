@@ -27,6 +27,7 @@
 			$.get("spells.txt", function(data, status) {
 				var outp = '';
 				var sp_data = TAFFY(data);
+				sp_data.order("level","name");
 				
 				container = $("#spellbody");
 				container.empty();
