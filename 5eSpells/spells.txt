@@ -1,7 +1,7 @@
 [{
 	"name": "Acid Arrow",
 	"level": 2,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "90 feet",
 	"components": "V, S, M (powdered rhubarb leaf and an adder’s stomach)",
@@ -13,7 +13,7 @@
 }, {
 	"name": "Acid Splash",
 	"level": 0,
-	"school": "",
+	"type": "ration cantrip",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V, S",
@@ -25,7 +25,7 @@
 }, {
 	"name": "Aid",
 	"level": 2,
-	"school": "abjuration",
+	"type": "abjuration",
 	"ritual": false,
 	"range": "30 feet",
 	"components": "V, S, M (a tiny strip of white cloth)",
@@ -37,7 +37,7 @@
 }, {
 	"name": "Alarm",
 	"level": 1,
-	"school": "level abjuration ",
+	"type": "abjuration ",
 	"ritual": true,
 	"range": "30 feet",
 	"components": "V, S, M (a tiny bell and a piece of fine silver wire)",
@@ -49,7 +49,7 @@
 }, {
 	"name": "Alter Self",
 	"level": 2,
-	"school": "transmutation",
+	"type": "transmutation",
 	"ritual": false,
 	"range": "Self",
 	"components": "V, S",
@@ -61,7 +61,7 @@
 }, {
 	"name": "Animal Messenger",
 	"level": 2,
-	"school": "level enchantment ",
+	"type": "enchantment ",
 	"ritual": true,
 	"range": "30 feet",
 	"components": "V, S, M (a morsel of food)",
@@ -73,7 +73,7 @@
 }, {
 	"name": "Animal Shapes",
 	"level": 8,
-	"school": "transmutation",
+	"type": "transmutation",
 	"ritual": false,
 	"range": "30 feet",
 	"components": "V, S",
@@ -85,7 +85,7 @@
 }, {
 	"name": "Animate Dead",
 	"level": 3,
-	"school": "necromancy",
+	"type": "necromancy",
 	"ritual": false,
 	"range": "10 feet",
 	"components": "V, S, M (a drop of blood, a piece of flesh, and a pinch of bone dust)",
@@ -97,18 +97,19 @@
 }, {
 	"name": "Animate Objects",
 	"level": 5,
-	"school": "transmutation",
+	"type": "transmutation",
 	"ritual": false,
 	"range": "120 feet",
 	"components": "V, S",
 	"Verbal": true,
 	"somatic": true,
 	"material": false,
-	"duration": "Concentration, up to 1 minute"
+	"duration": "Concentration, up to 1 minute",
+	"text": "<p>Objects come to life at your command. Choose up to ten nonmagical objects within range that are not being worn or carried. Medium targets count as two objects, Large targets count as four objects, Huge targets count as eight objects. You can’t animate any object larger than Huge. Each target animates and becomes a creature under your control until the spell ends or until reduced to 0 hit points.<p>As a bonus action, you can mentally command any creature you made with this spell if the creature is within 500 feet of you (if you control multiple creatures, you can command any or all of them at the same time, issuing the same command to each one). You decide what action the creature will take and where it will move during its next turn, or you can issue a general command, such as to guard a particular chamber or corridor. If you issue no commands, the creature only defends itself against hostile creatures. Once given an order, the creature continues to follow it until its task is complete.<p>Animated Object Statistics<p><p>Size<p>HP<p>AC<p>Attack<p>Str<p>Dex<p><p>Tiny<p>20<p>18<p>+8 to hit, 1d4 + 4 damage<p>4<p>18<p><p>Small<p>25<p>16<p>+6 to hit, 1d8 + 2 damage<p>6<p>14<p><p>Medium<p>40<p>13<p>+5 to hit, 2d6 + 1 damage<p>10<p>12<p><p>Large<p>50<p>10<p>+6 to hit, 2d10 + 2<p>14<p>10<p><p><p><p><p>damage<p><p><p><p>Huge<p>80<p>10<p>+8 to hit, 2d12 + 4<p>18<p>6<p><p><p><p><p>damage<p><p><p><p>An animated object is a construct with AC, hit points, attacks, Strength, and Dexterity determined by its size. Its Constitution is 10 and its Intelligence and Wisdom are 3, and its Charisma is 1. Its speed is<p>30 feet; if the object lacks legs or other appendages it can use for locomotion, it instead has a flying speed of 30 feet and can hover. If the object is securely attached to a surface or a larger object, such as a chain bolted to a wall, its speed is 0. It has blindsight with a radius of 30 feet and is blind beyond that distance. When the animated object drops to 0 hit points, it reverts to its original object form, and any remaining damage carries over to its original object form.<p>If you command an object to attack, it can make a single melee attack against a creature within 5 feet of it. It makes a slam attack with an attack bonus and bludgeoning damage determined by its size. The GM might rule that a specific object inflicts slashing or piercing damage based on its form.<p>At Higher Levels. If you cast this spell using a spell slot of 6th level or higher, you can animate two additional objects for each slot level above 5th."
 }, {
 	"name": "Antilife Shell",
 	"level": 5,
-	"school": "abjuration",
+	"type": "abjuration",
 	"ritual": false,
 	"range": "Self (10-foot radius)",
 	"components": "V, S",
@@ -120,7 +121,7 @@
 }, {
 	"name": "Antimagic Field",
 	"level": 8,
-	"school": "abjuration",
+	"type": "abjuration",
 	"ritual": false,
 	"range": "Self (10-foot-radius sphere)",
 	"components": "V, S, M (a pinch of powdered iron or",
@@ -132,7 +133,7 @@
 }, {
 	"name": "Antipathy/Sympathy",
 	"level": 8,
-	"school": "enchantment",
+	"type": "enchantment",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V, S, M (either a lump of alum soaked in vinegar for the antipathy effect or a drop of honey for the sympathy effect)",
@@ -144,7 +145,7 @@
 }, {
 	"name": "Arcane Eye",
 	"level": 4,
-	"school": "divination",
+	"type": "divination",
 	"ritual": false,
 	"range": "30 feet",
 	"components": "V, S, M (a bit of bat fur)",
@@ -156,7 +157,7 @@
 }, {
 	"name": "Arcane Hand",
 	"level": 5,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "120 feet",
 	"components": "V, S, M (an eggshell and a snakeskin glove)",
@@ -168,7 +169,7 @@
 }, {
 	"name": "Arcane Lock",
 	"level": 2,
-	"school": "abjuration",
+	"type": "abjuration",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S, M (gold dust worth at least 25 gp, which the spell consumes)",
@@ -180,7 +181,7 @@
 }, {
 	"name": "Arcane Sword",
 	"level": 7,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V, S, M (a miniature platinum sword with a grip and pommel of copper and zinc, worth 250 gp)",
@@ -192,7 +193,7 @@
 }, {
 	"name": "Arcanist’s Magic Aura",
 	"level": 2,
-	"school": "illusion",
+	"type": "illusion",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S, M (a small square of silk)",
@@ -204,7 +205,7 @@
 }, {
 	"name": "Astral Projection",
 	"level": 9,
-	"school": "necromancy",
+	"type": "necromancy",
 	"ritual": false,
 	"range": "10 feet",
 	"components": "V, S, M (for each creature you affect with this spell, you must provide one jacinth worth at least 1,000 gp and one ornately carved bar of silver worth at least 100 gp, all of which the spell consumes)",
@@ -216,7 +217,7 @@
 }, {
 	"name": "Augury",
 	"level": 2,
-	"school": "level divination ",
+	"type": "divination ",
 	"ritual": true,
 	"range": "Self",
 	"components": "V, S, M (specially marked sticks, bones, or similar tokens worth at least 25 gp)",
@@ -228,7 +229,7 @@
 }, {
 	"name": "Awaken",
 	"level": 5,
-	"school": "transmutation",
+	"type": "transmutation",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S, M (an agate worth at least 1,000 gp, which the spell consumes)",
@@ -240,7 +241,7 @@
 }, {
 	"name": "Bane",
 	"level": 1,
-	"school": "enchantment",
+	"type": "enchantment",
 	"ritual": false,
 	"range": "30 feet",
 	"components": "V, S, M (a drop of blood)",
@@ -252,7 +253,7 @@
 }, {
 	"name": "Banishment",
 	"level": 4,
-	"school": "abjuration",
+	"type": "abjuration",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V, S, M (an item distasteful to the target)",
@@ -264,7 +265,7 @@
 }, {
 	"name": "Barkskin",
 	"level": 2,
-	"school": "transmutation",
+	"type": "transmutation",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S, M (a handful of oak bark)",
@@ -276,7 +277,7 @@
 }, {
 	"name": "Beacon of Hope",
 	"level": 3,
-	"school": "abjuration",
+	"type": "abjuration",
 	"ritual": false,
 	"range": "30 feet",
 	"components": "V, S",
@@ -288,7 +289,7 @@
 }, {
 	"name": "Bestow Curse",
 	"level": 3,
-	"school": "necromancy",
+	"type": "necromancy",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S",
@@ -300,7 +301,7 @@
 }, {
 	"name": "Black Tentacles",
 	"level": 4,
-	"school": "conjuration",
+	"type": "conjuration",
 	"ritual": false,
 	"range": "90 feet",
 	"components": "V, S, M (a piece of tentacle from a giant octopus or a giant squid)",
@@ -312,7 +313,7 @@
 }, {
 	"name": "Blade Barrier",
 	"level": 6,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "90 feet",
 	"components": "V, S",
@@ -324,7 +325,7 @@
 }, {
 	"name": "Bless",
 	"level": 1,
-	"school": "enchantment",
+	"type": "enchantment",
 	"ritual": false,
 	"range": "30 feet",
 	"components": "V, S, M (a sprinkling of holy water)",
@@ -336,7 +337,7 @@
 }, {
 	"name": "Blight",
 	"level": 4,
-	"school": "necromancy",
+	"type": "necromancy",
 	"ritual": false,
 	"range": "30 feet",
 	"components": "V, S",
@@ -348,7 +349,7 @@
 }, {
 	"name": "Blindness/Deafness",
 	"level": 2,
-	"school": "necromancy",
+	"type": "necromancy",
 	"ritual": false,
 	"range": "30 feet",
 	"components": "V",
@@ -360,7 +361,7 @@
 }, {
 	"name": "Blink",
 	"level": 3,
-	"school": "transmutation",
+	"type": "transmutation",
 	"ritual": false,
 	"range": "Self",
 	"components": "V, S",
@@ -372,7 +373,7 @@
 }, {
 	"name": "Blur",
 	"level": 2,
-	"school": "illusion",
+	"type": "illusion",
 	"ritual": false,
 	"range": "Self",
 	"components": "V",
@@ -384,7 +385,7 @@
 }, {
 	"name": "Burning Hands",
 	"level": 1,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "Self (15-foot cone)",
 	"components": "V, S",
@@ -396,7 +397,7 @@
 }, {
 	"name": "Call Lightning",
 	"level": 3,
-	"school": "conjuration",
+	"type": "conjuration",
 	"ritual": false,
 	"range": "120 feet",
 	"components": "V, S",
@@ -408,7 +409,7 @@
 }, {
 	"name": "Calm Emotions",
 	"level": 2,
-	"school": "enchantment",
+	"type": "enchantment",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V, S",
@@ -420,7 +421,7 @@
 }, {
 	"name": "Chain Lightning",
 	"level": 6,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "150 feet",
 	"components": "V, S, M (a bit of fur; a piece of amber, glass, or a crystal rod; and three silver pins)",
@@ -432,7 +433,7 @@
 }, {
 	"name": "Charm Person",
 	"level": 1,
-	"school": "enchantment",
+	"type": "enchantment",
 	"ritual": false,
 	"range": "30 feet",
 	"components": "V, S",
@@ -444,7 +445,7 @@
 }, {
 	"name": "Chill Touch",
 	"level": 0,
-	"school": "",
+	"type": "mancy cantrip",
 	"ritual": false,
 	"range": "120 feet",
 	"components": "V, S",
@@ -456,7 +457,7 @@
 }, {
 	"name": "Circle of Death",
 	"level": 6,
-	"school": "necromancy",
+	"type": "necromancy",
 	"ritual": false,
 	"range": "150 feet",
 	"components": "V, S, M (the powder of a crushed black pearl worth at least 500 gp)",
@@ -468,7 +469,7 @@
 }, {
 	"name": "Clairvoyance",
 	"level": 3,
-	"school": "divination",
+	"type": "divination",
 	"ritual": false,
 	"range": "1 mile",
 	"components": "V, S, M (a focus worth at least 100 gp, either a jeweled horn for hearing or a glass eye for seeing)",
@@ -480,7 +481,7 @@
 }, {
 	"name": "Clone",
 	"level": 8,
-	"school": "necromancy",
+	"type": "necromancy",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S, M (a diamond worth at least 1,000 gp and at least 1 cubic inch of flesh of the creature that is to be cloned, which the spell consumes, and a vessel worth at least 2,000 gp that has a sealable lid and is large enough to hold a Medium creature, such as a huge urn, coffin, mud-filled cyst in the ground, or crystal container filled with salt water)",
@@ -492,7 +493,7 @@
 }, {
 	"name": "Cloudkill",
 	"level": 5,
-	"school": "conjuration",
+	"type": "conjuration",
 	"ritual": false,
 	"range": "120 feet",
 	"components": "V, S",
@@ -504,7 +505,7 @@
 }, {
 	"name": "Color Spray",
 	"level": 1,
-	"school": "illusion",
+	"type": "illusion",
 	"ritual": false,
 	"range": "Self (15-foot cone)",
 	"components": "V, S, M (a pinch of powder or sand that is colored red, yellow, and blue)",
@@ -516,7 +517,7 @@
 }, {
 	"name": "Command",
 	"level": 1,
-	"school": "enchantment",
+	"type": "enchantment",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V",
@@ -528,7 +529,7 @@
 }, {
 	"name": "Commune",
 	"level": 5,
-	"school": "level divination ",
+	"type": "divination ",
 	"ritual": true,
 	"range": "Self",
 	"components": "V, S, M (incense and a vial of holy or unholy water)",
@@ -540,7 +541,7 @@
 }, {
 	"name": "Commune with Nature",
 	"level": 5,
-	"school": "level divination ",
+	"type": "divination ",
 	"ritual": true,
 	"range": "Self",
 	"components": "V, S",
@@ -552,7 +553,7 @@
 }, {
 	"name": "Comprehend Languages",
 	"level": 1,
-	"school": "level divination ",
+	"type": "divination ",
 	"ritual": true,
 	"range": "Self",
 	"components": "V, S, M (a pinch of soot and salt)",
@@ -564,7 +565,7 @@
 }, {
 	"name": "Cone of Cold",
 	"level": 5,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "Self (60-foot cone)",
 	"components": "V, S, M (a small crystal or glass cone)",
@@ -576,18 +577,19 @@
 }, {
 	"name": "Confusion",
 	"level": 4,
-	"school": "enchantment",
+	"type": "enchantment",
 	"ritual": false,
 	"range": "90 feet",
 	"components": "V, S, M (three nut shells)",
 	"Verbal": true,
 	"somatic": true,
 	"material": true,
-	"duration": "Concentration, up to 1 minute"
+	"duration": "Concentration, up to 1 minute",
+	"text": "<p>This spell assaults and twists creatures’ minds, spawning delusions and provoking uncontrolled action. Each creature in a 10- foot-radius sphere centered on a point you choose within range must succeed on a Wisdom saving throw when you cast this spell or be affected by it.<p>An affected target can’t take reactions and must roll a d10 at the start of each of its turns to determine its behavior for that turn.<p>d10<p>Behavior<p><p>1<p>The creature uses all its movement to move in a random direction. To determine the direction, roll a d8 and assign a direction to each die face. The creature doesn’t take an action this turn.<p><p>2–6<p>The creature doesn’t move or take actions this turn.<p><p>7–8<p>The creature uses its action to make a melee attack against a randomly determined creaturewithin its reach. If there is no creature within its reach, the creature does nothing this turn.<p><p>9–10<p>The creature can act and move normally.<p><p>At the end of each of its turns, an affected target can make a Wisdom saving throw. If it succeeds, this effect ends for that target.<p>At Higher Levels. When you cast this spell using a spell slot of 5th level or higher, the radius of the sphere increases by 5 feet for each slot level above 4th."
 }, {
 	"name": "Conjure Animals",
 	"level": 3,
-	"school": "conjuration",
+	"type": "conjuration",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V, S",
@@ -599,7 +601,7 @@
 }, {
 	"name": "Conjure Celestial",
 	"level": 7,
-	"school": "conjuration",
+	"type": "conjuration",
 	"ritual": false,
 	"range": "90 feet",
 	"components": "V, S",
@@ -611,7 +613,7 @@
 }, {
 	"name": "Conjure Elemental",
 	"level": 5,
-	"school": "conjuration",
+	"type": "conjuration",
 	"ritual": false,
 	"range": "90 feet",
 	"components": "V, S, M (burning incense for air, soft clay for earth, sulfur and phosphorus for fire, or water and sand for water)",
@@ -623,7 +625,7 @@
 }, {
 	"name": "Conjure Fey",
 	"level": 6,
-	"school": "conjuration",
+	"type": "conjuration",
 	"ritual": false,
 	"range": "90 feet",
 	"components": "V, S",
@@ -635,7 +637,7 @@
 }, {
 	"name": "Conjure Minor Elementals",
 	"level": 4,
-	"school": "conjuration",
+	"type": "conjuration",
 	"ritual": false,
 	"range": "90 feet",
 	"components": "V, S",
@@ -647,7 +649,7 @@
 }, {
 	"name": "Conjure Woodland Beings",
 	"level": 4,
-	"school": "conjuration",
+	"type": "conjuration",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V, S, M (one holly berry per creature summoned)",
@@ -659,7 +661,7 @@
 }, {
 	"name": "Contact Other Plane",
 	"level": 5,
-	"school": "level divination ",
+	"type": "divination ",
 	"ritual": true,
 	"range": "Self",
 	"components": "V",
@@ -671,7 +673,7 @@
 }, {
 	"name": "Contagion",
 	"level": 5,
-	"school": "necromancy",
+	"type": "necromancy",
 	"ritual": false,
 	"range": "Touch",
 	"components": ", S",
@@ -683,7 +685,7 @@
 }, {
 	"name": "Contingency",
 	"level": 6,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "Self",
 	"components": "V, S, M (a statuette of yourself carved from ivory and decorated with gems worth at least 1,500 gp)",
@@ -695,7 +697,7 @@
 }, {
 	"name": "Continual Flame",
 	"level": 2,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S, M (ruby dust worth 50 gp, which the spell consumes)",
@@ -707,7 +709,7 @@
 }, {
 	"name": "Control Water",
 	"level": 4,
-	"school": "transmutation",
+	"type": "transmutation",
 	"ritual": false,
 	"range": "300 feet",
 	"components": "V, S, M (a drop of water and a pinch of dust)",
@@ -719,18 +721,19 @@
 }, {
 	"name": "Control Weather",
 	"level": 8,
-	"school": "transmutation",
+	"type": "transmutation",
 	"ritual": false,
 	"range": "Self (5-mile radius)",
 	"components": "V, S, M (burning incense and bits of earth and wood mixed in water)",
 	"Verbal": true,
 	"somatic": true,
 	"material": true,
-	"duration": "Concentration, up to 8 hours"
+	"duration": "Concentration, up to 8 hours",
+	"text": "<p>You take control of the weather within 5 miles of you for the duration. You must be outdoors to cast this spell. Moving to a place where you don’t have a clear path to the sky ends the spell early.<p>When you cast the spell, you change the current weather conditions, which are determined by the GM based on the climate and season. You can change precipitation, temperature, and wind. It takes 1d4 × 10 minutes for the new conditions to take effect. Once they do so, you can change the conditions again. When the spell ends, the weather gradually returns to normal.<p>When you change the weather conditions, find a current condition on the following tables and change its stage by one, up or down. When changing the wind, you can change its direction.<p>Precipitation<p>Stage Condition<p><p>Clear<p>Light clouds<p><p>3 Overcast or ground fog<p>Rain, hail, or snow<p>Torrential rain, driving hail, or blizzard<p>Temperature<p>Stage Condition<p><p>Unbearable heat<p>Hot<p><p>Warm<p>Cool<p>Cold<p>Arctic cold<p>Wind<p>Stage Condition<p><p>Calm<p>2 Moderate wind<p>Strong wind<p>4 Gale<p><p>Storm"
 }, {
 	"name": "Create Food and Water",
 	"level": 3,
-	"school": "conjuration",
+	"type": "conjuration",
 	"ritual": false,
 	"range": "30 feet",
 	"components": "V, S",
@@ -742,7 +745,7 @@
 }, {
 	"name": "Create or Destroy Water",
 	"level": 1,
-	"school": "transmutation",
+	"type": "transmutation",
 	"ritual": false,
 	"range": "30 feet",
 	"components": "V, S, M (a drop of water if creating water or a few grains of sand if destroying it)",
@@ -754,7 +757,7 @@
 }, {
 	"name": "Create Undead",
 	"level": 6,
-	"school": "necromancy",
+	"type": "necromancy",
 	"ritual": false,
 	"range": "10 feet",
 	"components": "V, S, M (one clay pot filled with grave dirt, one clay pot filled with brackish water, and one 150 gp black onyx stone for each corpse)",
@@ -766,18 +769,19 @@
 }, {
 	"name": "Creation",
 	"level": 5,
-	"school": "illusion",
+	"type": "illusion",
 	"ritual": false,
 	"range": "30 feet",
 	"components": "V, S, M (a tiny piece of matter of the same type of the item you plan to create)",
 	"Verbal": true,
 	"somatic": true,
 	"material": true,
-	"duration": "Special"
+	"duration": "Special",
+	"text": "<p>You pull wisps of shadow material from the Shadowfell to create a nonliving object of vegetable matter within range: soft goods, rope, wood, or something similar. You can also use this spell to create mineral objects such as stone, crystal, or metal. The object created must be no larger than a 5-foot cube, and the object must be of a form and material that you have seen before.<p>The duration depends on the object’s material. If the object is composed of multiple materials, use the shortest duration.<p><p>Material<p>Duration<p><p>Vegetable matter<p>1 day<p><p>Stone or crystal<p>12 hours<p><p>Precious metals<p>1 hour<p><p>Gems<p>10 minutes<p><p>Adamantine or mithral<p>1 minute<p><p>Using any material created by this spell as another spell’s material component causes that spell to fail.<p>At Higher Levels. When you cast this spell using a spell slot of 6th level or higher, the cube increases by 5 feet for each slot level above 5th."
 }, {
 	"name": "Cure Wounds",
 	"level": 1,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S",
@@ -789,7 +793,7 @@
 }, {
 	"name": "Dancing Lights",
 	"level": 0,
-	"school": "",
+	"type": "tion cantrip",
 	"ritual": false,
 	"range": "120 feet",
 	"components": "V, S, M (a bit of phosphorus or wychwood, or a glowworm)",
@@ -801,7 +805,7 @@
 }, {
 	"name": "Darkness",
 	"level": 2,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V, M (bat fur and a drop of pitch or piece of coal)",
@@ -813,7 +817,7 @@
 }, {
 	"name": "Darkvision",
 	"level": 2,
-	"school": "transmutation",
+	"type": "transmutation",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S, M (either a pinch of dried carrot or an agate)",
@@ -825,7 +829,7 @@
 }, {
 	"name": "Daylight",
 	"level": 3,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V, S",
@@ -837,7 +841,7 @@
 }, {
 	"name": "Death Ward",
 	"level": 4,
-	"school": "abjuration",
+	"type": "abjuration",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S",
@@ -849,7 +853,7 @@
 }, {
 	"name": "Delayed Blast Fireball",
 	"level": 7,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "150 feet",
 	"components": "V, S, M (a tiny ball of bat guano and sulfur)",
@@ -861,7 +865,7 @@
 }, {
 	"name": "Demiplane",
 	"level": 8,
-	"school": "conjuration",
+	"type": "conjuration",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "S",
@@ -873,7 +877,7 @@
 }, {
 	"name": "Detect Evil and Good",
 	"level": 1,
-	"school": "divination",
+	"type": "divination",
 	"ritual": false,
 	"range": "Self",
 	"components": "V, S",
@@ -885,7 +889,7 @@
 }, {
 	"name": "Detect Magic",
 	"level": 1,
-	"school": "level divination ",
+	"type": "divination ",
 	"ritual": true,
 	"range": "Self",
 	"components": "V, S",
@@ -897,7 +901,7 @@
 }, {
 	"name": "Detect Poison and Disease",
 	"level": 1,
-	"school": "level divination ",
+	"type": "divination ",
 	"ritual": true,
 	"range": "Self",
 	"components": "V, S, M (a yew leaf)",
@@ -909,7 +913,7 @@
 }, {
 	"name": "Detect Thoughts",
 	"level": 2,
-	"school": "divination",
+	"type": "divination",
 	"ritual": false,
 	"range": "Self",
 	"components": "V, S, M (a copper piece)",
@@ -921,7 +925,7 @@
 }, {
 	"name": "Dimension Door",
 	"level": 4,
-	"school": "conjuration",
+	"type": "conjuration",
 	"ritual": false,
 	"range": "500 feet",
 	"components": "V",
@@ -933,7 +937,7 @@
 }, {
 	"name": "Disguise Self",
 	"level": 1,
-	"school": "illusion",
+	"type": "illusion",
 	"ritual": false,
 	"range": "Self",
 	"components": "V, S",
@@ -945,7 +949,7 @@
 }, {
 	"name": "Disintegrate",
 	"level": 6,
-	"school": "transmutation",
+	"type": "transmutation",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V, S, M (a lodestone and a pinch of dust)",
@@ -957,7 +961,7 @@
 }, {
 	"name": "Dispel Evil and Good",
 	"level": 5,
-	"school": "abjuration",
+	"type": "abjuration",
 	"ritual": false,
 	"range": "Self",
 	"components": "V, S, M (holy water or powdered silver and iron)",
@@ -969,7 +973,7 @@
 }, {
 	"name": "Dispel Magic",
 	"level": 3,
-	"school": "abjuration",
+	"type": "abjuration",
 	"ritual": false,
 	"range": "120 feet",
 	"components": "V, S",
@@ -981,7 +985,7 @@
 }, {
 	"name": "Divination",
 	"level": 4,
-	"school": "level divination ",
+	"type": "divination ",
 	"ritual": true,
 	"range": "Self",
 	"components": "V, S, M (incense and a sacrificial offering appropriate to your religion, together worth at least 25 gp, which the spell consumes)",
@@ -993,7 +997,7 @@
 }, {
 	"name": "Divine Favor",
 	"level": 1,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "Self",
 	"components": "V, S",
@@ -1005,7 +1009,7 @@
 }, {
 	"name": "Divine Word",
 	"level": 7,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "30 feet",
 	"components": "V",
@@ -1017,7 +1021,7 @@
 }, {
 	"name": "Dominate Beast",
 	"level": 4,
-	"school": "enchantment",
+	"type": "enchantment",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V, S",
@@ -1029,7 +1033,7 @@
 }, {
 	"name": "Dominate Monster",
 	"level": 8,
-	"school": "enchantment",
+	"type": "enchantment",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V, S",
@@ -1041,7 +1045,7 @@
 }, {
 	"name": "Dominate Person",
 	"level": 5,
-	"school": "enchantment",
+	"type": "enchantment",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V, S",
@@ -1053,7 +1057,7 @@
 }, {
 	"name": "Dream",
 	"level": 5,
-	"school": "illusion",
+	"type": "illusion",
 	"ritual": false,
 	"range": "Special",
 	"components": "V, S, M (a handful of sand, a dab of ink, and a writing quill plucked from a sleeping bird)",
@@ -1065,7 +1069,7 @@
 }, {
 	"name": "Earthquake",
 	"level": 8,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "500 feet",
 	"components": "V, S, M (a pinch of dirt, a piece of rock, and a lump of clay)",
@@ -1077,7 +1081,7 @@
 }, {
 	"name": "Enhance Ability",
 	"level": 2,
-	"school": "transmutation",
+	"type": "transmutation",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S, M (fur or a feather from a beast)",
@@ -1089,7 +1093,7 @@
 }, {
 	"name": "Enlarge/Reduce",
 	"level": 2,
-	"school": "transmutation",
+	"type": "transmutation",
 	"ritual": false,
 	"range": "30 feet",
 	"components": "V, S, M (a pinch of powdered iron)",
@@ -1101,7 +1105,7 @@
 }, {
 	"name": "Entangle",
 	"level": 1,
-	"school": "conjuration",
+	"type": "conjuration",
 	"ritual": false,
 	"range": "90 feet",
 	"components": "V, S",
@@ -1113,7 +1117,7 @@
 }, {
 	"name": "Enthrall",
 	"level": 2,
-	"school": "enchantment",
+	"type": "enchantment",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V, S",
@@ -1125,7 +1129,7 @@
 }, {
 	"name": "Etherealness",
 	"level": 7,
-	"school": "transmutation",
+	"type": "transmutation",
 	"ritual": false,
 	"range": "Self",
 	"components": "V, S",
@@ -1137,7 +1141,7 @@
 }, {
 	"name": "Expeditious Retreat",
 	"level": 1,
-	"school": "transmutation",
+	"type": "transmutation",
 	"ritual": false,
 	"range": "Self",
 	"components": "V, S",
@@ -1149,7 +1153,7 @@
 }, {
 	"name": "Eyebite",
 	"level": 6,
-	"school": "necromancy",
+	"type": "necromancy",
 	"ritual": false,
 	"range": "Self",
 	"components": "V, S",
@@ -1161,7 +1165,7 @@
 }, {
 	"name": "Fabricate",
 	"level": 4,
-	"school": "transmutation",
+	"type": "transmutation",
 	"ritual": false,
 	"range": "120 feet",
 	"components": "V, S",
@@ -1173,7 +1177,7 @@
 }, {
 	"name": "Faerie Fire",
 	"level": 1,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V",
@@ -1185,7 +1189,7 @@
 }, {
 	"name": "Faithful Hound",
 	"level": 4,
-	"school": "conjuration",
+	"type": "conjuration",
 	"ritual": false,
 	"range": "30 feet",
 	"components": "V, S, M (a tiny silver whistle, a piece of bone, and a thread)",
@@ -1197,7 +1201,7 @@
 }, {
 	"name": "False Life",
 	"level": 1,
-	"school": "necromancy",
+	"type": "necromancy",
 	"ritual": false,
 	"range": "Self",
 	"components": "V, S, M (a small amount of alcohol or distilled spirits)",
@@ -1209,7 +1213,7 @@
 }, {
 	"name": "Fear",
 	"level": 3,
-	"school": "illusion",
+	"type": "illusion",
 	"ritual": false,
 	"range": "Self (30-foot cone)",
 	"components": "V, S, M (a white feather or the heart of a hen)",
@@ -1221,7 +1225,7 @@
 }, {
 	"name": "Feather Fall",
 	"level": 1,
-	"school": "transmutation",
+	"type": "transmutation",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V, M (a small feather or piece of down)",
@@ -1233,7 +1237,7 @@
 }, {
 	"name": "Feeblemind",
 	"level": 8,
-	"school": "enchantment",
+	"type": "enchantment",
 	"ritual": false,
 	"range": "150 feet",
 	"components": "V, S, M (a handful of clay, crystal, glass, or mineral spheres)",
@@ -1245,7 +1249,7 @@
 }, {
 	"name": "Find Steed",
 	"level": 2,
-	"school": "conjuration",
+	"type": "conjuration",
 	"ritual": false,
 	"range": "30 feet",
 	"components": "V, S",
@@ -1257,7 +1261,7 @@
 }, {
 	"name": "Find the Path",
 	"level": 6,
-	"school": "divination",
+	"type": "divination",
 	"ritual": false,
 	"range": "Self",
 	"components": "V, S, M (a set of divinatory tools— such as bones, ivory sticks, cards, teeth, or carved runes—worth 100 gp and an object from the location you wish to find)",
@@ -1269,7 +1273,7 @@
 }, {
 	"name": "Find Traps",
 	"level": 2,
-	"school": "divination",
+	"type": "divination",
 	"ritual": false,
 	"range": "120 feet",
 	"components": "V, S",
@@ -1281,7 +1285,7 @@
 }, {
 	"name": "Finger of Death",
 	"level": 7,
-	"school": "necromancy",
+	"type": "necromancy",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V, S",
@@ -1293,7 +1297,7 @@
 }, {
 	"name": "Fireball",
 	"level": 3,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "150 feet",
 	"components": "V, S, M (a tiny ball of bat guano and sulfur)",
@@ -1305,7 +1309,7 @@
 }, {
 	"name": "Fire Shield",
 	"level": 4,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "Self",
 	"components": "V, S, M (a bit of phosphorus or a firefly)",
@@ -1317,7 +1321,7 @@
 }, {
 	"name": "Fire Storm",
 	"level": 7,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "150 feet",
 	"components": "V, S",
@@ -1329,7 +1333,7 @@
 }, {
 	"name": "Flame Blade",
 	"level": 2,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "Self",
 	"components": "V, S, M (leaf of sumac)",
@@ -1341,7 +1345,7 @@
 }, {
 	"name": "Flame Strike",
 	"level": 5,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V, S, M (pinch of sulfur)",
@@ -1353,7 +1357,7 @@
 }, {
 	"name": "Flaming Sphere",
 	"level": 2,
-	"school": "conjuration",
+	"type": "conjuration",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V, S, M (a bit of tallow, a pinch of brimstone, and a dusting of powdered iron)",
@@ -1365,7 +1369,7 @@
 }, {
 	"name": "Flesh to Stone",
 	"level": 6,
-	"school": "transmutation",
+	"type": "transmutation",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V, S, M (a pinch of lime, water, and earth)",
@@ -1377,7 +1381,7 @@
 }, {
 	"name": "Floating Disk",
 	"level": 1,
-	"school": "level conjuration ",
+	"type": "conjuration ",
 	"ritual": true,
 	"range": "30 feet",
 	"components": "V, S, M (a drop of mercury)",
@@ -1389,7 +1393,7 @@
 }, {
 	"name": "Fly",
 	"level": 3,
-	"school": "transmutation",
+	"type": "transmutation",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S, M (a wing feather from any bird)",
@@ -1401,7 +1405,7 @@
 }, {
 	"name": "Fog Cloud",
 	"level": 1,
-	"school": "conjuration",
+	"type": "conjuration",
 	"ritual": false,
 	"range": "120 feet",
 	"components": "V, S",
@@ -1413,7 +1417,7 @@
 }, {
 	"name": "Forbiddance",
 	"level": 6,
-	"school": "level abjuration ",
+	"type": "abjuration ",
 	"ritual": true,
 	"range": "Touch",
 	"components": "V, S, M (a sprinkling of holy water, rare incense, and powdered ruby worth at least 1,000 gp)",
@@ -1425,7 +1429,7 @@
 }, {
 	"name": "Forcecage",
 	"level": 7,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "100 feet",
 	"components": "V, S, M (ruby dust worth 1,500 gp)",
@@ -1437,7 +1441,7 @@
 }, {
 	"name": "Foresight",
 	"level": 9,
-	"school": "divination",
+	"type": "divination",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S, M (a hummingbird feather)",
@@ -1449,7 +1453,7 @@
 }, {
 	"name": "Freedom of Movement",
 	"level": 4,
-	"school": "abjuration",
+	"type": "abjuration",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S, M (a leather strap, bound around the arm or a similar appendage)",
@@ -1461,7 +1465,7 @@
 }, {
 	"name": "Freezing Sphere",
 	"level": 6,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "300 feet",
 	"components": "V, S, M (a small crystal sphere)",
@@ -1473,7 +1477,7 @@
 }, {
 	"name": "Gaseous Form",
 	"level": 3,
-	"school": "transmutation",
+	"type": "transmutation",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S, M (a bit of gauze and a wisp of smoke)",
@@ -1485,7 +1489,7 @@
 }, {
 	"name": "Gate",
 	"level": 9,
-	"school": "conjuration",
+	"type": "conjuration",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V, S, M (a diamond worth at least 5,000 gp)",
@@ -1497,7 +1501,7 @@
 }, {
 	"name": "Geas",
 	"level": 5,
-	"school": "enchantment",
+	"type": "enchantment",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V",
@@ -1509,7 +1513,7 @@
 }, {
 	"name": "Gentle Repose",
 	"level": 2,
-	"school": "level necromancy ",
+	"type": "necromancy ",
 	"ritual": true,
 	"range": "Touch",
 	"components": "V, S, M (a pinch of salt and one copper piece placed on each of the corpse’s eyes, which must remain there for the duration)",
@@ -1521,7 +1525,7 @@
 }, {
 	"name": "Giant Insect",
 	"level": 4,
-	"school": "transmutation",
+	"type": "transmutation",
 	"ritual": false,
 	"range": "30 feet",
 	"components": "V, S",
@@ -1533,7 +1537,7 @@
 }, {
 	"name": "Glibness",
 	"level": 8,
-	"school": "transmutation",
+	"type": "transmutation",
 	"ritual": false,
 	"range": "Self",
 	"components": "V",
@@ -1545,7 +1549,7 @@
 }, {
 	"name": "Globe of Invulnerability",
 	"level": 6,
-	"school": "abjuration",
+	"type": "abjuration",
 	"ritual": false,
 	"range": "Self (10-foot radius)",
 	"components": "V, S, M (a glass or crystal bead that shatters when the spell ends)",
@@ -1557,7 +1561,7 @@
 }, {
 	"name": "Glyph of Warding",
 	"level": 3,
-	"school": "abjuration",
+	"type": "abjuration",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S, M (incense and powdered diamond worth at least 200 gp, which the spell consumes)",
@@ -1569,7 +1573,7 @@
 }, {
 	"name": "Grease",
 	"level": 1,
-	"school": "conjuration",
+	"type": "conjuration",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V, S, M (a bit of pork rind or butter)",
@@ -1581,7 +1585,7 @@
 }, {
 	"name": "Greater Invisibility",
 	"level": 4,
-	"school": "illusion",
+	"type": "illusion",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S",
@@ -1593,7 +1597,7 @@
 }, {
 	"name": "Greater Restoration",
 	"level": 5,
-	"school": "abjuration",
+	"type": "abjuration",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S, M (diamond dust worth at least 100 gp, which the spell consumes)",
@@ -1605,7 +1609,7 @@
 }, {
 	"name": "Guards and Wards",
 	"level": 6,
-	"school": "abjuration",
+	"type": "abjuration",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S, M (burning incense, a small measure of brimstone and oil, a knotted string, a small amount of umber hulk blood, and a small silver rod worth at least 10 gp)",
@@ -1617,7 +1621,7 @@
 }, {
 	"name": "Guidance",
 	"level": 0,
-	"school": "",
+	"type": "ation cantrip",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S",
@@ -1629,7 +1633,7 @@
 }, {
 	"name": "Guiding Bolt",
 	"level": 1,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "120 feet",
 	"components": "V, S",
@@ -1641,7 +1645,7 @@
 }, {
 	"name": "Gust of Wind",
 	"level": 2,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "Self (60-foot line)",
 	"components": "V, S, M (a legume seed)",
@@ -1653,7 +1657,7 @@
 }, {
 	"name": "Hallow",
 	"level": 5,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S, M (herbs, oils, and incense worth at least 1,000 gp, which the spell consumes)",
@@ -1665,7 +1669,7 @@
 }, {
 	"name": "Hallucinatory Terrain",
 	"level": 4,
-	"school": "illusion",
+	"type": "illusion",
 	"ritual": false,
 	"range": "300 feet",
 	"components": "V, S, M (a stone, a twig, and a bit of green plant)",
@@ -1677,7 +1681,7 @@
 }, {
 	"name": "Harm",
 	"level": 6,
-	"school": "necromancy",
+	"type": "necromancy",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V, S",
@@ -1689,7 +1693,7 @@
 }, {
 	"name": "Haste",
 	"level": 3,
-	"school": "transmutation",
+	"type": "transmutation",
 	"ritual": false,
 	"range": "30 feet",
 	"components": "V, S, M (a shaving of licorice root)",
@@ -1701,7 +1705,7 @@
 }, {
 	"name": "Heal",
 	"level": 6,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V, S",
@@ -1713,7 +1717,7 @@
 }, {
 	"name": "Healing Word",
 	"level": 1,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V",
@@ -1725,7 +1729,7 @@
 }, {
 	"name": "Heat Metal",
 	"level": 2,
-	"school": "transmutation",
+	"type": "transmutation",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V, S, M (a piece of iron and a flame)",
@@ -1737,7 +1741,7 @@
 }, {
 	"name": "Heroes’ Feast",
 	"level": 6,
-	"school": "conjuration",
+	"type": "conjuration",
 	"ritual": false,
 	"range": "30 feet",
 	"components": "V, S , M (a gem- encrusted bowl worth at least 1,000 gp, which the spell consumes)",
@@ -1749,7 +1753,7 @@
 }, {
 	"name": "Heroism",
 	"level": 1,
-	"school": "enchantment",
+	"type": "enchantment",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S",
@@ -1761,7 +1765,7 @@
 }, {
 	"name": "Hideous Laughter",
 	"level": 1,
-	"school": "enchantment",
+	"type": "enchantment",
 	"ritual": false,
 	"range": "30 feet",
 	"components": "V, S, M (tiny tarts and a feather that is waved in the air)",
@@ -1773,7 +1777,7 @@
 }, {
 	"name": "Hold Monster",
 	"level": 5,
-	"school": "enchantment",
+	"type": "enchantment",
 	"ritual": false,
 	"range": "90 feet",
 	"components": "V, S, M (a small, straight piece of iron)",
@@ -1785,7 +1789,7 @@
 }, {
 	"name": "Hold Person",
 	"level": 2,
-	"school": "enchantment",
+	"type": "enchantment",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V, S, M (a small, straight piece of iron)",
@@ -1797,7 +1801,7 @@
 }, {
 	"name": "Holy Aura",
 	"level": 8,
-	"school": "abjuration",
+	"type": "abjuration",
 	"ritual": false,
 	"range": "Self",
 	"components": "V, S, M (a tiny reliquary worth at least 1,000 gp containing a sacred relic, such as a scrap of cloth from a saint’s robe or a piece of parchment from a religious text)",
@@ -1809,7 +1813,7 @@
 }, {
 	"name": "Hypnotic Pattern",
 	"level": 3,
-	"school": "illusion",
+	"type": "illusion",
 	"ritual": false,
 	"range": "120 feet",
 	"components": "S, M (a glowing stick of incense or a crystal vial filled with phosphorescent material)",
@@ -1821,7 +1825,7 @@
 }, {
 	"name": "Ice Storm",
 	"level": 4,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "300 feet",
 	"components": "V, S, M (a pinch of dust and a few drops of water)",
@@ -1833,7 +1837,7 @@
 }, {
 	"name": "Identify",
 	"level": 1,
-	"school": "level divination ",
+	"type": "divination ",
 	"ritual": true,
 	"range": "Touch",
 	"components": "V, S, M (a pearl worth at least 100 gp and an owl feather)",
@@ -1845,7 +1849,7 @@
 }, {
 	"name": "Illusory Script",
 	"level": 1,
-	"school": "level illusion ",
+	"type": "illusion ",
 	"ritual": true,
 	"range": "Touch",
 	"components": "S, M (a lead-based ink worth at least 10 gp, which the spell consumes)",
@@ -1857,7 +1861,7 @@
 }, {
 	"name": "Imprisonment",
 	"level": 9,
-	"school": "abjuration",
+	"type": "abjuration",
 	"ritual": false,
 	"range": "30 feet",
 	"components": "V, S, M (a vellum depiction or a carved statuette in the likeness of the target, and a special component that varies according to the version of the spell you choose, worth at least 500 gp per Hit Die of the target)",
@@ -1869,7 +1873,7 @@
 }, {
 	"name": "Incendiary Cloud",
 	"level": 8,
-	"school": "conjuration",
+	"type": "conjuration",
 	"ritual": false,
 	"range": "150 feet",
 	"components": "V, S",
@@ -1881,7 +1885,7 @@
 }, {
 	"name": "Inflict Wounds",
 	"level": 1,
-	"school": "necromancy",
+	"type": "necromancy",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S",
@@ -1893,7 +1897,7 @@
 }, {
 	"name": "Insect Plague",
 	"level": 5,
-	"school": "conjuration",
+	"type": "conjuration",
 	"ritual": false,
 	"range": "300 feet",
 	"components": "V, S, M (a few grains of sugar, some kernels of grain, and a smear of fat)",
@@ -1905,7 +1909,7 @@
 }, {
 	"name": "Instant Summons",
 	"level": 6,
-	"school": "level conjuration ",
+	"type": "conjuration ",
 	"ritual": true,
 	"range": "Touch",
 	"components": "V, S, M (a sapphire worth 1,000 gp)",
@@ -1917,7 +1921,7 @@
 }, {
 	"name": "Invisibility",
 	"level": 2,
-	"school": "illusion",
+	"type": "illusion",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S, M (an eyelash encased in gum arabic)",
@@ -1929,7 +1933,7 @@
 }, {
 	"name": "Irresistible Dance",
 	"level": 6,
-	"school": "enchantment",
+	"type": "enchantment",
 	"ritual": false,
 	"range": "30 feet",
 	"components": "V",
@@ -1941,7 +1945,7 @@
 }, {
 	"name": "Jump",
 	"level": 1,
-	"school": "transmutation",
+	"type": "transmutation",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S, M (a grasshopper’s hind leg)",
@@ -1953,7 +1957,7 @@
 }, {
 	"name": "Knock",
 	"level": 2,
-	"school": "transmutation",
+	"type": "transmutation",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V",
@@ -1965,7 +1969,7 @@
 }, {
 	"name": "Legend Lore",
 	"level": 5,
-	"school": "divination",
+	"type": "divination",
 	"ritual": false,
 	"range": "Self",
 	"components": "V, S, M (incense worth at least 250 gp, which the spell consumes, and four ivory strips worth at least 50 gp each)",
@@ -1977,7 +1981,7 @@
 }, {
 	"name": "Lesser Restoration",
 	"level": 2,
-	"school": "abjuration",
+	"type": "abjuration",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S",
@@ -1989,7 +1993,7 @@
 }, {
 	"name": "Levitate",
 	"level": 2,
-	"school": "transmutation",
+	"type": "transmutation",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V, S, M (either a small leather loop or a piece of golden wire bent into a cup shape with a long shank on one end)",
@@ -2001,7 +2005,7 @@
 }, {
 	"name": "Light",
 	"level": 0,
-	"school": "",
+	"type": "tion cantrip",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, M (a firefly or phosphorescent moss)",
@@ -2013,7 +2017,7 @@
 }, {
 	"name": "Lightning Bolt",
 	"level": 3,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "Self (100-foot line)",
 	"components": "V, S, M (a bit of fur and a rod of amber, crystal, or glass)",
@@ -2025,7 +2029,7 @@
 }, {
 	"name": "Locate Animals or Plants",
 	"level": 2,
-	"school": "level divination ",
+	"type": "divination ",
 	"ritual": true,
 	"range": "Self",
 	"components": "V, S, M (a bit of fur from a bloodhound)",
@@ -2037,7 +2041,7 @@
 }, {
 	"name": "Locate Creature",
 	"level": 4,
-	"school": "divination",
+	"type": "divination",
 	"ritual": false,
 	"range": "Self",
 	"components": "V, S, M (a bit of fur from a bloodhound)",
@@ -2049,7 +2053,7 @@
 }, {
 	"name": "Locate Object",
 	"level": 2,
-	"school": "divination",
+	"type": "divination",
 	"ritual": false,
 	"range": "Self",
 	"components": "V, S, M (a forked twig)",
@@ -2061,7 +2065,7 @@
 }, {
 	"name": "Longstrider",
 	"level": 1,
-	"school": "transmutation",
+	"type": "transmutation",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S, M (a pinch of dirt)",
@@ -2073,7 +2077,7 @@
 }, {
 	"name": "Mage Armor",
 	"level": 1,
-	"school": "abjuration",
+	"type": "abjuration",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S, M (a piece of cured leather)",
@@ -2085,7 +2089,7 @@
 }, {
 	"name": "Mage Hand",
 	"level": 0,
-	"school": "",
+	"type": "ration cantrip",
 	"ritual": false,
 	"range": "30 feet",
 	"components": "V, S",
@@ -2097,7 +2101,7 @@
 }, {
 	"name": "Magic Circle",
 	"level": 3,
-	"school": "abjuration",
+	"type": "abjuration",
 	"ritual": false,
 	"range": "10 feet",
 	"components": "V, S, M (holy water or powdered silver and iron worth at least 100 gp, which the spell consumes)",
@@ -2109,7 +2113,7 @@
 }, {
 	"name": "Magic Jar",
 	"level": 6,
-	"school": "necromancy",
+	"type": "necromancy",
 	"ritual": false,
 	"range": "Self",
 	"components": "V, S, M (a gem, crystal, reliquary, or some other ornamental container worth at least 500 gp)",
@@ -2121,7 +2125,7 @@
 }, {
 	"name": "Magic Missile",
 	"level": 1,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "120 feet",
 	"components": "V, S",
@@ -2133,7 +2137,7 @@
 }, {
 	"name": "Magic Mouth",
 	"level": 2,
-	"school": "level illusion ",
+	"type": "illusion ",
 	"ritual": true,
 	"range": "30 feet",
 	"components": "V, S, M (a small bit of honeycomb and jade dust worth at least 10 gp, which the spell consumes)",
@@ -2145,7 +2149,7 @@
 }, {
 	"name": "Magic Weapon",
 	"level": 2,
-	"school": "transmutation",
+	"type": "transmutation",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S",
@@ -2157,7 +2161,7 @@
 }, {
 	"name": "Magnificent Mansion",
 	"level": 7,
-	"school": "conjuration",
+	"type": "conjuration",
 	"ritual": false,
 	"range": "300 feet",
 	"components": "V, S, M (a miniature portal carved from ivory, a small piece of polished marble, and a tiny silver spoon, each item worth at least 5 gp)",
@@ -2169,7 +2173,7 @@
 }, {
 	"name": "Major Image",
 	"level": 3,
-	"school": "illusion",
+	"type": "illusion",
 	"ritual": false,
 	"range": "120 feet",
 	"components": "V, S, M (a bit of fleece)",
@@ -2181,7 +2185,7 @@
 }, {
 	"name": "Mass Cure Wounds",
 	"level": 5,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V, S",
@@ -2193,7 +2197,7 @@
 }, {
 	"name": "Mass Heal",
 	"level": 9,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V, S",
@@ -2205,7 +2209,7 @@
 }, {
 	"name": "Mass Healing Word",
 	"level": 3,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V",
@@ -2217,7 +2221,7 @@
 }, {
 	"name": "Mass Suggestion",
 	"level": 6,
-	"school": "enchantment",
+	"type": "enchantment",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V, M (a snake’s tongue and either a bit of honeycomb or a drop of sweet oil)",
@@ -2229,7 +2233,7 @@
 }, {
 	"name": "Maze",
 	"level": 8,
-	"school": "conjuration",
+	"type": "conjuration",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V, S",
@@ -2241,7 +2245,7 @@
 }, {
 	"name": "Meld into Stone",
 	"level": 3,
-	"school": "level transmutation ",
+	"type": "transmutation ",
 	"ritual": true,
 	"range": "Touch",
 	"components": "V, S",
@@ -2253,7 +2257,7 @@
 }, {
 	"name": "Mending",
 	"level": 0,
-	"school": "",
+	"type": "mutation cantrip",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S, M (two lodestones)",
@@ -2265,7 +2269,7 @@
 }, {
 	"name": "Message",
 	"level": 0,
-	"school": "",
+	"type": "mutation cantrip",
 	"ritual": false,
 	"range": "120 feet",
 	"components": "V, S, M (a short piece of copper wire)",
@@ -2277,7 +2281,7 @@
 }, {
 	"name": "Meteor Swarm",
 	"level": 9,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "1 mile",
 	"components": "V, S",
@@ -2289,7 +2293,7 @@
 }, {
 	"name": "Mind Blank",
 	"level": 8,
-	"school": "abjuration",
+	"type": "abjuration",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S",
@@ -2301,7 +2305,7 @@
 }, {
 	"name": "Minor Illusion",
 	"level": 0,
-	"school": "",
+	"type": "ion cantrip",
 	"ritual": false,
 	"range": "30 feet",
 	"components": "S, M (a bit of fleece)",
@@ -2313,7 +2317,7 @@
 }, {
 	"name": "Mirage Arcane",
 	"level": 7,
-	"school": "illusion",
+	"type": "illusion",
 	"ritual": false,
 	"range": "Sight",
 	"components": "V, S",
@@ -2325,7 +2329,7 @@
 }, {
 	"name": "Mirror Image",
 	"level": 2,
-	"school": "illusion",
+	"type": "illusion",
 	"ritual": false,
 	"range": "Self",
 	"components": "V, S",
@@ -2337,7 +2341,7 @@
 }, {
 	"name": "Mislead",
 	"level": 5,
-	"school": "illusion",
+	"type": "illusion",
 	"ritual": false,
 	"range": "Self",
 	"components": "S",
@@ -2349,7 +2353,7 @@
 }, {
 	"name": "Misty Step",
 	"level": 2,
-	"school": "conjuration",
+	"type": "conjuration",
 	"ritual": false,
 	"range": "Self",
 	"components": "V",
@@ -2361,7 +2365,7 @@
 }, {
 	"name": "Modify Memory",
 	"level": 5,
-	"school": "enchantment",
+	"type": "enchantment",
 	"ritual": false,
 	"range": "30 feet",
 	"components": "V, S",
@@ -2373,7 +2377,7 @@
 }, {
 	"name": "Moonbeam",
 	"level": 2,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "120 feet",
 	"components": "V, S, M (several seeds of any moonseed plant and a piece of opalescent feldspar)",
@@ -2385,7 +2389,7 @@
 }, {
 	"name": "Move Earth",
 	"level": 6,
-	"school": "transmutation",
+	"type": "transmutation",
 	"ritual": false,
 	"range": "120 feet",
 	"components": "V, S, M (an iron blade and a small bag containing a mixture of soils—clay, loam, and sand)",
@@ -2397,7 +2401,7 @@
 }, {
 	"name": "Nondetection",
 	"level": 3,
-	"school": "abjuration",
+	"type": "abjuration",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S, M (a pinch of diamond dust worth 25 gp sprinkled over the target, which the spell consumes)",
@@ -2409,7 +2413,7 @@
 }, {
 	"name": "Pass without Trace",
 	"level": 2,
-	"school": "abjuration",
+	"type": "abjuration",
 	"ritual": false,
 	"range": "Self",
 	"components": "V, S, M (ashes from a burned leaf of mistletoe and a sprig of spruce)",
@@ -2421,7 +2425,7 @@
 }, {
 	"name": "Passwall",
 	"level": 5,
-	"school": "transmutation",
+	"type": "transmutation",
 	"ritual": false,
 	"range": "30 feet",
 	"components": "V, S, M (a pinch of sesame seeds)",
@@ -2433,7 +2437,7 @@
 }, {
 	"name": "Phantasmal Killer",
 	"level": 4,
-	"school": "illusion",
+	"type": "illusion",
 	"ritual": false,
 	"range": "120 feet",
 	"components": "V, S",
@@ -2445,7 +2449,7 @@
 }, {
 	"name": "Phantom Steed",
 	"level": 3,
-	"school": "level illusion ",
+	"type": "illusion ",
 	"ritual": true,
 	"range": "30 feet",
 	"components": "V, S",
@@ -2457,7 +2461,7 @@
 }, {
 	"name": "Planar Ally",
 	"level": 6,
-	"school": "conjuration",
+	"type": "conjuration",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V, S",
@@ -2469,7 +2473,7 @@
 }, {
 	"name": "Planar Binding",
 	"level": 5,
-	"school": "abjuration",
+	"type": "abjuration",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V, S, M (a jewel worth at least 1,000 gp, which the spell consumes)",
@@ -2481,7 +2485,7 @@
 }, {
 	"name": "Plane Shift",
 	"level": 7,
-	"school": "conjuration",
+	"type": "conjuration",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S, M (a forked, metal rod worth at least 250 gp, attuned to a particular plane of existence)",
@@ -2493,7 +2497,7 @@
 }, {
 	"name": "Plant Growth",
 	"level": 3,
-	"school": "transmutation",
+	"type": "transmutation",
 	"ritual": false,
 	"range": "150 feet",
 	"components": "V, S",
@@ -2505,7 +2509,7 @@
 }, {
 	"name": "Polymorph",
 	"level": 4,
-	"school": "transmutation",
+	"type": "transmutation",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V, S, M (a caterpillar cocoon)",
@@ -2517,7 +2521,7 @@
 }, {
 	"name": "Power Word Kill",
 	"level": 9,
-	"school": "enchantment",
+	"type": "enchantment",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V",
@@ -2529,7 +2533,7 @@
 }, {
 	"name": "Power Word Stun",
 	"level": 8,
-	"school": "enchantment",
+	"type": "enchantment",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V",
@@ -2541,7 +2545,7 @@
 }, {
 	"name": "Prayer of Healing",
 	"level": 2,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "30 feet",
 	"components": "V",
@@ -2553,7 +2557,7 @@
 }, {
 	"name": "Prestidigitation",
 	"level": 0,
-	"school": "",
+	"type": "mutation cantrip",
 	"ritual": false,
 	"range": "10 feet",
 	"components": "V, S",
@@ -2565,7 +2569,7 @@
 }, {
 	"name": "Prismatic Spray",
 	"level": 7,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "Self (60-foot cone)",
 	"components": "V, S",
@@ -2577,7 +2581,7 @@
 }, {
 	"name": "Prismatic Wall",
 	"level": 9,
-	"school": "abjuration",
+	"type": "abjuration",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V, S",
@@ -2589,7 +2593,7 @@
 }, {
 	"name": "Private Sanctum",
 	"level": 4,
-	"school": "abjuration",
+	"type": "abjuration",
 	"ritual": false,
 	"range": "120 feet",
 	"components": "V, S, M (a thin sheet of lead, a piece of opaque glass, a wad of cotton or cloth, and powdered chrysolite)",
@@ -2601,7 +2605,7 @@
 }, {
 	"name": "Produce Flame",
 	"level": 0,
-	"school": "",
+	"type": "ration cantrip",
 	"ritual": false,
 	"range": "Self",
 	"components": "V, S",
@@ -2613,7 +2617,7 @@
 }, {
 	"name": "Programmed Illusion",
 	"level": 6,
-	"school": "illusion",
+	"type": "illusion",
 	"ritual": false,
 	"range": "120 feet",
 	"components": "V, S, M (a bit of fleece and jade dust worth at least 25 gp)",
@@ -2625,7 +2629,7 @@
 }, {
 	"name": "Project Image",
 	"level": 7,
-	"school": "illusion",
+	"type": "illusion",
 	"ritual": false,
 	"range": "500 miles",
 	"components": "V, S, M (a small replica of you made from materials worth at least 5 gp)",
@@ -2637,7 +2641,7 @@
 }, {
 	"name": "Protection from Energy",
 	"level": 3,
-	"school": "abjuration",
+	"type": "abjuration",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S",
@@ -2649,7 +2653,7 @@
 }, {
 	"name": "Protection from Evil and Good",
 	"level": 1,
-	"school": "abjuration",
+	"type": "abjuration",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S, M (holy water or powdered silver and iron, which the spell consumes)",
@@ -2661,7 +2665,7 @@
 }, {
 	"name": "Protection from Poison",
 	"level": 2,
-	"school": "abjuration",
+	"type": "abjuration",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S",
@@ -2673,7 +2677,7 @@
 }, {
 	"name": "Purify Food and Drink",
 	"level": 1,
-	"school": "level transmutation ",
+	"type": "transmutation ",
 	"ritual": true,
 	"range": "10 feet",
 	"components": "V, S",
@@ -2685,7 +2689,7 @@
 }, {
 	"name": "Raise Dead",
 	"level": 5,
-	"school": "necromancy",
+	"type": "necromancy",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S, M (a diamond worth at least 500 gp, which the spell consumes)",
@@ -2697,7 +2701,7 @@
 }, {
 	"name": "Ray of Enfeeblement",
 	"level": 2,
-	"school": "necromancy",
+	"type": "necromancy",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V, S",
@@ -2709,7 +2713,7 @@
 }, {
 	"name": "Ray of Frost",
 	"level": 0,
-	"school": "",
+	"type": "tion cantrip",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V, S",
@@ -2721,7 +2725,7 @@
 }, {
 	"name": "Regenerate",
 	"level": 7,
-	"school": "transmutation",
+	"type": "transmutation",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S, M (a prayer wheel and holy water)",
@@ -2733,18 +2737,19 @@
 }, {
 	"name": "Reincarnate",
 	"level": 5,
-	"school": "transmutation",
+	"type": "transmutation",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S, M (rare oils and unguents worth at least 1,000 gp, which the spell consumes)",
 	"Verbal": true,
 	"somatic": true,
 	"material": true,
-	"duration": "Instantaneous"
+	"duration": "Instantaneous",
+	"text": "<p>You touch a dead humanoid or a piece of a dead humanoid. Provided that the creature has been dead no longer than 10 days, the spell forms a new adult body for it and then calls the soul to enter that body.<p>If the target’s soul isn’t free or willing to do so, the spell fails.<p>The magic fashions a new body for the creature to inhabit, which likely causes the creature’s race to change. The GM rolls a d100 and consults the following table to determine what form the creature takes when restored to life, or the GM chooses a form.<p>d100<p>Race<p><p>01–04<p>Dragonborn<p><p>05–13<p>Dwarf, hill<p><p>14–21<p>Dwarf, mountain<p><p>22–25<p>Elf, dark<p><p>26–34<p>Elf, high<p><p>35–42<p>Elf, wood<p><p>43–46<p>Gnome, forest<p><p>47–52<p>Gnome, rock<p><p>53–56<p>Half-elf<p><p>57–60<p>Half-orc<p><p>61–68<p>Halfling, lightfoot<p><p>69–76<p>Halfling, stout<p><p>77–96<p>Human<p><p>97–00<p>Tiefling<p><p>The reincarnated creature recalls its former life and experiences. It retains the capabilities it had in its original form, except it exchanges its original race for the new one and changes its racial traits accordingly."
 }, {
 	"name": "Remove Curse",
 	"level": 3,
-	"school": "abjuration",
+	"type": "abjuration",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S",
@@ -2756,7 +2761,7 @@
 }, {
 	"name": "Resilient Sphere",
 	"level": 4,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "30 feet",
 	"components": "V, S, M (a hemispherical piece of clear crystal and a matching hemispherical piece of gum arabic)",
@@ -2768,7 +2773,7 @@
 }, {
 	"name": "Resistance",
 	"level": 0,
-	"school": "",
+	"type": "ation cantrip",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S, M (a miniature cloak)",
@@ -2780,7 +2785,7 @@
 }, {
 	"name": "Resurrection",
 	"level": 7,
-	"school": "necromancy",
+	"type": "necromancy",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S, M (a diamond worth at least 1,000 gp, which the spell consumes)",
@@ -2792,7 +2797,7 @@
 }, {
 	"name": "Reverse Gravity",
 	"level": 7,
-	"school": "transmutation",
+	"type": "transmutation",
 	"ritual": false,
 	"range": "100 feet",
 	"components": "V, S, M (a lodestone and iron filings)",
@@ -2804,7 +2809,7 @@
 }, {
 	"name": "Revivify",
 	"level": 3,
-	"school": "necromancy",
+	"type": "necromancy",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S, M (diamonds worth 300 gp, which the spell consumes)",
@@ -2816,7 +2821,7 @@
 }, {
 	"name": "Rope Trick",
 	"level": 2,
-	"school": "transmutation",
+	"type": "transmutation",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S, M (powdered corn extract and a twisted loop of parchment)",
@@ -2828,7 +2833,7 @@
 }, {
 	"name": "Sacred Flame",
 	"level": 0,
-	"school": "",
+	"type": "tion cantrip",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V, S",
@@ -2840,7 +2845,7 @@
 }, {
 	"name": "Sanctuary",
 	"level": 1,
-	"school": "abjuration",
+	"type": "abjuration",
 	"ritual": false,
 	"range": "30 feet",
 	"components": "V, S, M (a small silver mirror)",
@@ -2852,7 +2857,7 @@
 }, {
 	"name": "Scorching Ray",
 	"level": 2,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "120 feet",
 	"components": "V, S",
@@ -2864,18 +2869,19 @@
 }, {
 	"name": "Scrying",
 	"level": 5,
-	"school": "divination",
+	"type": "divination",
 	"ritual": false,
 	"range": "Self",
 	"components": "V, S, M (a focus worth at least 1,000 gp, such as a crystal ball, a silver mirror, or a font filled with holy water)",
 	"Verbal": true,
 	"somatic": true,
 	"material": true,
-	"duration": "Concentration, up to 10 minutes"
+	"duration": "Concentration, up to 10 minutes",
+	"text": "<p>You can see and hear a particular creature you choose that is on the same plane of existence as you. The target must make a Wisdom saving throw, which is modified by how well you know the target and the sort of physical connection you have to it. If a target knows you’re casting this spell, it can fail the saving throw voluntarily if it wants to be observed.<p>Knowledge<p>Save Modifier<p><p>Secondhand<p>(you have heard of the target)<p>+5<p><p>Firsthand (you have met the target)<p>+0<p><p>Familiar (you<p>know the target well)<p>-5<p><p>Connection<p><p>Save Modifier<p><p>Likeness or<p>picture<p>-2<p><p>Possession or garment<p>-4<p><p>Body part, lock of hair, bit of nail, or the like<p>-10<p><p>On a successful save, the target isn’t affected, and you can’t use this spell against it again for 24 hours.<p>On a failed save, the spell creates an invisible sensor within 10 feet of the target. You can see and hear through the sensor as if you were there. The sensor moves with the target, remaining within 10 feet of it for the duration. A creature that can see invisible objects sees the sensor as a luminous orb about the size of your fist.<p>Instead of targeting a creature, you can choose a location you have seen before as the target of this<p>spell. When you do, the sensor appears at that location and doesn’t move."
 }, {
 	"name": "Secret Chest",
 	"level": 4,
-	"school": "conjuration",
+	"type": "conjuration",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S, M (an exquisite chest, 3 feet by 2 feet by 2 feet, constructed from rare materials worth at least 5,000 gp, and a Tiny replica made from the same materials worth at least 50 gp)",
@@ -2887,7 +2893,7 @@
 }, {
 	"name": "See Invisibility",
 	"level": 2,
-	"school": "divination",
+	"type": "divination",
 	"ritual": false,
 	"range": "Self",
 	"components": "V, S, M (a pinch of talc and a small sprinkling of powdered silver)",
@@ -2899,7 +2905,7 @@
 }, {
 	"name": "Seeming",
 	"level": 5,
-	"school": "illusion",
+	"type": "illusion",
 	"ritual": false,
 	"range": "30 feet",
 	"components": "V, S",
@@ -2911,7 +2917,7 @@
 }, {
 	"name": "Sending",
 	"level": 3,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "Unlimited",
 	"components": "V, S, M (a short piece of fine copper wire)",
@@ -2923,7 +2929,7 @@
 }, {
 	"name": "Sequester",
 	"level": 7,
-	"school": "transmutation",
+	"type": "transmutation",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S, M (a powder composed of diamond, emerald, ruby, and sapphire dust worth at least 5,000 gp, which the spell consumes)",
@@ -2935,7 +2941,7 @@
 }, {
 	"name": "Shapechange",
 	"level": 9,
-	"school": "transmutation",
+	"type": "transmutation",
 	"ritual": false,
 	"range": "Self",
 	"components": "V, S, M (a jade circlet worth at least 1,500 gp, which you must place on your head before you cast the spell)",
@@ -2947,7 +2953,7 @@
 }, {
 	"name": "Shatter",
 	"level": 2,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V, S, M (a chip of mica)",
@@ -2959,7 +2965,7 @@
 }, {
 	"name": "Shield",
 	"level": 1,
-	"school": "abjuration",
+	"type": "abjuration",
 	"ritual": false,
 	"range": "Self",
 	"components": "V, S",
@@ -2971,7 +2977,7 @@
 }, {
 	"name": "Shield of Faith",
 	"level": 1,
-	"school": "abjuration",
+	"type": "abjuration",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V, S, M (a small parchment with a bit of holy text written on it)",
@@ -2983,7 +2989,7 @@
 }, {
 	"name": "Shillelagh",
 	"level": 0,
-	"school": "",
+	"type": "mutation cantrip",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S, M (mistletoe, a shamrock leaf, and a club or quarterstaff)",
@@ -2995,7 +3001,7 @@
 }, {
 	"name": "Shocking Grasp",
 	"level": 0,
-	"school": "",
+	"type": "tion cantrip",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S",
@@ -3007,7 +3013,7 @@
 }, {
 	"name": "Silence",
 	"level": 2,
-	"school": "level illusion ",
+	"type": "illusion ",
 	"ritual": true,
 	"range": "120 feet",
 	"components": "V, S",
@@ -3019,7 +3025,7 @@
 }, {
 	"name": "Silent Image",
 	"level": 1,
-	"school": "illusion",
+	"type": "illusion",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V, S, M (a bit of fleece)",
@@ -3031,7 +3037,7 @@
 }, {
 	"name": "Simulacrum",
 	"level": 7,
-	"school": "illusion",
+	"type": "illusion",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S, M (snow or ice in quantities sufficient to made a life -size copy of the duplicated creature; some hair, fingernail clippings, or other piece of that creature’s body placed inside the snow or ice; and powdered ruby worth 1,500 gp, sprinkled over the duplicate and consumed by the spell)",
@@ -3043,7 +3049,7 @@
 }, {
 	"name": "Sleep",
 	"level": 1,
-	"school": "enchantment",
+	"type": "enchantment",
 	"ritual": false,
 	"range": "90 feet",
 	"components": "V, S, M (a pinch of fine sand, rose petals, or a cricket)",
@@ -3055,7 +3061,7 @@
 }, {
 	"name": "Sleet Storm",
 	"level": 3,
-	"school": "conjuration",
+	"type": "conjuration",
 	"ritual": false,
 	"range": "150 feet",
 	"components": "V, S, M (a pinch of dust and a few drops of water)",
@@ -3067,7 +3073,7 @@
 }, {
 	"name": "Slow",
 	"level": 3,
-	"school": "transmutation",
+	"type": "transmutation",
 	"ritual": false,
 	"range": "120 feet",
 	"components": "V, S, M (a drop of molasses)",
@@ -3079,7 +3085,7 @@
 }, {
 	"name": "Speak with Animals",
 	"level": 1,
-	"school": "level divination ",
+	"type": "divination ",
 	"ritual": true,
 	"range": "Self",
 	"components": "V, S",
@@ -3091,7 +3097,7 @@
 }, {
 	"name": "Speak with Dead",
 	"level": 3,
-	"school": "necromancy",
+	"type": "necromancy",
 	"ritual": false,
 	"range": "10 feet",
 	"components": "V, S, M (burning incense)",
@@ -3103,7 +3109,7 @@
 }, {
 	"name": "Speak with Plants",
 	"level": 3,
-	"school": "transmutation",
+	"type": "transmutation",
 	"ritual": false,
 	"range": "Self (30-foot radius)",
 	"components": "V, S",
@@ -3115,7 +3121,7 @@
 }, {
 	"name": "Spider Climb",
 	"level": 2,
-	"school": "transmutation",
+	"type": "transmutation",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S, M (a drop of bitumen and a spider)",
@@ -3127,7 +3133,7 @@
 }, {
 	"name": "Spike Growth",
 	"level": 2,
-	"school": "transmutation",
+	"type": "transmutation",
 	"ritual": false,
 	"range": "150 feet",
 	"components": "V, S, M (seven sharp thorns or seven small twigs, each sharpened to a point)",
@@ -3139,7 +3145,7 @@
 }, {
 	"name": "Spirit Guardians",
 	"level": 3,
-	"school": "conjuration",
+	"type": "conjuration",
 	"ritual": false,
 	"range": "Self (15-foot radius)",
 	"components": "V, S, M (a holy symbol)",
@@ -3151,7 +3157,7 @@
 }, {
 	"name": "Spiritual Weapon",
 	"level": 2,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V, S",
@@ -3163,7 +3169,7 @@
 }, {
 	"name": "Stinking Cloud",
 	"level": 3,
-	"school": "conjuration",
+	"type": "conjuration",
 	"ritual": false,
 	"range": "90 feet",
 	"components": "V, S, M (a rotten egg or several skunk cabbage leaves)",
@@ -3175,7 +3181,7 @@
 }, {
 	"name": "Stone Shape",
 	"level": 4,
-	"school": "transmutation",
+	"type": "transmutation",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S, M (soft clay, which must be worked into roughly the desired shape of the stone object)",
@@ -3187,7 +3193,7 @@
 }, {
 	"name": "Stoneskin",
 	"level": 4,
-	"school": "abjuration",
+	"type": "abjuration",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S, M (diamond dust worth 100 gp, which the spell consumes)",
@@ -3199,7 +3205,7 @@
 }, {
 	"name": "Storm of Vengeance",
 	"level": 9,
-	"school": "conjuration",
+	"type": "conjuration",
 	"ritual": false,
 	"range": "Sight",
 	"components": "V, S",
@@ -3211,7 +3217,7 @@
 }, {
 	"name": "Suggestion",
 	"level": 2,
-	"school": "enchantment",
+	"type": "enchantment",
 	"ritual": false,
 	"range": "30 feet",
 	"components": "V, M (a snake’s tongue and either a bit of honeycomb or a drop of sweet oil)",
@@ -3223,7 +3229,7 @@
 }, {
 	"name": "Sunbeam",
 	"level": 6,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "Self (60-foot line)",
 	"components": "V, S, M (a magnifying glass)",
@@ -3235,7 +3241,7 @@
 }, {
 	"name": "Sunburst",
 	"level": 8,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "150 feet",
 	"components": "V, S, M (fire and a piece of sunstone)",
@@ -3247,7 +3253,7 @@
 }, {
 	"name": "Symbol",
 	"level": 7,
-	"school": "abjuration",
+	"type": "abjuration",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S, M (mercury, phosphorus, and powdered diamond and opal with a total value of at least 1,000 gp, which the spell consumes)",
@@ -3259,7 +3265,7 @@
 }, {
 	"name": "Telekinesis",
 	"level": 5,
-	"school": "transmutation",
+	"type": "transmutation",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V, S",
@@ -3271,7 +3277,7 @@
 }, {
 	"name": "Telepathic Bond",
 	"level": 5,
-	"school": "level divination ",
+	"type": "divination ",
 	"ritual": true,
 	"range": "30 feet",
 	"components": "V, S, M (pieces of eggshell from two different kinds of creatures)",
@@ -3283,18 +3289,19 @@
 }, {
 	"name": "Teleport",
 	"level": 7,
-	"school": "conjuration",
+	"type": "conjuration",
 	"ritual": false,
 	"range": "10 feet",
 	"components": "V",
 	"Verbal": true,
 	"somatic": false,
 	"material": false,
-	"duration": "Instantaneous"
+	"duration": "Instantaneous",
+	"text": "<p>This spell instantly transports you and up to eight willing creatures of your choice that you can see within range, or a single object that you can see within range, to a destination you select. If you target an object, it must be able to fit entirely inside a 10-foot cube, and it can’t be held or carried by an unwilling creature.<p>The destination you choose must be known to you, and it must be on the same plane of existence as you. Your familiarity with the destination determines whether you arrive there successfully. The GM rolls d100 and consults the table.<p><p><p><p>Similar<p>Off<p>On<p><p>Familiarity<p>Mishap<p>Area<p>Target<p>Target<p><p>Permanent<p><p>—<p>—<p>—<p>01–100<p><p>circle<p><p><p><p><p><p><p>Associated<p><p>—<p>—<p>—<p>01–100<p><p>object<p><p><p><p><p><p>Very familiar<p><p>01–05<p>06–13<p>14–24<p>25–100<p><p>Seen casually<p><p>01–33<p>34–43<p>44–53<p>54–100<p><p>Viewed once<p><p>01–43<p>44–53<p>54–73<p>74–100<p><p>Description<p><p>01–43<p>44–53<p>54–73<p>74–100<p><p>False<p><p>01–50<p>51–100<p>—<p>—<p><p>destination<p><p><p><p><p><p><p><p>Familiarity. “Permanent circle” means a permanent teleportation circle whose sigil sequence you know. “Associated object” means that you possess an object taken from the desired destination within the last six months, such as a book from a wizard’s library, bed linen from a royal suite, or a chunk of marble from a lich’s secret tomb.<p>“Very familiar” is a place you have been very often, a place you have carefully studied, or a place you can see when you cast the spell. “Seen casually” is someplace you have seen more than once but with which you aren’t very familiar. “Viewed once” is a place you have seen once, possibly using magic. “Description” is a place whose location and appearance you know through someone else’s description, perhaps from a map.<p>“False destination” is a place that doesn’t exist. Perhaps you tried to scry an enemy’s sanctum but instead viewed an illusion, or you are attempting to teleport to a familiar location that no longer exists. On Target. You and your group (or the target<p>object) appear where you want to.<p>Off Target. You and your group (or the target object) appear a random distance away from the destination in a random direction. Distance off target is 1d10 × 1d10 percent of the distance that was to be traveled. For example, if you tried to travel 120 miles, landed off target, and rolled a 5 and 3 on the two d10s, then you would be off target by 15 percent, or 18 miles. The GM determines the direction off target randomly by rolling a d8 and designating 1 as north, 2 as northeast, 3 as east, and so on around the points of the compass. If you were teleporting to a coastal city and wound up 18 miles out at sea, you could be in trouble.<p>Similar Area. You and your group (or the target object) wind up in a different area that’s visually or thematically similar to the target area. If you are heading for your home laboratory, for example, you might wind up in another wizard’s laboratory or in an alchemical supply shop that has many of the same tools and implements as your laboratory. Generally, you appear in the closest similar place, but since the spell has no range limit, you could conceivably wind up anywhere on the plane.<p>Mishap. The spell’s unpredictable magic results in a difficult journey. Each teleporting creature (or the target object) takes 3d10 force damage, and the GM rerolls on the table to see where you wind up (multiple mishaps can occur, dealing damage each time)."
 }, {
 	"name": "Teleportation Circle",
 	"level": 5,
-	"school": "conjuration",
+	"type": "conjuration",
 	"ritual": false,
 	"range": "10 feet",
 	"components": "V, M (rare chalks and inks infused with precious gems with 50 gp, which the spell consumes)",
@@ -3306,7 +3313,7 @@
 }, {
 	"name": "Thaumaturgy",
 	"level": 0,
-	"school": "",
+	"type": "mutation cantrip",
 	"ritual": false,
 	"range": "30 feet",
 	"components": "V",
@@ -3318,7 +3325,7 @@
 }, {
 	"name": "Thunderwave",
 	"level": 1,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "Self (15-foot cube)",
 	"components": "V, S",
@@ -3330,7 +3337,7 @@
 }, {
 	"name": "Time Stop",
 	"level": 9,
-	"school": "transmutation",
+	"type": "transmutation",
 	"ritual": false,
 	"range": "Self",
 	"components": "V",
@@ -3342,7 +3349,7 @@
 }, {
 	"name": "Tiny Hut",
 	"level": 3,
-	"school": "level evocation ",
+	"type": "evocation ",
 	"ritual": true,
 	"range": "Self (10-foot-radius hemisphere)",
 	"components": "V, S, M (a small crystal bead)",
@@ -3354,7 +3361,7 @@
 }, {
 	"name": "Tongues",
 	"level": 3,
-	"school": "divination",
+	"type": "divination",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, M (a small clay model of a ziggurat)",
@@ -3366,7 +3373,7 @@
 }, {
 	"name": "Transport via Plants",
 	"level": 6,
-	"school": "conjuration",
+	"type": "conjuration",
 	"ritual": false,
 	"range": "10 feet",
 	"components": "V, S",
@@ -3378,7 +3385,7 @@
 }, {
 	"name": "Tree Stride",
 	"level": 5,
-	"school": "conjuration",
+	"type": "conjuration",
 	"ritual": false,
 	"range": "Self",
 	"components": "V, S",
@@ -3390,7 +3397,7 @@
 }, {
 	"name": "True Polymorph",
 	"level": 9,
-	"school": "transmutation",
+	"type": "transmutation",
 	"ritual": false,
 	"range": "30 feet",
 	"components": "V, S, M (a drop of mercury, a dollop of gum arabic, and a wisp of smoke)",
@@ -3402,7 +3409,7 @@
 }, {
 	"name": "True Resurrection",
 	"level": 9,
-	"school": "necromancy",
+	"type": "necromancy",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S, M (a sprinkle of holy water and diamonds worth at least 25,000 gp, which the spell consumes)",
@@ -3414,7 +3421,7 @@
 }, {
 	"name": "True Seeing",
 	"level": 6,
-	"school": "divination",
+	"type": "divination",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S, M (an ointment for the eyes that costs 25 gp; is made from mushroom powder, saffron, and fat; and is consumed by the spell)",
@@ -3426,7 +3433,7 @@
 }, {
 	"name": "True Strike",
 	"level": 0,
-	"school": "",
+	"type": "ation cantrip",
 	"ritual": false,
 	"range": "30 feet",
 	"components": "S",
@@ -3438,7 +3445,7 @@
 }, {
 	"name": "Unseen Servant",
 	"level": 1,
-	"school": "level conjuration ",
+	"type": "conjuration ",
 	"ritual": true,
 	"range": "60 feet",
 	"components": "V, S, M (a piece of string and a bit of wood)",
@@ -3450,7 +3457,7 @@
 }, {
 	"name": "Vampiric Touch",
 	"level": 3,
-	"school": "necromancy",
+	"type": "necromancy",
 	"ritual": false,
 	"range": "Self",
 	"components": "V, S",
@@ -3462,7 +3469,7 @@
 }, {
 	"name": "Wall of Fire",
 	"level": 4,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "120 feet",
 	"components": "V, S, M (a small piece of phosphorus)",
@@ -3474,7 +3481,7 @@
 }, {
 	"name": "Wall of Force",
 	"level": 5,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "120 feet",
 	"components": "V, S, M (a pinch of powder made by crushing a clear gemstone)",
@@ -3486,7 +3493,7 @@
 }, {
 	"name": "Wall of Ice",
 	"level": 6,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "120 feet",
 	"components": "V, S, M (a small piece of quartz)",
@@ -3498,7 +3505,7 @@
 }, {
 	"name": "Wall of Stone",
 	"level": 5,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "120 feet",
 	"components": "V, S, M (a small block of granite)",
@@ -3510,7 +3517,7 @@
 }, {
 	"name": "Wall of Thorns",
 	"level": 6,
-	"school": "conjuration",
+	"type": "conjuration",
 	"ritual": false,
 	"range": "120 feet",
 	"components": "V, S, M (a handful of thorns)",
@@ -3522,7 +3529,7 @@
 }, {
 	"name": "Warding Bond",
 	"level": 2,
-	"school": "abjuration",
+	"type": "abjuration",
 	"ritual": false,
 	"range": "Touch",
 	"components": "V, S, M (a pair of platinum rings worth at least 50 gp each, which you and the target must wear for the duration)",
@@ -3534,7 +3541,7 @@
 }, {
 	"name": "Water Breathing",
 	"level": 3,
-	"school": "level transmutation ",
+	"type": "transmutation ",
 	"ritual": true,
 	"range": "30 feet",
 	"components": "V, S, M (a short reed or piece of straw)",
@@ -3546,7 +3553,7 @@
 }, {
 	"name": "Water Walk",
 	"level": 3,
-	"school": "level transmutation ",
+	"type": "transmutation ",
 	"ritual": true,
 	"range": "30 feet",
 	"components": "V, S, M (a piece of cork)",
@@ -3558,7 +3565,7 @@
 }, {
 	"name": "Web",
 	"level": 2,
-	"school": "conjuration",
+	"type": "conjuration",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V, S, M (a bit of spiderweb)",
@@ -3570,7 +3577,7 @@
 }, {
 	"name": "Weird",
 	"level": 9,
-	"school": "illusion",
+	"type": "illusion",
 	"ritual": false,
 	"range": "120 feet",
 	"components": "V, S",
@@ -3582,7 +3589,7 @@
 }, {
 	"name": "Wind Walk",
 	"level": 6,
-	"school": "transmutation",
+	"type": "transmutation",
 	"ritual": false,
 	"range": "30 feet",
 	"components": "V, S, M (fire and holy water)",
@@ -3594,7 +3601,7 @@
 }, {
 	"name": "Wind Wall",
 	"level": 3,
-	"school": "evocation",
+	"type": "evocation",
 	"ritual": false,
 	"range": "120 feet",
 	"components": "V, S, M (a tiny fan and a feather of exotic origin)",
@@ -3606,7 +3613,7 @@
 }, {
 	"name": "Wish",
 	"level": 9,
-	"school": "conjuration",
+	"type": "conjuration",
 	"ritual": false,
 	"range": "Self",
 	"components": "V",
@@ -3618,7 +3625,7 @@
 }, {
 	"name": "Word of Recall",
 	"level": 6,
-	"school": "conjuration",
+	"type": "conjuration",
 	"ritual": false,
 	"range": "5 feet",
 	"components": "V",
@@ -3630,7 +3637,7 @@
 }, {
 	"name": "Zone of Truth",
 	"level": 2,
-	"school": "enchantment",
+	"type": "enchantment",
 	"ritual": false,
 	"range": "60 feet",
 	"components": "V, S",
