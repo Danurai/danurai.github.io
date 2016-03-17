@@ -13,10 +13,15 @@
 
 	<!-- Latest compiled JavaScript -->
 	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	
 	 <!-- TAFFY DB -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/taffydb/2.7.2/taffy.js"></script>
 	
+	<!-- saved scripts -->
+	<script src="/js/MEDB.cardfilter.js?6.3.15"></script>
+	
 	<script>
+<!-- Regex Testing -->
 		$( document ).ready( function()	{
 			$("#tsttxt").keyup( function() {
 				tstparse();
@@ -36,92 +41,23 @@
 				}
 				$("#tstresult").html(outp);
 			};
-	
-		//Example = {deckcode:"p",typecode:["he","ev"],spherecode:"lo"};
 			$("#qrytxt").keyup( function () {
-				filter = setFilter($(this).val());
+				MEDB.cardfilter.setFilter($(this).val());
+				//filter = setFilter($(this).val());
+				var JSONfilter = JSON.stringify(MEDB.cardfilter.getFilter());
+				$("#qryresult").html (JSONfilter);
+		//Example = {deckcode:"p",typecode:["he","ev"],spherecode:"lo"};
 			});
 
-			function setFilter(qrytxt) {			
-				var outp='';
-				var filter = {};
-				
-				conds = parray(qrytxt);
-				
-				for (var i=0; i<conds.length; i++) {
-					c = conds[i];
-					outp +="<br>"
-					switch (c[0])	{
-						case ("s"):
-							outp+="setcode ";
-							if (c[1] == "!")	{
-								filter["setcode"] = {"!is":c[2]};
-								outp += "!=";
-							}
-							else
-							{
-								filter["setcode"] = {is:c[2]};
-								outp += "in";
-							}
-							break;
-						default:
-							outp+="cardname "
-							if (c[1] == "!")	{
-								filter["cardname"] = {"!likenocase":c[2]};
-								outp += " != ";
-							}
-							else
-							{
-								filter["cardname"] = {likenocase:c[2]};
-								outp += " in ";
-							}
-					}
-					
-					for (var j=0;j<c[2].length;j++) {
-						outp += c[2][j] + "-";
-					}
-				}
-				$("#qryresult").html(outp);
-				return (filter);
-			}
 			
-			function parray(qry)	{
-				var parsed = [];
-				var cond = null;
-				var index = 1;
-				while (qry != '')	{
-					if (index==1) {cond=null};
-				// Strip leading space
-					if (qry.match(/(^ )(.*)/)) {qry = RegExp.$2;}
-					
-					if (qry.match(/(^[a-zA-Z][:!<>])(.*)/) ) {					// Matches letter a-z or A-Z and condition : ! < >
-						cond=[RegExp.$1[0],RegExp.$1[1],[]]
-						index = 3;
-						qry = RegExp.$2;
-					} else {
-						if (qry.match(/(^\w+|^\"[\w\s]+\")(.*)/) )	{			//(^\w+|^\"[\w\s]+\")(.*) word otherstuff or "word and" otherstuff
-							qryvals = [];
-							while ( qry.match(/(^\w+|^\"[\w\s]+\")(.*)/) ) {
-								qryvals.push(RegExp.$1);
-								qry = RegExp.$2;
-								// strip "|" OR
-								if (qry.match(/(^\|)(.*)/)) {qry = RegExp.$2;}
-							}
-							if (index==1) 
-								{ cond=["cardname",":"]; }
-							cond[2] = qryvals;
-							index = 1;
-						} else {qry="";index=4;}
-					}
-					if (index == 1) {parsed.push(cond);}
-				}
-				return(parsed);
-			}
-			
-			
-			
-			
-			var cards = TAFFY([{code:"01001",qty:1},{code:"01002",qty:2}]);
+<!-- Deckbuilder Code -->			
+		// Load core set
+			var cardset;
+			$.get("/data/medb_test_data.txt", function(data, status) {
+				console.log(status);
+				cardset = TAFFY(data);
+			});
+			var cards = TAFFY();	<!--[{code:"01001",qty:1},{code:"01002",qty:2}]-->
 			
 			$("input[type=radio]").on("change", function (){
 				var outp;
@@ -152,27 +88,20 @@
 			});
 			
 			function writeCards()	{
-				var outp = '';
+				var outp = "<div>" + cards().stringify() + "</div>";
 				cards().each( function(record) {
 					outp += "<div>" + record["code"] + " x " + record["qty"] + "</div>";
 				});
 				$("#buildresults").html (outp);
 			}
 			
-			function checkOptions() {		
-				var check;
-				$("#collection input[type=radio]").each(function(i,e){
-					check += "<div>" + e.name + ' ' + e.value + ' checked: ' +  $(e).prop("checked") + "</div>";
-				});
-				$("#buildresults").html (check);
-			}
 		});
 	</script>
 </head>
 <body>
 	<div class="container">
 		<div class="row" style="padding-bottom: 20px;">
-			<h4>deckbuild Testing</h4>
+			<h4>Deckbuild Testing</h4>
 			<div class="col-md-6" id="collection">
 				<table class="table table-condensed">
 					<thead>
@@ -184,10 +113,10 @@
 						<tr id="01001">
 							<td>
 								<div class="btn-group" data-toggle="buttons">
-									<label class="btn btn-xs btn-default">
+									<label class="btn btn-xs btn-default active">
 										<input type="radio" name="qty-01001" value="0">0
 									</label>
-									<label class="btn btn-xs btn-default active">
+									<label class="btn btn-xs btn-default">
 										<input type="radio" name="qty-01001" value="1">1
 									</label>
 									<label class="btn btn-xs btn-default">
@@ -199,18 +128,18 @@
 								</div>
 							</td>
 							<td>01001</td>
-							<td>Aragorn</td>
+							<td>A Hero</td>
 						</tr>
 						<tr name="01002">
 							<td>
 								<div class="btn-group" data-toggle="buttons">
-									<label class="btn btn-xs btn-default">
+									<label class="btn btn-xs btn-default active">
 										<input type="radio" name="qty-01002" value="0">0
 									</label>
 									<label class="btn btn-xs btn-default">
 										<input type="radio" name="qty-01002" value="1">1
 									</label>
-									<label class="btn btn-xs btn-default active">
+									<label class="btn btn-xs btn-default">
 										<input type="radio" name="qty-01002" value="2">2
 									</label>
 									<label class="btn btn-xs btn-default">
@@ -219,7 +148,7 @@
 								</div>
 							</td>
 							<td>01002</td>
-							<td>Somethign</td>
+							<td>Ancient Thing</td>
 						</tr>
 						<tr name="01003">
 							<td>
@@ -239,25 +168,25 @@
 								</div>
 							</td>
 							<td>01003</td>
-							<td>A Nother</td>
+							<td>BFF</td>
 						</tr>
 					<tbody>							
 				</table>
-				<button class="btn btn-default" id="checkvals">Check</button>
+				<button class="btn btn-default pull-right disabled" id="checkvals">Check</button>
 			</div>
-			<div class="col-md-6">
-				<div class="row" id="buildresults">
-				</div>
+			<div class="col-md-6" id="deck_results">
+				<b>Results</b>
+				<div class="row" id="buildresults"></div>
 			</div>
 		</div>
 		<div class="row">
 			<h4>Regex Testing</h4>
-			<div class="col-md-6">
+			<div class="col-md-6" id="parse_results">
 				<h4>Parse Results</h4>
 				<label>Find:</label><input type="text" class="form-control" id="qrytxt"></input>
 				<br><label id="qryresult"></label>
 			</div>
-			<div class="col-md-6">
+			<div class="col-md-6" id="test-regex">
 				<div class="Row">
 				<h4>Quick Check</h4>
 				<label>Text:</label><input type="text" class="form-control" id="tsttxt"></input>
