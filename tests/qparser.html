@@ -18,7 +18,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/taffydb/2.7.2/taffy.js"></script>
 	
 	<!-- saved scripts -->
-	<script src="/js/MEDB.cardfilter.js?6.3.15"></script>
+	<script src="js/MEDB.cardfilter.js?6.3.15"></script>
 	
 	<script>
 <!-- Regex Testing -->
@@ -53,7 +53,7 @@
 <!-- Deckbuilder Code -->			
 		// Load core set
 			var cardset;
-			$.get("/data/medb_test_data.txt", function(data, status) {
+			$.get("data/medb_test_data.txt", function(data, status) {
 				console.log(status);
 				cardset = TAFFY(data);
 			});
