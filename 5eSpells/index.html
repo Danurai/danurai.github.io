@@ -27,12 +27,11 @@
 			$.get("spells.txt", function(data, status) {
 				var outp = '';
 				var sp_data = TAFFY(data);
-				sp_data().order("level");
 				
 				container = $("#spellbody");
 				container.empty();
 				
-				sp_data().each( function(record, recordnumber) {
+				sp_data().order("level").each( function(record, recordnumber) {
 					row = buildrow(record);
 					container.append(row);
 				});
