@@ -22,7 +22,7 @@
 	<script src="http://cdnjs.cloudflare.com/ajax/libs/qtip2/2.1.1/jquery.qtip.js"></script>
 	
 	<!-- saved scripts -->
-	<script src="/js/MEDB.cardfilter.js?6.3.15"></script>
+	<script src="js/MEDB.cardfilter.js?6.3.15"></script>
 	
 	<script>
 <!-- Regex Testing -->
@@ -57,7 +57,7 @@
 <!-- Deckbuilder Code -->			
 		// Load core set
 			var cardset;
-			$.get("/data/medb_test_data.txt", function(data, status) {
+			$.get("data/medb_test_data.txt", function(data, status) {
 				console.log(status);
 				cardset = TAFFY(data);
 
@@ -68,8 +68,6 @@
 					row = buildrow(record);
 					tbody.append(row);
 				});
-				//bindQtip();
-
 			});
 			
 			var cards = TAFFY();	<!--e.g. [{code:"01001",qty:1},{code:"01002",qty:2}]-->
