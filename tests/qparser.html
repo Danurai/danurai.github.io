@@ -17,8 +17,12 @@
 	 <!-- TAFFY DB -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/taffydb/2.7.2/taffy.js"></script>
 	
+	<!-- jquery QTIPs -->
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/qtip2/2.1.1/jquery.qtip.css">
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/qtip2/2.1.1/jquery.qtip.js"></script>
+	
 	<!-- saved scripts -->
-	<script src="js/medb.cardfilter.js?6.3.17"></script>
+	<script src="/js/MEDB.cardfilter.js?6.3.15"></script>
 	
 	<script>
 <!-- Regex Testing -->
@@ -53,30 +57,86 @@
 <!-- Deckbuilder Code -->			
 		// Load core set
 			var cardset;
-			$.get("data/medb_test_data.txt", function(data, status) {
+			$.get("/data/medb_test_data.txt", function(data, status) {
 				console.log(status);
 				cardset = TAFFY(data);
+
+				var tbody = $("#cardtable");
+				tbody.empty();
+				
+				cardset().each( function(record) {
+					row = buildrow(record);
+					tbody.append(row);
+				});
+				//bindQtip();
+
 			});
-			var cards = TAFFY();	<!--[{code:"01001",qty:1},{code:"01002",qty:2}]-->
 			
-			$("input[type=radio]").on("change", function (){
+			var cards = TAFFY();	<!--e.g. [{code:"01001",qty:1},{code:"01002",qty:2}]-->
+						
+			function buildrow(record)	{
+				var outp = '<tr name="'+record.code+'">';
+				outp += '<td>';
+				outp += '<div class="btn-group" data-toggle="buttons">';
+				for (x=0; x<4; x++)	{
+					outp += '<label class="btn btn-xs btn-default';
+					outp += x==0 ? ' active' : '';
+					outp += '">';
+					outp += '<input type="radio" name="qty-'+record.code+'" value="' + x + '">' + x;
+					outp += '</label>';
+				}
+				outp += '</div>';
+				outp += '</td>';
+				outp += '<td>'+record.code+'</td>';
+				outp += '<td><a name="'+record.code+'">'+record.cardname+'</a></td>';
+				outp += '</tr>';
+				return outp;
+			}
+			
+			$("#cardtable").on("mouseenter","a", function() {
+				$(this).qtip({
+					overwrite: false,
+					show: {
+						ready: true
+					},
+					content: {
+						text: this.name
+					},
+					style: 'qtip-bootstrap'
+				});
+			});
+			/*
+			$("a").qtip({
+				content: {
+					text: $(this).name
+				},
+				style: 'qtip-bootstrap'
+			});
+			*/
+			
+			//$("input[type=radio]").on("change", function (){
+			$("#cardtable").on("change","input[type=radio]",function (){
 				var outp;
 				
 				if ($(this).prop("checked")) {
 					var cardcode = this.name.match(/[0-9]{5}/)[0];
 					var cardqty = parseInt(this.value, 10);;
 					var outp = "Card: " + cardcode + " x " + this.value;
-					//$("#buildresults").html (outp);
 					
-					//$cards.merge({key:"code","code":this.name.match(/[0-9]{5}/),"qty":this.value},true);
+					//$deckcards.merge({key:"code","code":this.name.match(/[0-9]{5}/),"qty":this.value},true);
 					
-					if (cardqty == 0)	{cards({"code":cardcode}).remove();}
+					if (cardqty == 0)	{
+						deckcards({"code":cardcode}).remove();
+					}
 					else {
-						if (cards({code:cardcode}).sum("qty") == 0)	{
-							cards.insert({code:cardcode,qty:this.value});
+						deckcards.merge({code:cardcode,qty:cardqty},"code",false);
+					/*
+						if (deckcards({code:cardcode}).sum("qty") == 0)	{
+							deckcards.insert({code:cardcode,qty:this.value});
 						} else {
-							cards({code:cardcode}).update({qty:cardqty});
+							deckcards({code:cardcode}).update({qty:cardqty});
 						}
+					*/
 					}
 					
 					writeCards();
@@ -88,8 +148,8 @@
 			});
 			
 			function writeCards()	{
-				var outp = "<div>" + cards().stringify() + "</div>";
-				cards().each( function(record) {
+				var outp = "<div>" + deckcards().stringify() + "</div>";
+				deckcards().each( function(record) {
 					outp += "<div>" + record["code"] + " x " + record["qty"] + "</div>";
 				});
 				$("#buildresults").html (outp);
@@ -109,7 +169,7 @@
 						<tr>code</tr>
 						<tr>name</tr>
 					</thead>
-					<tbody>
+					<tbody id="cardtable">
 						<tr id="01001">
 							<td>
 								<div class="btn-group" data-toggle="buttons">
@@ -128,7 +188,7 @@
 								</div>
 							</td>
 							<td>01001</td>
-							<td>A Hero</td>
+							<td><a>A Hero</a></td>
 						</tr>
 						<tr name="01002">
 							<td>
@@ -148,7 +208,7 @@
 								</div>
 							</td>
 							<td>01002</td>
-							<td>Ancient Thing</td>
+							<td><a>Ancient Thing</a></td>
 						</tr>
 						<tr name="01003">
 							<td>
@@ -168,7 +228,7 @@
 								</div>
 							</td>
 							<td>01003</td>
-							<td>BFF</td>
+							<td><a>BFF</a></td>
 						</tr>
 					<tbody>							
 				</table>
