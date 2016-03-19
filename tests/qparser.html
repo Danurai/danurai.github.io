@@ -76,7 +76,7 @@
 				var outp = '<tr name="'+record.code+'">';
 				outp += '<td>';
 				outp += '<div class="btn-group" data-toggle="buttons">';
-				for (x=0; x<4; x++)	{
+				for (x=0; x< (record.typecode=="he"?2:4); x++)	{
 					outp += '<label class="btn btn-xs btn-default';
 					outp += x==0 ? ' active' : '';
 					outp += '">';
@@ -91,7 +91,7 @@
 				return outp;
 			}
 			
-			$("#cardtable").on("mouseenter","a", function() {
+			$("body").on("mouseenter","a", function() {
 				var card=cardset({code:this.name}).first();
 				
 				$(this).qtip({
@@ -135,13 +135,6 @@
 					}
 					else {
 						deckcards.merge({code:cardcode,qty:cardqty},"code",false);
-					/*
-						if (deckcards({code:cardcode}).sum("qty") == 0)	{
-							deckcards.insert({code:cardcode,qty:this.value});
-						} else {
-							deckcards({code:cardcode}).update({qty:cardqty});
-						}
-					*/
 					}
 					
 					writeCards();
@@ -153,10 +146,17 @@
 			});
 			
 			function writeCards()	{
-				var outp = "<div>" + deckcards().stringify() + "</div>";
-				deckcards().each( function(record) {
-					outp += "<div>" + record["code"] + " x " + record["qty"] + "</div>";
+				var hOut = aOut = atOut = evOut = oOut = '';
+				var cData;
+				var outp = '';
+				deckcards().order("code").each( function(record) {
+					cData = cardset({code:record.code}).first();
+					outp += '<div>' + record.qty + ' x <a name="'+record.code+'">' + cData.cardname + '</a></div>';
+					//outp += "<div>" + record["code"] + " x " + record["qty"] + "</div>";
 				});
+				
+				
+				outp += "<div>" + deckcards().stringify() + "</div>";
 				$("#buildresults").html (outp);
 			}
 			
@@ -167,7 +167,7 @@
 	<div class="container">
 		<div class="row" style="padding-bottom: 20px;">
 			<h4>Deckbuild Testing</h4>
-			<div class="col-xs-6" id="collection">
+			<div class="col-sm-6" id="collection">
 				<table class="table table-condensed">
 					<thead>
 						<tr></tr>
@@ -175,83 +175,23 @@
 						<tr>name</tr>
 					</thead>
 					<tbody id="cardtable">
-						<tr id="01001">
-							<td>
-								<div class="btn-group" data-toggle="buttons">
-									<label class="btn btn-xs btn-default active">
-										<input type="radio" name="qty-01001" value="0">0
-									</label>
-									<label class="btn btn-xs btn-default">
-										<input type="radio" name="qty-01001" value="1">1
-									</label>
-									<label class="btn btn-xs btn-default">
-										<input type="radio" name="qty-01001" value="2">2
-									</label>
-									<label class="btn btn-xs btn-default">
-										<input type="radio" name="qty-01001" value="3">3
-									</label>
-								</div>
-							</td>
-							<td>01001</td>
-							<td><a>A Hero</a></td>
-						</tr>
-						<tr name="01002">
-							<td>
-								<div class="btn-group" data-toggle="buttons">
-									<label class="btn btn-xs btn-default active">
-										<input type="radio" name="qty-01002" value="0">0
-									</label>
-									<label class="btn btn-xs btn-default">
-										<input type="radio" name="qty-01002" value="1">1
-									</label>
-									<label class="btn btn-xs btn-default">
-										<input type="radio" name="qty-01002" value="2">2
-									</label>
-									<label class="btn btn-xs btn-default">
-										<input type="radio" name="qty-01002" value="3">3
-									</label>
-								</div>
-							</td>
-							<td>01002</td>
-							<td><a>Ancient Thing</a></td>
-						</tr>
-						<tr name="01003">
-							<td>
-								<div class="btn-group" data-toggle="buttons">
-									<label class="btn btn-xs btn-default active">
-										<input type="radio" name="qty-01003" value="0">0
-									</label>
-									<label class="btn btn-xs btn-default">
-										<input type="radio" name="qty-01003" value="1">1
-									</label>
-									<label class="btn btn-xs btn-default">
-										<input type="radio" name="qty-01003" value="2">2
-									</label>
-									<label class="btn btn-xs btn-default">
-										<input type="radio" name="qty-01003" value="3">3
-									</label>
-								</div>
-							</td>
-							<td>01003</td>
-							<td><a>BFF</a></td>
-						</tr>
 					</tbody>							
 				</table>
 				<button class="btn btn-default pull-right disabled" id="checkvals">Check</button>
 			</div>
-			<div class="col-xs-6" id="deck_results">
+			<div class="col-sm-6" id="deck_results">
 				<b>Results</b>
 				<div class="row" id="buildresults"></div>
 			</div>
 		</div>
 		<div class="row">
 			<h4>Regex Testing</h4>
-			<div class="col-xs-6" id="parse_results">
+			<div class="col-sm-6" id="parse_results">
 				<h4>Parse Results</h4>
 				<label>Find:</label><input type="text" class="form-control" id="qrytxt"></input>
 				<br><label id="qryresult"></label>
 			</div>
-			<div class="col-xs-6" id="test-regex">
+			<div class="col-sm-6" id="test-regex">
 				<div class="Row">
 				<h4>Quick Check</h4>
 				<label>Text:</label><input type="text" class="form-control" id="tsttxt"></input>

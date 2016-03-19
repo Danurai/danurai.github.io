@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+	<!DOCTYPE html>
 <html lang="en">
 <head>
 	<title>D&amp;D 5e Spell List</title>
@@ -24,18 +24,28 @@
 	<script>
 	<!-- TODO export to .js file -->
 		$( document ).ready( function() {
+			var sp_data;
+			var filter_all = {};
+			var filter = {};
+			
 			$.get("spells.txt", function(data, status) {
-				var outp = '';
-				var sp_data = TAFFY(data);
-				
+				sp_data = TAFFY(data);
+				filterTable();
+			});
+			
+			function filterTable() {
 				container = $("#spellbody");
 				container.empty();
+				filter_all = {};
 				
-				sp_data().order("level","name").each( function(record, recordnumber) {
+				$.each( filter,function (i,v) {
+					if (v.length > 0) { filter_all[i]=v; } 
+				});
+				sp_data(filter_all).order("level","name").each( function(record, recordnumber) {
 					row = buildrow(record);
 					container.append(row);
 				});
-			});
+			}
 			
 			function buildrow(record)	{
 				var outr = "<tr>";
@@ -54,6 +64,28 @@
 				outr += "</tr>";
 				return (outr);			
 			};
+			
+			$("#lvl").on("change","input[type=checkbox]",function() {
+				var lvl = [];
+				$("#lvl input[type=checkbox]").each(function() {
+					if ( $(this).prop("checked") )	{
+						lvl.push(parseInt(this.name,10));
+					}
+				});
+				filter["level"] = lvl;
+				filterTable();
+			});
+			$("#school").on("change","input[type=checkbox]",function() {
+				var school = [];
+				$("#school input[type=checkbox]").each(function() {
+					if ( $(this).prop("checked") )	{
+						school.push(this.name);
+					}
+				});
+				filter["school"] = school;
+				filterTable();
+			});
+			
 		});
 	</script>
 </head>
@@ -104,7 +136,33 @@
 				</div>
 			</div>
 		</div>
-		<br>Filters: Class, Level, School
+		<br>TODO: Add Spell\class data. Add Filters: Class. Modal Details
+		<div name="lvl" id="lvl">Level&nbsp;
+			<div class="btn-group" data-toggle="buttons">
+				<label class="btn btn-xs btn-default"><input type="checkbox" name="0" value="0">0</label>
+				<label class="btn btn-xs btn-default"><input type="checkbox" name="1" value="1">1</label>
+				<label class="btn btn-xs btn-default"><input type="checkbox" name="2" value="2">2</label>
+				<label class="btn btn-xs btn-default"><input type="checkbox" name="3" value="3">3</label>
+				<label class="btn btn-xs btn-default"><input type="checkbox" name="4" value="4">4</label>
+				<label class="btn btn-xs btn-default"><input type="checkbox" name="5" value="5">5</label>
+				<label class="btn btn-xs btn-default"><input type="checkbox" name="6" value="6">6</label>
+				<label class="btn btn-xs btn-default"><input type="checkbox" name="7" value="7">7</label>
+				<label class="btn btn-xs btn-default"><input type="checkbox" name="8" value="8">8</label>
+				<label class="btn btn-xs btn-default"><input type="checkbox" name="9" value="9">9</label>
+			</div>
+		</div>
+		<div id="school">School
+			<div class="btn-group" data-toggle="buttons">
+				<label class="btn btn-xs btn-default"><input type="checkbox" name="abjuration" value="">abjuration</label>
+				<label class="btn btn-xs btn-default"><input type="checkbox" name="conjuration" value="">conjuration</label>
+				<label class="btn btn-xs btn-default"><input type="checkbox" name="divination" value="">divination</label>
+				<label class="btn btn-xs btn-default"><input type="checkbox" name="enchantment" value="">enchantment</label>
+				<label class="btn btn-xs btn-default"><input type="checkbox" name="evocation" value="">evocation</label>
+				<label class="btn btn-xs btn-default"><input type="checkbox" name="illusion" value="">illusion</label>
+				<label class="btn btn-xs btn-default"><input type="checkbox" name="necromancy" value="">necromancy</label>
+				<label class="btn btn-xs btn-default"><input type="checkbox" name="transmutation" value="">transmutation</label>
+			</div>
+		</div>
 		<table class="table table-striped table-hover table-condensed">
 			<thead>
 				<tr>
