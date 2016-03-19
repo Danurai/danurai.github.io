@@ -92,14 +92,20 @@
 			}
 			
 			$("#cardtable").on("mouseenter","a", function() {
-				var card=cardset({code:this.name});
+				var card=cardset({code:this.name}).first();
+				
 				$(this).qtip({
 					overwrite: false,
 					show: {
 						ready: true
 					},
 					content: {
-						text: this.name
+						text: '<h4>' 
+							+ (card.unique ? '&bull;&nbsp;' : '')
+							+ card.cardname + '</h4>'
+							+ (card.traits != '' ? '<p class="text-center"><b><em>' + card.traits + '</em></b>': '')
+							+ (card.abilities != '' ? '<p>' + card.abilities : '')
+							+ '<p>' + card.cardtext
 					},
 					style: 'qtip-bootstrap'
 				});
