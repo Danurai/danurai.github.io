@@ -99,7 +99,7 @@
 						ready: true
 					},
 					content: {
-						text: card.cardname
+						text: this.name
 					},
 					style: 'qtip-bootstrap'
 				});
@@ -161,7 +161,7 @@
 	<div class="container">
 		<div class="row" style="padding-bottom: 20px;">
 			<h4>Deckbuild Testing</h4>
-			<div class="col-md-6" id="collection">
+			<div class="col-xs-6" id="collection">
 				<table class="table table-condensed">
 					<thead>
 						<tr></tr>
@@ -229,23 +229,23 @@
 							<td>01003</td>
 							<td><a>BFF</a></td>
 						</tr>
-					<tbody>							
+					</tbody>							
 				</table>
 				<button class="btn btn-default pull-right disabled" id="checkvals">Check</button>
 			</div>
-			<div class="col-md-6" id="deck_results">
+			<div class="col-xs-6" id="deck_results">
 				<b>Results</b>
 				<div class="row" id="buildresults"></div>
 			</div>
 		</div>
 		<div class="row">
 			<h4>Regex Testing</h4>
-			<div class="col-md-6" id="parse_results">
+			<div class="col-xs-6" id="parse_results">
 				<h4>Parse Results</h4>
 				<label>Find:</label><input type="text" class="form-control" id="qrytxt"></input>
 				<br><label id="qryresult"></label>
 			</div>
-			<div class="col-md-6" id="test-regex">
+			<div class="col-xs-6" id="test-regex">
 				<div class="Row">
 				<h4>Quick Check</h4>
 				<label>Text:</label><input type="text" class="form-control" id="tsttxt"></input>
