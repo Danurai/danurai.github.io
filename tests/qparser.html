@@ -85,7 +85,6 @@
 				}
 				outp += '</div>';
 				outp += '</td>';
-				outp += '<td>'+record.code+'</td>';
 				outp += '<td><a name="'+record.code+'">'+record.cardname+'</a></td>';
 				outp += '</tr>';
 				return outp;
@@ -170,9 +169,10 @@
 			<div class="col-sm-6" id="collection">
 				<table class="table table-condensed">
 					<thead>
-						<tr></tr>
-						<tr>code</tr>
-						<tr>name</tr>
+						<tr>
+							<th>Qty</th>
+							<th>Card</th>
+						</tr>
 					</thead>
 					<tbody id="cardtable">
 					</tbody>							
