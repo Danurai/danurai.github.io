@@ -150,7 +150,7 @@
 				var outp = '';
 				deckcards().order("code").each( function(record) {
 					cData = cardset({code:record.code}).first();
-					outp += '<div>' + record.qty + ' x <a name="'+record.code+'">' + cData.cardname + '</a></div>';
+					outp += '<div>' + record.qty + ' x <a href="#" name="'+record.code+'">' + cData.cardname + '</a></div>';
 					//outp += "<div>" + record["code"] + " x " + record["qty"] + "</div>";
 				});
 				
