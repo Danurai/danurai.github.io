@@ -51,6 +51,8 @@
 				console.log(JSON.stringify(filter_all));
 				console.log(JSON.stringify(filter_class));
 				*/			
+				var result_count = 'Showing: ' + sp_data(filter_all,filter_class).count() + '/' + sp_data().count() + ' spells';
+				$("#rescount").html (result_count);
 				
 				sp_data(filter_all,filter_class).order("level,name").each( function(record, recordnumber) {
 					row = buildrow(record);
@@ -298,7 +300,7 @@
 		</div>
 		<!-- Search -->
 		<div class="row">
-			<div class="col-sm-12"><b>Search</b><br>
+			<div class="col-sm-12"><b>Search</b><div class="pull-right" id="rescount"></div><br>
 				<input id="search" type="text" class="form-control input-sm-12" placeholder="Search name"></input>
 			</div>
 		</div>
