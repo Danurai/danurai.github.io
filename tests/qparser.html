@@ -24,6 +24,9 @@
 	<!-- saved scripts -->
 	<script src="js/medb.cardfilter.js?6.3.15"></script>
 	
+	<!-- saved styles -->
+	<link rel="stylesheet" href="css/medb_icons.css">
+	
 	<script>
 <!-- Regex Testing -->
 		$( document ).ready( function()	{
@@ -46,11 +49,10 @@
 				$("#tstresult").html(outp);
 			};
 			$("#qrytxt").keyup( function () {
+			//Example = {deckcode:"p",typecode:["he","ev"],spherecode:"lo"};
 				MEDB.cardfilter.setFilter($(this).val());
-				//filter = setFilter($(this).val());
 				var JSONfilter = JSON.stringify(MEDB.cardfilter.getFilter());
 				$("#qryresult").html (JSONfilter);
-		//Example = {deckcode:"p",typecode:["he","ev"],spherecode:"lo"};
 			});
 
 			
@@ -64,7 +66,7 @@
 				var tbody = $("#cardtable");
 				tbody.empty();
 				
-				cardset().each( function(record) {
+				cardset({"deckcode":"p"}).order("code").each( function(record) {
 					row = buildrow(record);
 					tbody.append(row);
 				});
@@ -74,9 +76,11 @@
 						
 			function buildrow(record)	{
 				var outp = '<tr name="'+record.code+'">';
+				var cmax = Math.min( (record.typecode=='he'?1:3),record.quantity );
 				outp += '<td>';
 				outp += '<div class="btn-group" data-toggle="buttons">';
-				for (x=0; x< (record.typecode=="he"?2:4); x++)	{
+				
+				for (x=0; x< cmax+1; x++)	{
 					outp += '<label class="btn btn-xs btn-default';
 					outp += x==0 ? ' active' : '';
 					outp += '">';
@@ -96,7 +100,7 @@
 					+'class="img-cardqtip pull-right" title="' + card.cardname + '" '
 					+'style="'
 					+'background-image:url(' + card.cardart + '); '
-					+'background-position:' + (card.typecode == 'at' ? '-20px -20px;' : '-32px 0px;') + '"'
+					+'background-position:' + (card.typecode == 'at' ? '-20px -20px;' : '-30px 0px;') + '"'
 					+'>'
 					+'</div>';
 				$(this).qtip({
@@ -111,13 +115,18 @@
 							+ '</h4>'
 							+ (card.traits != '' ? '<p class="text-center"><b><em>' + card.traits + '</em></b>': '')
 							+ (card.abilities != '' ? '<p>' + card.abilities : '')
-							+ '<p>' + card.cardtext
+							+ '<p>' + iconify(card.cardtext)
 							+ '<p><em>' + card.spherename + ' ' + card.typename + '</em>'
 							+ '<div class="pull-right">' + card.setname + " #" + card.number + '</div>'
 					},
 					style: {
 						classes: 'qtip-bootstrap',
 						tip:	false
+					},
+					position: {
+						my: 'left-center',
+						at: 'right-center',
+						target: $(this)
 					},
 					/*hide:	{
 						event: 'unfocus'
@@ -149,45 +158,61 @@
 			});
 			
 			function writeCards()	{
-				var hOut = aOut = atOut = evOut = oOut = '';
 				var cData;
-				var outp = '';
+				var typeOut = {"he":"","al":"","at":"","ev":"","ot":""};
 				deckcards().order("code").each( function(record) {
 					cData = cardset({code:record.code}).first();
-					outp += '<div>' + record.qty + ' x <a href="#" name="'+record.code+'">' + cData.cardname + '</a></div>';
-					//outp += "<div>" + record["code"] + " x " + record["qty"] + "</div>";
+					//outp += '<div>' + record.qty + ' x <a href="#" name="'+record.code+'">' + cData.cardname + '</a></div>';
+					typeOut[($.inArray(cData.typecode,["he","at","al","ev"])>-1?cData.typecode:"ot")] += '<div>' + record.qty + ' x <a href="#" name="'+record.code+'">' + cData.cardname + '</a></div>';
 				});
 				
-				
-				outp += "<div>" + deckcards().stringify() + "</div>";
+				var outp = 
+					(typeOut["he"] != "" ? "<b>Heroes:</b> ": "") + typeOut["he"]
+					+ (typeOut["al"] != "" ? "<b>Allies:</b> ": "") + typeOut["al"]
+					+ (typeOut["at"] != "" ? "<b>Attachments:</b> ": "") + typeOut["at"]
+					+ (typeOut["ev"] != "" ? "<b>Events:</b> ": "") + typeOut["ev"]
+					+ (typeOut["ot"] != "" ? "<b>Other:</b> ": "") + typeOut["ot"];
+				outp += "<div>TAFFY: " + deckcards().stringify() + "</div>";
 				$("#buildresults").html (outp);
+			}
+<!-- Icon Replace -->
+			$("#icontxt").on("keyup",function(){
+				var outp = iconify(this.value);
+				$("#iconresults").html (outp);
+			})
+			
+			function iconify(value) {
+				outp = value;
+				outp = outp.replace(/\[Leadership\]/i,'<span class="icon icon-ld"></span>');
+				outp = outp.replace(/\[Lore\]/i,'<span class="icon icon-lo"></span>');
+				outp = outp.replace(/\[Spirit\]/i,'<span class="icon icon-sp"></span>');
+				outp = outp.replace(/\[Tactics\]/i,'<span class="icon icon-ta"></span>');
+				outp = outp.replace(/\[Baggins\]/i,'<span class="icon icon-ba"></span>');
+				outp = outp.replace(/\[Fellowship\]/i,'<span class="icon icon-fe"></span>');
+				outp = outp.replace(/\[Threat\]/i,'<span class="icon icon-thr"></span>');
+				outp = outp.replace(/\[Attack\]/i,'<span class="icon icon-atk"></span>');
+				outp = outp.replace(/\[Defense\]/i,'<span class="icon icon-def"></span>');
+				outp = outp.replace(/\[Willpower\]/i,'<span class="icon icon-will"></span>');
+				return (outp);
 			}
 			
 		});
 	</script>
 	<style>
+		.img-med {
+			width: 20px;
+		}
+/* qtip */
 		.img-cardqtip {
-			width:80px; 
-			height:80px; 
-			border-radius: 40px;
-			background-size: 120px; 
+			width:60px; 
+			height:60px; 
+			border-radius: 30px;
+			background-size: 100px; 
 			background-repeat: no-repeat; 
 		}
 		.qtip {
-			max-width: 350px;
-		}
-		.icon {
-			margin-bottom:-0.1em;
-			text-indent:0.4em;
-			width: 15px; 
-			height: 15px; 
-			background-size: 15px;
-			background-repeat: no-repeat;
-			display: inline-block;
-		}
-		.icon-atk {
-			background-image:url(data:image/png;base64,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);
-		}
+			max-width: 300px;
+		}	
 	</style>
 <!---->
 </head>
@@ -198,17 +223,28 @@
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<h4 class="panel-title">
-						<a data-toggle="collapse" data-parent="#accordion" href="#iconreplace">Icon Replace</a>
+						<a data-toggle="collapse" data-parent="#accordion" href="#iconreplace">Markup</a>
 					</h4>
 				</div>
 				<div id="iconreplace" class="panel-collapse collapse in">
 					<div class="panel-body">
 						<div class="form-group">
-							<label>Replace [ATK] [DEF] [SPI] and Markup language (#Gimli)</label>
-							<textarea rows="5" class="form-control" id="icontxt"></textarea>
+							<label>Replace Icon tags [] and Markup language </label>
+							<input class="form-control" id="icontxt"></input>
 						</div>
-						Some text 5 <span class="icon icon-atk"></span> some more dfaklsdfgl
-						<div id="iconresults"></div>
+						<!--e.g. <span class="icon icon-atk"></span> <span class="icon icon-fe"></span>-->
+						<div id="iconresults">Results</div>
+						<br>
+						<img src="img/leadership_icon.png" class="img-med"></img>[Leadership]
+						<img src="img/lore_icon.png" class="img-med"></img>[Lore]
+						<img src="img/spirit_icon.png" class="img-med"></img>[Spirit]
+						<img src="img/tactics_icon.png" class="img-med"></img>[Tactics]
+						<img src="img/baggins_icon.png" class="img-med"></img>[Baggins]
+						<img src="img/fellowship_icon2.png" class="img-med"></img>[Fellowship]
+						<img src="img/threat_icon.png" class="img-med"></img>[Threat]
+						<img src="img/attack_icon.png" class="img-med"></img>[Attack]
+						<img src="img/defense_icon.png" class="img-med"></img>[Defense]
+						<img src="img/will_icon.png" class="img-med"></img>[Willpower]
 					</div>
 				</div>
 			</div>
