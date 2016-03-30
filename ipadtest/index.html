@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Some iPad Tests</title>
+<!-- JQuery -->
+	<script src="https://code.jquery.com/jquery-2.2.2.min.js" integrity="sha256-36cp2Co+/62rEAAYHLmRCPIych47CvdM+uTBJwSzWjI=" crossorigin="anonymous"></script>
+<!-- BOOTSTRAP -->
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+<script>
+	$(document).ready(function() {
+		$("#jq_btn").on("click",function () {
+			$("#output").html ("<b>jquery Test:</b> Pass");
+		});
+		
+		$("#ajax_btn1").on("click",function () {
+			$.get("spells.txt", function(data, status) {
+				var outp = '';
+				outp = "<b>jquery AJAX Test:</b> " + status;
+				$("#output").html ();
+			});
+		});
+			
+	});
+</script>
+</head>
+<body>
+	<div class="container">
+		<button class="btn btn-primary" id="jq_btn">Run Test: jquery</button>
+		<button class="btn btn-primary" id="ajax_btn1">Run Test: jquery AJAX 1 $get</button>
+		<div class="row">
+			<div id="output"></div>
+		</div>
+	</div>
+</body>
+</html>
