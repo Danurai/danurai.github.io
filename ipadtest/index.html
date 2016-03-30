@@ -7,16 +7,24 @@
 <!-- BOOTSTRAP -->
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+<!-- TAFFYdb -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/taffydb/2.7.2/taffy-min.js"></script>
 <script>
 	$(document).ready(function() {
+		var sp_data;
 		$("#jq_btn").on("click",function () {
 			$("#output").html ("<b>jquery Test:</b> Pass");
 		});
 		
 		$("#ajax_btn1").on("click",function () {
 			$.get("spells.txt", function(data, status) {
+				sp_data = TAFFY(data);
 				var outp = '';
 				outp = "<b>jquery AJAX Test:</b> " + status;
+				if (status) {
+					outp += '<br>';
+					outp += sp_data().stringify();
+				}
 				$("#output").html (outp);
 			});
 		});
