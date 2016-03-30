@@ -16,21 +16,20 @@
 <script>
 	$(document).ready(function() {
 		var sp_data;
+		
+		$.get("spells.txt", function(data, status) {
+			sp_data = TAFFY(data);
+		});
+		
 		$("#jq_btn").on("click",function () {
 			$("#output").html ("<b>jquery Test:</b> Pass");
 		});
 		
 		$("#ajax_btn1").on("click",function () {
-			$.get("spells.txt", function(data, status) {
-				sp_data = TAFFY(data);
-				var outp = '';
-				outp = "<b>jquery AJAX Test:</b> " + status;
-				if (status) {
-					outp += '<br>';
-					outp += sp_data().stringify();
-				}
-				$("#output").html (outp);
-			});
+			var outp = '';
+			outp += '<br>';
+			outp += sp_data().stringify();
+			$("#output").html (outp);
 		});
 			
 	});
@@ -93,6 +92,23 @@
 		<button class="btn btn-primary" id="ajax_btn1">Run Test: jquery AJAX 1 $get</button>
 		<div class="row">
 			<div id="output"></div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12">
+				<table class="table table-striped table-hover table-condensed">
+					<thead>
+						<tr>
+						<th>Level</th>
+						<th>Name</th>
+						<th><abbr title="Verbal\Somatic\Material">V.S.M.</abbr></th>
+						<th>School</th>
+						<th><abbr title="Cast as a Ritual">R.</abbr><th>
+						</tr>
+					</thead>
+					<tbody id="spellbody">
+					</tbody>
+				</table>
+			</div>
 		</div>
 	</div>
 </body>
