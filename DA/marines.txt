@@ -1,0 +1,14 @@
+[
+{"id":1,"name":"Brother Deino","text":"","squad":"sword","colour":"blue","range":2,"set":"SL06"},
+{"1":2,"name":"Sergeant Lorenzo","text":"","squad":"sword","colour":"blue","range":2,"set":"SL07"},
+{"2":3,"name":"Brother Scipio","text":"","squad":"book","colour":"gray","range":2,"set":"SL08"},
+{"3":4,"name":"Lexicanium Calistarius","text":"","squad":"book","colour":"gray","range":2,"set":"SL09"},
+{"4":5,"name":"Brother Noctis","text":"","squad":"hammer","colour":"green","range":2,"set":"SL10"},
+{"5":6,"name":"Sergeant Gideon","text":"","squad":"hammer","colour":"green","range":0,"set":"SL11"},
+{"6":7,"name":"Brother Omnio","text":"","squad":"flamer","colour":"purple","range":2,"set":"SL12"},
+{"7":8,"name":"Brother Zael","text":"","squad":"flamer","colour":"purple","range":1,"set":"SL13"},
+{"8":9,"name":"Brother Leon","text":"","squad":"assault","colour":"red","range":3,"set":"SL14"},
+{"9":10,"name":"Brother Valencio","text":"","squad":"assault","colour":"red","range":2,"set":"SL15"},
+{"10":11,"name":"Brother Claudio","text":"","squad":"claw","colour":"yellow","range":0,"set":"SL16"},
+{"11":12,"name":"Brother Goriel","text":"","squad":"claw","colour":"yellow","range":2,"set":"SL17"}
+]

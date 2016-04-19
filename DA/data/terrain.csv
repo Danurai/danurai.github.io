@@ -1,0 +1,9 @@
+id,name,threat,text,img
+1,Door,2,"Activate: Place 1 support token on this card. When travelling, the current player may first splay 1 Genestealer in the formation for each token on this card.",
+2,Dark Corner,3,,
+3,Corridor,1,,
+4,Ventilation Duct,4,,
+5,Artefact,1,Activate: Place this card in your hand. You may discard this card after 1 of your defending Space marines rolls the die to make the attack miss.,
+6,Control Panel,2,"Activate: Use the current Location card's ""Activae Control Panel"" ability.",
+7,Promethean Tank,3,"Acivate: Discard this Terrain card ans slay all Genestealers on this position. Then roll a die, if you roll [0], slay this Space Marine.",
+8,Spore Chimney,4,"Activate: Rolla die, if you roll [skull], discard this Terrain card.",
