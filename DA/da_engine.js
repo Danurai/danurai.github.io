@@ -135,7 +135,29 @@ $(document).ready(function () {
 		currEvent = eventDeck.pop();
 		
 		var event = _event({id:currEvent}).first();
-		$("#event_active").html (event.name + '<br>' + event.spawn[0]['threat'] + ':' + event.spawn[0]['type'] + ' ' +  + event.spawn[1]['threat'] + ':' + event.spawn[1]['type'] )
+		
+		//match spawn#1, then spawn#2 and update formation
+		// PLAYER CHOICE?
+		for (var x=0; x<2; x++) {
+			$.each(formation,function (i,item) {
+				//event.spawn[0]['threat'] + ':' + event.spawn[0]['type']
+				if (_terrain({name:item['terrainL']}).first().threat == event.spawn[x]['threat']) {
+					for (var s=0; s<currLocation.spawn[event.spawn[x]['type']]; s++) {
+						if (blipDeckL.length != 0) {formation[i]['blipL'].push (blipDeckL.pop());}
+					}
+				}
+				if (_terrain({name:item['terrainR']}).first().threat == event.spawn[x]['threat']) {
+					for (var s=0; s<currLocation.spawn[event.spawn[x]['type']]; s++) {
+						if (blipDeckR.length != 0) {formation[i]['blipR'].push (blipDeckR.pop());}
+					}
+				}
+			})
+		}
+		
+		$("#blipL").html (blipDeckL.length);
+		$("#blipR").html (blipDeckR.length);
+		$("#blip_deck").html (stealerDeck.length);
+		$("#event_active").html (event.name + '<br>' + threaticon[event.spawn[0]['threat']] + ':' + event.spawn[0]['type'] + ' ' + threaticon[event.spawn[1]['threat']] + ':' + event.spawn[1]['type'] + '<br>' + event.text )
 		$("#event_deck").html (eventDeck.length);
 		
 	}
@@ -164,9 +186,9 @@ $(document).ready(function () {
 			trdata += terrain + ' ' + threaticon[res.threat];
 		})
 		var outp = '<tr>'
-		 + '<td class="form-left" colspan="2">' + item['blipL'] + ' | ' + tldata + '</td>'
+		 + '<td class="form-left" colspan="2">' + item['blipL'] + ' ' + tldata + '</td>'
 		 + '<td class="form-center">' + (item['facingL'] ? '<< ' + mdata : mdata + ' >>') + '</div>'
-		 + '<td class="form-right" colspan="2">' + trdata + ' | ' + item['blipR'] + '</td>';
+		 + '<td class="form-right" colspan="2">' + trdata + ' ' + item['blipR'] + '</td>';
 		 return (outp);		 
 	}
 	
