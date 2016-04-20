@@ -17,8 +17,10 @@
 	<script src="http://cdnjs.cloudflare.com/ajax/libs/qtip2/2.1.1/jquery.qtip.js"></script>
 <!-- TAFFYdb -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/taffydb/2.7.2/taffy-min.js"></script>
+<!-- Font Awesome -->
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-XdYbMnZ/QjLh6iI4ogqCTaIjrFk87ip+ekIjefZch0Y+PvJ8CDYtEs1ipDmPorQ+" crossorigin="anonymous">
 
-<!-- TODO Move to .js file(s) -->
+<!-- DA Scripts -->
 	<script src="da_engine.js"></script>
 	
 <!-- TODO Move to .css file(s) -->
@@ -28,27 +30,36 @@
 			padding: 2px 5px;
 			text-align: center;
 		}
+		td.form-left {
+			text-align: right;
+		}
+		td.form-center {
+			text-align: center;
+		}
+		td.form-right {
+			text-align: left;
+		}
 	</style>
 </head>
 <body>
 	<div class="background">
 		<em>Sin of Damnation</em>
 		<table>
-			<tbody id="playmat">
+			<thead>
 				<tr id="decks">
-					<td>&nbsp;</td>
-					<td>Current Event</td>
-					<td>location deck</td>
-					<td>Event Deck</td>
-					<td>&nbsp;</td>
+					<td rowspan="2"><div id="blip_discard">blip_discard</div></td>
+					<td><div id="blip_deck">blip_deck</div></td>
+					<td><div id="location_deck">location_deck</div></td>
+					<td><div id="event_deck">event_deck</div></td>
+					<td rowspan="2"><div id="event_active">event_active</div></td>
 				</tr>
 				<tr id="location">
-					<td>&nbsp;</td>
-					<td>blip 1</td>
-					<td>active location</td>
-					<td>blip 2</td>
-					<td>&nbsp;</td>
+					<td><div id="blipL">blipL</div></td>
+					<td><div id="location_active">location_active</div></td>
+					<td><div id="blipR">blipR</div></td>
 				</tr>
+			</thead>
+			<tbody id="playmat">
 				<tr>
 					<td class="swarm">Claw, Claw, Tail</td><td class="terrain">Dark Corridor</td><td class="marine">&lt;&lt;&nbsp;Scipio</td><td class="terrain"></td><td class="swarm"></td>
 				</tr>
