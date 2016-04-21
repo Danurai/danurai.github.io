@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- JQuery -->
+	<script src="https://code.jquery.com/jquery-2.2.2.min.js" integrity="sha256-36cp2Co+/62rEAAYHLmRCPIych47CvdM+uTBJwSzWjI=" crossorigin="anonymous"></script>
+
+	<script>
+		$(document).ready(function () {
+
+			$('#mydialog').on('click',function(event) {
+				$('#menu').css({'left':event.pageX +20,'top': Math.max(event.pageY - $('#menu').height() + 20,0)});
+				$('#menu').toggle();
+			})
+			
+			$('.btn').on('click',function() {
+				$('#menu').toggle();
+				$('#data').text ($(this).attr('name'));
+			});
+			
+		});
+	</script>
+	<style>
+		body{
+			padding: 50px;
+		}
+
+		.btn {
+			width: 75px;
+			font-size: 12px;
+			font-weight: bold;
+			text-align: center;
+			border: 1px solid;
+			margin: 5px;
+			cursor: pointer;
+		}
+		
+		#menu {
+			visibility:		visible;
+			position: 		absolute;
+			background-color: rgba(255,255,255,0.9);
+			border: 		1px solid black;
+		}
+	</style>
+</head>
+<body>
+	
+	<a href='#' id='mydialog'>Show my dialog</a>
+	
+	<div id='menu' hidden>
+		<div class='menubox'>
+			<div class='btn' name='one'>Button One</div>
+			<div class='btn' name='two'>Button Two</div>
+			<div class='btn' name='three'>Button Three</div>
+		</div>
+	</div>
+	
+	<div id="data"></div>
+</body>
+</html>
