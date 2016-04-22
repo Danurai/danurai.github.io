@@ -5,6 +5,7 @@ $(document).ready(function () {
 	var _marine;
 	var _event;
 	var _terrain;
+	var _action;
 	var _stealer = ['b','b','b','b','b','b','b','b','b',
 		'c','c','c','c','c','c','c','c','c',
 		's','s','s','s','s','s','s','s','s',
@@ -26,6 +27,10 @@ $(document).ready(function () {
 		.done(function(data) {
 			_terrain = TAFFY(data);
 		});
+	$.ajax("/DA/res/json/actions.txt")
+		.done(function(data) {
+			_action = TAFFY(data);
+		});
 // Globals	
 	var _maxsupport = 12;
 	var _squads = 6;
@@ -41,6 +46,10 @@ $(document).ready(function () {
 	var blipDeckL = [];
 	var blipDeckR = [];
 	var support;
+// Actiondeck {cardnumber:state}
+	var actionDeck = {};
+	var phaseDeck = [];
+	var teams = [];
 
 /*******************
 / Start
@@ -49,11 +58,15 @@ $(document).ready(function () {
 		setup(["red","blue","green","purple"]);
 		
 		da_refresh();
+		
+		order_refresh();
+		
 	})
 
 // Setup a new game
-	function setup(teams) {
+	function setup(teamlist) {
 	// #Combat Teams
+		teams = teamlist;
 		
 	// 1. Setup Decks - Shuffle stealer and Event decks
 		for (var i=1; i<=30; i++) {eventDeck.push(i)}
@@ -83,10 +96,14 @@ $(document).ready(function () {
 			console.log(currLocation['setup'][i] + ': ' + _location({id:item}).first().name);
 		});	*/
 		
-	// 4. Combat Teams
+	// 4. Combat Teams + Orders
 		console.log ('Teams: ' + teams);
-		tmp = _marine({team:teams}).select('name');
+		tmp = _marine({team:teams}).select('id');
 		tmp = shuffle(tmp);
+		
+		resetOrders()
+		console.log (actionDeck);
+		
 	// 5. FORMATION
 		var tmparr = {};
 		for (var i=0; i<tmp.length; i++) {
@@ -102,12 +119,14 @@ $(document).ready(function () {
 		}
 	// 6. Support tokens
 		support = _maxsupport;
+		
 	// 7. Terrain (MOVING - make function)
 		console.log('Terrain: ' + currLocation['terrain'] + ' ' + currLocation['terrainlocation']);
 		formation[currLocation['terrainlocation'][0]-1]['terrainL'].push (currLocation['terrain'][0]);
 		formation[currLocation['terrainlocation'][1]-1]['terrainL'].push (currLocation['terrain'][1]);
 		formation[formation.length - currLocation['terrainlocation'][2]]['terrainR'].push (currLocation['terrain'][2]);
 		formation[formation.length - currLocation['terrainlocation'][3]]['terrainR'].push (currLocation['terrain'][3]);
+		
 	// 7. Blips (MOVING - make function)
 		blipDeckL =  [];
 		for (var i=0; i<currLocation['blipcount'][0]; i++) {
@@ -132,8 +151,7 @@ $(document).ready(function () {
 	
 	// 8. Draw Event and spawn Stealers
 		// EVERY TURN
-		currEvent = eventDeck.pop();
-		
+		currEvent = eventDeck.pop();		
 		var event = _event({id:currEvent}).first();
 		
 		//match spawn#1, then spawn#2 and update formation
@@ -157,10 +175,22 @@ $(document).ready(function () {
 		$("#blipL").html (blipDeckL.length);
 		$("#blipR").html (blipDeckR.length);
 		$("#blip_deck").html (stealerDeck.length);
-		$("#event_active").html (event.name + '<br>' + threaticon[event.spawn[0]['threat']] + ':' + event.spawn[0]['type'] + ' ' + threaticon[event.spawn[1]['threat']] + ':' + event.spawn[1]['type'] + '<br>' + event.text )
+		var outp = event.name 
+			+ '<br>' + threaticon[event.spawn[0]['threat']] + ' ' + event.spawn[0]['type'] 
+			+ ' ' + threaticon[event.spawn[1]['threat']] + ' ' + event.spawn[1]['type'] 
+			+ '<br><div class="small">' + event.text + '</div>';
+		$("#event_active").html (outp);
 		$("#event_deck").html (eventDeck.length);
 		
 	}
+
+/*********************************************************************
+*                    ENGINE                                          *
+*********************************************************************/
+	
+/*****************************************
+*  Update Screen
+*****************************************/
 
 // Re-draw the playmat
 	function da_refresh() {
@@ -171,10 +201,15 @@ $(document).ready(function () {
 		})
 		console.log(formation);
 	}
-	
 	function buildrow(item) {
 	// blipL,locationL,marine,locationR,blipR
-		var mdata = item['marine_id'] + ' (' + item['support'] + ')';
+		var marine = _marine({id:item['marine_id']}).first();
+		var mdata = marine.name
+			+ '<br>' 
+			+ marine.squad
+			+ ' R:' + marine.range
+			+ ' S:<span class="support" value="-1" name="' + marine.id + '">[-]</span> ' + item['support'] + '<span class="support" value="1" name="' + marine.id + '">[+]</span>';
+		mdata = '<td class="form-center marine" name="' + marine.id + '">' + (item['facingL'] ? '<< ' + mdata : mdata + ' >>') + '</div>'
 		var tldata = '';
 		$.each(item['terrainL'],function (t,terrain) {
 			var res = _terrain({name:terrain}).first();
@@ -187,15 +222,71 @@ $(document).ready(function () {
 		})
 		var outp = '<tr>'
 		 + '<td class="form-left" colspan="2">' + item['blipL'] + ' ' + tldata + '</td>'
-		 + '<td class="form-center">' + (item['facingL'] ? '<< ' + mdata : mdata + ' >>') + '</div>'
+		 + mdata
 		 + '<td class="form-right" colspan="2">' + trdata + ' ' + item['blipR'] + '</td>';
 		 return (outp);		 
 	}
+
+// update action\phase section	
+	function order_refresh() {
+		var outp = '';
+		var ords = '';
+		$.each(teams,function (i,tm) {
+			ords = '<div style="color: ' + tm + ';"><b>'  + tm.toProperCase() + ' Team Orders</b></div><form>';
+			_action({team:tm}).each(function(record) {
+				ords += '<input type="radio" name="' + tm + '" value="' + record.number + '" ' + (actionDeck[record.number] ? '' : 'disabled') + '>' + record.type + '<br>';
+			});
+			ords += '</form>';
+			outp += ords;
+		});
+		$('#choosephase').html (outp);
+	}
+	
+	function resolveRefresh() {
+		var outp = '';
+		_action({team:teams}).order('number').each( function (record) {
+			if (phaseDeck[record.team] == record.number) {
+				outp += '<div style="color: ' + record.team + ';">+++ <b>' + record.number + ':</b> ' + record.name + ' +++ (' + record.type + ')</div>';
+			}
+		});
+		$('#resolvephase').html (outp);
+	}
+	
+	
 	
 /***********************************
 functions
-*************************************/
-
+***********************************/
+	function addOrder(team,order) {
+		phaseDeck[team] = order;
+		resolveRefresh();
+	}
+	function resetOrders() {
+		_action({team:teams}).each(function(record) {
+			actionDeck[record.number] = phaseDeck[record.team] == record.number ? false : true;
+		});
+		order_refresh();
+	}
+	function updateSupport(marine_id, value) {
+		$.each(formation, function (i,item) {
+			if (item['marine_id'] == marine_id ) {
+				if (value > 0) {
+					if (support > 0) {
+						item['support'] += value;
+						support -= value;
+					}
+				} else {
+					if (support < _maxsupport) {
+						item['support'] += value;
+						support -= value;
+					}
+				}
+			}
+		});
+		da_refresh();
+		console.log('Support: ' + support);
+	}
+	
 	/* Fisher-Yates Shuffle  */
 	function shuffle(array) {
 		var m = array.length, t, i;
@@ -214,6 +305,27 @@ functions
 
 		return array;
 	}
+	String.prototype.toProperCase = function () {
+		return this.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+	};
+
+/*******************************************
+*  Listeners
+/******************************************/
+
+	$('#choosephase').on('change','[type="radio"]',function() {
+		addOrder(this.name, this.value);
+	});
+	$('#resolve').on('click',function() {
+		resetOrders();
+	});
+	$('#playmat').on('click','.marine',function(event) {
+		//console.log(event.pageX);
+	})
+	$('#playmat').on('click','.support',function() {		
+		updateSupport($(this).attr('name'),parseInt($(this).attr('value'),10));
+	})
+
 });
 
 var threaticon = [

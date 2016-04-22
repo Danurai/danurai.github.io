@@ -25,6 +25,9 @@
 	
 <!-- TODO Move to .css file(s) -->
 	<style>
+		.bg1 {
+			margin: 20px;
+		}
 		table, tr, td {
 			border: 1px solid;
 			padding: 2px 5px;
@@ -39,32 +42,61 @@
 		td.form-right {
 			text-align: left;
 		}
+		
+		.support {
+			cursor: pointer;
+		}
 	</style>
 </head>
 <body>
 	<div class="background">
-		<em>Sin of Damnation</em>
-		<table>
-			<thead>
-				<tr id="decks">
-					<td rowspan="2"><div id="blip_discard">blip_discard</div></td>
-					<td><div id="blip_deck">blip_deck</div></td>
-					<td><div id="location_deck">location_deck</div></td>
-					<td><div id="event_deck">event_deck</div></td>
-					<td rowspan="2"><div id="event_active">event_active</div></td>
-				</tr>
-				<tr id="location">
-					<td><div id="blipL">blipL</div></td>
-					<td><div id="location_active">location_active</div></td>
-					<td><div id="blipR">blipR</div></td>
-				</tr>
-			</thead>
-			<tbody id="playmat">
-				<tr>
-					<td class="swarm">Claw, Claw, Tail</td><td class="terrain">Dark Corridor</td><td class="marine">&lt;&lt;&nbsp;Scipio</td><td class="terrain"></td><td class="swarm"></td>
-				</tr>
-			</tbody>
-		</table>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6">
+					<em>Sin of Damnation</em>
+					<table>
+						<thead>
+							<tr id="decks">
+								<td rowspan="2"><div id="blip_discard">blip_discard</div></td>
+								<td><div id="blip_deck">blip_deck</div></td>
+								<td><div id="location_deck">location_deck</div></td>
+								<td><div id="event_deck">event_deck</div></td>
+								<td rowspan="2" width = "200px"><div id="event_active">event_active</div></td>
+							</tr>
+							<tr id="location">
+								<td><div id="blipL">blipL</div></td>
+								<td><div id="location_active">location_active</div></td>
+								<td><div id="blipR">blipR</div></td>
+							</tr>
+						</thead>
+						<tbody id="playmat">
+							<tr>
+								<td class="swarm">Claw, Claw, Tail</td><td class="terrain">Dark Corridor</td><td class="marine">&lt;&lt;&nbsp;Scipio</td><td class="terrain"></td><td class="swarm"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="col-sm-6">
+					<h4>Phase</h4>
+					<div style="border: 1px solid;">
+						<h4>1. Choose Actions</h4>
+						<div id='choosephase'></div>
+					</div>
+					<div style="border: 1px solid;">
+						<h4>2. Resolve Actions <button class="btn btn-standard pull-right" id="resolve">Resolve</button> </h4>
+						<div id='resolvephase'></div>
+					</div>
+					<div style="border: 1px solid;">
+						<h4>3. Attack</h4>
+						<div id='attackphase'></div>
+					</div>
+					<div style="border: 1px solid;">
+						<h4>4. Event</h4>
+						<div id='eventphase'></div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </body>
 </html>

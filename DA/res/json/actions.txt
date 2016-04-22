@@ -1,0 +1,20 @@
+[
+{"id":1,"number":"1","name":"Block","type":"Support","team":"green","marine":"Sergeant Gideon","text":"Each time Sergeant Gideon rolls a [skull] <b>while defending</b>, the attack misses."},
+{"id":2,"number":"2","name":"Defensive Stance","type":"Support","team":"yellow","marine":"","text":"Each time 1 of your <b>defending</b> Space Marine spends a Support Token to reroll a die, the attack misses unless the new roll is a [0]"},
+{"id":3,"number":"3","name":"Counter Attack","type":"Support","team":"blue","marine":"Sergeant Lorenzo","text":"Each time Sergeant Lorenzo rolls a [skull] <b>while defending</b> the attack misses and slay 1 of the attacking Genestealers. If the swarm still contains a Genestealer, it attacks again."},
+{"id":4,"number":"4","name":"Overwatch","type":"Support","team":"red","marine":"","text":""},
+{"id":5,"number":"5","name":"Strategize","type":"Support","team":"purple","marine":"","text":"After resolving this card's action, you may move 1 swarm to an adjacent position and/or move it to the other side of the formation."},
+{"id":6,"number":"6","name":"Power Field","type":"Support","team":"gray","marine":"","text":""},
+{"id":7,"number":"7","name":"Onward Brothers!","type":"Move + Activate","team":"red","marine":"","text":""},
+{"id":8,"number":"8","name":"Stealth Tactics","type":"Move + Activate","team":"gray","marine":"","text":""},
+{"id":9,"number":"9","name":"Reorganize","type":"Move + Activate","team":"yellow","marine":"","text":"Your Space Marines may move to any position in the formation (instead of just adjacent positions)"},
+{"id":10,"number":"10","name":"Forward Scouting","type":"Move + Activate","team":"purple","marine":"","text":"After resolving this card's action, you may look at the top card of the Event Deck. Then place it on the top or bottom of the deck."},
+{"id":11,"number":"11","name":"Intimidation","type":"Move + Activate","team":"blue","marine":"","text":""},
+{"id":12,"number":"12","name":"Run and Gun","type":"Move + Activate","team":"green","marine":"","text":"After resolving this card's action, each of your Space Marines may spend 1 Support Token to make 1 attack."},
+{"id":13,"number":"13","name":"Lead by Example","type":"Attack","team":"blue","marine":"","text":""},
+{"id":14,"number":"14","name":"Flamer Attack","type":"Attack","team":"purple","marine":"Brother Zael","text":"When Brother Zael attacks, ignore all [skull] rolled. Instead, slay a number of Genestealers in the swarm equal to the number rolled."},
+{"id":15,"number":"15","name":"Psionic Attack","type":"Attack","team":"gray","marine":"","text":""},
+{"id":16,"number":"16","name":"Dead Aim","type":"Attack","team":"green","marine":"","text":"Each time 1 of your attacking Space marines rolls a [4], slay up to 3 Genestealers from the defending swarm."},
+{"id":17,"number":"17","name":"Full Auto","type":"Attack","team":"red","marine":"Brother Leon","text":"Brother Leon may attack up to 3 times (instead of just once)"},
+{"id":18,"number":"18","name":"Heroic Charge","type":"Attack","team":"yellow","marine":"Brother Claudio","text":"Instead of attacking with Brother Claudio, you <b>may</b> slay up to 3 Genestealers within 1 range of him (ignoring facing). Then roll a die. If you roll a [0] Brother Claudio is slain."}
+]
