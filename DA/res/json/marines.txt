@@ -10,5 +10,9 @@
 {"id":9,"name":"Brother Leon","text":"","squad":"assault","team":"red","range":3,"set":"SL06"},
 {"id":10,"name":"Brother Valencio","text":"","squad":"assault","team":"red","range":2,"set":"SL06"},
 {"id":11,"name":"Brother Claudio","text":"","squad":"claw","team":"yellow","range":0,"set":"SL06"},
-{"id":12,"name":"Brother Goriel","text":"","squad":"claw","team":"yellow","range":2,"set":"SL06"}
+{"id":12,"name":"Brother Goriel","text":"","squad":"claw","team":"yellow","range":2,"set":"SL06"},
+{"id":13,"name":"Brother Metraen","text":"Filled with hatred for his enemies, Brother Metraen charges forward with anger as his fuel","squad":"crozius","team":"black","range":"2","set":"uSL11"},
+{"id":14,"name":"Chaplain Raziel","text":"Only Raziel's faith offers better protection than his Rosarius. Each swing of his Crozius Arcanum is a harvest of death","squad":"crozius","team":"black","range":"2","set":"uSL11"},
+{"id":15,"name":"Brother Adron","text":"Moving forward at a steady, unstoppable pace, Brother Adron withers his enemies with a rain of death from his Cyclone Missile Launcher","squad":"cyclone","team":"orange","range":"2","set":"uSL11"},
+{"id":16,"name":"Brother Raphael","text":"Veteren of countless battles against the Hive FLeets, Brother Raphael assaults the enemy with discipline and wisdom.","squad":"cyclone","team":"orange","range":"2","set":"uSL11"}
 ]
