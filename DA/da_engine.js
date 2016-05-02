@@ -108,9 +108,10 @@ $(document).ready(function () {
 		var tmparr = {};
 		for (var i=0; i<tmp.length; i++) {
 			tmparr = {};
-			tmparr['marine_id'] = tmp[i];
-			tmparr['facingL'] = i < tmp.length/2;
-			tmparr['support'] = 0;
+			//tmparr['marine_id'] = tmp[i];
+			//tmparr['facingL'] = i < tmp.length/2;
+			//tmparr['support'] = 0;
+			tmparr['marine']={id:tmp[i],facingL:(i<tmp.length/2),support:0};
 			tmparr['blipL']=[];
 			tmparr['blipR']=[];
 			tmparr['terrainL']=[];
@@ -178,6 +179,7 @@ $(document).ready(function () {
 		var outp = event.name 
 			+ '<br>' + threaticon[event.spawn[0]['threat']] + ' ' + event.spawn[0]['type'] 
 			+ ' ' + threaticon[event.spawn[1]['threat']] + ' ' + event.spawn[1]['type'] 
+			+ ' ' + event.swarm[0] + (event.action="move" ? '<i class="fa fa-angle-double-up"></i>' : '<i class="fa fa-undo"></i>')
 			+ '<br><div class="small">' + event.text + '</div>';
 		$("#event_active").html (outp);
 		$("#event_deck").html (eventDeck.length);
@@ -203,27 +205,42 @@ $(document).ready(function () {
 	}
 	function buildrow(item) {
 	// blipL,locationL,marine,locationR,blipR
-		var marine = _marine({id:item['marine_id']}).first();
-		var mdata = marine.name
+		var marine = _marine({id:item['marine']['id']}).first();
+		var mdata = '<span class="move clickable" value="-1" name="' + marine.id + '"><i class="fa fa-angle-double-up"></i></span>'
+			+ '<div class="marine-name">'
+			+ (item['marine']['facingL'] ? '<< ' + marine.name : marine.name + ' >>')
 			+ '<br>' 
 			+ marine.squad
+			+ '</div>'
 			+ ' R:' + marine.range
-			+ ' S:<span class="support" value="-1" name="' + marine.id + '">[-]</span> ' + item['support'] + '<span class="support" value="1" name="' + marine.id + '">[+]</span>';
-		mdata = '<td class="form-center marine" name="' + marine.id + '">' + (item['facingL'] ? '<< ' + mdata : mdata + ' >>') + '</div>'
-		var tldata = '';
+			+ ' S:<span class="support clickable" value="-1" title="move up" name="' + marine.id + '">[-]</span> ' + item['marine']['support'] + '<span class="support clickable" value="1" name="' + marine.id + '">[+]</span>'
+			+ '<br><span class="move clickable" value="1" title="move down" name="' + marine.id + '"><i class="fa fa-angle-double-down"></i></span>';
+		mdata = '<td class="form-center marine" name="' + marine.id + '">' + mdata + '</div>';
+		
+		var tldata = '<span class="swarm swarm-left clickable" value="1" name="' + marine.id + '"><i class="fa fa-angle-double-down"></i></span>';
 		$.each(item['terrainL'],function (t,terrain) {
 			var res = _terrain({name:terrain}).first();
 			tldata += terrain + ' ' + threaticon[res.threat];
 		})
-		var trdata = '';
+		
+		var trdata = '<span class="swarm swarm-right clickable" value="-1" name="' + marine.id + '"><i class="fa fa-angle-double-up"></i></span>';
 		$.each(item['terrainR'],function (t,terrain) {
 			var res = _terrain({name:terrain}).first();
 			trdata += terrain + ' ' + threaticon[res.threat];
 		})
+		
+		var blipLdata = '';
+		$.each(item['blipL'],function(b,blip){
+			blipLdata += '<span class="blip-sel" value="L' + b + '">[ ' + blip + ' ]</span>';
+		});
+		var blipRdata = '';
+		$.each(item['blipR'],function(b,blip){
+			blipRdata += '<span class="blip-sel" value="R' + b + '">[ ' + blip + ' ]</span>';
+		});
 		var outp = '<tr>'
-		 + '<td class="form-left" colspan="2">' + item['blipL'] + ' ' + tldata + '</td>'
+		 + '<td class="form-left" colspan="2">' + blipLdata + ' ' + tldata + '</td>'
 		 + mdata
-		 + '<td class="form-right" colspan="2">' + trdata + ' ' + item['blipR'] + '</td>';
+		 + '<td class="form-right" colspan="2">' + trdata + ' ' + blipRdata + '</td>';
 		 return (outp);		 
 	}
 
@@ -269,22 +286,47 @@ functions
 	}
 	function updateSupport(marine_id, value) {
 		$.each(formation, function (i,item) {
-			if (item['marine_id'] == marine_id ) {
-				if (value > 0) {
-					if (support > 0) {
-						item['support'] += value;
-						support -= value;
-					}
-				} else {
-					if (support < _maxsupport) {
-						item['support'] += value;
-						support -= value;
-					}
+			if (item['marine']['id'] == marine_id ) {
+				if (support-value>=0 && support-value<=_maxsupport) {
+					item['marine']['support'] += value;
+					support -= value;
+					da_refresh();
+					console.log('Support: ' + support);
+					return false;
 				}
 			}
 		});
-		da_refresh();
-		console.log('Support: ' + support);
+	}
+	function updateFormation(marine_id, value) {
+		$.each(formation, function (i,item) {
+			if (item['marine']['id'] == marine_id ) {
+				if (i+value >= 0 && i+value < formation.length) {
+					var tmp = item['marine'];
+					formation[i]['marine'] = formation[i+value]['marine'];
+					formation[i+value]['marine'] = tmp;
+					da_refresh();
+					return false;
+				}
+			}
+		});
+	}
+	function updateSwarm(marine_id, value) {
+		$.each(formation, function (i,item) {
+			if (item['marine']['id'] == marine_id ) {
+				var newloc = (i+value)%formation.length
+				newloc += (newloc < 0 ? formation.length : 0);
+				console.log ('move to ' + newloc);
+				if (value < 0) {
+					formation[newloc]['blipR']=formation[newloc]['blipR'].concat(item['blipR']);
+					item['blipR']=[];
+				} else {
+					formation[newloc]['blipL']=formation[newloc]['blipL'].concat(item['blipL']);
+					item['blipL']=[];
+				}
+					da_refresh();
+					return false;
+			}
+		});
 	}
 	
 	/* Fisher-Yates Shuffle  */
@@ -319,13 +361,40 @@ functions
 	$('#resolve').on('click',function() {
 		resetOrders();
 	});
-	$('#playmat').on('click','.marine',function(event) {
-		//console.log(event.pageX);
-	})
+	$('#playmat').on('click','.move',function(event) {
+		updateFormation($(this).attr('name'),parseInt($(this).attr('value'),10))
+	});
 	$('#playmat').on('click','.support',function() {		
 		updateSupport($(this).attr('name'),parseInt($(this).attr('value'),10));
+	});
+	$('#playmat').on('click','.swarm',function() {		
+		updateSwarm($(this).attr('name'),parseInt($(this).attr('value'),10));
+	});
+	
+	
+	$('#playmat').on('click','.marine-name',function(event) {
+		$('#menu').css({'left':event.pageX +20,'top': Math.max(event.pageY - $('#menu').height() + 20,0)});
+		$('#menu').toggle();
+		$('#menu-data').val( $('#menu').is(':hidden') ? '' : $(this).closest('td').attr('name'));
 	})
-
+	$('#playmat').on('click','.blip-sel',function(event) {
+		$('#menu').css({'left':event.pageX +20,'top': Math.max(event.pageY - $('#menu').height() + 20,0)});
+		$('#menu').toggle();
+		$('#menu-data').val( $('#menu').is(':hidden') ? '' : '{"row":' + $(this).closest('tr').index() + ',"id":"' + $(this).attr('value') + '"}');
+	})
+			
+	
+// Dice roller
+	$('#dice').on({
+		mousedown: function() {
+			$('#dice').html ('');
+		},
+		mouseup: function() {
+			i = Math.floor(Math.random() * 6);
+			outp = i + (i>0 && i<4 ? 'X' : '');
+			$('#dice').html (outp);
+		}
+	});
 });
 
 var threaticon = [

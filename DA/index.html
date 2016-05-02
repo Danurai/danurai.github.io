@@ -43,8 +43,37 @@
 			text-align: left;
 		}
 		
-		.support {
+		.clickable {
 			cursor: pointer;
+			background-color: rgba(0,0,255,0.3);
+		}
+		
+		.dice {
+			width: 2em;
+			height:	2em;
+			background-color: #800;
+			font: bold 12px;
+			color: #fff;
+			text-align: center;
+			cursor: pointer;
+		}
+		
+		.swarm {
+			color: red;
+		}
+		.swarm-left {
+			float: left;
+		}
+		.swarm-right {
+			float: right;
+		}
+		
+		
+		#menu {
+			visibility:		visible;
+			position: 		absolute;
+			background-color: rgba(255,255,255,0.9);
+			border: 		1px solid black;
 		}
 	</style>
 </head>
@@ -54,6 +83,8 @@
 			<div class="row">
 				<div class="col-md-6">
 					<em>Sin of Damnation</em>
+					<div id="dice" class="dice">0
+					</div>
 					<table>
 						<thead>
 							<tr id="decks">
@@ -96,6 +127,12 @@
 					</div>
 				</div>
 			</div>
+		</div>
+	</div>
+	<div id='menu' hidden>
+		<div class='menu'>
+			<input type='text' id='menu-data' value=''>
+			<div class='clickable'>[ Slay ]</div>
 		</div>
 	</div>
 </body>
