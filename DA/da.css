@@ -1,0 +1,74 @@
+.bg1 {
+	margin: 20px;
+}
+table, tr, td {
+	border: 		1px solid;
+	padding: 	2px 5px;
+	text-align: center;
+	position: 	relative;
+}
+td.form-left {
+	text-align: right;
+}
+td.form-center {
+	text-align: center;
+}
+td.form-right {
+	text-align: left;
+}
+
+.clickable {
+	cursor: pointer;
+	background-color: rgba(0,0,128,0.1);
+}
+
+.dice {
+	width: 2em;
+	height:	2em;
+	background-color: #800;
+	font: bold 12px;
+	color: #fff;
+	text-align: center;
+	cursor: pointer;
+}
+
+.swarm {
+	color: red;
+}
+
+
+#menu {
+	visibility:		visible;
+	position: 		absolute;
+	background-color: rgba(255,255,255,0.9);
+	border: 		1px solid black;
+	text-align: center;
+}
+
+.btn-da {
+	margin: 5px;
+}
+
+.topleft {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.topright {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.bottomleft {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.bottomright {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}

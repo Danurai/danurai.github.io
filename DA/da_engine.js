@@ -1,4 +1,6 @@
 $(document).ready(function () {
+	var debug = false;
+
 // Initialise Variables
 // Card Lists
 	var _location;	
@@ -46,6 +48,7 @@ $(document).ready(function () {
 	var blipDeckL = [];
 	var blipDeckR = [];
 	var support;
+	var turn;
 // Actiondeck {cardnumber:state}
 	var actionDeck = {};
 	var phaseDeck = [];
@@ -55,7 +58,7 @@ $(document).ready(function () {
 / Start
 *******************/
 	$(document).ajaxStop(function () {
-		setup(["red","blue","green","purple"]);
+		setup(["blue","green","purple"]);
 		
 		da_refresh();
 		
@@ -67,6 +70,7 @@ $(document).ready(function () {
 	function setup(teamlist) {
 	// #Combat Teams
 		teams = teamlist;
+		turn = 0;
 		
 	// 1. Setup Decks - Shuffle stealer and Event decks
 		for (var i=1; i<=30; i++) {eventDeck.push(i)}
@@ -92,10 +96,6 @@ $(document).ready(function () {
 		
 		$("#location_deck").html ('Deck ids: ' + locationDeck);
 		
-		/*$.each(locationDeck,function(i,item) {
-			console.log(currLocation['setup'][i] + ': ' + _location({id:item}).first().name);
-		});	*/
-		
 	// 4. Combat Teams + Orders
 		console.log ('Teams: ' + teams);
 		tmp = _marine({team:teams}).select('id');
@@ -108,9 +108,7 @@ $(document).ready(function () {
 		var tmparr = {};
 		for (var i=0; i<tmp.length; i++) {
 			tmparr = {};
-			//tmparr['marine_id'] = tmp[i];
-			//tmparr['facingL'] = i < tmp.length/2;
-			//tmparr['support'] = 0;
+			//marine = {"id":n,"facingL":b,"support":n}
 			tmparr['marine']={id:tmp[i],facingL:(i<tmp.length/2),support:0};
 			tmparr['blipL']=[];
 			tmparr['blipR']=[];
@@ -152,10 +150,10 @@ $(document).ready(function () {
 	
 	// 8. Draw Event and spawn Stealers
 		// EVERY TURN
-		currEvent = eventDeck.pop();		
+		currEvent = eventDeck.pop();
 		var event = _event({id:currEvent}).first();
 		
-		//match spawn#1, then spawn#2 and update formation
+		// match spawn#1, then spawn#2 and update formation
 		// PLAYER CHOICE?
 		for (var x=0; x<2; x++) {
 			$.each(formation,function (i,item) {
@@ -176,11 +174,14 @@ $(document).ready(function () {
 		$("#blipL").html (blipDeckL.length);
 		$("#blipR").html (blipDeckR.length);
 		$("#blip_deck").html (stealerDeck.length);
-		var outp = event.name 
+		var outp = '<b>' + event.name + '</b>'
 			+ '<br>' + threaticon[event.spawn[0]['threat']] + ' ' + event.spawn[0]['type'] 
-			+ ' ' + threaticon[event.spawn[1]['threat']] + ' ' + event.spawn[1]['type'] 
-			+ ' ' + event.swarm[0] + (event.action="move" ? '<i class="fa fa-angle-double-up"></i>' : '<i class="fa fa-undo"></i>')
-			+ '<br><div class="small">' + event.text + '</div>';
+			+ ' ' + threaticon[event.spawn[1]['threat']] + ' ' + event.spawn[1]['type']
+			+ (turn == 0 ? '<span style="color: grey">' : '<span>')
+			+ '<br>' + event.swarm[0] + ' ' + (event.action=="move" ? '<i class="fa fa-angle-double-up"></i>' : '<i class="fa fa-undo"></i>')
+			+ '<br><div class="small">' + event.text + '</div>'
+			+ '</span>';
+		
 		$("#event_active").html (outp);
 		$("#event_deck").html (eventDeck.length);
 		
@@ -201,29 +202,47 @@ $(document).ready(function () {
 			row = buildrow(item);
 			$("#playmat").append(row);
 		})
-		console.log(formation);
+		if (debug) {console.log(formation);}
 	}
 	function buildrow(item) {
 	// blipL,locationL,marine,locationR,blipR
 		var marine = _marine({id:item['marine']['id']}).first();
-		var mdata = '<span class="move clickable" value="-1" name="' + marine.id + '"><i class="fa fa-angle-double-up"></i></span>'
-			+ '<div class="marine-name">'
-			+ (item['marine']['facingL'] ? '<< ' + marine.name : marine.name + ' >>')
+		var mdata = '<span class="move clickable" value="-1" title="move up" name="' + marine.id + '"><i class="fa fa-angle-double-up"></i></span>'
+			+ '<div>'
+			+ (item['marine']['facingL'] ? '<span class="facing clickable" name="' + marine.id + '" ><<</span> <span class="marine-name" id="' + marine.id + '">' + marine.name + '</span>': '<span class="marine-name"  id="' + marine.id + '">' + marine.name +  '</span> <span class="facing clickable" name="' + marine.id + '">>></span>')
 			+ '<br>' 
-			+ marine.squad
+			+ marine.squad + ' ' + marine.team
 			+ '</div>'
 			+ ' R:' + marine.range
-			+ ' S:<span class="support clickable" value="-1" title="move up" name="' + marine.id + '">[-]</span> ' + item['marine']['support'] + '<span class="support clickable" value="1" name="' + marine.id + '">[+]</span>'
+			+ ' S:<span class="support clickable" value="-1" name="' + marine.id + '">[-]</span> ' + item['marine']['support'] + '<span class="support clickable" value="1" name="' + marine.id + '">[+]</span>'
 			+ '<br><span class="move clickable" value="1" title="move down" name="' + marine.id + '"><i class="fa fa-angle-double-down"></i></span>';
 		mdata = '<td class="form-center marine" name="' + marine.id + '">' + mdata + '</div>';
 		
-		var tldata = '<span class="swarm swarm-left clickable" value="1" name="' + marine.id + '"><i class="fa fa-angle-double-down"></i></span>';
+		var tldata = '';
+		if (item['blipL'].length > 0) {
+			tldata += '<div class="bottomright">'
+				+ '<span class="swarm clickable" data-side="L" data-action="flank" data-id="' + marine.id + '"><i class="fa fa-undo" title="flank"></i></span>'
+				+ ' <span class="swarm clickable" data-side="L" data-action="movedown" data-id="' + marine.id + '"><i class="fa fa-angle-double-down" title="move"></i></span>'
+				+ '</div>'
+				+ '<div class="topright">'
+				+ '<span class="swarm clickable" data-side="L" data-action="moveup" data-id="' + marine.id + '"><i class="fa fa-angle-double-up" title="move"></i></span>'
+				+ '</div>';
+		}
 		$.each(item['terrainL'],function (t,terrain) {
 			var res = _terrain({name:terrain}).first();
 			tldata += terrain + ' ' + threaticon[res.threat];
 		})
 		
-		var trdata = '<span class="swarm swarm-right clickable" value="-1" name="' + marine.id + '"><i class="fa fa-angle-double-up"></i></span>';
+		var trdata = '';
+		if (item['blipR'].length > 0) {
+			trdata += '<div class="topleft">'
+				+ '<span class="swarm clickable" data-side="R" data-action="moveup" data-id="' + marine.id + '"><i class="fa fa-angle-double-up" title="move"></i></span>'
+				+ ' <span class="swarm clickable" data-side="R" data-action="flank" data-id="' + marine.id + '"><i class="fa fa-undo" title="flank"></i></span>'
+				+ '</div>'
+				+ '<div class="bottomleft">'
+				+ '<span class="swarm clickable" data-side="R" data-action="movedown" data-id="' + marine.id + '"><i class="fa fa-angle-double-down" title="move"></i></span>'
+				+ '</div>';
+		}
 		$.each(item['terrainR'],function (t,terrain) {
 			var res = _terrain({name:terrain}).first();
 			trdata += terrain + ' ' + threaticon[res.threat];
@@ -251,7 +270,7 @@ $(document).ready(function () {
 		$.each(teams,function (i,tm) {
 			ords = '<div style="color: ' + tm + ';"><b>'  + tm.toProperCase() + ' Team Orders</b></div><form>';
 			_action({team:tm}).each(function(record) {
-				ords += '<input type="radio" name="' + tm + '" value="' + record.number + '" ' + (actionDeck[record.number] ? '' : 'disabled') + '>' + record.type + '<br>';
+				ords += '<input type="radio" name="' + tm + '" value="' + record.number + '" ' + (actionDeck[record.number] ? '' : 'disabled') + ' title="' + record.text + '">' + record.type + ': ' + record.name + '<br>';
 			});
 			ords += '</form>';
 			outp += ords;
@@ -272,8 +291,10 @@ $(document).ready(function () {
 	
 	
 /***********************************
-functions
+            functions
 ***********************************/
+
+	/* Orders */
 	function addOrder(team,order) {
 		phaseDeck[team] = order;
 		resolveRefresh();
@@ -284,18 +305,18 @@ functions
 		});
 		order_refresh();
 	}
+	/* Movement - marine */
 	function updateSupport(marine_id, value) {
-		$.each(formation, function (i,item) {
-			if (item['marine']['id'] == marine_id ) {
-				if (support-value>=0 && support-value<=_maxsupport) {
-					item['marine']['support'] += value;
-					support -= value;
-					da_refresh();
-					console.log('Support: ' + support);
-					return false;
-				}
-			}
-		});
+		var i = getMarineIndex(marine_id);
+		var item = formation[i];
+		
+		if (support - value >= 0 && support - value <= _maxsupport && item['marine']['support'] + value >= 0) {
+			item['marine']['support'] += value;
+			support -= value;
+			da_refresh();
+			//console.log('Support: ' + support);
+			return false;
+		}
 	}
 	function updateFormation(marine_id, value) {
 		$.each(formation, function (i,item) {
@@ -310,23 +331,84 @@ functions
 			}
 		});
 	}
-	function updateSwarm(marine_id, value) {
+	function changeFacing(marine_id) {
 		$.each(formation, function (i,item) {
 			if (item['marine']['id'] == marine_id ) {
-				var newloc = (i+value)%formation.length
-				newloc += (newloc < 0 ? formation.length : 0);
-				console.log ('move to ' + newloc);
-				if (value < 0) {
-					formation[newloc]['blipR']=formation[newloc]['blipR'].concat(item['blipR']);
-					item['blipR']=[];
-				} else {
-					formation[newloc]['blipL']=formation[newloc]['blipL'].concat(item['blipL']);
-					item['blipL']=[];
-				}
-					da_refresh();
-					return false;
+				item['marine']['facingL'] = !item['marine']['facingL']
+				da_refresh();
+				return false;
 			}
 		});
+	}
+	/* Movement - Swarm */
+	function updateSwarm(marine_id, side, action) {
+		var idx = getMarineIndex(marine_id);
+		if (action == 'flank') {
+			flankSwarm(idx,side);
+		} else {
+			var value = action == 'moveup' ? -1 : 1 ;
+			moveSwarm(idx,side,value);
+		}
+	}
+	function moveSwarm (idx, side, value) {
+		var newloc = (idx+value)%formation.length;
+		newloc += (newloc < 0 ? formation.length : 0);
+		//console.log ('move to ' + newloc);
+		if (side == 'R') {
+			formation[newloc]['blipR']=formation[newloc]['blipR'].concat(formation[idx]['blipR']);
+			formation[idx]['blipR']=[];
+		} else {
+			formation[newloc]['blipL']=formation[newloc]['blipL'].concat(formation[idx]['blipL']);
+			formation[idx]['blipL']=[];
+		}
+		da_refresh();
+	}
+	function flankSwarm(idx, side) {
+		if (side == 'L') {
+			formation[idx]['blipR'] = formation[idx]['blipR'].concat(formation[idx]['blipL']);
+			formation[idx]['blipL'] = [];
+		} else {
+			formation[idx]['blipL'] = formation[idx]['blipL'].concat(formation[idx]['blipR']);
+			formation[idx]['blipR'] = [];
+		}
+		da_refresh();
+	}
+	/* Slayer */
+	function removeMarine(marine_id)	{
+		// 1. remove from formation
+		// 2. re-align blips and locations
+		if (formation.length == 1) {
+			alert ('Game Over, Man!');
+		} else {
+			var idx = getMarineIndex(marine_id);
+			shiftFormation(idx);
+			da_refresh();
+		}
+	}
+	function removeStealer(id,idx)	{
+		// Left or right?
+		var blipPile = id.match(/^L/) == 'L' ? 'blipL' : 'blipR';
+		formation[idx][blipPile].splice([id.match(/[0-9]+$/)],1);
+		da_refresh();
+	}
+	function shiftFormation(idx)	{
+		// First Marine - move items to location 1
+		// Last Marine - move items to final location
+		// 
+		var x = 0;
+		switch (idx) {
+			case (0):
+				x = idx + 1;
+				break;
+			case (formation.length - 1):
+				x = idx - 1;
+				break;
+		} 
+		formation[x]['blipL'] = formation[x]['blipL'].concat(formation[idx]['blipL']);
+		formation[x]['blipR'] = formation[x]['blipR'].concat(formation[idx]['blipR']);
+		formation[x]['terrainL'] = formation[x]['terrainL'].concat(formation[idx]['terrainL']);
+		formation[x]['terrainR'] = formation[x]['terrainR'].concat(formation[idx]['terrainR']);
+		formation.splice(idx,1);
 	}
 	
 	/* Fisher-Yates Shuffle  */
@@ -347,9 +429,17 @@ functions
 
 		return array;
 	}
+	function getMarineIndex(m_id) {
+		for (var i=0; i<formation.length; i++)	{
+			if (formation[i]['marine']['id'] == m_id) {
+				return i;
+			}
+		}
+	}
 	String.prototype.toProperCase = function () {
 		return this.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 	};
+	
 
 /*******************************************
 *  Listeners
@@ -361,27 +451,40 @@ functions
 	$('#resolve').on('click',function() {
 		resetOrders();
 	});
-	$('#playmat').on('click','.move',function(event) {
+	$('#playmat')
+	  .on('click','.move',function(event) {
 		updateFormation($(this).attr('name'),parseInt($(this).attr('value'),10))
-	});
-	$('#playmat').on('click','.support',function() {		
+	}).on('click','.support',function() {		
 		updateSupport($(this).attr('name'),parseInt($(this).attr('value'),10));
-	});
-	$('#playmat').on('click','.swarm',function() {		
-		updateSwarm($(this).attr('name'),parseInt($(this).attr('value'),10));
-	});
-	
-	
-	$('#playmat').on('click','.marine-name',function(event) {
+	}).on('click','.swarm',function() {
+		updateSwarm($(this).data('id'),$(this).data('side'),$(this).data('action'));
+	}).on('click','.facing',function() {
+		changeFacing($(this).attr('name'));
+	}).on('click','.marine-name',function(event) {
 		$('#menu').css({'left':event.pageX +20,'top': Math.max(event.pageY - $('#menu').height() + 20,0)});
 		$('#menu').toggle();
-		$('#menu-data').val( $('#menu').is(':hidden') ? '' : $(this).closest('td').attr('name'));
-	})
-	$('#playmat').on('click','.blip-sel',function(event) {
+		$('#menu-data').val( $('#menu').is(':hidden') ? '' : '{"type":"marine","row":' + $(this).closest('tr').index() + ',"id":"' + this.id + '"}');
+	}).on('click','.blip-sel',function(event) {
 		$('#menu').css({'left':event.pageX +20,'top': Math.max(event.pageY - $('#menu').height() + 20,0)});
 		$('#menu').toggle();
-		$('#menu-data').val( $('#menu').is(':hidden') ? '' : '{"row":' + $(this).closest('tr').index() + ',"id":"' + $(this).attr('value') + '"}');
-	})
+		$('#menu-data').val( $('#menu').is(':hidden') ? '' : '{"type":"genestealer","row":' + $(this).closest('tr').index() + ',"id":"' + $(this).attr('value') + '"}');
+	});
+	
+	$('#menu').on('click','.clickable',function() {
+		$('#menu').toggle();
+		switch (this.id) {
+			case ('btn-slay'):
+				var info = JSON.parse($('#menu-data').val());
+				console.log (info);
+				if (info['type'] == 'marine') {
+					removeMarine(info['id']);
+				} else {
+					removeStealer(info['id'],info['row']);
+				}
+				break;
+			default:
+		}
+	});
 			
 	
 // Dice roller
@@ -395,6 +498,41 @@ functions
 			$('#dice').html (outp);
 		}
 	});
+	
+// TESTS
+	$('#testbutton').on('click',function () {
+		// Increase support to 13 - support should not exceed 12
+			for (var x=0; x<14; x++)	{
+				updateSupport(1,1);
+			}
+			var res = formation[getMarineIndex(1)]['marine']['support'] == 12 ? 'pass' : 'fail';
+			console.log ('Support test 1: ' + res + ' support=' + support);
+			
+		// Decrease support to -1 - support should not exceed 0
+			for (var x=0; x<14; x++)	{
+				updateSupport(1,-1);
+			}
+			res = formation[getMarineIndex(1)]['marine']['support'] == 0 ? 'pass' : 'fail';
+			console.log ('Support test 2: ' + res + ' support=' + support);
+			
+		// Increase Support for 1 marine
+			updateSupport(1,1);
+			
+		
+		// Increase support to 13 - support should not exceed 11
+			for (var x=0; x<14; x++)	{
+				updateSupport(2,1);
+			}
+			var res = formation[getMarineIndex(2)]['marine']['support'] == 11 ? 'pass' : 'fail';
+			console.log ('Support test 3: ' + res + ' support=' + support);
+			
+		// Decrease support to -1 - support should not exceed 0
+			for (var x=0; x<14; x++)	{
+				updateSupport(2,-1);
+			}
+			res = formation[getMarineIndex(2)]['marine']['support'] == 0 ? 'pass' : 'fail';
+			console.log ('Support test 4: ' + res + ' support=' + support);
+	});
 });
 
 var threaticon = [
@@ -403,3 +541,4 @@ var threaticon = [
 '<i class="fa fa-battery-half" style="color:yellow;"></i>',
 '<i class="fa fa-battery-three-quarters" style="color:orange;"></i>',
 '<i class="fa fa-battery-full" style="color:red;"></i>']
+
