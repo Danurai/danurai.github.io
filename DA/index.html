@@ -22,60 +22,7 @@
 
 <!-- DA Scripts -->
 	<script src="da_engine.js"></script>
-	
-<!-- TODO Move to .css file(s) -->
-	<style>
-		.bg1 {
-			margin: 20px;
-		}
-		table, tr, td {
-			border: 1px solid;
-			padding: 2px 5px;
-			text-align: center;
-		}
-		td.form-left {
-			text-align: right;
-		}
-		td.form-center {
-			text-align: center;
-		}
-		td.form-right {
-			text-align: left;
-		}
-		
-		.clickable {
-			cursor: pointer;
-			background-color: rgba(0,0,255,0.3);
-		}
-		
-		.dice {
-			width: 2em;
-			height:	2em;
-			background-color: #800;
-			font: bold 12px;
-			color: #fff;
-			text-align: center;
-			cursor: pointer;
-		}
-		
-		.swarm {
-			color: red;
-		}
-		.swarm-left {
-			float: left;
-		}
-		.swarm-right {
-			float: right;
-		}
-		
-		
-		#menu {
-			visibility:		visible;
-			position: 		absolute;
-			background-color: rgba(255,255,255,0.9);
-			border: 		1px solid black;
-		}
-	</style>
+	<link rel="stylesheet" href="da.css">
 </head>
 <body>
 	<div class="background">
@@ -85,6 +32,8 @@
 					<em>Sin of Damnation</em>
 					<div id="dice" class="dice">0
 					</div>
+					<div class="pull-right btn btn-warning" id="testbutton">TEST</div>
+					<p>
 					<table>
 						<thead>
 							<tr id="decks">
@@ -131,9 +80,10 @@
 	</div>
 	<div id='menu' hidden>
 		<div class='menu'>
-			<input type='text' id='menu-data' value=''>
-			<div class='clickable'>[ Slay ]</div>
+			<div class='clickable btn-da' id='btn-slay'>[ Slay ]</div>
+			<div class='clickable btn-da' id='btn-close'>[ x ]</div>
 		</div>
+		<input type='text' id='menu-data' hidden>
 	</div>
 </body>
 </html>
