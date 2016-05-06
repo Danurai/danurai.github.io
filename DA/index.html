@@ -30,10 +30,16 @@
 			<div class="row">
 				<div class="col-md-6">
 					<em>Sin of Damnation</em>
-					<div id="dice" class="dice">0
+					<div id="dice" class="dice">0</div>
+					<div class="btn-group">
+						<div class="btn btn-warning" id="testbutton">TEST</div>
+						<div class="btn btn-default" id="savebutton">Save State</div>
+						<div class="btn btn-default" id="loadbutton">Load State</div>
 					</div>
-					<div class="pull-right btn btn-warning" id="testbutton">TEST</div>
-					<p>
+					
+					<div>
+						<textarea id="savedstate" cols="75" rows="5"></textarea>
+					</div>
 					<table>
 						<thead>
 							<tr id="decks">
@@ -74,6 +80,7 @@
 						<h4>4. Event</h4>
 						<div id='eventphase'></div>
 					</div>
+					<br>
 				</div>
 			</div>
 		</div>

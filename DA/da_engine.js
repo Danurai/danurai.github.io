@@ -39,6 +39,7 @@ $(document).ready(function () {
 	
 // decks
 	var eventDeck = [];
+	var eventDiscard = [];
 	var currEvent;
 	var stealerDeck = [];
 	var stealerDiscard = [];
@@ -53,6 +54,9 @@ $(document).ready(function () {
 	var actionDeck = {};
 	var phaseDeck = [];
 	var teams = [];
+	var marineDiscard = [];
+// Save\Load
+	var savedstate = {};
 
 /*******************
 / Start
@@ -77,15 +81,12 @@ $(document).ready(function () {
 		eventDeck = shuffle(eventDeck);
 		stealerDeck = shuffle(_stealer);
 		
-		$('#blip_deck').html (stealerDeck.length);
-		$('#event_deck').html (eventDeck.length);
 		
 	// 2. Starting Location
 		var locid = (6-teams.length)+1;
 		// MOVING 
 		currLocation = _location({id:locid}).first();
 		
-		$("#location_active").html (currLocation.name + '<br>' + currLocation.spawn['major'] +  ' ' + currLocation.spawn['minor']);
 		
 	// 3. Setup location deck
 		for (var i=0; i<currLocation['setup'].length; i++) {
@@ -93,9 +94,7 @@ $(document).ready(function () {
 			x = Math.floor(Math.random() * cards.length);
 			locationDeck.push(cards[x]);
 		}
-		
-		$("#location_deck").html ('Deck ids: ' + locationDeck);
-		
+				
 	// 4. Combat Teams + Orders
 		console.log ('Teams: ' + teams);
 		tmp = _marine({team:teams}).select('id');
@@ -144,46 +143,10 @@ $(document).ready(function () {
 			}
 		}
 		
-		$("#blipL").html (blipDeckL.length);
-		$("#blipR").html (blipDeckR.length);
-		$("#blip_deck").html (stealerDeck.length);
-	
 	// 8. Draw Event and spawn Stealers
 		// EVERY TURN
-		currEvent = eventDeck.pop();
-		var event = _event({id:currEvent}).first();
-		
-		// match spawn#1, then spawn#2 and update formation
-		// PLAYER CHOICE?
-		for (var x=0; x<2; x++) {
-			$.each(formation,function (i,item) {
-				//event.spawn[0]['threat'] + ':' + event.spawn[0]['type']
-				if (_terrain({name:item['terrainL']}).first().threat == event.spawn[x]['threat']) {
-					for (var s=0; s<currLocation.spawn[event.spawn[x]['type']]; s++) {
-						if (blipDeckL.length != 0) {formation[i]['blipL'].push (blipDeckL.pop());}
-					}
-				}
-				if (_terrain({name:item['terrainR']}).first().threat == event.spawn[x]['threat']) {
-					for (var s=0; s<currLocation.spawn[event.spawn[x]['type']]; s++) {
-						if (blipDeckR.length != 0) {formation[i]['blipR'].push (blipDeckR.pop());}
-					}
-				}
-			})
-		}
-		
-		$("#blipL").html (blipDeckL.length);
-		$("#blipR").html (blipDeckR.length);
-		$("#blip_deck").html (stealerDeck.length);
-		var outp = '<b>' + event.name + '</b>'
-			+ '<br>' + threaticon[event.spawn[0]['threat']] + ' ' + event.spawn[0]['type'] 
-			+ ' ' + threaticon[event.spawn[1]['threat']] + ' ' + event.spawn[1]['type']
-			+ (turn == 0 ? '<span style="color: grey">' : '<span>')
-			+ '<br>' + event.swarm[0] + ' ' + (event.action=="move" ? '<i class="fa fa-angle-double-up"></i>' : '<i class="fa fa-undo"></i>')
-			+ '<br><div class="small">' + event.text + '</div>'
-			+ '</span>';
-		
-		$("#event_active").html (outp);
-		$("#event_deck").html (eventDeck.length);
+		drawEvent();
+		spawnEvent();
 		
 	}
 
@@ -197,6 +160,30 @@ $(document).ready(function () {
 
 // Re-draw the playmat
 	function da_refresh() {
+	   /* Head */
+		$('#blip_discard').html ('Blip Discard: ' + stealerDiscard.length + '<br><em>Marine Discard: ' + marineDiscard.length + '</em>' );
+		
+		$('#blip_deck').html ('Blips: ' + stealerDeck.length);
+		$("#location_deck").html ('Deck ids: ' + locationDeck);
+		$('#event_deck').html ('Events: ' + eventDeck.length + '<div class="clickable bottomright" id="drawevent"><i class="fa fa-plus-circle"></i></div>');
+		
+		$("#blipL").html (blipDeckL.length);
+		$("#location_active").html (currLocation.name + '<br>' + currLocation.spawn['major'] +  ' ' + currLocation.spawn['minor']);
+		$("#blipR").html (blipDeckR.length);
+		
+		var event = _event({id:currEvent}).first();
+		var outp = '<b>' + event.name + '</b>'
+			+ '<br>' + threaticon[event.spawn[0]['threat']] + ' ' + event.spawn[0]['type'] 
+			+ ' ' + threaticon[event.spawn[1]['threat']] + ' ' + event.spawn[1]['type']
+			+ (turn == 0 ? '<span style="color: grey">' : '<span>')
+			+ '<br>' + event.swarm[0] + ' ' + (event.action=="move" ? '<i class="fa fa-angle-double-up"></i>' : '<i class="fa fa-undo"></i>')
+			+ '<br><div class="small">' + event.text + '</div>'
+			+ '</span>'
+			+ '<div class="clickable bottomright" id="spawnevent"><i class="fa fa-plus-circle"></i></div>';
+		$("#event_active").html (outp);
+	
+		
+		/* playmat */
 		$("#playmat").empty();
 		$.each(formation,function (i,item) {
 			row = buildrow(item);
@@ -228,6 +215,7 @@ $(document).ready(function () {
 				+ '<span class="swarm clickable" data-side="L" data-action="moveup" data-id="' + marine.id + '"><i class="fa fa-angle-double-up" title="move"></i></span>'
 				+ '</div>';
 		}
+		tldata += '<div class="spawn bottomleft clickable" data-id="' + marine.id + '" data-side="L" title="Spawn"><i class="fa fa-plus-circle"></i></div>'
 		$.each(item['terrainL'],function (t,terrain) {
 			var res = _terrain({name:terrain}).first();
 			tldata += terrain + ' ' + threaticon[res.threat];
@@ -243,6 +231,7 @@ $(document).ready(function () {
 				+ '<span class="swarm clickable" data-side="R" data-action="movedown" data-id="' + marine.id + '"><i class="fa fa-angle-double-down" title="move"></i></span>'
 				+ '</div>';
 		}
+		trdata += '<div class="spawn bottomright clickable" data-id="' + marine.id + '" data-side="R" title="Spawn"><i class="fa fa-plus-circle"></i></div>'
 		$.each(item['terrainR'],function (t,terrain) {
 			var res = _terrain({name:terrain}).first();
 			trdata += terrain + ' ' + threaticon[res.threat];
@@ -381,6 +370,7 @@ $(document).ready(function () {
 			alert ('Game Over, Man!');
 		} else {
 			var idx = getMarineIndex(marine_id);
+			marineDiscard.push(marine_id);
 			shiftFormation(idx);
 			da_refresh();
 		}
@@ -388,6 +378,7 @@ $(document).ready(function () {
 	function removeStealer(id,idx)	{
 		// Left or right?
 		var blipPile = id.match(/^L/) == 'L' ? 'blipL' : 'blipR';
+		stealerDiscard.push(formation[idx][blipPile][id.match(/[0-9]+$/)]);
 		formation[idx][blipPile].splice([id.match(/[0-9]+$/)],1);
 		da_refresh();
 	}
@@ -409,6 +400,86 @@ $(document).ready(function () {
 		formation[x]['terrainL'] = formation[x]['terrainL'].concat(formation[idx]['terrainL']);
 		formation[x]['terrainR'] = formation[x]['terrainR'].concat(formation[idx]['terrainR']);
 		formation.splice(idx,1);
+	}
+	/* Events */
+	function drawEvent() {
+		eventDiscard.push(currEvent);
+		if (eventDeck.length == 0)	{
+			eventDeck = shuffle(eventDiscard);
+			eventDiscard = [];
+		}
+		currEvent = eventDeck.pop();
+		turn ++;
+		da_refresh()
+	}
+	function spawnEvent() {
+		var event = _event({id:currEvent}).first();
+		// Spawn
+		// match spawn#1, then spawn#2 and update formation
+		// PLAYER CHOICE?
+		for (var x=0; x<2; x++) {
+			$.each(formation,function (i,item) {
+				//event.spawn[0]['threat'] + ':' + event.spawn[0]['type']
+				if (_terrain({name:item['terrainL']}).first().threat == event.spawn[x]['threat']) {
+					for (var s=0; s<currLocation.spawn[event.spawn[x]['type']]; s++) {
+						if (blipDeckL.length != 0) {formation[i]['blipL'].push (blipDeckL.pop());}
+					}
+				}
+				if (_terrain({name:item['terrainR']}).first().threat == event.spawn[x]['threat']) {
+					for (var s=0; s<currLocation.spawn[event.spawn[x]['type']]; s++) {
+						if (blipDeckR.length != 0) {formation[i]['blipR'].push (blipDeckR.pop());}
+					}
+				}
+			})
+		}
+		da_refresh();
+		// Move
+		// If the swarm is already behind the Space Marine, it does not move.
+		if (turn > 1) {
+			var tmpBlipL = Array.apply(null, Array(formation.length)).map(function() { return [] });
+			var tmpBlipR = Array.apply(null, Array(formation.length)).map(function() { return [] });;
+			var newloc;
+			$.each(formation,function (i,item) {
+				if ($.inArray(event['swarm'][0],item['blipL']) > -1) {
+					if (event['action'] == "move") {
+						newloc = i==formation.length-1 ? 0 : i+1;
+						tmpBlipL[newloc] = item['blipL'];
+						item['blipL'] = [];
+					} else { //flank
+						if (item['marine']['facingL']) {
+							tmpBlipR[i] = item['blipL'];
+							item['blipL'] = [];
+						}
+					}
+				}
+				if ($.inArray(event['swarm'][0],item['blipR']) > -1) {
+					if (event['action'] == "move") {
+						newloc = i==0 ? formation.length-1 : i-1;
+						tmpBlipR[newloc] = item['blipR'];
+						item['blipR'] = [];
+					} else { //flank
+						if (!item['marine']['facingL']) {
+							tmpBlipL[i] = item['blipR'];
+							item['blipR'] = [];
+						}
+					}
+				}
+			});
+			for (var i=0; i<formation.length; i++) {
+				formation[i]['blipL'] = formation[i]['blipL'].concat(tmpBlipL[i]);
+				formation[i]['blipR'] = formation[i]['blipR'].concat(tmpBlipR[i]);
+			}
+		}
+		da_refresh();
+	}
+	function spawnOne(m_id,side) {
+		var idx = getMarineIndex(m_id);
+		if (side == 'L') {
+			if (blipDeckL.length != 0) {formation[idx]['blipL'].push (blipDeckL.pop());}
+		} else {
+			if (blipDeckR.length != 0) {formation[idx]['blipR'].push (blipDeckR.pop());}
+		}
+		da_refresh();
 	}
 	
 	/* Fisher-Yates Shuffle  */
@@ -448,9 +519,11 @@ $(document).ready(function () {
 	$('#choosephase').on('change','[type="radio"]',function() {
 		addOrder(this.name, this.value);
 	});
-	$('#resolve').on('click',function() {
-		resetOrders();
-	});
+	$('#resolve').on('click', resetOrders);
+	
+	$('#event_deck').on('click','#drawevent',drawEvent);
+	$('#event_active').on('click','#spawnevent',spawnEvent);
+	
 	$('#playmat')
 	  .on('click','.move',function(event) {
 		updateFormation($(this).attr('name'),parseInt($(this).attr('value'),10))
@@ -468,6 +541,8 @@ $(document).ready(function () {
 		$('#menu').css({'left':event.pageX +20,'top': Math.max(event.pageY - $('#menu').height() + 20,0)});
 		$('#menu').toggle();
 		$('#menu-data').val( $('#menu').is(':hidden') ? '' : '{"type":"genestealer","row":' + $(this).closest('tr').index() + ',"id":"' + $(this).attr('value') + '"}');
+	}).on('click','.spawn',function () {
+		spawnOne($(this).data('id'),$(this).data('side'));
 	});
 	
 	$('#menu').on('click','.clickable',function() {
@@ -532,6 +607,63 @@ $(document).ready(function () {
 			}
 			res = formation[getMarineIndex(2)]['marine']['support'] == 0 ? 'pass' : 'fail';
 			console.log ('Support test 4: ' + res + ' support=' + support);
+		
+		// Event Deck - Draw 32
+			for (var x=0; x<31; x++)	{
+				drawEvent();
+			}
+			res = eventDeck.length == 28 && eventDiscard.length == 1 ? "pass" : "fail";
+			console.log ("Event test 1: " + res + ' event deck/discard: ' + eventDeck.length + '/' + eventDiscard.length);
+	});
+// Save\Load
+	$('#savebutton').on('click',function () {
+		savedstate = {};
+		savedstate['formation'] = [];
+		$.each(formation,function (i,item) {
+			savedstate['formation'].push(JSON.parse(JSON.stringify(item)));
+		});
+		savedstate['teams'] = teams.slice(0);
+		savedstate['marineDiscard'] = marineDiscard.slice(0);
+		savedstate['locationDeck'] = locationDeck.slice(0);
+		savedstate['eventDeck'] = eventDeck.slice(0);
+		savedstate['eventDiscard'] = eventDiscard.slice(0);
+		savedstate['currEvent'] = currEvent;
+		savedstate['stealerDeck'] = stealerDeck.slice(0);
+		savedstate['blipDeckL'] = blipDeckL.slice(0);
+		savedstate['blipDeckR'] = blipDeckR.slice(0);
+		savedstate['stealerDiscard'] = stealerDiscard.slice(0);
+		savedstate['support'] = support;
+		savedstate['turn'] = turn;
+		savedstate['locid'] = currLocation['id'];
+		//savedstate['actionDeck'] = actionDeck.slice(0);
+		//savedstate['phaseDeck'] = phaseDeck.slice(0
+		
+		$('#savedstate').val(JSON.stringify(savedstate));
+	});
+	$('#loadbutton').on('click',function () {
+		savedstate = JSON.parse($('#savedstate').val());
+		formation = [];
+		$.each(savedstate['formation'],function (i,item) {
+			formation.push(JSON.parse(JSON.stringify(item)));
+		});
+		teams = savedstate['teams'].slice(0);
+		marineDiscard = savedstate['marineDiscard'].slice(0);
+		locationDeck = savedstate['locationDeck'].slice(0);
+		eventDeck = savedstate['eventDeck'].slice(0);
+		eventDiscard = savedstate['eventDiscard'].slice(0);
+		currEvent = savedstate['currEvent'];
+		stealerDeck = savedstate['stealerDeck'].slice(0);
+		blipDeckL = savedstate['blipDeckL'].slice(0);
+		blipDeckR = savedstate['blipDeckR'].slice(0);
+		stealerDiscard = savedstate['stealerDiscard'].slice(0);
+		support = savedstate['support'];
+		turn = savedstate['turn'];
+		currLocation = _location({id:savedstate['locid']}).first();
+		
+		//actionDeck = savedstate['actionDeck'].slice(0);
+		//phaseDeck = savedstate['phaseDeck'].slice(0);
+
+		da_refresh();
 	});
 });
 
