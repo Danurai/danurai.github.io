@@ -1,10 +1,10 @@
 [
-{"id":1,"name":"Door","threat":2,"text":"Activate: Place 1 support token on this card. When travelling, the current player may first slay 1 Genestealer in the formation for each token on this card."},
-{"id":2,"name":"Dark Corner","threat":3,"text":""},
-{"id":3,"name":"Corridor","threat":1,"text":""},
-{"id":4,"name":"Ventilation Duct","threat":4,"text":""},
+{"id":1,"name":"Door","threat":2,"support":true,"text":"Activate: Place 1 support token on this card. When travelling, the current player may first slay 1 Genestealer in the formation for each token on this card."},
+{"id":2,"name":"Dark Corner","threat":3,"support":false,"text":""},
+{"id":3,"name":"Corridor","threat":1,"support":false,"text":""},
+{"id":4,"name":"Ventilation Duct","threat":4,"support":false,"text":""},
 {"id":5,"name":"Artefact","threat":1,"text":"Activate: Place this card in your hand. You may discard this card after 1 of your defending Space marines rolls the die to make the attack miss."},
-{"id":6,"name":"Control Panel","threat":2,"text":"Activate: Use the current Location card's \"Activae Control Panel\" ability."},
-{"id":7,"name":"Promethean Tank","threat":3,"text":"Acivate: Discard this Terrain card ans slay all Genestealers on this position. Then roll a die, if you roll [0], slay this Space Marine."},
-{"id":8,"name":"Spore Chimney","threat":4,"text":"Activate: Rolla die, if you roll [skull], discard this Terrain card."}
+{"id":6,"name":"Control Panel","threat":2,"support":true,"text":"Activate: Use the current Location card's \"Activate Control Panel\" ability."},
+{"id":7,"name":"Promethean Tank","threat":3,"support":false,"text":"Acivate: Discard this Terrain card and slay all Genestealers on this position. Then roll a die, if you roll [0], slay this Space Marine."},
+{"id":8,"name":"Spore Chimney","threat":4,"support":false,"text":"Activate: Roll a die, if you roll [skull], discard this Terrain card."}
 ]
