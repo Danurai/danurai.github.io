@@ -1,5 +1,4 @@
 
-// AA: Target Lock: Add a support token to a swarm, remove when swarm is defeated
 // EV: Rescue Space Marine...
 // Change Terrain NAME to ID (file and script)
 
@@ -32,6 +31,7 @@
 // EV: The Swarm - Place 2 cards into each blip pile
 // ++ Resolve Events - clear box (2)
 // ++ Resolve Actions: add checkbox
+// AA: Target Lock: Add a support token to a swarm, remove when swarm is defeated
 
 $(document).ready(function () {
 	var debug = false;
@@ -97,10 +97,10 @@ $(document).ready(function () {
 	var savedstate = {};
 
 /*******************
-/ Start
+       Start
 *******************/
 	$(document).ajaxStop(function () {
-		setup(["blue","green","purple"]);
+		setup(["blue","green","purple","red"]);
 		
 		da_refresh();
 		
@@ -119,8 +119,7 @@ $(document).ready(function () {
 		for (var i=1; i<=30; i++) {eventDeck.push(i)}
 		eventDeck = shuffle(eventDeck);
 		stealerDeck = shuffle(_stealer);
-		
-		
+				
 	// 2. Starting Location
 		voidLock = (6-teams.length)+1;
 		currLocation = _location({id:voidLock}).first();
@@ -149,6 +148,7 @@ $(document).ready(function () {
 			tmparr['marine']={id:tmp[i],facingL:(i<tmp.length/2),support:0};
 			tmparr['blipL']=[];
 			tmparr['blipR']=[];
+			tmparr['blipSupport'] = [0,0];
 			tmparr['terrainL']=[];	// {id:n,support:n}
 			tmparr['terrainR']=[];	// {id:n,support:n}
 			formation.push(tmparr);
@@ -175,7 +175,7 @@ $(document).ready(function () {
 // Re-draw the playmat
 	function da_refresh() {
 	   /* Head */
-		$('#addinfo').html ('<b>Turn:</b> ' + turn + ' <b>Phase:</b> ' + _phase[phase] + ' <b>Support Pool:</b> ' + support + ' <b>Total Losses:</b> ' + marineDiscard.length);
+		$('#addinfo').html ('Turn: <b>' + turn + ' </b>Phase:<b> ' + _phase[phase] + ' </b>Support Pool:<b> ' + support + ' </b>Total Losses:<b> ' + marineDiscard.length + '</b>');
 		$('#blip_discard').html ('Blip Discard: ' + stealerDiscard.length);
 		
 		$('#blip_deck').html ('Blips: ' + stealerDeck.length);
@@ -272,10 +272,14 @@ $(document).ready(function () {
 		$.each(item['blipL'],function(b,blip){
 			blipLdata += '<span class="blip-sel" value="L' + b + '">[ ' + blip + ' ]</span>';
 		});
+		blipLdata += item['blipSupport'][0] > 0 ? ' (' + item['blipSupport'][0] + ')' : '';
+		
 		var blipRdata = '';
 		$.each(item['blipR'],function(b,blip){
 			blipRdata += '<span class="blip-sel" value="R' + b + '">[ ' + blip + ' ]</span>';
 		});
+		blipRdata += item['blipSupport'][1] > 0 ? ' (' + item['blipSupport'][1] + ')' : '';
+		
 		var outp = '<tr>'
 		 + '<td class="form-left" colspan="2">' + blipLdata + ' ' + tldata + '</td>'
 		 + mdata
@@ -377,6 +381,14 @@ $(document).ready(function () {
 			da_refresh();
 		}
 	}
+	function updateSwarmSupport(idx,side,value) {
+		var swarmid = side == 'L' ? 0 : 1;
+		if (support - value >= 0 && support - value <= _maxsupport && formation[idx]['blipSupport'][swarmid] + value >= 0) {
+			formation[idx]['blipSupport'][swarmid] += value;
+			support -= value;
+			da_refresh();
+		}
+	}
 	function updateFormation(marine_id, value) {
 		$.each(formation, function (i,item) {
 			if (item['marine']['id'] == marine_id ) {
@@ -449,8 +461,14 @@ $(document).ready(function () {
 	function removeStealer(id,idx)	{
 		// Left or right?
 		var blipPile = id.match(/^L/) == 'L' ? 'blipL' : 'blipR';
+		var supportid = id.match(/^L/) == 'L' ? 0 : 1;
 		stealerDiscard.push(formation[idx][blipPile][id.match(/[0-9]+$/)]);
 		formation[idx][blipPile].splice([id.match(/[0-9]+$/)],1);
+		
+		if (formation[idx][blipPile].length == 0) {
+			support += formation[idx]['blipSupport'][supportid];
+			formation[idx]['blipSupport'][supportid] = 0;
+		}
 		da_refresh();
 	}
 	function shiftFormation(idx)	{
@@ -733,7 +751,7 @@ $(document).ready(function () {
 		var data = JSON.parse($('#menu-stealer-data').val());
 		switch (this.id) {
 			case ('btn-slay'):
-				removeStealer(data['id'],data['row']);
+				removeStealer(data.id,data.row);
 				break;
 			case ('btn-rtnblipL'):
 				returnBlip(data.row,data.id,'L');
@@ -741,7 +759,14 @@ $(document).ready(function () {
 			case ('btn-rtnblipR'):
 				returnBlip(data.row,data.id,'R');
 				break;
+			case('support-add'):
+				updateSwarmSupport(data.row,data.id.match(/[LR]/),1);
+				break;
+			case('support-sub'):
+				updateSwarmSupport(data.row,data.id.match(/[LR]/),-1);
+				break;
 			default:
+				break;
 		}
 	});
 	$('#blipL').on('click','.clickable',function() {
