@@ -1,3 +1,38 @@
+
+// AA: Target Lock: Add a support token to a swarm, remove when swarm is defeated
+// EV: Rescue Space Marine...
+// Change Terrain NAME to ID (file and script)
+
+// Actions
+// AA: Reorganize Move to anywhere in the formation.
+// AA: Forward Scouting - view the top card of the Event deck and place at top or bottom
+// AA: limit support to 'supportable' terrain
+
+// Events
+// EV: Second Wind - flag marine with effect - Roll 0 misses.
+// EV: Gun Jam - block action
+// Event card Null Swarm ?
+// EV: player choice on blip pile
+// NG: Automate Events
+
+
+// TRAVEL Door action
+
+// ++ Display: Location Text, terrain text
+// ++ Event Text: replace Instinct (bold) [0] [1] [skull]
+
+// ATTACK: Temporary Attack Array, refresh on formation update, use to show which swarms have attacked
+
+/* Done */
+// AA: Activate - Add support token to terrain
+// ++ Display Phase Indicator/turn/support tokens
+// EV: H: Intimidation - Shuffle stealer into smallest blip pile
+// EV: H: Temporary Sanctuary (as intimidation) - manual
+// EV: Full Scan - Discard one from a blip pile
+// EV: The Swarm - Place 2 cards into each blip pile
+// ++ Resolve Events - clear box (2)
+// ++ Resolve Actions: add checkbox
+
 $(document).ready(function () {
 	var debug = false;
 
@@ -12,6 +47,7 @@ $(document).ready(function () {
 		'c','c','c','c','c','c','c','c','c',
 		's','s','s','s','s','s','s','s','s',
 		't','t','t','t','t','t','t','t','t'];
+	var _phase = ['Choose Actions','Resolve Actions','Attack','Event']; // Attack - set temporary array before attacking ;) Event - Resolve, Spawn(user input?), Move
 		
 	$.ajax("/DA/res/json/locations.txt")
 		.done (function(data) {
@@ -45,11 +81,13 @@ $(document).ready(function () {
 	var stealerDiscard = [];
 	var locationDeck = [];
 	var currLocation;
+	var voidLock;
 	var formation = [];
 	var blipDeckL = [];
 	var blipDeckR = [];
 	var support;
 	var turn;
+	var phase;
 // Actiondeck {cardnumber:state}
 	var actionDeck = {};
 	var phaseDeck = [];
@@ -75,6 +113,7 @@ $(document).ready(function () {
 	// #Combat Teams
 		teams = teamlist;
 		turn = 0;
+		phase = 0;
 		
 	// 1. Setup Decks - Shuffle stealer and Event decks
 		for (var i=1; i<=30; i++) {eventDeck.push(i)}
@@ -83,9 +122,8 @@ $(document).ready(function () {
 		
 		
 	// 2. Starting Location
-		var locid = (6-teams.length)+1;
-		// MOVING 
-		currLocation = _location({id:locid}).first();
+		voidLock = (6-teams.length)+1;
+		currLocation = _location({id:voidLock}).first();
 		
 		
 	// 3. Setup location deck
@@ -111,43 +149,19 @@ $(document).ready(function () {
 			tmparr['marine']={id:tmp[i],facingL:(i<tmp.length/2),support:0};
 			tmparr['blipL']=[];
 			tmparr['blipR']=[];
-			tmparr['terrainL']=[];
-			tmparr['terrainR']=[];
+			tmparr['terrainL']=[];	// {id:n,support:n}
+			tmparr['terrainR']=[];	// {id:n,support:n}
 			formation.push(tmparr);
 		}
 	// 6. Support tokens
 		support = _maxsupport;
 		
-	// 7. Terrain (MOVING - make function)
-		console.log('Terrain: ' + currLocation['terrain'] + ' ' + currLocation['terrainlocation']);
-		formation[currLocation['terrainlocation'][0]-1]['terrainL'].push (currLocation['terrain'][0]);
-		formation[currLocation['terrainlocation'][1]-1]['terrainL'].push (currLocation['terrain'][1]);
-		formation[formation.length - currLocation['terrainlocation'][2]]['terrainR'].push (currLocation['terrain'][2]);
-		formation[formation.length - currLocation['terrainlocation'][3]]['terrainR'].push (currLocation['terrain'][3]);
-		
-	// 7. Blips (MOVING - make function)
-		blipDeckL =  [];
-		for (var i=0; i<currLocation['blipcount'][0]; i++) {
-			blipDeckL.push (stealerDeck.pop())
-			if (stealerDeck.length == 0) {
-				stealerDeck = shuffle(stealerDiscard);
-				stealerDiscard = [];
-			}
-		}
-		blipDeckR = [];
-		for (var i=0; i<currLocation['blipcount'][1]; i++) {
-			blipDeckR.push (stealerDeck.pop())
-			if (stealerDeck.length == 0) {
-				stealerDeck = shuffle(stealerDiscard);
-				stealerDiscard = [];
-			}
-		}
+	// 7. replaced by travelFunctions 
+		travelFunctions();
 		
 	// 8. Draw Event and spawn Stealers
-		// EVERY TURN
 		drawEvent();
 		spawnEvent();
-		
 	}
 
 /*********************************************************************
@@ -161,25 +175,37 @@ $(document).ready(function () {
 // Re-draw the playmat
 	function da_refresh() {
 	   /* Head */
-		$('#blip_discard').html ('Blip Discard: ' + stealerDiscard.length + '<br><em>Marine Discard: ' + marineDiscard.length + '</em>' );
+		$('#addinfo').html ('<b>Turn:</b> ' + turn + ' <b>Phase:</b> ' + _phase[phase] + ' <b>Support Pool:</b> ' + support + ' <b>Total Losses:</b> ' + marineDiscard.length);
+		$('#blip_discard').html ('Blip Discard: ' + stealerDiscard.length);
 		
 		$('#blip_deck').html ('Blips: ' + stealerDeck.length);
 		$("#location_deck").html ('Deck ids: ' + locationDeck);
 		$('#event_deck').html ('Events: ' + eventDeck.length + '<div class="clickable bottomright" id="drawevent"><i class="fa fa-plus-circle"></i></div>');
 		
-		$("#blipL").html (blipDeckL.length);
-		$("#location_active").html (currLocation.name + '<br>' + currLocation.spawn['major'] +  ' ' + currLocation.spawn['minor']);
-		$("#blipR").html (blipDeckR.length);
+		var blipLbuttons = '<div class="bottomleft clickable" data-side="L" data-action="remove" title="Discard Blip"><i class="fa fa-minus-circle"></i></div>'
+		 + '<div class="bottomright clickable" data-side="L" data-action="add" title="Add Blip"><i class="fa fa-plus-circle"></i></div>';
+		$("#blipL").html (blipDeckL.length + blipLbuttons);
+		
+		var locData = currLocation.name 
+			+ '<br>' + currLocation.text
+			+ '<br>' + currLocation.spawn['major'] +  ' ' + currLocation.spawn['minor'] 
+			+ '<div class="clickable bottomright" id="travel" title="Travel!"><i class="fa fa-plus-circle"></i></div>';
+		
+		$("#location_active").html (locData);
+		
+		var blipRbuttons = '<div class="bottomleft clickable" data-side="R" data-action="remove" title="Discard Blip"><i class="fa fa-minus-circle"></i></div>'
+		 + '<div class="bottomright clickable" data-side="R" data-action="add" title="Add Blip"><i class="fa fa-plus-circle"></i></div>';
+		$("#blipR").html (blipDeckR.length + blipRbuttons);
 		
 		var event = _event({id:currEvent}).first();
 		var outp = '<b>' + event.name + '</b>'
 			+ '<br>' + threaticon[event.spawn[0]['threat']] + ' ' + event.spawn[0]['type'] 
 			+ ' ' + threaticon[event.spawn[1]['threat']] + ' ' + event.spawn[1]['type']
-			+ (turn == 0 ? '<span style="color: grey">' : '<span>')
-			+ '<br>' + event.swarm[0] + ' ' + (event.action=="move" ? '<i class="fa fa-angle-double-up"></i>' : '<i class="fa fa-undo"></i>')
+			+ (turn == 1 ? '<div style="color: #AAAAAA;">' : '<div>')
+			+ event.swarm[0] + ' ' + (event.action=="move" ? '<i class="fa fa-angle-double-up"></i>' : '<i class="fa fa-undo"></i>')
 			+ '<br><div class="small">' + event.text + '</div>'
-			+ '</span>'
-			+ '<div class="clickable bottomright" id="spawnevent"><i class="fa fa-plus-circle"></i></div>';
+			+ '</div>'
+			+ '<div class="clickable bottomright" id="spawnevent" title="draw"><i class="fa fa-plus-circle"></i></div>';
 		$("#event_active").html (outp);
 	
 		
@@ -196,12 +222,13 @@ $(document).ready(function () {
 		var marine = _marine({id:item['marine']['id']}).first();
 		var mdata = '<span class="move clickable" value="-1" title="move up" name="' + marine.id + '"><i class="fa fa-angle-double-up"></i></span>'
 			+ '<div>'
-			+ (item['marine']['facingL'] ? '<span class="facing clickable" name="' + marine.id + '" ><<</span> <span class="marine-name" id="' + marine.id + '">' + marine.name + '</span>': '<span class="marine-name"  id="' + marine.id + '">' + marine.name +  '</span> <span class="facing clickable" name="' + marine.id + '">>></span>')
+			+ (item['marine']['facingL'] ? '<span class="facing clickable" name="' + marine.id + '" ><<</span> '
+			+ '<span class="clickable marine-name" id="' + marine.id + '">' + marine.name + '</span>': '<span class="marine-name"  id="' + marine.id + '">' + marine.name +  '</span> <span class="facing clickable" name="' + marine.id + '">>></span>')
 			+ '<br>' 
 			+ marine.squad + ' ' + marine.team
 			+ '</div>'
 			+ ' R:' + marine.range
-			+ ' S:<span class="support clickable" value="-1" name="' + marine.id + '">[-]</span> ' + item['marine']['support'] + '<span class="support clickable" value="1" name="' + marine.id + '">[+]</span>'
+			+ ' <span class="clickable m_support" data-id="' + marine.id + '" data-side="" title="Support"> S:' + item['marine']['support'] + '</span>'
 			+ '<br><span class="move clickable" value="1" title="move down" name="' + marine.id + '"><i class="fa fa-angle-double-down"></i></span>';
 		mdata = '<td class="form-center marine" name="' + marine.id + '">' + mdata + '</div>';
 		
@@ -217,8 +244,10 @@ $(document).ready(function () {
 		}
 		tldata += '<div class="spawn bottomleft clickable" data-id="' + marine.id + '" data-side="L" title="Spawn"><i class="fa fa-plus-circle"></i></div>'
 		$.each(item['terrainL'],function (t,terrain) {
-			var res = _terrain({name:terrain}).first();
-			tldata += terrain + ' ' + threaticon[res.threat];
+			var res = _terrain({name:terrain.id}).first();
+			tldata += '<span class="clickable terrain" data-id="' + terrain.id +'" data-side="L">'
+				+ terrain.id + '(' + terrain.support + ') ' + threaticon[res.threat]
+				+ '</span>';
 		})
 		
 		var trdata = '';
@@ -233,8 +262,10 @@ $(document).ready(function () {
 		}
 		trdata += '<div class="spawn bottomright clickable" data-id="' + marine.id + '" data-side="R" title="Spawn"><i class="fa fa-plus-circle"></i></div>'
 		$.each(item['terrainR'],function (t,terrain) {
-			var res = _terrain({name:terrain}).first();
-			trdata += terrain + ' ' + threaticon[res.threat];
+			var res = _terrain({name:terrain.id}).first();
+			trdata += '<span class="clickable terrain" data-id="' + terrain.id +'" data-side="R">'
+				+ terrain.id + '(' + terrain.support + ') ' + threaticon[res.threat]
+				+ '</span>';
 		})
 		
 		var blipLdata = '';
@@ -259,19 +290,20 @@ $(document).ready(function () {
 		$.each(teams,function (i,tm) {
 			ords = '<div style="color: ' + tm + ';"><b>'  + tm.toProperCase() + ' Team Orders</b></div><form>';
 			_action({team:tm}).each(function(record) {
-				ords += '<input type="radio" name="' + tm + '" value="' + record.number + '" ' + (actionDeck[record.number] ? '' : 'disabled') + ' title="' + record.text + '">' + record.type + ': ' + record.name + '<br>';
+				ords += '<span class="actionCard" id="' + record.id + '"><input type="radio" name="' + tm + '" value="' + record.number + '" ' + (actionDeck[record.number] ? '' : 'disabled') + '>' + record.type + ': ' + record.name + '</span><br>';
 			});
 			ords += '</form>';
 			outp += ords;
 		});
 		$('#choosephase').html (outp);
+		$('#resolvephase').html ('');
 	}
 	
 	function resolveRefresh() {
 		var outp = '';
 		_action({team:teams}).order('number').each( function (record) {
 			if (phaseDeck[record.team] == record.number) {
-				outp += '<div style="color: ' + record.team + ';">+++ <b>' + record.number + ':</b> ' + record.name + ' +++ (' + record.type + ')</div>';
+				outp += '<div style=color: ' + record.team + ';"><span class="actionCard" id="' + record.id + '"><input type="checkbox"></input> +++ <b>' + record.number + ':</b> ' + record.name + ' +++ (' + record.type + ')</span></div>';
 			}
 		});
 		$('#resolvephase').html (outp);
@@ -294,17 +326,55 @@ $(document).ready(function () {
 		});
 		order_refresh();
 	}
+	/* Blip Piles */
+	function returnBlip(idx,id,side) {
+		var blipDeck = side == 'L' ? blipDeckL : blipDeckR;
+		var blipSide = 'blip' + id.match(/[LR]/);
+		var blipID = id.match(/[0-9]+/);
+		blipDeck.push (formation[idx][blipSide][blipID]);
+		formation[idx][blipSide].splice(blipID,1);
+		da_refresh();
+	}
+	function discardBlip(side) {
+		var blipDeck = side == 'L' ? blipDeckL : blipDeckR;
+		if (blipDeck.length > 0) {
+			stealerDiscard.push (blipDeck.shift());
+		}
+	}
+	function addBlip(side) {
+		var blipDeck = side == 'L' ? blipDeckL : blipDeckR;
+		if (stealerDeck.length == 0) {
+			stealerDeck = stealerDiscard.slice(0);
+			stealerDiscard.length = 0;
+			stealerDeck = shuffle(stealerDeck);
+		}
+		blipDeck.push (stealerDeck.shift());
+	}
 	/* Movement - marine */
-	function updateSupport(marine_id, value) {
-		var i = getMarineIndex(marine_id);
-		var item = formation[i];
+	function updateSupport(idx, value) {
+		//var idx = getMarineIndex(marine_id);
+		var item = formation[idx];
 		
 		if (support - value >= 0 && support - value <= _maxsupport && item['marine']['support'] + value >= 0) {
 			item['marine']['support'] += value;
 			support -= value;
 			da_refresh();
-			//console.log('Support: ' + support);
-			return false;
+		}
+	}
+	function updateTerrainSupport(idx, id, side, value) {
+		var item = formation[idx]
+		var terrain = side == 'L' ? 'terrainL' : 'terrainR';
+		var tidx = 0;
+		for (x=0; x<item[terrain].length; x++) {
+			if (item[terrain][x]['support'] == id) {
+				tidx = x;
+				return false;
+			}
+		}
+		if (support - value >= 0 && support - value <= _maxsupport && item[terrain][tidx] ['support']+ value >= 0) {
+			item[terrain][tidx]['support'] += value;
+			support -= value;
+			da_refresh();
 		}
 	}
 	function updateFormation(marine_id, value) {
@@ -362,6 +432,7 @@ $(document).ready(function () {
 		}
 		da_refresh();
 	}
+	
 	/* Slayer */
 	function removeMarine(marine_id)	{
 		// 1. remove from formation
@@ -385,16 +456,20 @@ $(document).ready(function () {
 	function shiftFormation(idx)	{
 		// First Marine - move items to location 1
 		// Last Marine - move items to final location
-		// 
 		var x = 0;
-		switch (idx) {
-			case (0):
-				x = idx + 1;
-				break;
-			case (formation.length - 1):
+		if (idx == 0) {
+			x = idx + 1;
+		} else {
+			if (idx == formation.length - 1) {
 				x = idx - 1;
-				break;
-		} 
+			} else {
+				if (idx>formation.length/2) {
+					x = idx + 1;
+				} else {
+					x = idx - 1;
+				}
+			}
+		}
 		formation[x]['blipL'] = formation[x]['blipL'].concat(formation[idx]['blipL']);
 		formation[x]['blipR'] = formation[x]['blipR'].concat(formation[idx]['blipR']);
 		formation[x]['terrainL'] = formation[x]['terrainL'].concat(formation[idx]['terrainL']);
@@ -414,25 +489,29 @@ $(document).ready(function () {
 	}
 	function spawnEvent() {
 		var event = _event({id:currEvent}).first();
-		// Spawn
-		// match spawn#1, then spawn#2 and update formation
-		// PLAYER CHOICE?
+		// Spawn: match spawn#1, then spawn#2 and update formation
+		/* PLAYER CHOICE? */
 		for (var x=0; x<2; x++) {
-			$.each(formation,function (i,item) {
-				//event.spawn[0]['threat'] + ':' + event.spawn[0]['type']
-				if (_terrain({name:item['terrainL']}).first().threat == event.spawn[x]['threat']) {
-					for (var s=0; s<currLocation.spawn[event.spawn[x]['type']]; s++) {
-						if (blipDeckL.length != 0) {formation[i]['blipL'].push (blipDeckL.pop());}
+			$.each(formation,function (r,rank) {
+				/* Left formation */
+				$.each(rank['terrainL'], function(t,terrain) {
+					if (_terrain({name:terrain.id}).first().threat == event.spawn[x]['threat']) {
+						for (var s=0; s<currLocation.spawn[event.spawn[x]['type']]; s++) {
+							if (blipDeckL.length != 0) {formation[r]['blipL'].push (blipDeckL.pop());}
+						}
 					}
-				}
-				if (_terrain({name:item['terrainR']}).first().threat == event.spawn[x]['threat']) {
-					for (var s=0; s<currLocation.spawn[event.spawn[x]['type']]; s++) {
-						if (blipDeckR.length != 0) {formation[i]['blipR'].push (blipDeckR.pop());}
+				});
+				/* Right formation */
+				$.each(rank['terrainR'], function(t,terrain) {
+					if (_terrain({name:terrain.id}).first().threat == event.spawn[x]['threat']) {
+						for (var s=0; s<currLocation.spawn[event.spawn[x]['type']]; s++) {
+							if (blipDeckR.length != 0) {formation[r]['blipR'].push (blipDeckR.pop());}
+						}
 					}
-				}
-			})
+				});
+			});
 		}
-		da_refresh();
+		//da_refresh();
 		// Move
 		// If the swarm is already behind the Space Marine, it does not move.
 		if (turn > 1) {
@@ -481,6 +560,66 @@ $(document).ready(function () {
 		}
 		da_refresh();
 	}
+	/* Travel! */
+	function travel() {
+		// 1. Place new Location Card
+		if (locationDeck.length > 0) {
+			var locid = locationDeck.shift();
+			currLocation = setLocation(locid);
+			travelFunctions();
+			da_refresh();
+		}
+	}
+	function travelFunctions() {
+		// 2. Place Terrain Cards
+			// remove existing locations
+			for (var i=0; i<formation.length; i++) {
+				formation[i]['terrainL'].length = 0;
+				formation[i]['terrainR'].length = 0;
+			}
+			console.log('Terrain: ' + currLocation['terrain'] + ' ' + currLocation['terrainlocation']);
+			formation[ Math.min(currLocation['terrainlocation'][0],formation.length) -1 ]['terrainL'].push ({'id':(currLocation['terrain'][0]),'support':0});
+			formation[ Math.min(currLocation['terrainlocation'][1],formation.length) -1 ]['terrainL'].push ({'id':(currLocation['terrain'][1]),'support':0});
+			formation[ Math.max(formation.length - currLocation['terrainlocation'][2],0) ]['terrainR'].push ({'id':(currLocation['terrain'][2]),'support':0});
+			formation[ Math.max(formation.length - currLocation['terrainlocation'][3],0) ]['terrainR'].push ({'id':(currLocation['terrain'][3]),'support':0});
+		// 3. Discard/Refill Blip piles
+			// Discard
+			while (blipDeckL.length > 0)	{ stealerDiscard.push (blipDeckL.pop()); }
+			while (blipDeckR.length > 0)	{ stealerDiscard.push (blipDeckR.pop()); }
+			// Refill
+			for (var i=0; i<currLocation['blipcount'][0]; i++) {
+				if (stealerDeck.length == 0) {
+					stealerDeck = stealerDiscard.slice(0);
+					stealerDiscard.length = 0;
+					stealerDeck = shuffle(stealerDeck);
+				}
+				blipDeckL.push (stealerDeck.shift());
+			}
+			for (var i=0; i<currLocation['blipcount'][1]; i++) {
+				if (stealerDeck.length == 0) {
+					stealerDeck = stealerDiscard.slice(0);
+					stealerDiscard.length = 0;
+					stealerDeck = shuffle(stealerDeck);
+				}
+				blipDeckR.push (stealerDeck.shift());
+			}
+			
+		// 4. Follow Location "Upon Entering" Ability (if necessary)
+	}
+	function getCard(deck,discard)	{
+		if (deck.length == 0) {
+			deck = shuffle(discard.slice(0));
+			discard.length = 0;
+		}
+		return deck.shift();
+	}
+	function setLocation(locid)	{
+		// Get major\minor spawn from voidlock, everything else from new location
+		var voidInfo = _location({id:voidLock}).first();
+		var locInfo = _location({id:locid}).first();
+		locInfo['spawn']=voidInfo['spawn'];
+		return locInfo;
+	}
 	
 	/* Fisher-Yates Shuffle  */
 	function shuffle(array) {
@@ -520,9 +659,10 @@ $(document).ready(function () {
 		addOrder(this.name, this.value);
 	});
 	$('#resolve').on('click', resetOrders);
-	
+
 	$('#event_deck').on('click','#drawevent',drawEvent);
 	$('#event_active').on('click','#spawnevent',spawnEvent);
+	$('#location_active').on('click','#travel',travel);
 	
 	$('#playmat')
 	  .on('click','.move',function(event) {
@@ -534,30 +674,138 @@ $(document).ready(function () {
 	}).on('click','.facing',function() {
 		changeFacing($(this).attr('name'));
 	}).on('click','.marine-name',function(event) {
-		$('#menu').css({'left':event.pageX +20,'top': Math.max(event.pageY - $('#menu').height() + 20,0)});
-		$('#menu').toggle();
-		$('#menu-data').val( $('#menu').is(':hidden') ? '' : '{"type":"marine","row":' + $(this).closest('tr').index() + ',"id":"' + this.id + '"}');
+		$('#menu-marine').css({'left':event.pageX +20,'top': Math.max(event.pageY - $('#menu-marine').height() + 20,0)});
+		$('#menu-marine').toggle();
+		$('#menu-marine-data').val( $('#menu').is(':hidden') ? '' : '{"type":"marine","row":' + $(this).closest('tr').index() + ',"id":"' + this.id + '"}');
 	}).on('click','.blip-sel',function(event) {
-		$('#menu').css({'left':event.pageX +20,'top': Math.max(event.pageY - $('#menu').height() + 20,0)});
-		$('#menu').toggle();
-		$('#menu-data').val( $('#menu').is(':hidden') ? '' : '{"type":"genestealer","row":' + $(this).closest('tr').index() + ',"id":"' + $(this).attr('value') + '"}');
+		$('#menu-stealer').css({'left':event.pageX +20,'top': Math.max(event.pageY - $('#menu-stealer').height() + 20,0)});
+		$('#menu-stealer').toggle();
+		$('#menu-stealer-data').val( $('#menu').is(':hidden') ? '' : '{"type":"genestealer","row":' + $(this).closest('tr').index() + ',"id":"' + $(this).attr('value') + '"}');
 	}).on('click','.spawn',function () {
 		spawnOne($(this).data('id'),$(this).data('side'));
+	}).on('click','.terrain',function () {
+		$('#menu-support').css({'left':event.pageX +20,'top': Math.max(event.pageY - $('#menu-support').height() + 20,0)});
+		$('#menu-support').toggle();
+		$('#menu-support-data').val( $('#menu-support').is(':hidden') ? '' : '{"type":"terrain","row":' + $(this).closest('tr').index() + ',"id":"' + $(this).data('id') + '","side":"' + $(this).data('side') + '"}');
+	}).on('click','.m_support',function () {
+		$('#menu-support').css({'left':event.pageX +20,'top': Math.max(event.pageY - $('#menu-support').height() + 20,0)});
+		$('#menu-support').toggle();
+		$('#menu-support-data').val( $('#menu-support').is(':hidden') ? '' : '{"type":"marine","row":' + $(this).closest('tr').index() + ',"id":"' + $(this).data('id') + '","side":""}');
 	});
 	
-	$('#menu').on('click','.clickable',function() {
-		$('#menu').toggle();
+	$('#menu-marine').on('click','.clickable',function() {
+		$('#menu-marine').toggle();
+		var data = JSON.parse($('#menu-marine-data').val());
 		switch (this.id) {
 			case ('btn-slay'):
-				var info = JSON.parse($('#menu-data').val());
-				console.log (info);
-				if (info['type'] == 'marine') {
-					removeMarine(info['id']);
-				} else {
-					removeStealer(info['id'],info['row']);
-				}
+				removeMarine(data['id']);
 				break;
 			default:
+		}
+	});
+	$('#menu-support').on('click','.clickable',function() {
+		$('#menu-support').toggle();
+		var data = JSON.parse($('#menu-support-data').val());
+		var amt = 0;
+		switch (this.id) {
+			case 'support-add':
+				amt = 1;
+				break;
+			case 'support-sub':
+				amt = -1;
+				break;
+			default:
+				break;
+		}
+		switch (data.type) {
+			case 'terrain':
+				updateTerrainSupport(data.row,data.id,data.side,amt)
+				break;
+			case 'marine':
+				updateSupport(data.row,amt)
+				break;
+			case 'swarm':
+				break;
+		}
+	});
+	$('#menu-stealer').on('click','.clickable',function() {
+		$('#menu-stealer').toggle();
+		var data = JSON.parse($('#menu-stealer-data').val());
+		switch (this.id) {
+			case ('btn-slay'):
+				removeStealer(data['id'],data['row']);
+				break;
+			case ('btn-rtnblipL'):
+				returnBlip(data.row,data.id,'L');
+				break;
+			case ('btn-rtnblipR'):
+				returnBlip(data.row,data.id,'R');
+				break;
+			default:
+		}
+	});
+	$('#blipL').on('click','.clickable',function() {
+		switch ($(this).data('action')) {
+			case 'add':
+				addBlip('L');
+				break;
+			case 'remove':
+				discardBlip('L');
+				break;
+			default:
+				break;
+		}
+		da_refresh();
+	});
+	$('#blipR').on('click','.clickable',function() {
+		switch ($(this).data('action')) {
+			case 'add':
+				addBlip('R');
+				break;
+			case 'remove':
+				discardBlip('R');
+				break;
+			default:
+				break;
+		}
+		da_refresh();
+	});
+
+// QTIPS
+	$('#choosephase, #resolvephase').on("mouseenter","span[class=actionCard]", function() {
+		var act_id = parseInt($(this).attr('id'),10);
+		var action = _action({id:act_id}).select('text');
+		$(this).qtip({
+			overwrite: false,
+			show: {
+				ready: true
+			},
+			content: {
+				text: action
+			},
+			style: {
+				classes: 'qtip-dark qtip-rounded qtip-shadow',
+				tip: false
+			}
+		});
+	});
+	$('#playmat').on('mouseenter','.terrain',function() {
+		var ter_id = $(this).data('id');
+		var terrain = _terrain({name:ter_id}).select('text');
+		if (terrain != '') {
+			$(this).qtip({
+				overwrite: false,
+				show: {
+					ready: true
+				},
+				content: {
+					text: terrain
+				},
+				style: {
+					classes: 'qtip-dark qtip-rounded qtip-shadow',
+					tip: false
+				}
+			});
 		}
 	});
 			
@@ -580,39 +828,40 @@ $(document).ready(function () {
 			for (var x=0; x<14; x++)	{
 				updateSupport(1,1);
 			}
-			var res = formation[getMarineIndex(1)]['marine']['support'] == 12 ? 'pass' : 'fail';
+			var res = formation[1]['marine']['support'] == 12 ? 'pass' : 'fail';
 			console.log ('Support test 1: ' + res + ' support=' + support);
 			
 		// Decrease support to -1 - support should not exceed 0
 			for (var x=0; x<14; x++)	{
 				updateSupport(1,-1);
 			}
-			res = formation[getMarineIndex(1)]['marine']['support'] == 0 ? 'pass' : 'fail';
+			res = formation[1]['marine']['support'] == 0 ? 'pass' : 'fail';
 			console.log ('Support test 2: ' + res + ' support=' + support);
 			
 		// Increase Support for 1 marine
 			updateSupport(1,1);
-			
+		// Increase support for 1 location
+			updateTerrainSupport(0,'Door','L',1)
 		
 		// Increase support to 13 - support should not exceed 11
 			for (var x=0; x<14; x++)	{
 				updateSupport(2,1);
 			}
-			var res = formation[getMarineIndex(2)]['marine']['support'] == 11 ? 'pass' : 'fail';
+			var res = formation[2]['marine']['support'] == 11 ? 'pass' : 'fail';
 			console.log ('Support test 3: ' + res + ' support=' + support);
 			
 		// Decrease support to -1 - support should not exceed 0
 			for (var x=0; x<14; x++)	{
 				updateSupport(2,-1);
 			}
-			res = formation[getMarineIndex(2)]['marine']['support'] == 0 ? 'pass' : 'fail';
+			res = formation[2]['marine']['support'] == 0 ? 'pass' : 'fail';
 			console.log ('Support test 4: ' + res + ' support=' + support);
 		
 		// Event Deck - Draw 32
 			for (var x=0; x<31; x++)	{
 				drawEvent();
 			}
-			res = eventDeck.length == 28 && eventDiscard.length == 1 ? "pass" : "fail";
+			res = eventDeck.length == 29 && eventDiscard.length == 1 ? "pass" : "fail";
 			console.log ("Event test 1: " + res + ' event deck/discard: ' + eventDeck.length + '/' + eventDiscard.length);
 	});
 // Save\Load

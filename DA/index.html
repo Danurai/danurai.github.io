@@ -13,8 +13,8 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 	
 <!-- jquery QTIPs -->
-	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/qtip2/2.1.1/jquery.qtip.css">
-	<script src="http://cdnjs.cloudflare.com/ajax/libs/qtip2/2.1.1/jquery.qtip.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/qtip2/2.1.1/jquery.qtip.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/qtip2/2.1.1/jquery.qtip.js"></script>
 <!-- TAFFYdb -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/taffydb/2.7.2/taffy-min.js"></script>
 <!-- Font Awesome -->
@@ -23,6 +23,26 @@
 <!-- DA Scripts -->
 	<script src="da_engine.js"></script>
 	<link rel="stylesheet" href="da.css">
+	
+	<script>
+		$(document).ready(function () {
+			$('#tests')
+				.on('shown.bs.collapse',function () {
+					$(this)
+						.parent()
+						.find(".fa-plus-square-o")
+						.removeClass("fa-plus-square-o")
+						.addClass("fa-minus-square-o");
+				})
+				.on('hidden.bs.collapse',function () {
+					$(this)
+						.parent()
+						.find(".fa-minus-square-o")
+						.removeClass("fa-minus-square-o")
+						.addClass("fa-plus-square-o");
+				});
+		});
+	</script>
 </head>
 <body>
 	<div class="background">
@@ -31,15 +51,23 @@
 				<div class="col-md-6">
 					<em>Sin of Damnation</em>
 					<div id="dice" class="dice">0</div>
-					<div class="btn-group">
-						<div class="btn btn-warning" id="testbutton">TEST</div>
-						<div class="btn btn-default" id="savebutton">Save State</div>
-						<div class="btn btn-default" id="loadbutton">Load State</div>
-					</div>
 					
 					<div>
-						<textarea id="savedstate" cols="75" rows="5"></textarea>
+						Test Area
+						<div class="btn" data-target="#tests" data-toggle="collapse" id="tests_toggle"><i class="fa fa-plus-square-o"></i></div>
 					</div>
+					<div id="tests" class="collapse">
+						<div class="btn-group">
+							<div class="btn btn-warning" id="testbutton">TEST</div>
+							<div class="btn btn-default" id="savebutton">Save State</div>
+							<div class="btn btn-default" id="loadbutton">Load State</div>
+						</div>
+						<div>
+							<textarea id="savedstate" cols="75" rows="5"></textarea>
+						</div>
+					</div>
+					
+					<div id="addinfo"></div>
 					<table>
 						<thead>
 							<tr id="decks">
@@ -85,12 +113,25 @@
 			</div>
 		</div>
 	</div>
-	<div id='menu' hidden>
-		<div class='menu'>
+	<div>
+		<div id='menu-marine' class='menu' hidden>
 			<div class='clickable btn-da' id='btn-slay'>[ Slay ]</div>
 			<div class='clickable btn-da' id='btn-close'>[ x ]</div>
+			<input type='text' id='menu-marine-data' hidden>
 		</div>
-		<input type='text' id='menu-data' hidden>
+		<div id='menu-support' class='menu' hidden>
+			<div class='clickable btn-da' id='support-add'>[ +Support+ ]</div>
+			<div class='clickable btn-da' id='support-sub'>[ - Support - ]</div>
+			<div class='clickable btn-da' id='btn-close'>[ x ]</div>
+			<input type='text' id='menu-support-data' hidden>
+		</div>
+		<div id='menu-stealer' class='menu' hidden>
+			<div class='clickable btn-da' id='btn-slay'>[ Slay ]</div>
+			<div class='clickable btn-da' id='btn-rtnblipL' title="Return to Left Blip Pile">[ Add to Blip L ]</div>
+			<div class='clickable btn-da' id='btn-rtnblipR' title="Return to Right Blip Pile">[ Add to Blip R ]</div>
+			<div class='clickable btn-da' id='btn-close' title="Close">[ x ]</div>
+			<input type='text' id='menu-stealer-data' hidden>
+		</div>
 	</div>
 </body>
 </html>
