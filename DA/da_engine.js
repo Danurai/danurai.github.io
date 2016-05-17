@@ -1,6 +1,6 @@
 
 // EV: Rescue Space Marine...
-// Change Terrain NAME to ID (file and script)
+// ++ Alt 'Skins' - Wrath of Amaerthis
 
 // Actions
 // AA: Reorganize Move to anywhere in the formation.
@@ -14,6 +14,9 @@
 // EV: player choice on blip pile
 // NG: Automate Events
 
+// Terrain
+// Artefact - assign to Space Marine
+// Discard A Terrain Card
 
 // TRAVEL Door action
 
@@ -32,6 +35,7 @@
 // ++ Resolve Events - clear box (2)
 // ++ Resolve Actions: add checkbox
 // AA: Target Lock: Add a support token to a swarm, remove when swarm is defeated
+// Change Terrain NAME to ID (file and script)
 
 $(document).ready(function () {
 	var debug = false;
@@ -218,7 +222,8 @@ $(document).ready(function () {
 		if (debug) {console.log(formation);}
 	}
 	function buildrow(item) {
-	// blipL,locationL,marine,locationR,blipR
+	// Blip | Terrain | Marine | Terrain  | Blip 
+		/* Marine */
 		var marine = _marine({id:item['marine']['id']}).first();
 		var mdata = '<span class="move clickable" value="-1" title="move up" name="' + marine.id + '"><i class="fa fa-angle-double-up"></i></span>'
 			+ '<div>'
@@ -232,53 +237,73 @@ $(document).ready(function () {
 			+ '<br><span class="move clickable" value="1" title="move down" name="' + marine.id + '"><i class="fa fa-angle-double-down"></i></span>';
 		mdata = '<td class="form-center marine" name="' + marine.id + '">' + mdata + '</div>';
 		
+		/* Terrain: Left */
 		var tldata = '';
-		if (item['blipL'].length > 0) {
-			tldata += '<div class="bottomright">'
-				+ '<span class="swarm clickable" data-side="L" data-action="flank" data-id="' + marine.id + '"><i class="fa fa-undo" title="flank"></i></span>'
-				+ ' <span class="swarm clickable" data-side="L" data-action="movedown" data-id="' + marine.id + '"><i class="fa fa-angle-double-down" title="move"></i></span>'
-				+ '</div>'
-				+ '<div class="topright">'
-				+ '<span class="swarm clickable" data-side="L" data-action="moveup" data-id="' + marine.id + '"><i class="fa fa-angle-double-up" title="move"></i></span>'
-				+ '</div>';
-		}
-		tldata += '<div class="spawn bottomleft clickable" data-id="' + marine.id + '" data-side="L" title="Spawn"><i class="fa fa-plus-circle"></i></div>'
+		tldata += '<div class="spawn bottomleft clickable" data-id="' + marine.id + '" data-side="L" title="Spawn"><i class="fa fa-plus-circle"></i></div>';
 		$.each(item['terrainL'],function (t,terrain) {
-			var res = _terrain({name:terrain.id}).first();
-			tldata += '<span class="clickable terrain" data-id="' + terrain.id +'" data-side="L">'
-				+ terrain.id + '(' + terrain.support + ') ' + threaticon[res.threat]
+			var res = _terrain({id:terrain.id}).first();
+			tldata += '<span class="clickable terrain" data-id="' + res.id +'" data-side="L">'
+				+ res.name
+				+ (res.support ? '(' + terrain.support + ') ' : ' ')
+				+ threaticon[res.threat]
 				+ '</span>';
 		})
 		
+		/* Terrain: Right */
 		var trdata = '';
-		if (item['blipR'].length > 0) {
-			trdata += '<div class="topleft">'
-				+ '<span class="swarm clickable" data-side="R" data-action="moveup" data-id="' + marine.id + '"><i class="fa fa-angle-double-up" title="move"></i></span>'
-				+ ' <span class="swarm clickable" data-side="R" data-action="flank" data-id="' + marine.id + '"><i class="fa fa-undo" title="flank"></i></span>'
-				+ '</div>'
-				+ '<div class="bottomleft">'
-				+ '<span class="swarm clickable" data-side="R" data-action="movedown" data-id="' + marine.id + '"><i class="fa fa-angle-double-down" title="move"></i></span>'
-				+ '</div>';
-		}
 		trdata += '<div class="spawn bottomright clickable" data-id="' + marine.id + '" data-side="R" title="Spawn"><i class="fa fa-plus-circle"></i></div>'
 		$.each(item['terrainR'],function (t,terrain) {
-			var res = _terrain({name:terrain.id}).first();
-			trdata += '<span class="clickable terrain" data-id="' + terrain.id +'" data-side="R">'
-				+ terrain.id + '(' + terrain.support + ') ' + threaticon[res.threat]
+			var res = _terrain({id:terrain.id}).first();
+			trdata += '<span class="clickable terrain" data-id="' + res.id +'" data-side="R">'
+				+ res.name
+				+ (res.support ? '(' + terrain.support + ') ' : ' ')
+				+ threaticon[res.threat]
 				+ '</span>';
 		})
 		
 		var blipLdata = '';
-		$.each(item['blipL'],function(b,blip){
-			blipLdata += '<span class="blip-sel" value="L' + b + '">[ ' + blip + ' ]</span>';
-		});
-		blipLdata += item['blipSupport'][0] > 0 ? ' (' + item['blipSupport'][0] + ')' : '';
+		if (item['blipL'].length > 0) {
+			$.each(item['blipL'],function(b,blip){
+				blipLdata += '<span class="blip-sel" value="L' + b + '">[ ' + blip + ' ]</span>';
+			});
+			blipLdata += item['blipSupport'][0] > 0 ? ' (' + item['blipSupport'][0] + ')' : '';
+			// Blip Buttons
+			blipLdata += '<div class="bottomright">'
+				+ '<span class="swarm clickable" data-side="L" data-action="flank" data-id="' + marine.id + '">'
+				+ '<i class="fa fa-undo" title="flank"></i>'
+				+ '</span>'
+				+ '<span class="swarm clickable" data-side="L" data-action="movedown" data-id="' + marine.id + '">'
+				+ '<i class="fa fa-angle-double-down" title="move"></i>'
+				+ '</span>'
+				+ '</div>';
+			blipLdata += '<div class="topright">'
+				+ '<span class="swarm clickable" data-side="L" data-action="moveup" data-id="' + marine.id + '">'
+				+ '<i class="fa fa-angle-double-up" title="move"></i>'
+				+ '</span>'
+				+ '</div>';
+		}
 		
 		var blipRdata = '';
-		$.each(item['blipR'],function(b,blip){
-			blipRdata += '<span class="blip-sel" value="R' + b + '">[ ' + blip + ' ]</span>';
-		});
-		blipRdata += item['blipSupport'][1] > 0 ? ' (' + item['blipSupport'][1] + ')' : '';
+		if (item['blipR'].length > 0) {
+			$.each(item['blipR'],function(b,blip){
+				blipRdata += '<span class="blip-sel" value="R' + b + '">[ ' + blip + ' ]</span>';
+			});
+			blipRdata += item['blipSupport'][1] > 0 ? ' (' + item['blipSupport'][1] + ')' : '';
+			// Blip Buttons
+			blipRdata += '<div class="bottomleft">'
+				+ '<span class="swarm clickable" data-side="R" data-action="movedown" data-id="' + marine.id + '">'
+				+ '<i class="fa fa-angle-double-down" title="move"></i>'
+				+ '</span>'
+				+ '<span class="swarm clickable" data-side="R" data-action="flank" data-id="' + marine.id + '">'
+				+ '<i class="fa fa-undo" title="flank"></i>'
+				+ '</span>'
+				+ '</div>';
+			blipRdata += '<div class="topleft">'
+				+ '<span class="swarm clickable" data-side="R" data-action="moveup" data-id="' + marine.id + '">'
+				+ '<i class="fa fa-angle-double-up" title="move"></i>'
+				+ '</span>'
+				+ '</div>';
+		}
 		
 		var outp = '<tr>'
 		 + '<td class="form-left" colspan="2">' + blipLdata + ' ' + tldata + '</td>'
@@ -356,7 +381,6 @@ $(document).ready(function () {
 	}
 	/* Movement - marine */
 	function updateSupport(idx, value) {
-		//var idx = getMarineIndex(marine_id);
 		var item = formation[idx];
 		
 		if (support - value >= 0 && support - value <= _maxsupport && item['marine']['support'] + value >= 0) {
@@ -366,19 +390,21 @@ $(document).ready(function () {
 		}
 	}
 	function updateTerrainSupport(idx, id, side, value) {
-		var item = formation[idx]
-		var terrain = side == 'L' ? 'terrainL' : 'terrainR';
-		var tidx = 0;
-		for (x=0; x<item[terrain].length; x++) {
-			if (item[terrain][x]['support'] == id) {
-				tidx = x;
-				return false;
+		id = parseInt(id,10);
+		if (_terrain({'id':id}).select('support')[0] != false) {
+			var item = formation[idx]
+			var terrain = side == 'L' ? 'terrainL' : 'terrainR';
+			var tidx = 0;
+			for (x=0; x<item[terrain].length; x++) {
+				if (item[terrain][x]['id'] == id) {
+					tidx = x;
+				}
 			}
-		}
-		if (support - value >= 0 && support - value <= _maxsupport && item[terrain][tidx] ['support']+ value >= 0) {
-			item[terrain][tidx]['support'] += value;
-			support -= value;
-			da_refresh();
+			if (support - value >= 0 && support - value <= _maxsupport && item[terrain][tidx] ['support']+ value >= 0) {
+				item[terrain][tidx]['support'] += value;
+				support -= value;
+				da_refresh();
+			}
 		}
 	}
 	function updateSwarmSupport(idx,side,value) {
@@ -471,6 +497,18 @@ $(document).ready(function () {
 		}
 		da_refresh();
 	}
+	function removeTerrain(id,idx,side)	{
+		id = parseInt(id,0);
+		var terrain = side == 'L' ? 'terrainL' : 'terrainR';
+		$.each(formation[idx][terrain], function(i,item) {
+			if (item.id == id) {
+				/* return support tokens and remove*/
+				support += item.support;
+				formation[idx][terrain].splice(i);
+			}
+		});
+		da_refresh();
+	}
 	function shiftFormation(idx)	{
 		// First Marine - move items to location 1
 		// Last Marine - move items to final location
@@ -510,20 +548,20 @@ $(document).ready(function () {
 		// Spawn: match spawn#1, then spawn#2 and update formation
 		/* PLAYER CHOICE? */
 		for (var x=0; x<2; x++) {
-			$.each(formation,function (r,rank) {
+			$.each(formation,function (i, item) {
 				/* Left formation */
-				$.each(rank['terrainL'], function(t,terrain) {
-					if (_terrain({name:terrain.id}).first().threat == event.spawn[x]['threat']) {
+				$.each(item['terrainL'], function(t,terrain) {
+					if (_terrain({id:terrain.id}).first().threat == event.spawn[x]['threat']) {
 						for (var s=0; s<currLocation.spawn[event.spawn[x]['type']]; s++) {
-							if (blipDeckL.length != 0) {formation[r]['blipL'].push (blipDeckL.pop());}
+							if (blipDeckL.length != 0) {formation[i]['blipL'].push (blipDeckL.pop());}
 						}
 					}
 				});
 				/* Right formation */
-				$.each(rank['terrainR'], function(t,terrain) {
-					if (_terrain({name:terrain.id}).first().threat == event.spawn[x]['threat']) {
+				$.each(item['terrainR'], function(t,terrain) {
+					if (_terrain({id:terrain.id}).first().threat == event.spawn[x]['threat']) {
 						for (var s=0; s<currLocation.spawn[event.spawn[x]['type']]; s++) {
-							if (blipDeckR.length != 0) {formation[r]['blipR'].push (blipDeckR.pop());}
+							if (blipDeckR.length != 0) {formation[i]['blipR'].push (blipDeckR.pop());}
 						}
 					}
 				});
@@ -702,10 +740,12 @@ $(document).ready(function () {
 	}).on('click','.spawn',function () {
 		spawnOne($(this).data('id'),$(this).data('side'));
 	}).on('click','.terrain',function () {
-		$('#menu-support').css({'left':event.pageX +20,'top': Math.max(event.pageY - $('#menu-support').height() + 20,0)});
+		$('#btn-remove').show();
+		$('#menu-support').css({'left':event.pageX +20,'top': Math.max(event.pageY - $('#menu-terrain').height() + 20,0)});
 		$('#menu-support').toggle();
 		$('#menu-support-data').val( $('#menu-support').is(':hidden') ? '' : '{"type":"terrain","row":' + $(this).closest('tr').index() + ',"id":"' + $(this).data('id') + '","side":"' + $(this).data('side') + '"}');
 	}).on('click','.m_support',function () {
+		$('#btn-remove').hide();
 		$('#menu-support').css({'left':event.pageX +20,'top': Math.max(event.pageY - $('#menu-support').height() + 20,0)});
 		$('#menu-support').toggle();
 		$('#menu-support-data').val( $('#menu-support').is(':hidden') ? '' : '{"type":"marine","row":' + $(this).closest('tr').index() + ',"id":"' + $(this).data('id') + '","side":""}');
@@ -732,18 +772,23 @@ $(document).ready(function () {
 			case 'support-sub':
 				amt = -1;
 				break;
+			case 'btn-remove':
+				removeTerrain(data.id,data.row,data.side);
 			default:
+				amt = 0;
 				break;
 		}
-		switch (data.type) {
-			case 'terrain':
-				updateTerrainSupport(data.row,data.id,data.side,amt)
-				break;
-			case 'marine':
-				updateSupport(data.row,amt)
-				break;
-			case 'swarm':
-				break;
+		if (amt != 0) {
+			switch (data.type) {
+				case 'terrain':
+					updateTerrainSupport(data.row,data.id,data.side,amt)
+					break;
+				case 'marine':
+					updateSupport(data.row,amt)
+					break;
+				case 'swarm':
+					break;
+			}
 		}
 	});
 	$('#menu-stealer').on('click','.clickable',function() {
@@ -816,7 +861,7 @@ $(document).ready(function () {
 	});
 	$('#playmat').on('mouseenter','.terrain',function() {
 		var ter_id = $(this).data('id');
-		var terrain = _terrain({name:ter_id}).select('text');
+		var terrain = _terrain({id:ter_id}).select('text');
 		if (terrain != '') {
 			$(this).qtip({
 				overwrite: false,
