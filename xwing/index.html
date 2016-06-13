@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="https://code.jquery.com/jquery-3.0.0.min.js" integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0=" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="straight">
+	<input type="button" value="Straight 1" data-val="1">
+	<input type="button" value="Straight 2" data-val="2">
+	<input type="button" value="Straight 3" data-val="3">
+	<input type="button" value="Straight 4" data-val="4">
+	<input type="button" value="Straight 5" data-val="5">
+</div>
+<div id="turn">
+	<input type="button" value="Turn L3" data-val="3" data-dir="L">
+	<input type="button" value="Turn L2" data-val="2" data-dir="L">
+	<input type="button" value="Turn L1" data-val="1" data-dir="L">
+	<input type="button" value="Turn R1" data-val="1" data-dir="R">
+	<input type="button" value="Turn R2" data-val="2" data-dir="R">
+	<input type="button" value="Turn R3" data-val="3" data-dir="R">
+</div>
+<div id="bank">
+	<input type="button" value="Bank L3" data-val="3" data-dir="L">
+	<input type="button" value="Bank L2" data-val="2" data-dir="L">
+	<input type="button" value="Bank L1" data-val="1" data-dir="L">
+	<input type="button" value="Bank R1" data-val="1" data-dir="R">
+	<input type="button" value="Bank R2" data-val="2" data-dir="R">
+	<input type="button" value="Bank R3" data-val="3" data-dir="R">
+</dir>
+<br>
+<canvas id="mycanvas" width="400" height="400"></canvas>
+</body>
+<script>
+	$(document).ready( function () {
+		var c = document.getElementById("mycanvas");
+		var ctx = c.getContext("2d");
+		ctx.setTransform(1,0,0,1,100,100);
+		ctx.rotate(135*Math.PI/180);
+		drawShip();
+		
+		$("#straight").on("click","input",function() {
+			drawStraight($(this).data("val"));
+		});
+		$("#turn").on("click","input",function () {
+			drawturn($(this).data("val"),$(this).data("dir"))
+		});
+		$("#bank").on("click","input",function () {
+			drawbank($(this).data("val"),$(this).data("dir"))
+		});
+		
+		function drawStraight(s)	{
+			var r = s*40;
+			ctx.translate(0,-r-40);
+			drawShip();
+		}
+		
+		function drawturn(s,d) {
+			var r = 0;
+			var t = d == "L" ? -1 : 1;
+			switch (s)	{
+				case (1):
+					r=45;
+					break;
+				case(2):
+					r=73;
+					break;
+				case(3):
+					r=100;
+					break;
+			}
+			if (d == "R") {
+				ctx.translate( r+40+10,-r-10);
+				ctx.rotate(90*Math.PI/180);
+			} else {
+				r-=20;
+				ctx.translate( -r+10-40,-r+10);
+				ctx.rotate(270*Math.PI/180);
+			}
+			drawShip();
+		}
+		
+		function drawbank(s,d) {
+			var r = 0;
+			switch (s)	{
+				case (1):
+					r=90;
+					break;
+				case(2):
+					r=140;
+					break;
+				case(3):
+					r=190;
+					break;
+			}
+			/*
+			ctx.save()
+			
+			ctx.fillStyle = "rgba(0,200,0,0.5)";	
+			if (d=="R") {
+				ctx.translate(10,0);
+				ctx.arc(r,0,r,Math.PI,225*Math.PI/180);
+				ctx.lineTo(r,0);
+			} else {
+				ctx.translate(30,0);
+				ctx.lineTo(-r,0);
+				ctx.arc(-r,0,r,315*Math.PI/180,0);
+			}
+			ctx.fill();
+			
+			ctx.restore();
+			*/
+			var a = Math.sqrt((Math.pow(r,2))/2);
+			var x = r-a;
+			
+			if (d=="R") {
+				ctx.translate(10,0);
+				ctx.translate(x,-a);
+				ctx.rotate(45*Math.PI/180);
+				ctx.translate(-10,-40);			
+			} else {
+				ctx.translate(30,0);
+				ctx.translate(-x,-a);
+				ctx.rotate(-45*Math.PI/180);
+				ctx.translate(-30,-40);
+			}
+			drawShip();
+		}
+		
+		function drawShip()	{
+			ctx.fillStyle  = "#777777";
+			ctx.fillRect(0,0,40,40);
+			ctx.fillStyle = "#000000";
+			ctx.strokeRect(0,0,40,40);
+			ctx.fillRect(18,2,4,6);
+		}
+	});
+	/*
+	range in mm: 100.0, 200.0, 300.0
+
+	size in mm: 40.0, 80.0, 120.0, 160.0, 200.0
+
+	Turn inside radii in mm: 25.0, 53.0, 80.0
+	Turn outside radii in mm: 45.0, 73.0, 100.0
+
+	Bank inside radii in mm: 70.0, 120.0, 170.0
+	Bank outside radii in mm: 90.0, 140.0, 190.0
+	*/
+</script>
+</html>
