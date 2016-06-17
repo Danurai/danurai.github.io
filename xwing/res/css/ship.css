@@ -1,0 +1,101 @@
+/* Font Faces */
+@font-face {
+	font-family: x-wing-symbols;
+	src:	url('/xwing/res/font/x-wing-symbols.ttf');
+}
+@font-face{
+	font-family: starkiller;
+	src: url('/xwing/res/font/Starkiller.ttf');
+}
+@font-face{
+	font-family: x-wing-ships;
+	src: url('/xwing/res/font/xwing-miniatures-ships.ttf');
+}
+/* Ship Icon */
+.ship {
+	font-family: x-wing-ships;
+	background-color: black;
+	color: white;
+	text-align: center;
+	position: relative;
+	line-height: normal;
+}
+.ship-small {
+	height: 80px;
+	width: 80px;
+	font-size: 80px;
+}
+.ship-large {
+	height: 160px;
+	width: 160px;
+	font-size: 160px;
+}
+.shipicon {
+	position: absolute;
+	bottom: 0; 
+	width: inherit;
+}
+/* Stats */
+.statblock {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	font: 14px Orbitron;
+	text-align: center;
+	background-color: #000;
+	width: inherit;
+}
+.stats {
+}
+.ps {
+	color: #FF7700;
+}
+.attack {
+	color: #FF0000;
+}
+.evade {
+	color: #00FF00;
+}
+.hull {
+	color: #FFFF00;
+}
+.shield {
+	color: #00AAFF;
+}
+.selected {
+	font-weight: bold;
+}
+
+/* Actions and Manoeuvres */
+.action	{
+	position: absolute;
+	right: 0;
+	font: 10pt x-wing-symbols;
+	color: #00BB00 !important;
+	text-align: center;
+}
+.xicon	{
+	font-family: x-wing-symbols;
+	background-color: #000;
+	text-align: center;
+	cursor: pointer;
+}
+.xicon-w	{
+	color: white !important;
+}
+.xicon-r {
+	color: #ff0000 !important;
+}
+.xicon-g {
+	color: #00ff00 !important;
+}
+.wheel	{
+	font-family: Orbitron;
+	font-weight: bold;
+	background-color: #000;
+	color:	#fff;
+	text-align: center;
+}
+td {
+	min-width: 20px;
+}

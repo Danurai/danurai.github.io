@@ -1,149 +1,236 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<script src="https://code.jquery.com/jquery-3.0.0.min.js" integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0=" crossorigin="anonymous"></script>
+<!-- JQuery -->
+	<script src="https://code.jquery.com/jquery-2.2.2.min.js" integrity="sha256-36cp2Co+/62rEAAYHLmRCPIych47CvdM+uTBJwSzWjI=" crossorigin="anonymous"></script>
+<style>
+	@font-face {
+		font-family: 'x-wing-ships';
+		src: url('/xwing/res/font/xwing-miniatures-ships.ttf');
+	}
+	@font-face {
+		font-family: x-wing-symbols;
+		src:	url('/xwing/res/font/x-wing-symbols.ttf');
+	}
+	
+	
+	.xicon	{
+		font-family: x-wing-symbols;
+		background-color: #000;
+		color: white;
+		text-align: center;
+	}
+	.xicon-red {
+		color: #ff0000 !important;
+	}
+	.xicon-green {
+		color: #00ff00 !important;
+	}
+	.wheel	{
+		font-family: Arial;
+		background-color: #000;
+		color:	#fff;
+	}
+	td{ min-width: 15px;}
+</style>
 </head>
 <body>
-<div id="straight">
-	<input type="button" value="Straight 1" data-val="1">
-	<input type="button" value="Straight 2" data-val="2">
-	<input type="button" value="Straight 3" data-val="3">
-	<input type="button" value="Straight 4" data-val="4">
-	<input type="button" value="Straight 5" data-val="5">
-</div>
-<div id="turn">
-	<input type="button" value="Turn L3" data-val="3" data-dir="L">
-	<input type="button" value="Turn L2" data-val="2" data-dir="L">
-	<input type="button" value="Turn L1" data-val="1" data-dir="L">
-	<input type="button" value="Turn R1" data-val="1" data-dir="R">
-	<input type="button" value="Turn R2" data-val="2" data-dir="R">
-	<input type="button" value="Turn R3" data-val="3" data-dir="R">
-</div>
-<div id="bank">
-	<input type="button" value="Bank L3" data-val="3" data-dir="L">
-	<input type="button" value="Bank L2" data-val="2" data-dir="L">
-	<input type="button" value="Bank L1" data-val="1" data-dir="L">
-	<input type="button" value="Bank R1" data-val="1" data-dir="R">
-	<input type="button" value="Bank R2" data-val="2" data-dir="R">
-	<input type="button" value="Bank R3" data-val="3" data-dir="R">
-</dir>
-<br>
-<canvas id="mycanvas" width="400" height="400"></canvas>
+	
+	<div id="shipfont" style="font-family: x-wing-ships;">&nbsp;</div>
+	<div id = "info">Info: </div>
+	<div hidden>
+		<span class="xicon">1</span>
+		<span class="xicon xicon-red">2</span>
+		<span class="xicon xicon-green">3</span>
+		<span class="xicon">4</span>
+		<span class="xicon">5</span>
+		<span class="xicon">6</span>
+		<span class="xicon">7</span>
+		<span class="xicon">8</span>
+		<span class="xicon">9</span>
+		<span class="xicon">0</span>
+			
+		<table class="wheel">
+			<tr>
+				<td>4</td>
+				<td></td><td></td><td class="xicon">8</td><td></td><td></td>
+			</tr>
+			<tr>
+				<td>3</td><td class="xicon xicon-red">1</td><td class="xicon">7</td><td class="xicon xicon-green">8</td><td class="xicon">9</td><td class="xicon xicon-red">3</td>
+			</tr>
+			<tr>
+				<td>2</td><td class="xicon">4</td><td class="xicon">7</td><td class="xicon xicon-green">8</td><td class="xicon">9</td><td class="xicon">6</td>
+			</tr>
+			<tr>
+				<td>1</td><td class="xicon">4</td><td class="xicon xicon-green">7</td><td class="xicon xicon-green">8</td><td class="xicon xicon-green">9</td><td class="xicon">6</td>
+			</tr>
+		</table>
+		<br>
+	</div>
+	<canvas id="playmat" width="915" height="915" style="background-color: #000"></canvas>
+	
+		
+	<script>
+		$(document).ready(function () {
+			var highlight = false;
+			var rangeruler = false;
+			var bgImg;
+			
+			$("#playmat").on('mousemove',function (e) {
+				var ox = e.pageX - this.offsetLeft;
+				var oy = e.pageY - this.offsetTop;
+				var info = 'Info: x=' + ox + ' y=' + oy;
+				var imgData = colctx.getImageData(ox,oy,100,100);
+				info += imgData.data[2] != 0 ? ' ship #' + imgData.data[2] : '';
+				if (imgData.data[2] != 0) {
+					$(this).css('cursor','pointer');
+					highlight = true;
+				} else {
+					$(this).css('cursor','default');
+					highlight = false;
+				}
+				$('#info').html (info);
+				drawShip('l','d',1);
+			})
+			.on('mousedown',function (e) {
+				rangeruler = highlight;
+				drawShip('l','d',1);
+			})
+			.on('mouseup',function (e) {
+				rangeruler = false;
+				drawShip('l','d',1);
+			});
+			
+			var c = document.getElementById("playmat");
+			var ctx = c.getContext("2d");
+			var bw = 40;
+			
+			var a = 135;
+			
+			var baseImg = new Image()
+			baseImg.src = '/xwing/res/img/base.png';
+			
+			// Collision Map
+			var colc = document.createElement("canvas");
+			colc.width = 915;
+			colc.height = 915;
+			var colctx = colc.getContext("2d");
+						
+			//ctx.strokeRect(200,100,w*2,w*2);
+			
+			// Draw Stars
+			//stars()
+			bgImg = ctx.getImageData(0,0,915,915);
+			
+			baseImg.onload = function() {
+				drawShip('l','d',1);
+			}
+			
+			function drawShip (size,id,shipno) {
+				//var size = 'l';
+				var w = bw / (size == 'l' ? 1 : 2);
+				//var id = 'd';
+				//var shipno = 1;
+				
+				var r1 = w*2;
+				var r2 = w*4;
+				var r3 = w*6;
+				
+				// Restore background
+				ctx.putImageData(bgImg,0,0);
+				
+				// draw base
+				ctx.setTransform(1,0,0,1,0,0);
+				ctx.translate(200 + w,100 + w);
+				ctx.rotate( a * Math.PI/180 );
+								
+				if (highlight==true) {
+					ctx.shadowBlur = 40; 
+					ctx.shadowColor = "red";
+					ctx.fillStyle="black";
+					ctx.fillRect(-w,-w,w*2,w*2);
+				}
+				ctx.shadowBlur = 0;
+				
+				ctx.drawImage(baseImg,-w,-w,w*2,w*2);
+				
+				// draw Collision Map
+				colctx.fillStyle = "rgb(0,0," + shipno + ")";
+				
+				colctx.setTransform(1,0,0,1,0,0);
+				colctx.translate(200 + w,100 + w);
+				colctx.rotate( a * Math.PI/180 );
+				colctx.fillRect(-w,-w,w*2,w*2);
+				
+				ctx.font = '80px x-wing-ships';
+				ctx.fillStyle = "#fff";
+				ctx.textBaseline="middle";
+				ctx.textAlign="center";
+				ctx.fillText(id,0,0);
+				
+			
+			//* Firing Arc  -42deg to 42deg //
+			//  Arc 2 - Rear Arc
+			//  Arc 3 - Turret
+			//  Arc 4 - Side Arcs
+				if (rangeruler == true) {
+					ctx.fillStyle = "rgba(0,255,0,0.2)";
+					
+					var rads = 132 * Math.PI/180;
+					// Range 1
+					var r1c = r1 * Math.cos(rads);
+					ctx.beginPath();
+					ctx.arc(-w,-w,r1,-132 * Math.PI/180, -90 * Math.PI/180);
+					ctx.lineTo(w,-r1-w);
+					ctx.arc(w,-w,r1,-90 * Math.PI/180, -48 * Math.PI/180);
+					ctx.lineTo(w-2,-w);
+					ctx.lineTo(-w+2,-w);
+					ctx.fill();
+					
+					// Range 2
+					var r2c = r2 * Math.cos(rads);
+					ctx.beginPath();
+					ctx.arc(-w,-w,r2,-132 * Math.PI/180, -90 * Math.PI/180);
+					ctx.lineTo(w,-r2-w);
+					ctx.arc(w,-w,r2,-90 * Math.PI/180, -48 * Math.PI/180);
+					ctx.lineTo(w-2,-w);
+					ctx.lineTo(-w+2,-w);
+					ctx.fill();
+					
+					// Range 3
+					var r3c = r3 * Math.cos(rads);
+					ctx.beginPath();
+					ctx.arc(-w,-w,r3,-132 * Math.PI/180, -90 * Math.PI/180);
+					ctx.lineTo(w,-r3-w);
+					ctx.arc(w,-w,r3,-90 * Math.PI/180, -48 * Math.PI/180);
+					ctx.lineTo(w-2,-w);
+					ctx.lineTo(-w+2,-w);
+					ctx.fill();
+				}
+			}
+			
+			function stars() {
+				for (i=0; i < 20; i++)	{
+					// Random x,y co-ordinates
+					var x = Math.floor(Math.random() * 915);
+					var y = Math.floor(Math.random() * 915);
+					// Random size
+					var r = Math.floor(Math.random() * 20) + 5;
+					// Random Colour and set gradient
+					var grd = ctx.createRadialGradient(x,y,1,x,y,r);
+					var rd = Math.floor(Math.random() * 255);
+					var bl = Math.floor(Math.random() * 255);
+					grd.addColorStop(0,"rgba(255,255,255,0.8)");
+					grd.addColorStop(0.6,"rgba(" + rd + ",0," + bl + ",0.5)");
+					grd.addColorStop(1,"rgba(" + rd + ",0," + bl + ",0)");
+					ctx.fillStyle = grd;
+					ctx.beginPath();
+					ctx.arc(x,y,r,0,2*Math.PI);
+					ctx.fill();
+				}
+			}
+		});
+	</script>
 </body>
-<script>
-	$(document).ready( function () {
-		var c = document.getElementById("mycanvas");
-		var ctx = c.getContext("2d");
-		ctx.setTransform(1,0,0,1,100,100);
-		ctx.rotate(135*Math.PI/180);
-		drawShip();
-		
-		$("#straight").on("click","input",function() {
-			drawStraight($(this).data("val"));
-		});
-		$("#turn").on("click","input",function () {
-			drawturn($(this).data("val"),$(this).data("dir"))
-		});
-		$("#bank").on("click","input",function () {
-			drawbank($(this).data("val"),$(this).data("dir"))
-		});
-		
-		function drawStraight(s)	{
-			var r = s*40;
-			ctx.translate(0,-r-40);
-			drawShip();
-		}
-		
-		function drawturn(s,d) {
-			var r = 0;
-			var t = d == "L" ? -1 : 1;
-			switch (s)	{
-				case (1):
-					r=45;
-					break;
-				case(2):
-					r=73;
-					break;
-				case(3):
-					r=100;
-					break;
-			}
-			if (d == "R") {
-				ctx.translate( r+40+10,-r-10);
-				ctx.rotate(90*Math.PI/180);
-			} else {
-				r-=20;
-				ctx.translate( -r+10-40,-r+10);
-				ctx.rotate(270*Math.PI/180);
-			}
-			drawShip();
-		}
-		
-		function drawbank(s,d) {
-			var r = 0;
-			switch (s)	{
-				case (1):
-					r=90;
-					break;
-				case(2):
-					r=140;
-					break;
-				case(3):
-					r=190;
-					break;
-			}
-			/*
-			ctx.save()
-			
-			ctx.fillStyle = "rgba(0,200,0,0.5)";	
-			if (d=="R") {
-				ctx.translate(10,0);
-				ctx.arc(r,0,r,Math.PI,225*Math.PI/180);
-				ctx.lineTo(r,0);
-			} else {
-				ctx.translate(30,0);
-				ctx.lineTo(-r,0);
-				ctx.arc(-r,0,r,315*Math.PI/180,0);
-			}
-			ctx.fill();
-			
-			ctx.restore();
-			*/
-			var a = Math.sqrt((Math.pow(r,2))/2);
-			var x = r-a;
-			
-			if (d=="R") {
-				ctx.translate(10,0);
-				ctx.translate(x,-a);
-				ctx.rotate(45*Math.PI/180);
-				ctx.translate(-10,-40);			
-			} else {
-				ctx.translate(30,0);
-				ctx.translate(-x,-a);
-				ctx.rotate(-45*Math.PI/180);
-				ctx.translate(-30,-40);
-			}
-			drawShip();
-		}
-		
-		function drawShip()	{
-			ctx.fillStyle  = "#777777";
-			ctx.fillRect(0,0,40,40);
-			ctx.fillStyle = "#000000";
-			ctx.strokeRect(0,0,40,40);
-			ctx.fillRect(18,2,4,6);
-		}
-	});
-	/*
-	range in mm: 100.0, 200.0, 300.0
 
-	size in mm: 40.0, 80.0, 120.0, 160.0, 200.0
-
-	Turn inside radii in mm: 25.0, 53.0, 80.0
-	Turn outside radii in mm: 45.0, 73.0, 100.0
-
-	Bank inside radii in mm: 70.0, 120.0, 170.0
-	Bank outside radii in mm: 90.0, 140.0, 190.0
-	*/
-</script>
 </html>
