@@ -268,18 +268,17 @@
 					console.log (dist);
 					var transX = dist;
 					var transY = dist;
+					var rot = 90 * (ship.planning.dir == 'R'?1:-1);
 							
 					//Translate in Y plane
 					ship.posX += Math.floor(transX * Math.sin(ship.rotation*Math.PI/180));
 					ship.posY -= Math.floor(transX * Math.cos(ship.rotation*Math.PI/180));
 					
-					
 					//Translate in X plane
-					ship.posX += Math.floor(transX * Math.sin((ship.rotation+90)*Math.PI/180));
-					ship.posY -= Math.floor(transX * Math.cos((ship.rotation+90)*Math.PI/180));
+					ship.posX += Math.floor(transX * Math.sin((ship.rotation+rot)*Math.PI/180));
+					ship.posY -= Math.floor(transX * Math.cos((ship.rotation+rot)*Math.PI/180));
 					
-					var rot = 90 * (ship.planning.dir == 'R'?1:-1) + 360;
-					ship.rotation = (ship.rotation + rot) % 360;
+					ship.rotation = (ship.rotation + rot + 360) % 360;
 					break;
 				case 'L':	// Segnor's Loop
 					break;
