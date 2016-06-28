@@ -266,16 +266,12 @@
 					var rad = rads[ship.planning.speed - 1];
 					var dist = (rad * 2) - ((size-40)/2) + size/2 + 20;
 					console.log (dist);
-					var transX = dist * (ship.planning.dir == 'R'?-1:1);
+					var transX = dist;
 					var transY = dist;
 							
 					//Translate in Y plane
 					ship.posX += Math.floor(transX * Math.sin(ship.rotation*Math.PI/180));
 					ship.posY -= Math.floor(transX * Math.cos(ship.rotation*Math.PI/180));
-					
-					// Translate in X plane
-					ship.posX -= Math.floor(transY * Math.sin(ship.rotation*Math.PI/180));
-					ship.posY += Math.floor(transY * Math.cos(ship.rotation*Math.PI/180));
 					
 					var rot = 90 * (ship.planning.dir == 'R'?1:-1) + 360;
 					ship.rotation = (ship.rotation + rot) % 360;
