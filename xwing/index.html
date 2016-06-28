@@ -1,236 +1,657 @@
 <!DOCTYPE html>
 <html>
 <head>
-<!-- JQuery -->
 	<script src="https://code.jquery.com/jquery-2.2.2.min.js" integrity="sha256-36cp2Co+/62rEAAYHLmRCPIych47CvdM+uTBJwSzWjI=" crossorigin="anonymous"></script>
-<style>
-	@font-face {
-		font-family: 'x-wing-ships';
-		src: url('/xwing/res/font/xwing-miniatures-ships.ttf');
-	}
-	@font-face {
-		font-family: x-wing-symbols;
-		src:	url('/xwing/res/font/x-wing-symbols.ttf');
-	}
-	
-	
-	.xicon	{
-		font-family: x-wing-symbols;
-		background-color: #000;
-		color: white;
-		text-align: center;
-	}
-	.xicon-red {
-		color: #ff0000 !important;
-	}
-	.xicon-green {
-		color: #00ff00 !important;
-	}
-	.wheel	{
-		font-family: Arial;
-		background-color: #000;
-		color:	#fff;
-	}
-	td{ min-width: 15px;}
-</style>
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
+	<link href='https://fonts.googleapis.com/css?family=Orbitron:400,700' rel='stylesheet' type='text/css'>
+	<link href='/xwing/res/css/ship.css' rel='stylesheet' type='text/css'>
 </head>
 <body>
+	<div class="container" style="margin: 10px">
 	
-	<div id="shipfont" style="font-family: x-wing-ships;">&nbsp;</div>
-	<div id = "info">Info: </div>
-	<div hidden>
-		<span class="xicon">1</span>
-		<span class="xicon xicon-red">2</span>
-		<span class="xicon xicon-green">3</span>
-		<span class="xicon">4</span>
-		<span class="xicon">5</span>
-		<span class="xicon">6</span>
-		<span class="xicon">7</span>
-		<span class="xicon">8</span>
-		<span class="xicon">9</span>
-		<span class="xicon">0</span>
-			
-		<table class="wheel">
-			<tr>
-				<td>4</td>
-				<td></td><td></td><td class="xicon">8</td><td></td><td></td>
-			</tr>
-			<tr>
-				<td>3</td><td class="xicon xicon-red">1</td><td class="xicon">7</td><td class="xicon xicon-green">8</td><td class="xicon">9</td><td class="xicon xicon-red">3</td>
-			</tr>
-			<tr>
-				<td>2</td><td class="xicon">4</td><td class="xicon">7</td><td class="xicon xicon-green">8</td><td class="xicon">9</td><td class="xicon">6</td>
-			</tr>
-			<tr>
-				<td>1</td><td class="xicon">4</td><td class="xicon xicon-green">7</td><td class="xicon xicon-green">8</td><td class="xicon xicon-green">9</td><td class="xicon">6</td>
-			</tr>
-		</table>
-		<br>
-	</div>
-	<canvas id="playmat" width="915" height="915" style="background-color: #000"></canvas>
-	
+		<div class="row">
+			<div class="col-sm-6">
+				<h3>Squad</h3>
+				<div id="squadlist"></div>	
+			</div>
+			<div class="col-sm-6">
+				<h3>Activation</h3>
+				<div id="movemap"></div>
+			</div>
+		</div>
 		
-	<script>
-		$(document).ready(function () {
-			var highlight = false;
-			var rangeruler = false;
-			var bgImg;
+		<div class="row" style="padding-bottom: 5px;">
+			<h3>Phase</h3>
+			<div class="btn-group" id="phasegroup">
+				<button type="button" class="btn btn-default" data-value="setup">Setup</button>
+				<button type="button" class="btn btn-default active" data-value="planning">Planning</button>
+				<button type="button" class="btn btn-default"  data-value="activation">Activation</button>
+				<button type="button" class="btn btn-default"  data-value="shooting">Shooting</button>
+			</div>
+		</div>
+		
+		<div class="row">
+				<ul class="nav nav-tabs">
+					<li><a data-toggle="tab" href="#squadbuilder">Squad Builder</a></li>
+					<li class="active"><a data-toggle="tab"  href="#main">Playmat</a></li>
+				</ul>
+	
+				<div class="tab-content">
+					<div id="squadbuilder" class="tab-pane">
+						<div class="row">
+							<div class="col-sm-6">
+								<div id="shiplist" style="font: 12pt Orbitron;"></div>
+							</div>
+							<div class="col-sm-6">
+								<div id="movelist"></div>
+								<div id="shipdata"></div>
+							</div>
+						</div>
+					</div>
+					<div id="main" class="tab-pane active">
+						<div class="row">
+							<canvas id="playmat" width="1000" height="1000" style="border: 1px solid grey;"></canvas>
+						</div>
+					</div>
+				</div>
+		</div>
+		
+	</div>
+</body>
+<script>
+	$(document).ready( function() {
+	/* Set Contexts */
+		var c = document.getElementById('playmat');
+		var ctx = c.getContext('2d');
+		var colc = document.createElement("canvas");
+		colc.width = 1000;
+		colc.height = 1000;
+		//var colc = document.getElementById('colmat');
+		var colctx = colc.getContext("2d");
+
+	/* Ship List Code */
+		// PHASE: setup, planning, activation, shooting
+		var PHASE = "planning";
+		_moveMap = {'S0': 5, 'S': 8, 'BL': 7, 'BR':9, 'TL':4, 'TR':6, 'K':2, 'LL':1, 'LR':3};
+		var selectedId = -1;
+		var shipdata;
+		var squad = {
+			"rebel":[],
+			"imperial":[],
+			"scum":[],
+		}
+		var move = {"on":false,"rotate":false};
+		var plan = {"selected":-1};
+		
+		$.getJSON("/xwing/res/js/ships.js", function(json) {
+			_shipdata = json;
+			writeShipList();
 			
-			$("#playmat").on('mousemove',function (e) {
+		/* SQUAD Initialiser */
+			//imperial: tie-fighter 436,635,315, tie-fighter 529,541,315
+			//rebel: xwing 331, 63,180
+			addShipToSquad(0);
+			squad['imperial'][0]['posX'] = 436;
+			squad['imperial'][0]['posY'] = 635;
+			squad['imperial'][0]['rotation'] = 315;
+			addShipToSquad(0);
+			squad['imperial'][1]['posX'] = 529;
+			squad['imperial'][1]['posY'] = 541;
+			squad['imperial'][1]['rotation'] = 315;
+			
+			addShipToSquad(9);
+			squad['rebel'][0]['posX'] = 331;
+			squad['rebel'][0]['posY'] = 63;
+			squad['rebel'][0]['rotation'] = 180;
+			
+			// Update Squads
+			$("#squadlist").html  (getSquadListHtml(squad));
+			// Clear page and redraw
+			refreshScreen()
+		
+		});
+		
+		function writeShipList()	{
+			var outp = ""
+			$.each(_shipdata, function(i,ship) {
+				outp += '<div data-id = "' + i + '"'
+					+ (selectedId == i ? ' class="selected"' : '')
+					+ ' style="cursor:pointer;">'
+					+ ship.faction + ' - ' + ship.name + ' '
+					+ (selectedId == i ? ' <i class="fa fa-plus-square-o" style="cursor: pointer;"></i>' : '' )
+					+ '</div>';
+			});
+			$("#shiplist").html(outp);				
+		}
+		
+		/* Listeners */
+		$("#playmat")
+			.on ("mouseup",function() {
+				// assume move['ship'] has been set by .on('mousemove') event
+				if (PHASE=="setup") {
+					if (move["rotate"] == true) {
+						move["rotate"] = false;
+						move["on"] = false;
+					}
+					if (move["on"] == true) {
+						move["rotate"] = true;
+						move["initangle"] = move["ship"].rotation;
+					}				
+				}
+				refreshScreen();
+			})
+			.on ("mousedown",function(e) {
+				move["x"] = e.pageX - this.offsetLeft;
+				move["y"] = e.pageY - this.offsetTop;
+				move["ship"] = getShipAtLocation(move["x"],move["y"]);
+				if (PHASE=="setup") {
+					if (move["rotate"] == false) {
+						if (typeof move["ship"] !== "undefined") { 
+							move["on"] = true;
+						} else{
+							move["on"] = false;
+						}
+					}
+				}
+				if (PHASE=="planning" || PHASE=="activation") {
+					if (typeof move["ship"] !== "undefined") {
+						refreshSelection();
+					}
+				}
+				refreshScreen();
+			})
+			.on ("mousemove",function(e) {
 				var ox = e.pageX - this.offsetLeft;
 				var oy = e.pageY - this.offsetTop;
-				var info = 'Info: x=' + ox + ' y=' + oy;
-				var imgData = colctx.getImageData(ox,oy,100,100);
-				info += imgData.data[2] != 0 ? ' ship #' + imgData.data[2] : '';
-				if (imgData.data[2] != 0) {
-					$(this).css('cursor','pointer');
-					highlight = true;
-				} else {
-					$(this).css('cursor','default');
-					highlight = false;
+				var ship = getShipAtLocation(ox, oy);
+				if (PHASE == "setup") {
+				/* Highlight Ship */
+					highlightShip(ship);
+					if (move["on"] == true) {
+						if (move["rotate"] == true) {
+							move["ship"].rotation = stickyRotate(ox - move["x"],move["initangle"]);
+						} else {
+							move["ship"].posX += ox - move["x"];
+							move["ship"].posY += oy - move["y"];
+							move["x"] = ox;
+							move["y"] = oy;
+						}
+					}
 				}
-				$('#info').html (info);
-				drawShip('l','d',1);
+				refreshScreen();
+			});
+		
+		$("#shiplist")
+			.on("mouseover","div",function()	{
+				var id = $(this).data("id");
+				if ($(this).find("i").length == 0) $(this).append('<i class="fa fa-plus-square-o"></i>');
+				$("#shipdata").html (getShipDataHtml(_shipdata[id]));
+				$("#movelist").html (getShipMovesHtml(_shipdata[id]));
 			})
-			.on('mousedown',function (e) {
-				rangeruler = highlight;
-				drawShip('l','d',1);
+			.on("mouseleave","div", function () {
+				$(this).find("i").remove();
+				refreshScreen();
 			})
-			.on('mouseup',function (e) {
-				rangeruler = false;
-				drawShip('l','d',1);
+			.on("click","i",function() {
+				addShipToSquad($(this).closest("div").data("id"));
+			});
+				
+		$("#squadlist")
+			.on("mouseover",".shipname", function () {
+				// Set highlight on mouseover only
+				var data_f = $(this).data('faction');
+				var data_i = $(this).data('ident');
+				$.each(squad, function (faction, shiplist)	{
+					$.each(shiplist, function (i,ship) {
+						if (data_f == faction && data_i == i)	{
+							squad[faction][i]['selected'] = true;
+						} else {
+							squad[faction][i]['selected'] = false;
+						}
+					});
+				});
+				if ($(this).find("i").length == 0) {$(this).append('<i class="fa fa-close" style="cursor: pointer; color: red;"></i>');}
+				refreshScreen();
+			})
+			.on("mouseleave",".shipname", function() {
+				squad[$(this).data('faction')][$(this).data('ident')]['selected'] = false;
+				$(this).find("i").remove();
+				refreshScreen();
+			})
+			.on("click",".fa",function () {
+				var fact = $(this).closest("span").data("faction");
+				var id = $(this).closest("span").data("ident");
+				squad[fact].splice(id,1);
+				$("#squadlist").html (getSquadListHtml(squad));
+				refreshScreen();
 			});
 			
-			var c = document.getElementById("playmat");
-			var ctx = c.getContext("2d");
-			var bw = 40;
-			
-			var a = 135;
-			
-			var baseImg = new Image()
-			baseImg.src = '/xwing/res/img/base.png';
-			
-			// Collision Map
-			var colc = document.createElement("canvas");
-			colc.width = 915;
-			colc.height = 915;
-			var colctx = colc.getContext("2d");
-						
-			//ctx.strokeRect(200,100,w*2,w*2);
-			
-			// Draw Stars
-			//stars()
-			bgImg = ctx.getImageData(0,0,915,915);
-			
-			baseImg.onload = function() {
-				drawShip('l','d',1);
+		$("#phasegroup")
+			.on("click","button",function()	{
+				PHASE = $(this).data("value");
+				$(this).closest("div").find("button").removeClass("active");
+				$(this).addClass("active");
+				refreshSelection();
+				console.log (PHASE);
+			});
+		
+		$("#movemap")
+			.on("click","button", function() {
+				moveship(move.ship);
+				delete move.ship.planning;
+				refreshSelection();
+				refreshScreen();
+			})
+			.on("click","td",function() {
+				if (PHASE=="planning") {
+					var speed = $(this).data("speed");
+					var type = $(this).data("move");
+					var dir = $(this).data("dir");
+					if (typeof move['ship'] !== "undefined") {
+						move['ship']['planning'] = {"speed":speed,"type":type,"dir":dir};
+						console.log (move['ship']);
+						highlightShipMove(move['ship'].planning);
+					}
+				}
+			});
+		
+		function moveship(ship)	{
+			var size = ship.size == 'large'?160:80;
+			switch (ship.planning.type) {
+				case 'T':	// Turn
+					// 25, 53, 80
+					var rads = [25,53,80];
+					var rad = rads[ship.planning.speed - 1];
+					var dist = (rad * 2) - ((size-40)/2) + size/2 + 20;
+					console.log (dist);
+					var transX = dist * (ship.planning.dir == 'R'?-1:1);
+					var transY = dist;
+							
+					//Translate in Y plane
+					ship.posX += Math.floor(transX * Math.sin(ship.rotation*Math.PI/180));
+					ship.posY -= Math.floor(transX * Math.cos(ship.rotation*Math.PI/180));
+					
+					// Translate in X plane
+					ship.posX -= Math.floor(transY * Math.sin(ship.rotation*Math.PI/180));
+					ship.posY += Math.floor(transY * Math.cos(ship.rotation*Math.PI/180));
+					
+					var rot = 90 * (ship.planning.dir == 'R'?1:-1) + 360;
+					ship.rotation = (ship.rotation + rot) % 360;
+					break;
+				case 'L':	// Segnor's Loop
+					break;
+				case 'B':	// Bank
+					break;
+				case 'K':
+				case 'S':
+					var dist = (ship.planning.speed * 80) + size;
+					ship.posX += Math.floor(dist * Math.sin(ship.rotation*Math.PI/180));
+					ship.posY -= Math.floor(dist * Math.cos(ship.rotation*Math.PI/180));
+					if (ship.planning.type == 'K') {
+						ship.rotation = (ship.rotation + 180) % 360;
+					}
+					break;
+				default:
+			}
+			console.log (ship.planning);
+		}
+		
+		function addShipToSquad(ident) {
+			var posX = 5;
+			var posY = 5;
+			var shipdata = _shipdata[ident];
+			$.each(squad[shipdata.faction],function(i,ship) {
+				posX += ship.size == "small" ? 85 : 165;
+			});
+			switch (shipdata.faction) {
+				case "rebel":
+					posY = 5;
+					break;
+				case "imperial":
+					posY = 170;
+					break;
+				default:	//scum
+					posY = 335;
+					break;
 			}
 			
-			function drawShip (size,id,shipno) {
-				//var size = 'l';
-				var w = bw / (size == 'l' ? 1 : 2);
-				//var id = 'd';
-				//var shipno = 1;
-				
-				var r1 = w*2;
-				var r2 = w*4;
-				var r3 = w*6;
-				
-				// Restore background
-				ctx.putImageData(bgImg,0,0);
-				
-				// draw base
-				ctx.setTransform(1,0,0,1,0,0);
-				ctx.translate(200 + w,100 + w);
-				ctx.rotate( a * Math.PI/180 );
-								
-				if (highlight==true) {
-					ctx.shadowBlur = 40; 
-					ctx.shadowColor = "red";
-					ctx.fillStyle="black";
-					ctx.fillRect(-w,-w,w*2,w*2);
-				}
-				ctx.shadowBlur = 0;
-				
-				ctx.drawImage(baseImg,-w,-w,w*2,w*2);
-				
-				// draw Collision Map
-				colctx.fillStyle = "rgb(0,0," + shipno + ")";
-				
-				colctx.setTransform(1,0,0,1,0,0);
-				colctx.translate(200 + w,100 + w);
-				colctx.rotate( a * Math.PI/180 );
-				colctx.fillRect(-w,-w,w*2,w*2);
-				
-				ctx.font = '80px x-wing-ships';
-				ctx.fillStyle = "#fff";
-				ctx.textBaseline="middle";
-				ctx.textAlign="center";
-				ctx.fillText(id,0,0);
-				
+			shipdata['posX'] = posX;
+			shipdata['posY'] = posY;
+			shipdata['rotation'] = 0;
+			shipdata['selected'] = false;
+			shipdata['PHASE'] = 'planning';
+			var maxID = 0;
+			$.each(squad[shipdata.faction],function (i,ship) {
+				maxID = Math.max(maxID,ship.id);
+			});
+			shipdata['id'] = maxID + 1;
+			squad[shipdata.faction].push( $.extend(true,{}, shipdata) );
 			
-			//* Firing Arc  -42deg to 42deg //
-			//  Arc 2 - Rear Arc
-			//  Arc 3 - Turret
-			//  Arc 4 - Side Arcs
-				if (rangeruler == true) {
-					ctx.fillStyle = "rgba(0,255,0,0.2)";
+			// Update Squads
+			$("#squadlist").html  (getSquadListHtml(squad));
+			// Clear page and redraw
+			refreshScreen()
+		}
+		
+		function refreshScreen() {
+		// Clear
+			ctx.fillStyle = "rgba(255,255,255,1)";
+			ctx.fillRect(0,0,1000,1000);
+			colctx.fillStyle = "rgba(255,255,255,1)";
+			colctx.fillRect(0,0,1000,1000);
+		// Redraw
+			$.each(squad, function (faction, shiplist)	{
+				$.each(shiplist, function (i,ship) {
+					drawShip(ship); 
+				});
+			});
+		}
+		
+		function refreshSelection() {
+			if (typeof move.ship !== "undefined") {
+				$('#movemap').html ( getShipMovesHtml(move["ship"]) );
+				highlightShip(move["ship"]);
+				highlightShipMove(move["ship"].planning);
+				if (PHASE == "activation") { $('#movemap').append('<button class="btn btn-default">Activate</button>'); }
+				if (typeof move.ship.planning == "undefined") { $('#movemap').find('button').addClass("disabled"); }
+			}
+		}
+		
+		function drawShip(ship)	{
+		/* Initialise Variables */
+			var size = ship.size == 'large'?160:80;
+			var stats = [ship.ps,ship.attack,ship.evade,ship.hull,ship.shield];
+			var acts = ship.actions;
+			var symbol = ship.symbol;
+			var factionCol = {
+				"rebel":{"stroke":"#FF0000","fill":"rgba(255,0,0,0.2)"},
+				"imperial":{"stroke":"#00FF00","fill":"rgba(0,255,0,0.2)"},
+				"scum":{"stroke":"#FF7700","fill":"rgba(255,128,0,0.2)"}
+			};
+			
+		/* Set the relative location */
+			ctx.setTransform(1,0,0,1,0,0)
+			var x = ship.posX;
+			var y = ship.posY;
+			var r = ship.rotation;
+			ctx.translate (x, y);
+			// rotate around center
+			ctx.translate (size/2,size/2);
+			ctx.rotate(r*Math.PI/180);
+			ctx.translate (-size/2,-size/2);
+		
+		// Highlight
+			if (ship.selected==true) {
+				ctx.shadowBlur = 40; 
+				ctx.shadowColor = factionCol[ship.faction].stroke;
+				ctx.fillStyle="black";
+				ctx.fillRect(0,0,size,size);
+			}
+			ctx.shadowBlur = 0;
+		// Background
+			ctx.fillStyle = 'black';
+			ctx.fillRect(0,0,size,size);
 					
-					var rads = 132 * Math.PI/180;
-					// Range 1
-					var r1c = r1 * Math.cos(rads);
-					ctx.beginPath();
-					ctx.arc(-w,-w,r1,-132 * Math.PI/180, -90 * Math.PI/180);
-					ctx.lineTo(w,-r1-w);
-					ctx.arc(w,-w,r1,-90 * Math.PI/180, -48 * Math.PI/180);
-					ctx.lineTo(w-2,-w);
-					ctx.lineTo(-w+2,-w);
-					ctx.fill();
-					
-					// Range 2
-					var r2c = r2 * Math.cos(rads);
-					ctx.beginPath();
-					ctx.arc(-w,-w,r2,-132 * Math.PI/180, -90 * Math.PI/180);
-					ctx.lineTo(w,-r2-w);
-					ctx.arc(w,-w,r2,-90 * Math.PI/180, -48 * Math.PI/180);
-					ctx.lineTo(w-2,-w);
-					ctx.lineTo(-w+2,-w);
-					ctx.fill();
-					
-					// Range 3
-					var r3c = r3 * Math.cos(rads);
-					ctx.beginPath();
-					ctx.arc(-w,-w,r3,-132 * Math.PI/180, -90 * Math.PI/180);
-					ctx.lineTo(w,-r3-w);
-					ctx.arc(w,-w,r3,-90 * Math.PI/180, -48 * Math.PI/180);
-					ctx.lineTo(w-2,-w);
-					ctx.lineTo(-w+2,-w);
+		// Collision Map
+			colctx.setTransform(1,0,0,1,0,0)
+			colctx.translate (x, y);
+			colctx.translate (size/2,size/2);
+			colctx.rotate(r*Math.PI/180);
+			colctx.translate (-size/2,-size/2);
+			colctx.fillStyle = "rgb(" + (ship.faction == "rebel" ? ship.id : "0" ) + "," + (ship.faction == "imperial" ? ship.id : "0" ) + "," + (ship.faction == "scum" ? ship.id : "0" ) + ")";
+			colctx.fillRect(0,0,size,size);
+			colctx.setTransform(1,0,0,1,0,0)
+			
+		// Shooting Arc
+			ctx.strokeStyle = factionCol[ship.faction].stroke;
+			ctx.fillStyle = factionCol[ship.faction].fill;
+			
+			var arcOS = ship.size == "large" ? 4 : 2;
+			ctx.beginPath();
+			ctx.moveTo (arcOS,0);
+			ctx.lineTo (size/2,size/2);
+			ctx.lineTo (size-arcOS,0);
+			ctx.stroke();
+			ctx.fill();
+			$.each(ship.arc, function(i,arc) {
+			//base arc for all ships
+				/*if (arc == "forward")	{		
+					ctx.beginPath();			
+					ctx.moveTo (arcOS,0);
+					ctx.lineTo (size/2,size/2);
+					ctx.lineTo (size-arcOS,0
+				}*/
+				if (arc=="rear")	{		
+					ctx.beginPath();	
+					ctx.moveTo (arcOS,size);
+					ctx.lineTo (size/2,size/2);
+					ctx.lineTo (size-arcOS,size);
+					ctx.stroke();
 					ctx.fill();
 				}
+				if(arc=="turret")	{
+					ctx.beginPath();
+					var inr = 30;
+					var outr = 36;
+					var arr=8;
+					ctx.arc(size/2,size/2,outr,0,30*Math.PI/180,true);
+					ctx.arc(size/2,size/2,inr,30*Math.PI/180,0,false);
+					ctx.lineTo(size/2 + inr-arr,size/2);
+					ctx.lineTo(size/2 + inr + (outr-inr)/2,size/2+(outr-inr+arr+arr)/2);
+					ctx.lineTo(size/2 + outr+arr,size/2);
+					ctx.lineTo(size/2 + outr,size/2);
+					ctx.stroke();
+					ctx.fill();
+				}
+			});
+			
+		// Stats
+			ctx.font = "14px Orbitron";
+			ctx.textAlign = "left";
+			ctx.textBaseline = "alphabetic";
+			var statTxt = "";
+			$.each(stats,function(i,stat) {
+				statTxt += stat;
+				if (i<stats.length-1) {statTxt += ' ';}
+			});
+			var statW = ctx.measureText(statTxt).width;
+			var statL = (size - statW)/2;
+			var clr = ["#FF7700","#FF0000","#00FF00","#FFFF00","#00AAFF"];
+			$.each(stats, function(i,stat) {
+				ctx.fillStyle = clr[i];
+				ctx.fillText(stat,statL,size-3);
+				statL += ctx.measureText(stat + ' ').width;
+			})
+		
+		// Actions
+			ctx.font = "14px x-wing-symbols";
+			ctx.fillStyle = "#00BB00";
+			var actW = 0;
+			var actH = 14;
+			
+			$.each(acts, function(i,act) {
+				actW = Math.max(actW,ctx.measureText(act).width);
+			});
+			ctx.textAlign="center";
+			var actL = size - (actW/2);
+			var actT = actH-2;
+			$.each(acts, function(i,act) {
+				ctx.fillText(act,actL,actT);
+				actT += actH;			
+			});
+		
+		// Symbol
+			ctx.font = size + "px x-wing-ships";
+			ctx.fillStyle = "rgba(255,255,255,0.8)";
+			ctx.textAlign = "center";
+			ctx.textBaseline = "middle";
+			ctx.fillText(symbol,(size/2)-5,(size/2)-5);
+		
+		// Arrow
+			ctx.beginPath();
+			ctx.moveTo (size/2,2);
+			ctx.lineTo (size/2 + 5,7);
+			ctx.lineTo (size/2 + 3,7);
+			ctx.lineTo (size/2,4);
+			ctx.lineTo (size/2 - 3,7);
+			ctx.lineTo (size/2 - 5,7);
+			ctx.lineTo (size/2 - 5,7);
+			ctx.lineTo (size/2,2);
+			ctx.fillStyle = "#FFFFFF";
+			ctx.fill();
+		
+		// Rotation or Move Stats
+			if (move["rotate"] == true || move["on"] == true ) {
+				ctx.font = "10px Orbitron";
+				ctx.textAlign = "right";
+				ctx.textBaseline = "bottom";
+				ctx.fillStyle = "#FF0000";
+				ctx.fillText ('x: ' + ship.posX + ' y: ' + ship.posY + ' ' + ship.rotation + ': deg',size,0);
 			}
 			
-			function stars() {
-				for (i=0; i < 20; i++)	{
-					// Random x,y co-ordinates
-					var x = Math.floor(Math.random() * 915);
-					var y = Math.floor(Math.random() * 915);
-					// Random size
-					var r = Math.floor(Math.random() * 20) + 5;
-					// Random Colour and set gradient
-					var grd = ctx.createRadialGradient(x,y,1,x,y,r);
-					var rd = Math.floor(Math.random() * 255);
-					var bl = Math.floor(Math.random() * 255);
-					grd.addColorStop(0,"rgba(255,255,255,0.8)");
-					grd.addColorStop(0.6,"rgba(" + rd + ",0," + bl + ",0.5)");
-					grd.addColorStop(1,"rgba(" + rd + ",0," + bl + ",0)");
-					ctx.fillStyle = grd;
-					ctx.beginPath();
-					ctx.arc(x,y,r,0,2*Math.PI);
-					ctx.fill();
+		// Reset Transformation
+			ctx.setTransform(1,0,0,1,0,0);
+		}
+		
+		function getShipAtLocation (ox, oy)	{
+			var factions = ["rebel","imperial","scum"];
+			var tmpShip;
+			var imgData = colctx.getImageData(ox,oy,1,1);
+			$.each(factions,function(i,faction) {
+				if (imgData.data[i] != 0) {
+					tmpShip = squad[faction][imgData.data[i]-1];
+					return false;
 				}
+			});
+			return tmpShip;
+		}
+		
+		function highlightShip(shiplink) {
+			$.each(squad, function (i,faction) {
+				$.each(faction,function (i,ship) {
+					ship.selected = false;
+				})
+			});
+			if (typeof shiplink !== "undefined") {	shiplink.selected = true; }
+		}
+		
+		function highlightShipMove(plan)	{
+			if (typeof plan !== "undefined") {
+				$("#movemap table td").removeClass('xicon-selected');
+				$("#movemap").find('[data-speed="' + plan.speed + '"][data-move="' + plan.type + '"][data-dir="' + plan.dir + '"]').addClass('xicon-selected');
+			}
+		}
+	});
+	
+	/* FUNCTIONS */
+	function getShipDataHtml(ship)	{
+		/* Exemplar
+			<div class="ship ship-small">
+				<div class="shipicon">x</div>
+				<div class="action">f<br>l</div>
+				<div class="statblock">
+					<span class="stats ps">4 </span>
+					<span class="stats attack">2 </span>
+					<span class="stats evade">3 </span>
+					<span class="stats hull">3 </span>
+					<span class="stats shield">2</span>
+				</div>
+			</div>
+		*/
+		var outp = '<div class="ship ship-' + ship.size + '">';
+			outp += '<div class="shipicon">' + ship.symbol + '</div>';
+			outp += '<div class="action">';
+			//f<br>l
+			outp += '</div>';
+			outp += '<div class="statblock">'
+				+ '<span class="stats ps">' + ship.ps + ' </span>'
+				+ '<span class="stats attack">' + ship.attack + ' </span>'
+				+ '<span class="stats evade">' + ship.evade + ' </span>'
+				+ '<span class="stats hull">' + ship.hull + ' </span>'
+				+ '<span class="stats shield">' + ship.shield + '</span>'
+				+ '</div>';
+		outp += '</div>';
+		return outp;
+	}
+	
+	function getShipMovesHtml(ship)	{
+		var outp = '';
+		var mvset = ship.moveset;
+		outp += '<b>' + ship.pilot + ': ' + ship.name + '</b>';
+		outp += '<table class="wheel">';
+		for (var i=5; i>=0; i--)	{
+			if (typeof mvset[i] !== "undefined")	{	// Has Manoeuvres at speed
+				outp += '<tr><td>' + i + '</td>'
+				// Turn
+					+ getMove('T','L',i,mvset[i])
+				// Bank
+					+ getMove('B','L',i,mvset[i])
+				// Straight
+					+ getMove('S',(i==0?'0':''),i,mvset[i])		
+				// Bank	
+					+ getMove('B','R',i,mvset[i])			
+				// Turn
+					+ getMove('T','R',i,mvset[i])
+				// Extra
+					+ getMove('K','',i,mvset[i])
+					+ getMove('L','L',i,mvset[i])
+					+ getMove('L','R',i,mvset[i])
+					+ '</tr>';
+			}
+		}
+		outp += '</table>';
+		return outp;
+	}
+	
+	function getSquadListHtml(squad)	{
+		var outp = '';
+		var shipout = '';
+		var points = 0;
+		$.each(squad,function(faction,shiplist) {
+			points = 0;
+			shipout = '';
+			if (shiplist.length != 0) {
+				$.each(shiplist, function (i,ship)	{
+					shipout += '<span class="shipname" data-faction="' + faction + '" data-ident="' + i + '">' + ship.pilot + ': ' + ship.name + ' (' + ship.points + ')</span><br>';
+					points += parseInt(ship.points,10);
+				});
+				
+				outp += '<div id="' + faction + '"><h4>' + faction + ' ( ' + points + ')</h4>';
+				outp += shipout;
+				outp += '</div>'
 			}
 		});
-	</script>
-</body>
+		return outp;
+	}
+	
+	function getMove(mv,dir,spd,set)	{
+		var outmv = '';
+		var val = set[mv];
+		if (typeof val != 'undefined')	{
+			outmv += '<td class="xicon xicon-' +  val + '" data-speed="' + spd + '" data-move="' + mv + '" data-dir="' + dir + '">' + _moveMap[mv+dir] + '</td>';
+		} else	{
+			outmv = '<td></td>';
+		}
+		return outmv;
+	}
+	
+	function stickyRotate(angle, startangle) {
+		var sticky = 25;
+		var step = 45;
+		var newangle = 0;
+		var maxangle = (360 + (sticky * 360/step));
+		if (angle < 0)	{
+			angle = maxangle + (angle % maxangle);
+		}
+		newangle = Math.floor(angle/(step+sticky)) * step;
+		newangle += Math.max ((angle % (step+sticky))-sticky,0);
+		
+		newangle += startangle;
+		newangle = newangle % 360;
+		return newangle;
+	}
 
+</script>
 </html>

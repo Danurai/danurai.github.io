@@ -12,6 +12,11 @@
 	src: url('/xwing/res/font/xwing-miniatures-ships.ttf');
 }
 /* Ship Icon */
+div	{
+	font-family: Orbitron;
+	text-transform: capitalize;
+}
+
 .ship {
 	font-family: x-wing-ships;
 	background-color: black;
@@ -31,8 +36,11 @@
 	font-size: 160px;
 }
 .shipicon {
+	font-family: x-wing-ships;
+	text-transform: none;
 	position: absolute;
-	bottom: 0; 
+	bottom: 5px;
+	left: -5px;
 	width: inherit;
 }
 /* Stats */
@@ -82,12 +90,18 @@
 }
 .xicon-w	{
 	color: white !important;
+	background-color: #444;
 }
 .xicon-r {
 	color: #ff0000 !important;
+	background-color: #444;
 }
 .xicon-g {
 	color: #00ff00 !important;
+	background-color: #444;
+}
+.xicon-selected {
+	border: 2px solid #FF0000 !important;
 }
 .wheel	{
 	font-family: Orbitron;
@@ -95,7 +109,10 @@
 	background-color: #000;
 	color:	#fff;
 	text-align: center;
+	border-collapse: collapse;
+	border: 1px solid #AAA;
 }
 td {
 	min-width: 20px;
+	border: 1px solid #AAA;
 }
