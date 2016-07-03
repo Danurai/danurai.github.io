@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://code.jquery.com/jquery-3.0.0.min.js" integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0=" crossorigin="anonymous"></script>
+<script>
+
+	$(document).ready( function () {
+		var ship = {"posX":200,"posY":200,"rotation":90,"size":80};
+		var c = document.getElementById("playmat");
+		var ctx = c.getContext("2d");
+		var rad=126;
+		var r = 0;
+		
+		
+		//initial location
+		
+		ship.posX=200 - rad - ship.size/2;
+		ship.posY=200 ;
+		ship.rotation=0;
+		
+		var oldAX = ship.posX + ship.size/2;
+		var oldAY = ship.posY;
+		
+		var oldBX = oldAX;
+		var oldBY = ship.posY + ship.size;
+		
+		var oldCX = oldAX;
+		var oldCY = ship.posY + ship.size/2;
+		
+		refreshMat();
+		
+		function refreshMat() {
+			ctx.setTransform(1,0,0,1,0,0);
+		
+			ctx.clearRect(0,0,500,500);
+			ctx.strokeStyle = "#00FF00";
+			
+			ctx.beginPath();
+			ctx.arc(200,200,rad,0,2*Math.PI);
+			ctx.stroke();
+			
+			ctx.beginPath();
+			ctx.arc(200,200,rad-20,0,2*Math.PI);
+			ctx.stroke();
+			
+			ctx.beginPath();
+			ctx.arc(200,200,rad+20,0,2*Math.PI);
+			ctx.stroke();
+			
+			drawShip(ship);
+		}
+		
+		
+		$("#playmat").on("click",function() {
+			moveShip(ship,10);
+			refreshMat();
+		});
+		
+		function moveShip(ship, inc)	{
+		// placeholder
+			r = r + inc;
+		// calcs
+			var newAX = oldAX + rad - (rad * Math.cos(r * Math.PI / 180));
+			var newAY = oldAY - (rad * Math.sin(r * Math.PI / 180));
+			var mvAX = newAX - oldAX;
+			var mvAY = oldAY - newAY;
+			
+			// if r < ang2
+			var newBX = oldBX + 0;
+			var newBY = newAY + Math.sqrt(Math.pow(ship.size,2)-Math.pow(mvAX,2)) ;
+			
+			var newCX = newBX + (newAX - newBX)/2;
+			var newCY = newBY - (newBY - newAY)/2;
+			
+			console.log ('Move: ' + mvAX + ',' + mvAY);
+			console.log ('old A: ' + oldAX + ',' + oldAY);
+			console.log ('old C: ' + oldCX + ',' + oldCY);
+			console.log ('old B: ' + oldBX + ',' + oldBY);
+			console.log ('new A: ' + newAX + ',' + newAY);
+			console.log ('new C: ' + newCX + ',' + newCY);
+			console.log ('new B: ' + newBX + ',' + newBY);
+			
+			ctx.setTransform(1,0,0,1,0,0);
+			ctx.strokeStyle = "#FF0000";
+			
+			ctx.beginPath();
+			ctx.arc(newAX,newAY,5,0,2*Math.PI);
+			ctx.stroke();
+			
+			ctx.beginPath();
+			ctx.arc(newBX,newBY,5,0,2*Math.PI);
+			ctx.stroke();
+			
+			ship.posX = newCX - ship.size/2;
+			ship.posY = newCY - ship.size/2;
+			
+			ship.rotation = 90 - (Math.acos(mvAX/ship.size) * 180 / Math.PI);
+			if (ship.rotation < 0) {ship.rotation = 0};
+			console.log('Rotate: ' + ship.rotation);
+			// end if
+		}
+		
+		function drawShip(ship)	{
+			
+		/* Set the relative location */
+			ctx.setTransform(1,0,0,1,0,0)
+			ctx.translate(ship.posX,ship.posY);
+			
+			ctx.translate (ship.size/2,ship.size/2);
+			ctx.rotate(ship.rotation*Math.PI/180);
+			ctx.translate (-ship.size/2,-ship.size/2);
+			
+			ctx.strokeRect(0,0,ship.size,ship.size);
+			
+			ctx.moveTo(ship.size/2,0);
+			ctx.lineTo(ship.size/2,ship.size);
+			ctx.stroke();
+			
+			ctx.moveTo(0,ship.size/2);
+			ctx.lineTo(ship.size,ship.size/2);
+			ctx.stroke();
+			
+			
+		// Arrow
+			ctx.beginPath();
+			ctx.moveTo (ship.size/2,2);
+			ctx.lineTo (ship.size/2 + 5,7);
+			ctx.lineTo (ship.size/2 + 3,7);
+			ctx.lineTo (ship.size/2,4);
+			ctx.lineTo (ship.size/2 - 3,7);
+			ctx.lineTo (ship.size/2 - 5,7);
+			ctx.lineTo (ship.size/2 - 5,7);
+			ctx.lineTo (ship.size/2,2);
+			ctx.fillStyle = "#00FF00";
+			ctx.fill();
+		}
+	});
+
+</script>
+</head>
+<body>
+	<canvas id="playmat" width="500" height="500"></canvas>
+</body>
+</html>
