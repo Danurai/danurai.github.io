@@ -5,123 +5,248 @@
 <script>
 
 	$(document).ready( function () {
-		var ship = {"posX":200,"posY":200,"rotation":90,"size":80};
 		var c = document.getElementById("playmat");
 		var ctx = c.getContext("2d");
-		var rad=126;
+		
+	// Ship and Turn info
+		var SHIPS = [
+			{"posX":0,"posY":0,"rotation":0,"size":80},
+			{"posX":0,"posY":0,"rotation":0,"size":160}
+		];
+		var ship;	// Ship data
+		var RADII = {"T":[70,126,180],"B":[160,260,360]};
+		var rad;		// Turn Radius
+		var adjRad;	// Adjust for Left Turn
+		var ANGLES = {"T":Math.PI/2,"B":Math.PI/4};
+		var ang; 	// Turn Angle
+		var adjAng;	// Adjust for Left Turn
+		var oldA;
+		var oldB;
+		var oldC;
+		
+	// INPUT VARIABLES
+		var ORIG = {"x":500,"y":500};
 		var r = 0;
 		
+		var shipid = 1;
+		var speed = 3;
+		var type = 'B';
+		var dir = 'L';
+	
+	// Initialise
+		rad = RADII[type][speed-1];
+		adjRad = rad * (dir == 'L' ? -1 : 1);
+		ang = ANGLES[type];
+		adjAng = ang * (dir == 'L' ? -1 : 1);
 		
-		//initial location
+		if (dir == 'L') {ORIG.x -= rad;}
 		
-		ship.posX=200 - rad - ship.size/2;
-		ship.posY=200 ;
-		ship.rotation=0;
+		ship = SHIPS[shipid];
+		ship.posX = ORIG.x - adjRad - ship.size/2;
+		ship.posY = ORIG.y ;
+		ship.rotation = 0;
 		
-		var oldAX = ship.posX + ship.size/2;
-		var oldAY = ship.posY;
+		oldA = {"x":ship.posX + ship.size/2,"y":ship.posY};
+		oldB = {"x":oldA.x,"y":ship.posY + ship.size};
+		oldC = {"x":oldA.x,"y":ship.posY + ship.size/2};
 		
-		var oldBX = oldAX;
-		var oldBY = ship.posY + ship.size;
-		
-		var oldCX = oldAX;
-		var oldCY = ship.posY + ship.size/2;
+	// Isoceles
+		if (rad * 2 > ship.size) {
+			var angBase = Math.acos( (ship.size/2) / rad) ;
+			var angIso = Math.PI - (2 * angBase);
+			console.log ('Isoceles - Base:' + angBase.toDegrees() + 'deg Top:' + angIso.toDegrees() + 'deg');
+		} else {
+			angIso = -1;
+			console.log ('Isoceles: Ship too large');
+		}
 		
 		refreshMat();
 		
 		function refreshMat() {
-			ctx.setTransform(1,0,0,1,0,0);
-		
-			ctx.clearRect(0,0,500,500);
-			ctx.strokeStyle = "#00FF00";
-			
-			ctx.beginPath();
-			ctx.arc(200,200,rad,0,2*Math.PI);
-			ctx.stroke();
-			
-			ctx.beginPath();
-			ctx.arc(200,200,rad-20,0,2*Math.PI);
-			ctx.stroke();
-			
-			ctx.beginPath();
-			ctx.arc(200,200,rad+20,0,2*Math.PI);
-			ctx.stroke();
-			
+			ctx.clearRect(0,0,1000,1000);
+			drawTrack();
 			drawShip(ship);
-		}
-		
-		
-		$("#playmat").on("click",function() {
-			moveShip(ship,10);
-			refreshMat();
-		});
+		}	
 		
 		function moveShip(ship, inc)	{
-		// placeholder
-			r = r + inc;
-		// calcs
-			var newAX = oldAX + rad - (rad * Math.cos(r * Math.PI / 180));
-			var newAY = oldAY - (rad * Math.sin(r * Math.PI / 180));
-			var mvAX = newAX - oldAX;
-			var mvAY = oldAY - newAY;
+		// Variables
+			var newA;
+			var newB;
+			var newC;
 			
-			// if r < ang2
-			var newBX = oldBX + 0;
-			var newBY = newAY + Math.sqrt(Math.pow(ship.size,2)-Math.pow(mvAX,2)) ;
+			var rRads;		// Angle in radians
+			var d = dir == 'L' ? -1 : 1;
+						
+			r = Math.min(r + inc,170);			
+			rRads = r.toRadians();
 			
-			var newCX = newBX + (newAX - newBX)/2;
-			var newCY = newBY - (newBY - newAY)/2;
+		// TO DO - STOP BEFORE 170
 			
-			console.log ('Move: ' + mvAX + ',' + mvAY);
-			console.log ('old A: ' + oldAX + ',' + oldAY);
-			console.log ('old C: ' + oldCX + ',' + oldCY);
-			console.log ('old B: ' + oldBX + ',' + oldBY);
-			console.log ('new A: ' + newAX + ',' + newAY);
-			console.log ('new C: ' + newCX + ',' + newCY);
-			console.log ('new B: ' + newBX + ',' + newBY);
+		// Locate newA.x and newA.y
+			newA = {"x":0,"y":0};
 			
+			if (r>0 && r<=ang.toDegrees())	{	// On curve
+				newA.x = oldA.x + adjRad - (adjRad * Math.cos(rRads));
+				newA.y = oldA.y - (rad * Math.sin(rRads));
+			} else {										// Off curve
+				// Final Curve position
+				newA.x = oldA.x + adjRad - (adjRad * Math.cos(ang));
+				newA.y = oldA.y - (rad * Math.sin(ang));
+				// Calculate Tangent
+				var tTan = Math.min(rad * Math.tan(rRads - ang),ship.size);
+				
+				// reverse engineer angle based on capped tTan
+				console.log('rRads:' + rRads.toDegrees());
+				rRads = Math.atan(tTan/rad) + ang;
+				console.log('revised rRads:' + rRads.toDegrees());
+				
+				// Plus calculate x,y from Tangent
+				newA.x += tTan * Math.cos(Math.PI/2 - ang) * d;
+				newA.y -= tTan * Math.sin(Math.PI/2 - ang);
+			}
+			// Log Results
+			console.log ("oldA x,y: " + oldA.x + "," + oldA.y);
+			console.log ("newA x,y: " + newA.x + "," + newA.y);
+			drawPoint (newA,"#FF0000");
+		
+		// Locate newB.x and newB.y
+			newB = {"x":0,"y":0};
+			
+			var i = Math.sqrt( Math.pow(newA.x-oldA.x,2) + Math.pow(oldA.y-newA.y,2) );
+			if (i > ship.size) {
+				// Find newB.x and newB.y from intersection of two arcs
+				// Side a = Ship.size (opp angle a)
+				// Side b = ORIG(x,y) -> newA(x,y) (opp angle b)
+				// Side c = rad (opp angle c)
+				
+				var sA = ship.size;
+				var sB = Math.sqrt( Math.pow(newA.x-ORIG.x,2) + Math.pow(ORIG.y-newA.y,2) );
+				var sC = rad;
+				
+				console.log('Scalene - A:' + sA + ' B:' + sB + ' C:' + sC);
+				
+				// Law of cosines
+				var angA = Math.acos( ( Math.pow(sB,2) + Math.pow(sC,2) - Math.pow(sA,2) ) / (2 * sB * sC) );
+				var angnewB = rRads - angA;
+				newB.x = oldA.x + adjRad - (adjRad * Math.cos(angnewB));
+				newB.y = oldA.y - (rad * Math.sin(angnewB));
+				
+			} else {
+				// Fixed newB.x, Triangulate newB.y
+				newB.x = oldB.x;
+				newB.y = newA.y + Math.sqrt( Math.pow(ship.size,2) - Math.pow(newA.x-newB.x,2) );
+			}
+			// Log Results
+			console.log ("oldB x,y: " + oldB.x + "," + oldB.y);
+			console.log ("newB x,y: " + newB.x + "," + newB.y);
+			drawPoint(newB,"#0000FF");
+			
+			/*
+			// Draw
+			ctx.beginPath();
+			ctx.moveTo(ORIG.x,ORIG.y);
+			ctx.lineTo(newA.x,newA.y);
+			ctx.lineTo(newB.x,newB.y);
+			ctx.lineTo(ORIG.x,ORIG.y);
+			ctx.stroke();
+			*/
+			// Locate middle of Ship and move Ship
+			newC = {"x":0,"y":0};
+			newC.x = newB.x + (newA.x - newB.x)/2;
+			newC.y = newB.y - (newB.y - newA.y)/2;
+			
+			ship.posX = newC.x - ship.size/2;
+			ship.posY = newC.y - ship.size/2;
+			
+			// TURN?
+			ship.rotation = 90 - (Math.acos(Math.min((newA.x-newB.x)/ship.size,1)) * 180 / Math.PI);
+			
+		}
+		
+		function drawPoint(pos,clr) {
+			ctx.strokeStyle = clr;
 			ctx.setTransform(1,0,0,1,0,0);
-			ctx.strokeStyle = "#FF0000";
+			ctx.beginPath();
+			ctx.arc(pos.x,pos.y,5,0,Math.PI*2);
+			ctx.stroke();
+		}
+		
+		function drawTrack()	{
+			ctx.setTransform(1,0,0,1,0,0);
+			ctx.strokeStyle = "#AAA";
 			
 			ctx.beginPath();
-			ctx.arc(newAX,newAY,5,0,2*Math.PI);
+			ctx.rect(ORIG.x-adjRad-20,ORIG.y,40,ship.size);
+			ctx.moveTo(ORIG.x-adjRad,ORIG.y);
+			ctx.lineTo(ORIG.x-adjRad,ORIG.y+ship.size);
+			ctx.stroke();
+			
+			var arc = {"start":0,"end":0};
+			
+			if (dir == 'L')	{
+				arc.start = Math.PI*2 - ang;
+				arc.end = 0;
+			} else {	//assume 'R'
+				arc.start = Math.PI;
+				arc.end = Math.PI + ang;
+			}
+			
+			ctx.beginPath();
+			ctx.arc(ORIG.x, ORIG.y, rad, arc.start, arc.end);
 			ctx.stroke();
 			
 			ctx.beginPath();
-			ctx.arc(newBX,newBY,5,0,2*Math.PI);
+			ctx.arc(ORIG.x, ORIG.y, rad-20,arc.start, arc.end);
 			ctx.stroke();
 			
-			ship.posX = newCX - ship.size/2;
-			ship.posY = newCY - ship.size/2;
+			ctx.beginPath();
+			ctx.arc(ORIG.x, ORIG.y, rad+20, arc.start, arc.end);
+			ctx.stroke();
+						
+			ctx.beginPath();
+			/*if (ang == Math.PI/2) {		// 90 deg
+				ctx.rect(ORIG,ORIG-rad-20,ship.size,40);
+				ctx.moveTo(ORIG,ORIG-rad);
+				ctx.lineTo(ORIG+ship.size,ORIG-rad);
+			}	else {						// 45 deg*/
+				ctx.moveTo(ORIG.x-((adjRad+20)*Math.cos(adjAng)),ORIG.y-((adjRad+20)*Math.sin(adjAng)));
+				ctx.lineTo(ORIG.x-((adjRad-20)*Math.cos(adjAng)),ORIG.y-((adjRad-20)*Math.sin(adjAng)));
+				
+				ctx.lineTo(ORIG.x-((adjRad-20)*Math.cos(adjAng))+(ship.size*Math.cos(Math.PI/2 - adjAng)),ORIG.y-((adjRad-20)*Math.sin(adjAng))-(ship.size*Math.sin(Math.PI/2 - adjAng)));
+				ctx.lineTo(ORIG.x-((adjRad+20)*Math.cos(adjAng))+(ship.size*Math.cos(Math.PI/2 - adjAng)),ORIG.y-((adjRad+20)*Math.sin(adjAng))-(ship.size*Math.sin(Math.PI/2 - adjAng)));	
+				ctx.lineTo(ORIG.x-((adjRad+20)*Math.cos(adjAng)),ORIG.y-((adjRad+20)*Math.sin(adjAng)));				
+				ctx.moveTo(ORIG.x-(adjRad*Math.cos(adjAng)),ORIG.y-(adjRad*Math.sin(adjAng)));
+				ctx.lineTo(ORIG.x-(adjRad*Math.cos(adjAng))+(ship.size*Math.cos(Math.PI/2 - adjAng)),ORIG.y-(adjRad*Math.sin(adjAng))-(ship.size*Math.sin(Math.PI/2 - adjAng)));	
+			//}
+			ctx.stroke();
 			
-			ship.rotation = 90 - (Math.acos(mvAX/ship.size) * 180 / Math.PI);
-			if (ship.rotation < 0) {ship.rotation = 0};
-			console.log('Rotate: ' + ship.rotation);
-			// end if
 		}
 		
 		function drawShip(ship)	{
+			
+			ctx.strokeStyle = "#00FF00";
+			ctx.beginPath();
 			
 		/* Set the relative location */
 			ctx.setTransform(1,0,0,1,0,0)
 			ctx.translate(ship.posX,ship.posY);
 			
+		/* Locate ship center and rotate */
 			ctx.translate (ship.size/2,ship.size/2);
 			ctx.rotate(ship.rotation*Math.PI/180);
 			ctx.translate (-ship.size/2,-ship.size/2);
-			
-			ctx.strokeRect(0,0,ship.size,ship.size);
+		
+		/* Draw Ship */
+			ctx.rect(0,0,ship.size,ship.size);
 			
 			ctx.moveTo(ship.size/2,0);
 			ctx.lineTo(ship.size/2,ship.size);
-			ctx.stroke();
 			
 			ctx.moveTo(0,ship.size/2);
 			ctx.lineTo(ship.size,ship.size/2);
 			ctx.stroke();
 			
-			
-		// Arrow
+		/* Draw Arrow */
 			ctx.beginPath();
 			ctx.moveTo (ship.size/2,2);
 			ctx.lineTo (ship.size/2 + 5,7);
@@ -134,11 +259,23 @@
 			ctx.fillStyle = "#00FF00";
 			ctx.fill();
 		}
+		
+		$("#playmat").on("click",function() {
+			moveShip(ship,10);
+			refreshMat();
+		});
+		
 	});
-
+	
+	Number.prototype.toDegrees = function () {
+		return this.valueOf() * 180 / Math.PI;
+	}
+	Number.prototype.toRadians = function () {
+		return this.valueOf() * Math.PI / 180;
+	}
 </script>
 </head>
 <body>
-	<canvas id="playmat" width="500" height="500"></canvas>
+	<canvas id="playmat" width="1000" height="1000"></canvas>
 </body>
 </html>
