@@ -1,281 +1,395 @@
 <!DOCTYPE html>
 <html>
 <head>
-<script src="https://code.jquery.com/jquery-3.0.0.min.js" integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0=" crossorigin="anonymous"></script>
-<script>
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+	<script>
 
-	$(document).ready( function () {
-		var c = document.getElementById("playmat");
-		var ctx = c.getContext("2d");
-		
-	// Ship and Turn info
-		var SHIPS = [
-			{"posX":0,"posY":0,"rotation":0,"size":80},
-			{"posX":0,"posY":0,"rotation":0,"size":160}
-		];
-		var ship;	// Ship data
-		var RADII = {"T":[70,126,180],"B":[160,260,360]};
-		var rad;		// Turn Radius
-		var adjRad;	// Adjust for Left Turn
-		var ANGLES = {"T":Math.PI/2,"B":Math.PI/4};
-		var ang; 	// Turn Angle
-		var adjAng;	// Adjust for Left Turn
-		var oldA;
-		var oldB;
-		var oldC;
-		
-	// INPUT VARIABLES
-		var ORIG = {"x":500,"y":500};
-		var r = 0;
-		
-		var shipid = 1;
-		var speed = 3;
-		var type = 'B';
-		var dir = 'L';
-	
-	// Initialise
-		rad = RADII[type][speed-1];
-		adjRad = rad * (dir == 'L' ? -1 : 1);
-		ang = ANGLES[type];
-		adjAng = ang * (dir == 'L' ? -1 : 1);
-		
-		if (dir == 'L') {ORIG.x -= rad;}
-		
-		ship = SHIPS[shipid];
-		ship.posX = ORIG.x - adjRad - ship.size/2;
-		ship.posY = ORIG.y ;
-		ship.rotation = 0;
-		
-		oldA = {"x":ship.posX + ship.size/2,"y":ship.posY};
-		oldB = {"x":oldA.x,"y":ship.posY + ship.size};
-		oldC = {"x":oldA.x,"y":ship.posY + ship.size/2};
-		
-	// Isoceles
-		if (rad * 2 > ship.size) {
-			var angBase = Math.acos( (ship.size/2) / rad) ;
-			var angIso = Math.PI - (2 * angBase);
-			console.log ('Isoceles - Base:' + angBase.toDegrees() + 'deg Top:' + angIso.toDegrees() + 'deg');
-		} else {
-			angIso = -1;
-			console.log ('Isoceles: Ship too large');
-		}
-		
-		refreshMat();
-		
-		function refreshMat() {
-			ctx.clearRect(0,0,1000,1000);
-			drawTrack();
-			drawShip(ship);
-		}	
-		
-		function moveShip(ship, inc)	{
-		// Variables
-			var newA;
-			var newB;
-			var newC;
+		$(document).ready( function () {
+			var c = document.getElementById("playmat");
+			var ctx = c.getContext("2d");
+			var run = false;
 			
-			var rRads;		// Angle in radians
-			var d = dir == 'L' ? -1 : 1;
-						
-			r = Math.min(r + inc,170);			
-			rRads = r.toRadians();
+		// Ship and Turn info
+			var SHIPS = [
+				{"posX":0,"posY":0,"rotation":0,"size":80},
+				{"posX":0,"posY":0,"rotation":0,"size":160}
+			];
+			var ship;	// Ship data
+			var RADII = {
+				"T":[70,126,180],
+				"R":[70,126,180],
+				"B":[160,260,360],
+				"S":[160,260,360]
+				};
+			var ANGLES = {"T":Math.PI/2,"B":Math.PI/4};
+			var rad;		// Turn Radius
+			var adjRad;	// Adjust for Left Turn
+			var ang; 	// Turn Angle
+			var adjAng;	// Adjust for Left Turn
+			var oldA;
+			var oldB;
+			var oldC;
 			
-		// TO DO - STOP BEFORE 170
+		// INPUT VARIABLES
+			var ORIG = {"x":0,"y":0,"rot":0};
+			var r;
+			var speed;
+			var dir;
+			var type;
 			
-		// Locate newA.x and newA.y
-			newA = {"x":0,"y":0};
-			
-			if (r>0 && r<=ang.toDegrees())	{	// On curve
-				newA.x = oldA.x + adjRad - (adjRad * Math.cos(rRads));
-				newA.y = oldA.y - (rad * Math.sin(rRads));
-			} else {										// Off curve
-				// Final Curve position
-				newA.x = oldA.x + adjRad - (adjRad * Math.cos(ang));
-				newA.y = oldA.y - (rad * Math.sin(ang));
-				// Calculate Tangent
-				var tTan = Math.min(rad * Math.tan(rRads - ang),ship.size);
-				
-				// reverse engineer angle based on capped tTan
-				console.log('rRads:' + rRads.toDegrees());
-				rRads = Math.atan(tTan/rad) + ang;
-				console.log('revised rRads:' + rRads.toDegrees());
-				
-				// Plus calculate x,y from Tangent
-				newA.x += tTan * Math.cos(Math.PI/2 - ang) * d;
-				newA.y -= tTan * Math.sin(Math.PI/2 - ang);
-			}
-			// Log Results
-			console.log ("oldA x,y: " + oldA.x + "," + oldA.y);
-			console.log ("newA x,y: " + newA.x + "," + newA.y);
-			drawPoint (newA,"#FF0000");
-		
-		// Locate newB.x and newB.y
-			newB = {"x":0,"y":0};
-			
-			var i = Math.sqrt( Math.pow(newA.x-oldA.x,2) + Math.pow(oldA.y-newA.y,2) );
-			if (i > ship.size) {
-				// Find newB.x and newB.y from intersection of two arcs
-				// Side a = Ship.size (opp angle a)
-				// Side b = ORIG(x,y) -> newA(x,y) (opp angle b)
-				// Side c = rad (opp angle c)
-				
-				var sA = ship.size;
-				var sB = Math.sqrt( Math.pow(newA.x-ORIG.x,2) + Math.pow(ORIG.y-newA.y,2) );
-				var sC = rad;
-				
-				console.log('Scalene - A:' + sA + ' B:' + sB + ' C:' + sC);
-				
-				// Law of cosines
-				var angA = Math.acos( ( Math.pow(sB,2) + Math.pow(sC,2) - Math.pow(sA,2) ) / (2 * sB * sC) );
-				var angnewB = rRads - angA;
-				newB.x = oldA.x + adjRad - (adjRad * Math.cos(angnewB));
-				newB.y = oldA.y - (rad * Math.sin(angnewB));
-				
-			} else {
-				// Fixed newB.x, Triangulate newB.y
-				newB.x = oldB.x;
-				newB.y = newA.y + Math.sqrt( Math.pow(ship.size,2) - Math.pow(newA.x-newB.x,2) );
-			}
-			// Log Results
-			console.log ("oldB x,y: " + oldB.x + "," + oldB.y);
-			console.log ("newB x,y: " + newB.x + "," + newB.y);
-			drawPoint(newB,"#0000FF");
-			
-			/*
-			// Draw
-			ctx.beginPath();
-			ctx.moveTo(ORIG.x,ORIG.y);
-			ctx.lineTo(newA.x,newA.y);
-			ctx.lineTo(newB.x,newB.y);
-			ctx.lineTo(ORIG.x,ORIG.y);
-			ctx.stroke();
-			*/
-			// Locate middle of Ship and move Ship
-			newC = {"x":0,"y":0};
-			newC.x = newB.x + (newA.x - newB.x)/2;
-			newC.y = newB.y - (newB.y - newA.y)/2;
-			
-			ship.posX = newC.x - ship.size/2;
-			ship.posY = newC.y - ship.size/2;
-			
-			// TURN?
-			ship.rotation = 90 - (Math.acos(Math.min((newA.x-newB.x)/ship.size,1)) * 180 / Math.PI);
-			
-		}
-		
-		function drawPoint(pos,clr) {
-			ctx.strokeStyle = clr;
-			ctx.setTransform(1,0,0,1,0,0);
-			ctx.beginPath();
-			ctx.arc(pos.x,pos.y,5,0,Math.PI*2);
-			ctx.stroke();
-		}
-		
-		function drawTrack()	{
-			ctx.setTransform(1,0,0,1,0,0);
-			ctx.strokeStyle = "#AAA";
-			
-			ctx.beginPath();
-			ctx.rect(ORIG.x-adjRad-20,ORIG.y,40,ship.size);
-			ctx.moveTo(ORIG.x-adjRad,ORIG.y);
-			ctx.lineTo(ORIG.x-adjRad,ORIG.y+ship.size);
-			ctx.stroke();
-			
-			var arc = {"start":0,"end":0};
-			
-			if (dir == 'L')	{
-				arc.start = Math.PI*2 - ang;
-				arc.end = 0;
-			} else {	//assume 'R'
-				arc.start = Math.PI;
-				arc.end = Math.PI + ang;
-			}
-			
-			ctx.beginPath();
-			ctx.arc(ORIG.x, ORIG.y, rad, arc.start, arc.end);
-			ctx.stroke();
-			
-			ctx.beginPath();
-			ctx.arc(ORIG.x, ORIG.y, rad-20,arc.start, arc.end);
-			ctx.stroke();
-			
-			ctx.beginPath();
-			ctx.arc(ORIG.x, ORIG.y, rad+20, arc.start, arc.end);
-			ctx.stroke();
-						
-			ctx.beginPath();
-			/*if (ang == Math.PI/2) {		// 90 deg
-				ctx.rect(ORIG,ORIG-rad-20,ship.size,40);
-				ctx.moveTo(ORIG,ORIG-rad);
-				ctx.lineTo(ORIG+ship.size,ORIG-rad);
-			}	else {						// 45 deg*/
-				ctx.moveTo(ORIG.x-((adjRad+20)*Math.cos(adjAng)),ORIG.y-((adjRad+20)*Math.sin(adjAng)));
-				ctx.lineTo(ORIG.x-((adjRad-20)*Math.cos(adjAng)),ORIG.y-((adjRad-20)*Math.sin(adjAng)));
-				
-				ctx.lineTo(ORIG.x-((adjRad-20)*Math.cos(adjAng))+(ship.size*Math.cos(Math.PI/2 - adjAng)),ORIG.y-((adjRad-20)*Math.sin(adjAng))-(ship.size*Math.sin(Math.PI/2 - adjAng)));
-				ctx.lineTo(ORIG.x-((adjRad+20)*Math.cos(adjAng))+(ship.size*Math.cos(Math.PI/2 - adjAng)),ORIG.y-((adjRad+20)*Math.sin(adjAng))-(ship.size*Math.sin(Math.PI/2 - adjAng)));	
-				ctx.lineTo(ORIG.x-((adjRad+20)*Math.cos(adjAng)),ORIG.y-((adjRad+20)*Math.sin(adjAng)));				
-				ctx.moveTo(ORIG.x-(adjRad*Math.cos(adjAng)),ORIG.y-(adjRad*Math.sin(adjAng)));
-				ctx.lineTo(ORIG.x-(adjRad*Math.cos(adjAng))+(ship.size*Math.cos(Math.PI/2 - adjAng)),ORIG.y-(adjRad*Math.sin(adjAng))-(ship.size*Math.sin(Math.PI/2 - adjAng)));	
-			//}
-			ctx.stroke();
-			
-		}
-		
-		function drawShip(ship)	{
-			
-			ctx.strokeStyle = "#00FF00";
-			ctx.beginPath();
-			
-		/* Set the relative location */
-			ctx.setTransform(1,0,0,1,0,0)
-			ctx.translate(ship.posX,ship.posY);
-			
-		/* Locate ship center and rotate */
-			ctx.translate (ship.size/2,ship.size/2);
-			ctx.rotate(ship.rotation*Math.PI/180);
-			ctx.translate (-ship.size/2,-ship.size/2);
-		
-		/* Draw Ship */
-			ctx.rect(0,0,ship.size,ship.size);
-			
-			ctx.moveTo(ship.size/2,0);
-			ctx.lineTo(ship.size/2,ship.size);
-			
-			ctx.moveTo(0,ship.size/2);
-			ctx.lineTo(ship.size,ship.size/2);
-			ctx.stroke();
-			
-		/* Draw Arrow */
-			ctx.beginPath();
-			ctx.moveTo (ship.size/2,2);
-			ctx.lineTo (ship.size/2 + 5,7);
-			ctx.lineTo (ship.size/2 + 3,7);
-			ctx.lineTo (ship.size/2,4);
-			ctx.lineTo (ship.size/2 - 3,7);
-			ctx.lineTo (ship.size/2 - 5,7);
-			ctx.lineTo (ship.size/2 - 5,7);
-			ctx.lineTo (ship.size/2,2);
-			ctx.fillStyle = "#00FF00";
-			ctx.fill();
-		}
-		
-		$("#playmat").on("click",function() {
-			moveShip(ship,10);
+		// Initialise
+			init_path(0,1,'S','',0);
 			refreshMat();
+			
+			function init_path(shipidIN, speedIN, typeIN, dirIN, angIN) {
+				ship = SHIPS[shipidIN];
+				speed = speedIN;
+				type = typeIN;
+				dir = dirIN;
+				ang = angIN;
+				
+				ship.posX = 300;
+				ship.posY = 500;
+				ship.rotation = parseInt(angIN,10);
+				r = 0;	// rotation along path
+				
+				if (type == 'S' || type == 'K')	{	// Straight
+					rad=ship.size;
+					ang=0;
+				} else {
+					rad = RADII[type][speed-1];
+					ang = ANGLES[type];
+				}
+				adjRad = rad * (dir == 'L' ? -1 : 1);
+				adjAng = ang * (dir == 'L' ? -1 : 1);
+				
+				if (dir == 'L') {ORIG.x -= rad;}
+				
+				ORIG.x = ship.posX + ship.size/2 + adjRad;
+				ORIG.y = ship.posY;
+				ORIG.rot = ship.rotation;
+			
+				oldA = {"x":ship.posX + ship.size/2,"y":ship.posY};
+				oldB = {"x":oldA.x,"y":ship.posY + ship.size};
+				oldC = {"x":oldA.x,"y":ship.posY + ship.size/2};
+			}
+			
+			function refreshMat() {
+				ctx.setTransform(1,0,0,1,0,0);
+				ctx.clearRect(0,0,1000,1000);
+				drawTrack();
+				drawShip(ship);
+			}	
+			
+			function moveShip(ship, inc)	{
+			// Variables
+				var newA;
+				var newB;
+				var newC;
+				
+				var rRads;		// Angle in radians
+				var d = dir == 'L' ? -1 : 1;							
+								
+				newA = {"x":0,"y":0};
+				newB = {"x":0,"y":0};
+				
+				/* Amend newA and newB based on move type */
+				/* Straight movement possible using tangent functionality but range to far at the end of a 5 straight */
+				
+				if (type=="S" || type =="K") {	// Straight or Koiogran
+					r+=inc;
+					
+					newA.x = oldA.x;
+					newA.y = Math.max(oldA.y - r, oldA.y - (speed*80) - ship.size);
+					
+					newB.x = oldB.x;
+					newB.y = newA.y + ship.size;
+				} else {									// Turn, Bank, Segnor and Tallon
+// TODO Stop at end of track
+					r = Math.min(r + inc,179);		// Prevent Infinte Tangent			
+					rRads = r.toRadians();
+				
+				// Locate newA.x and newA.y
+					if (r>0 && r<=ang.toDegrees())	{	// On curve
+						newA.x = oldA.x + adjRad - (adjRad * Math.cos(rRads));
+						newA.y = oldA.y - (rad * Math.sin(rRads));
+					} else {										// Off curve
+						// Calculate Tangent
+						var tTan = Math.min(rad * Math.tan(rRads - ang),ship.size);
+						
+						// reverse engineer angle based on capped tTan
+						console.log('rRads:' + rRads.toDegrees());
+						rRads = Math.atan(tTan/rad) + ang;
+						console.log('revised rRads:' + rRads.toDegrees());
+						
+						// Final Curve position...
+						newA.x = oldA.x + adjRad - (adjRad * Math.cos(ang));
+						newA.y = oldA.y - (rad * Math.sin(ang));
+						// ...plus calculate x,y from Tangent
+						newA.x += tTan * Math.cos(Math.PI/2 - ang) * d;
+						newA.y -= tTan * Math.sin(Math.PI/2 - ang);
+					}
+				
+				// Locate newB.x and newB.y
+					var i = Math.sqrt( Math.pow(newA.x-oldA.x,2) + Math.pow(oldA.y-newA.y,2) );
+					if (i > ship.size) {
+						// Find newB.x and newB.y from intersection of two arcs
+						// Side a = Ship.size (opp angle a)
+						// Side b = ORIG(x,y) -> newA(x,y) (opp angle b)
+						// Side c = rad (opp angle c)
+						
+						var sA = ship.size;
+						var sB = Math.sqrt( Math.pow(newA.x-ORIG.x,2) + Math.pow(ORIG.y-newA.y,2) );
+						var sC = rad;
+						
+						console.log('Scalene - A:' + sA + ' B:' + sB + ' C:' + sC);
+						
+						// Law of cosines
+						var angA = Math.acos( ( Math.pow(sB,2) + Math.pow(sC,2) - Math.pow(sA,2) ) / (2 * sB * sC) );
+						var angnewB = rRads - angA;
+						newB.x = oldA.x + adjRad - (adjRad * Math.cos(angnewB));
+						newB.y = oldA.y - (rad * Math.sin(angnewB));
+						
+					} else {
+						// Fixed newB.x, Triangulate newB.y
+						newB.x = oldB.x;
+						newB.y = newA.y + Math.sqrt( Math.pow(ship.size,2) - Math.pow(newA.x-newB.x,2) );
+					}
+				}
+				// Log Results
+				console.log ("oldA x,y: " + oldA.x + "," + oldA.y);
+				console.log ("newA x,y: " + newA.x + "," + newA.y);
+				drawPoint (newA,"#FF0000");
+				console.log ("oldB x,y: " + oldB.x + "," + oldB.y);
+				console.log ("newB x,y: " + newB.x + "," + newB.y);
+				drawPoint(newB,"#0000FF");
+				
+				// Locate middle of Ship and move Ship
+				newC = {"x":0,"y":0};
+				newC.x = newB.x + (newA.x - newB.x)/2;
+				newC.y = newB.y - (newB.y - newA.y)/2;
+				
+				ship.posX = newC.x - ship.size/2;
+				ship.posY = newC.y - ship.size/2;
+				
+				// TURN?
+				ship.rotation = ORIG.rot + 90 - Math.acos(Math.min((newA.x-newB.x)/ship.size,1)).toDegrees();
+				
+			}
+			
+			function drawTrack()	{
+			// Initialise location and track colour
+				ctx.setTransform(1,0,0,1,0,0);
+				ctx.strokeStyle = "#AAA";
+				ctx.fillStyle = "rgba(255,0,0,0.5)";
+				
+			// Move to centre of ship and rotate canvas
+				ctx.translate(oldA.x,oldA.y+ship.size/2);
+				ctx.rotate(ORIG.rot.toRadians());
+				// Revert translation
+				ctx.translate(-oldA.x,-oldA.y-+ship.size/2);
+			
+			// Draw Start Track
+				ctx.beginPath();
+				ctx.rect(oldA.x-20,oldA.y,40,ship.size);
+				ctx.moveTo(oldA.x,oldA.y);
+				ctx.lineTo(oldA.x,oldA.y+ship.size);
+				ctx.stroke();
+				
+				if (type == "S" || type == "K") {	// Straight Manoeuvers
+					ctx.beginPath();
+					ctx.rect(oldA.x-20,oldA.y,40,-(speed*80));
+					ctx.moveTo(oldA.x,oldA.y);
+					ctx.lineTo(oldA.x,oldA.y-(speed*80));
+					ctx.stroke();
+					
+					ctx.rect(oldA.x-20,oldA.y-(speed*80),40,-ship.size);
+					ctx.moveTo(oldA.x,oldA.y-(speed*80));
+					ctx.lineTo(oldA.x,oldA.y-(speed*80)-ship.size);
+					ctx.stroke();
+				} else {										// Banks and Turns			
+				// Manoeuver arc
+					var arc = {"start":0,"end":0};
+				// Determine direction
+					if (dir == 'L')	{
+						arc.start = Math.PI*2 - ang;
+						arc.end = 0;
+					} else {	//assume 'R'
+						arc.start = Math.PI;
+						arc.end = Math.PI + ang;
+					}
+
+					// Draw arc
+					ctx.beginPath();
+					ctx.arc(ORIG.x, ORIG.y, rad, arc.start, arc.end);
+					ctx.stroke();
+					
+					ctx.beginPath();
+					ctx.arc(ORIG.x, ORIG.y, rad-20,arc.start, arc.end);
+					ctx.stroke();
+					
+					ctx.beginPath();
+					ctx.arc(ORIG.x, ORIG.y, rad+20, arc.start, arc.end);
+					ctx.stroke();
+							
+				// Draw end Track
+					ctx.beginPath();			
+					ctx.translate(ORIG.x-(adjRad*Math.cos(adjAng)),ORIG.y-(adjRad*Math.sin(adjAng)));
+					ctx.rotate(adjAng);
+					ctx.rect(-20,0,40,-ship.size);
+					ctx.moveTo(0,0),
+					ctx.lineTo(0,-ship.size);
+					ctx.stroke();
+					// Revert
+					ctx.translate(-ORIG.x+(adjRad*Math.cos(adjAng)),-ORIG.y+(adjRad*Math.sin(adjAng)));
+				}
+				
+			}
+			
+			function drawShip(ship)	{				
+				ctx.strokeStyle = "#00FF00";
+				ctx.beginPath();
+				
+			/* Set the relative location */
+				ctx.setTransform(1,0,0,1,0,0)
+				
+			/* Adjust for original rotation */
+				
+				ctx.translate(oldA.x,oldA.y+ship.size/2);
+				ctx.rotate(ORIG.rot.toRadians());
+				ctx.translate(-oldA.x,-oldA.y-+ship.size/2);
+				
+				ctx.translate(ship.posX,ship.posY);
+							
+			/* Locate ship center and rotate */
+				ctx.translate (ship.size/2,ship.size/2);
+				ctx.rotate(ship.rotation.toRadians() - ORIG.rot.toRadians() );
+				ctx.translate (-ship.size/2,-ship.size/2);
+			
+			/* Draw Ship */
+				ctx.rect(0,0,ship.size,ship.size);
+				
+				ctx.moveTo(ship.size/2,0);
+				ctx.lineTo(ship.size/2,ship.size);
+				
+				ctx.moveTo(0,ship.size/2);
+				ctx.lineTo(ship.size,ship.size/2);
+				ctx.stroke();
+				
+			/* Draw Arrow */
+				ctx.beginPath();
+				ctx.moveTo (ship.size/2,2);
+				ctx.lineTo (ship.size/2 + 5,7);
+				ctx.lineTo (ship.size/2 + 3,7);
+				ctx.lineTo (ship.size/2,4);
+				ctx.lineTo (ship.size/2 - 3,7);
+				ctx.lineTo (ship.size/2 - 5,7);
+				ctx.lineTo (ship.size/2 - 5,7);
+				ctx.lineTo (ship.size/2,2);
+				ctx.fillStyle = "#00FF00";
+				ctx.fill();
+			}
+			
+			function drawPoint(pos,clr) {
+				ctx.strokeStyle = clr;
+				ctx.setTransform(1,0,0,1,0,0);
+				ctx.beginPath();
+				ctx.arc(pos.x,pos.y,5,0,Math.PI*2);
+				ctx.stroke();
+			}
+			
+			function nextFrame() {
+				moveShip(ship,1);
+				refreshMat();
+				if (run == true) { window.requestAnimationFrame(nextFrame); }
+			}	
+			
+			$("#playmat").on("click",function() {
+				if (run == false) {
+					run = true;
+					window.requestAnimationFrame(nextFrame);
+				} else {
+					run = false;
+				}
+			});
+
+			$("#settings").on("change",function() {				
+				var shipid = $("#sel_ship").val();
+				var move = $("#sel_move").val();
+				var speed = $("#sel_speed").val();
+				var dir = $("#sel_dir").val();				
+				var ang = $("#sel_angle").val();
+				init_path(shipid, speed, move, dir, ang);
+
+				refreshMat();
+			});
+				
+			$("#sel_move").on("change",function () {
+				if ($(this).val() == "S" || $(this).val() == "K")	{
+					$("#dir").hide();
+					$("#sel_speed option[value=4]").prop("disabled",false);
+					$("#sel_speed option[value=5]").prop("disabled",false);
+				} else {
+					$("#dir").show();
+					$("#sel_speed option[value=4]").prop("disabled",true);
+					$("#sel_speed option[value=5]").prop("disabled",true);
+					$("#sel_speed option[value=1]").prop("selected",true);
+				}
+			});
 		});
 		
-	});
-	
-	Number.prototype.toDegrees = function () {
-		return this.valueOf() * 180 / Math.PI;
-	}
-	Number.prototype.toRadians = function () {
-		return this.valueOf() * Math.PI / 180;
-	}
-</script>
-</head>
-<body>
+		Number.prototype.toDegrees = function () { return this.valueOf() * 180 / Math.PI; }
+		Number.prototype.toRadians = function () { return this.valueOf() * Math.PI / 180; }
+	</script>
+	</head>
+	<body>
+	<div hidden>Ship, (T)urn/(B)ank/(S)traight/(K)oiogran turn/Segnor's (L)oop/Tallon (R)oll, Speed, Direction, Start Angle (0/45/90/135 etc)</div>
+	<form class="form-inline" role="form">
+		<div id="settings">
+			<label for="sel_ship">Ship:</label>
+			<select class="form-control" id="sel_ship">
+				<option value=0>Small</option>
+				<option value=1>Large</option>
+			</select>
+			<label for="sel_move">Move:</label>
+			<Select class="form-control" id="sel_move">
+				<option value="S">Straight</option>
+				<option value="B">Bank</option>
+				<option value="T">Turn</option>
+				<option value="K">Koiogran Turn</option>
+				<option value="L">Segnor's Loop</option>
+				<option value="R">Tallon Roll</option>
+			</select>
+			<span id="dir" hidden>
+				<label for="sel_dir">Direction:</label>
+				<select class="form-control" id="sel_dir">
+					<option value="R">Right</option>
+					<option value="L">Left</option>
+				</select>
+			</span>
+			<label for="sel_speed">Speed:</label>
+			<select class="form-control" id="sel_speed">
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+			</select>
+			<label for="sel_angle">Angle:</label>
+			<select class="form-control" id="sel_angle">
+				<option value="0">0</option>
+				<option value="45">45</option>
+				<option value="90">90</option>
+				<option value="135">135</option>
+				<option value="180">180</option>
+				<option value="225">225</option>
+				<option value="270">270</option>
+				<option value="315">315</option>
+			</select>
+		</div>
+	</form>
 	<canvas id="playmat" width="1000" height="1000"></canvas>
 </body>
 </html>

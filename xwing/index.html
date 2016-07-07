@@ -258,7 +258,30 @@
 				}
 			});
 		
-		function moveship(ship)	{
+		function moveship(ship) {
+			var size = ship.size == 'large'?160:80;
+			switch (ship.planning.type) {
+				case 'T':	// Turn
+					// 25, 53, 80
+				case 'L':	// Segnor's Loop
+					break;
+				case 'B':	// Bank
+					// 70, 120, 170
+					break;
+				case 'K':
+				case 'S':
+					var dist = (ship.planning.speed * 80) + size;
+					ship.posX += Math.floor(dist * Math.sin(ship.rotation*Math.PI/180));
+					ship.posY -= Math.floor(dist * Math.cos(ship.rotation*Math.PI/180));
+					if (ship.planning.type == 'K') {
+						ship.rotation = (ship.rotation + 180) % 360;
+					}
+					break;
+				default:
+			}
+		}
+		
+		function ZZmoveship(ship)	{
 			var size = ship.size == 'large'?160:80;
 			switch (ship.planning.type) {
 				case 'T':	// Turn
@@ -513,19 +536,30 @@
 			}
 			
 		// Movement Template
-			if (typeof ship.planning !== "undefined") {
+			if (typeof ship.planning !== "undefined" /*&& PHASE == "activation"*/) {
 				ctx.strokeStyle = factionCol[ship.faction].stroke;
 				ctx.fillStyle = "#FFFFFF";	//factionCol[ship.faction].fill;
 				switch (ship.planning.type) {
 					case 'S':
 					case 'K':
-						ctx.fillRect((size-40)/2, 0, 40, -ship.planning.speed * 80);
-						ctx.strokeRect((size-40)/2, 0, 40, -ship.planning.speed * 80);
-						// Write number and Symbol
+						ctx.rect((size-40)/2, 0, 40, -ship.planning.speed * 80);
 						break;
 					case 'B':
 					case 'L':
-						
+						var rads = [140,240,340];
+						var rad = rads[ship.planning.speed - 1];
+						if (ship.planning.dir == 'R') {
+							rad += 40;
+							ctx.arc(((size-40)/2)+rad,0,rad,Math.PI,225*Math.PI/180);
+							//ctx.lineTo(((size-40)/2)+rad,-rad+40);
+							ctx.arc(((size-40)/2)+rad,0,rad-40,225*Math.PI/180,Math.PI,true);
+							ctx.lineTo(((size-40)/2),0);
+						} else {
+							ctx.arc(((size-40)/2)-rad,0,rad,0,315*Math.PI/180,true);
+							//ctx.lineTo(((size-40)/2)-rad,-rad-40);
+							ctx.arc(((size-40)/2)-rad,0,rad+40,315*Math.PI/180,0);
+							ctx.lineTo(((size-40)/2),0);
+						}
 						break;
 					case 'T':
 						var rads = [50,103,160];
@@ -542,11 +576,17 @@
 							ctx.arc(((size-40)/2)-rad,0,rad+40,1.5*Math.PI,0);
 							ctx.lineTo(((size-40)/2),0);
 						}
-						ctx.fill();
-						ctx.stroke();
-					
 						break;
 				}
+				ctx.fill();
+				ctx.stroke();
+				// Write number and Symbol
+				ctx.textAlign = "center";
+				ctx.textBaseline = "bottom";
+				ctx.font = "20px Orbitron";
+				ctx.strokeText (ship.planning.speed,size/2,0);
+				ctx.font="20px x-wing-symbols";
+				ctx.strokeText(_moveMap[ship.planning.type + ship.planning.dir],size/2,-25);
 			}
 			
 		// Reset Transformation
