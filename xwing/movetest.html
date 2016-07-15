@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+	<script src="/xwing/res/js/movement.js"></script>
+	<script>
+
+		$(document).ready( function () {
+			var c = document.getElementById("playmat");
+			var ctx = c.getContext("2d");
+			
+			var cc = document.getElementById("crashmat");
+			var ctxc = cc.getContext("2d");
+			
+			ctxc.fillStyle = "#0000FF";
+			ctxc.fillRect(400,400,50,50);
+			
+			var run = false;
+			var go = false;
+			
+		// Ship and Turn info
+			var SHIPS = [
+				{"posX":200,"posY":400,"rotation":0,"size":80},
+				{"posX":200,"posY":400,"rotation":0,"size":160}
+			];
+			var ship = SHIPS[0];	// Ship data
+			
+		// Initialise
+			/* function init_path(shipIN, speedIN (1-5), typeIN (S,B,T,K,R,L), dirIN (L,R), Collision Map Context) */
+			init_path(ship, 2, 'S','', ctxc);
+			refreshMat();
+			
+			function refreshMat() {
+				ctx.setTransform(1,0,0,1,0,0);
+				ctx.clearRect(0,0,1000,1000);
+				ctx.fillStyle = "#0000FF";
+				ctx.fillRect(400,400,50,50);
+				drawTrack(ctx);
+				drawShip(ctx, ship);
+			}	
+			
+			function nextFrame() {
+				run = moveShip(ship,1);
+				refreshMat();
+				console.log ("Run: " + run);
+				if (run == true && go == true) { window.requestAnimationFrame(nextFrame); }
+			}
+					
+			$("#playmat").on("click",function() {
+				if (go == false) {
+					go = true;
+					run = true;
+					window.requestAnimationFrame(nextFrame);
+				} else {
+					go = false;
+				}
+			});
+
+			$("#settings").on("change",function() {				
+				ship = SHIPS[$("#sel_ship").val()];
+				var move = $("#sel_move").val();
+				var speed = $("#sel_speed").val();
+				var dir = $("#sel_dir").val();				
+				var ang = $("#sel_angle").val();
+				
+				//ship.rotation = parseInt(ang,10);
+				init_path(ship, speed, move, dir, ctxc);
+
+				refreshMat();
+			});
+				
+			$("#sel_move").on("change",function () {
+				if ($(this).val() == "S" || $(this).val() == "K")	{
+					$("#dir").hide();
+					$("#sel_speed option[value=4]").prop("disabled",false);
+					$("#sel_speed option[value=5]").prop("disabled",false);
+				} else {
+					$("#dir").show();
+					$("#sel_speed option[value=4]").prop("disabled",true);
+					$("#sel_speed option[value=5]").prop("disabled",true);
+					$("#sel_speed option[value=1]").prop("selected",true);
+				}
+			});
+		});
+		
+	</script>
+	<style>
+		canvas {
+			border: 1px solid grey;
+		}
+	</style>
+	</head>
+	<body style="margin: 5px;">
+	<div hidden>Ship, (T)urn/(B)ank/(S)traight/(K)oiogran turn/Segnor's (L)oop/Tallon (R)oll, Speed, Direction, Start Angle (0/45/90/135 etc)</div>
+	<form class="form-inline" role="form">
+		<div id="settings">
+			<label for="sel_ship">Ship:</label>
+			<select class="form-control" id="sel_ship">
+				<option value=0>Small</option>
+				<option value=1>Large</option>
+			</select>
+			<label for="sel_move">Move:</label>
+			<Select class="form-control" id="sel_move">
+				<option value="S">Straight</option>
+				<option value="B">Bank</option>
+				<option value="T">Turn</option>
+				<option value="K">Koiogran Turn</option>
+				<option value="L">Segnor's Loop</option>
+				<option value="R">Tallon Roll</option>
+			</select>
+			<span id="dir" hidden>
+				<label for="sel_dir">Direction:</label>
+				<select class="form-control" id="sel_dir">
+					<option value="R">Right</option>
+					<option value="L">Left</option>
+				</select>
+			</span>
+			<label for="sel_speed">Speed:</label>
+			<select class="form-control" id="sel_speed">
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+			</select>
+			<label for="sel_angle">Angle:</label>
+			<select class="form-control" id="sel_angle">
+				<option value="0">0</option>
+				<option value="45">45</option>
+				<option value="90">90</option>
+				<option value="135">135</option>
+				<option value="180">180</option>
+				<option value="225">225</option>
+				<option value="270">270</option>
+				<option value="315">315</option>
+			</select>
+		</div>
+	</form>
+	<canvas id="playmat" width="1000" height="1000"></canvas>
+	<canvas id="crashmat" width="1000" height="1000"></canvas>
+	<canvas id="tmpmat" width="1000" height="1000"></canvas>
+</body>
+</html>
