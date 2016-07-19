@@ -38,13 +38,12 @@
 				ctx.fillStyle = "#0000FF";
 				ctx.fillRect(400,400,50,50);
 				drawTrack(ctx);
-				drawShip(ctx, ship);
+				drawTestShip(ctx, ship);
 			}	
 			
 			function nextFrame() {
 				run = moveShip(ship,1);
 				refreshMat();
-				console.log ("Run: " + run);
 				if (run == true && go == true) { window.requestAnimationFrame(nextFrame); }
 			}
 					

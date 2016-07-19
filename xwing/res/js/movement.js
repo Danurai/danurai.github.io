@@ -35,16 +35,27 @@
 	var dir;
 	var type;
 	
+	/* USAGE */
+	/* 1. init_path */
+	/* 2. call window.requestAnimationFrame(function); recursively */
+	/* function nextFrame() {
+			run = moveShip(ship,1);
+			refreshMat();
+			console.log ("Run: " + run);
+			if (run == true && go == true) { window.requestAnimationFrame(nextFrame); }
+		} */
+	
 	function init_path(shipIN, speedIN, typeIN, dirIN, col_ctx) {
 		ship = shipIN;
 		speed = speedIN;
 		type = typeIN;
 		dir = dirIN;
+		var size = ship.size == "large" ? 160 : 80;
 
 		r = 0;	// rotation along path
 		
 		if (type == 'S' || type == 'K')	{	// Straight
-			rad=ship.size;
+			rad=size;
 			ang=0;
 		} else {
 			rad = RADII[type][speed-1];
@@ -55,13 +66,13 @@
 		
 		if (dir == 'L') {ORIG.x -= rad;}
 		
-		ORIG.x = ship.posX + ship.size/2 + adjRad;
+		ORIG.x = ship.posX + size/2 + adjRad;
 		ORIG.y = ship.posY;
 		ORIG.rot = ship.rotation;
 
-		oldA = {"x":ship.posX + ship.size/2,"y":ship.posY};
-		oldB = {"x":oldA.x,"y":ship.posY + ship.size};
-		oldC = {"x":oldA.x,"y":ship.posY + ship.size/2};
+		oldA = {"x":ship.posX + size/2,"y":ship.posY};
+		oldB = {"x":oldA.x,"y":ship.posY + size};
+		oldC = {"x":oldA.x,"y":ship.posY + size/2};
 		
 		maxR = getMaxRctx(col_ctx, ship, speed, type, dir);
 	}
@@ -70,6 +81,7 @@
 	// Variables
 		var rRads;		// Angle in radians
 		var d = dir == 'L' ? -1 : 1;
+		var size = ship.size == "large" ? 160 : 80;
 	
 	// Initialise
 		newA = {"x":0,"y":0};
@@ -79,13 +91,13 @@
 		/* Straight movement possible using tangent functionality but range to far at the end of a 5 straight */
 		
 		if (type=="S" || type =="K") {	// Straight or Koiogran
-			r += inc;
+			r += inc*speed*3;
 			
 			newA.x = oldA.x;
-			newA.y = Math.max(oldA.y - r, oldA.y - (speed*80) - ship.size);
+			newA.y = Math.max(oldA.y - r, oldA.y - (speed*80) - size);
 			
 			newB.x = oldB.x;
-			newB.y = newA.y + ship.size;
+			newB.y = newA.y + size;
 			
 		} else {									// Turn, Bank, Segnor and Tallon
 			r += inc;
@@ -97,7 +109,7 @@
 				newA.y = oldA.y - (rad * Math.sin(rRads));
 			} else {										// Off curve
 				// Calculate Tangent
-				var tTan = Math.min(rad * Math.tan(rRads - ang),ship.size);
+				var tTan = Math.min(rad * Math.tan(rRads - ang),size);
 				
 				// reverse engineer angle based on capped tTan
 				rRads = Math.atan(tTan/rad) + ang;
@@ -112,13 +124,13 @@
 		
 		// Locate newB.x and newB.y
 			var i = Math.sqrt( Math.pow(newA.x-oldA.x,2) + Math.pow(oldA.y-newA.y,2) );
-			if (i > ship.size) {
+			if (i > size) {
 				// Find newB.x and newB.y from intersection of two arcs
 				// Side a = Ship.size (opp angle a)
 				// Side b = ORIG(x,y) -> newA(x,y) (opp angle b)
 				// Side c = rad (opp angle c)
 				
-				var sA = ship.size;
+				var sA = size;
 				var sB = Math.sqrt( Math.pow(newA.x-ORIG.x,2) + Math.pow(ORIG.y-newA.y,2) );
 				var sC = rad;				
 				//console.log('Scalene - A:' + sA + ' B:' + sB + ' C:' + sC);
@@ -131,7 +143,7 @@
 			} else {
 				// Fixed newB.x, Triangulate newB.y
 				newB.x = oldB.x;
-				newB.y = newA.y + Math.sqrt( Math.pow(ship.size,2) - Math.pow(newA.x-newB.x,2) );
+				newB.y = newA.y + Math.sqrt( Math.pow(size,2) - Math.pow(newA.x-newB.x,2) );
 			}
 		}
 		//drawPoint (newA,"#FF0000");
@@ -150,9 +162,9 @@
 		// update based on original rotation
 		trans = trans + ORIG.rot.toRadians();
 		
-		ship.posX = oldA.x + (dist * Math.cos((Math.PI/2)-trans)) - ship.size/2;		
+		ship.posX = oldA.x + (dist * Math.cos((Math.PI/2)-trans)) - size/2;		
 		ship.posY = oldA.y - (dist * Math.sin((Math.PI/2)-trans));		
-		ship.rotation = ORIG.rot + 90 - Math.acos(Math.min((newA.x-newB.x)/ship.size,1)).toDegrees();
+		ship.rotation = ORIG.rot + 90 - Math.acos(Math.min((newA.x-newB.x)/size,1)).toDegrees();
 		
 		console.log ("R: " + r);
 		console.log ("MaxR: " + maxR);
@@ -161,9 +173,9 @@
 			r = maxR;
 			var end;
 			if (ang == 0) {
-				end = (speed * 80) + ship.size;
+				end = (speed * 80) + size;
 			} else {
-				end = (ang + Math.atan(ship.size/rad)).toDegrees()
+				end = (ang + Math.atan(size/rad)).toDegrees()
 			}
 			if (maxR >= end) {
 				// No collisions
@@ -189,16 +201,16 @@
 		ctx.fillStyle = "rgba(255,0,0,0.5)";
 		
 	// Move to centre of ship and rotate canvas
-		ctx.translate(oldA.x,oldA.y+ship.size/2);
+		ctx.translate(oldA.x,oldA.y+size/2);
 		ctx.rotate(ORIG.rot.toRadians());
 		// Revert translation
-		ctx.translate(-oldA.x,-oldA.y-+ship.size/2);
+		ctx.translate(-oldA.x,-oldA.y-+size/2);
 	
 	// Draw Start Track
 		ctx.beginPath();
-		ctx.rect(oldA.x-20,oldA.y,40,ship.size);
+		ctx.rect(oldA.x-20,oldA.y,40,size);
 		ctx.moveTo(oldA.x,oldA.y);
-		ctx.lineTo(oldA.x,oldA.y+ship.size);
+		ctx.lineTo(oldA.x,oldA.y+size);
 		ctx.stroke();
 		
 		if (type == "S" || type == "K") {	// Straight Manoeuvers
@@ -208,9 +220,9 @@
 			ctx.lineTo(oldA.x,oldA.y-(speed*80));
 			ctx.stroke();
 			
-			ctx.rect(oldA.x-20,oldA.y-(speed*80),40,-ship.size);
+			ctx.rect(oldA.x-20,oldA.y-(speed*80),40,-size);
 			ctx.moveTo(oldA.x,oldA.y-(speed*80));
-			ctx.lineTo(oldA.x,oldA.y-(speed*80)-ship.size);
+			ctx.lineTo(oldA.x,oldA.y-(speed*80)-size);
 			ctx.stroke();
 		} else {										// Banks and Turns			
 		// Manoeuver arc
@@ -241,9 +253,9 @@
 			ctx.beginPath();			
 			ctx.translate(ORIG.x-(adjRad*Math.cos(adjAng)),ORIG.y-(adjRad*Math.sin(adjAng)));
 			ctx.rotate(adjAng);
-			ctx.rect(-20,0,40,-ship.size);
+			ctx.rect(-20,0,40,-size);
 			ctx.moveTo(0,0),
-			ctx.lineTo(0,-ship.size);
+			ctx.lineTo(0,-size);
 			ctx.stroke();
 			// Revert
 			ctx.translate(-ORIG.x+(adjRad*Math.cos(adjAng)),-ORIG.y+(adjRad*Math.sin(adjAng)));
@@ -251,7 +263,8 @@
 		
 	}
 	
-	function drawShip(ctx, ship)	{			
+	function drawTestShip(ctx, ship)	{		
+		var size = ship.size == "large" ? 160 : 80;	
 		ctx.strokeStyle = "#00FF00";
 		ctx.beginPath();
 		
@@ -260,30 +273,30 @@
 		ctx.translate(ship.posX,ship.posY);
 					
 	/* Locate ship center and rotate */
-		ctx.translate (ship.size/2,ship.size/2);
+		ctx.translate (size/2,size/2);
 		ctx.rotate(ship.rotation.toRadians());
-		ctx.translate (-ship.size/2,-ship.size/2);
+		ctx.translate (-size/2,-size/2);
 		
 	/* Draw Ship */
-		ctx.rect(0,0,ship.size,ship.size);
+		ctx.rect(0,0,size,size);
 		
-		ctx.moveTo(ship.size/2,0);
-		ctx.lineTo(ship.size/2,ship.size);
+		ctx.moveTo(size/2,0);
+		ctx.lineTo(size/2,size);
 		
-		ctx.moveTo(0,ship.size/2);
-		ctx.lineTo(ship.size,ship.size/2);
+		ctx.moveTo(0,size/2);
+		ctx.lineTo(size,size/2);
 		ctx.stroke();
 		
 	/* Draw Arrow */
 		ctx.beginPath();
-		ctx.moveTo (ship.size/2,2);
-		ctx.lineTo (ship.size/2 + 5,7);
-		ctx.lineTo (ship.size/2 + 3,7);
-		ctx.lineTo (ship.size/2,4);
-		ctx.lineTo (ship.size/2 - 3,7);
-		ctx.lineTo (ship.size/2 - 5,7);
-		ctx.lineTo (ship.size/2 - 5,7);
-		ctx.lineTo (ship.size/2,2);
+		ctx.moveTo (size/2,2);
+		ctx.lineTo (size/2 + 5,7);
+		ctx.lineTo (size/2 + 3,7);
+		ctx.lineTo (size/2,4);
+		ctx.lineTo (size/2 - 3,7);
+		ctx.lineTo (size/2 - 5,7);
+		ctx.lineTo (size/2 - 5,7);
+		ctx.lineTo (size/2,2);
 		ctx.fillStyle = "#00FF00";
 		ctx.fill();
 	}
@@ -291,17 +304,19 @@
 	function getMaxRctx(col_ctx, ship, speed, type, direction)	{
 		var mr = 0;
 		var inc = 1;
+		var size = ship.size == "large" ? 160 : 80;
+		
 		if (ang == 0) {
-			mr = (speed * 80) + ship.size;
+			mr = (speed * 80) + size;
 		} else {
-			mr = (ang + Math.atan(ship.size/rad)).toDegrees()
+			mr = (ang + Math.atan(size/rad)).toDegrees()
 		}
 		
 		var tship = {};
 		tship["x"] = ship.posX;
 		tship["y"] = ship.posY;
 		tship["rotation"] = ship.rotation;
-		tship.size = ship.size;
+		tship.size = size;
 		moveShip(tship,mr);
 		while (checkCollision(col_ctx, tship) == true && mr>0) {
 			mr-=inc;
@@ -318,9 +333,11 @@
 			"y":0,
 			"s":0,
 		};
-		area.x = ship.posX - (ship.size/2);
-		area.y = ship.posY - (ship.size/2);
-		area.s = ship.size * 2;
+		var size = ship.size == "large" ? 160 : 80;
+		
+		area.x = ship.posX - (size/2);
+		area.y = ship.posY - (size/2);
+		area.s = size * 2;
 		
 		// Create temporary canvas
 		var tmpctx = tmpcanvas.getContext("2d");
@@ -332,12 +349,12 @@
 		tmpctx.clearRect(0,0,1000,1000);
 		tmpctx.translate(ship.posX, ship.posY);
 		
-		tmpctx.translate(ship.size/2,ship.size/2);
+		tmpctx.translate(size/2,size/2);
 		tmpctx.rotate(ship.rotation.toRadians());
-		tmpctx.translate(-ship.size/2,-ship.size/2);
+		tmpctx.translate(-size/2,-size/2);
 		
 		tmpctx.fillStyle = "#FF0000";
-		tmpctx.fillRect(0,0,ship.size,ship.size);
+		tmpctx.fillRect(0,0,size,size);
 		tmpctx.setTransform(1,0,0,1,0,0);
 		
 		// Save to ImageData

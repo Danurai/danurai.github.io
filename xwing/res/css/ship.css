@@ -116,3 +116,9 @@ td {
 	min-width: 20px;
 	border: 1px solid #AAA;
 }
+
+.menu {
+	background-color: white;
+	padding: 0px 10px 10px;
+	border: 1px solid black;
+}
