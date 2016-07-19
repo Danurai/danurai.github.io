@@ -194,12 +194,12 @@
 		}
 	}
 	
-	function drawTrack(ctx)	{
+	function drawTrack(ctx, ship)	{
 	// Initialise location and track colour
 		ctx.setTransform(1,0,0,1,0,0);
 		ctx.strokeStyle = "#AAA";
 		ctx.fillStyle = "rgba(255,0,0,0.5)";
-		
+		var size = ship.size == 'large' ? 160 : 80;
 	// Move to centre of ship and rotate canvas
 		ctx.translate(oldA.x,oldA.y+size/2);
 		ctx.rotate(ORIG.rot.toRadians());
