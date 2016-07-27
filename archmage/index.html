@@ -1,1 +1,174 @@
-
+<!-- Archmage Stat Generator -->
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="https://code.jquery.com/jquery-2.2.2.min.js" integrity="sha256-36cp2Co+/62rEAAYHLmRCPIych47CvdM+uTBJwSzWjI=" crossorigin="anonymous"></script>
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+	
+	<script>
+	/* Archmage Engine */
+		$(document).ready( function () {
+			$('input')
+				.on('change',function () {
+					var stat = '#' + $(this).closest('tr').attr('id');
+					if ( $(this).attr('type') == "number" ) {
+						if ( $(this).val() < 3 ) {$(this).val (3);}
+						if ( $(this).val() > 18 ) {$(this).val (18);}
+					}
+					updateScore(this);
+				});
+				
+			function getPointCost() {
+				var tot = 0;
+				$.each($('input[type="number"]'), function(idx,ele) {
+					tot += $(ele).val() > 8 ? $(ele).val() - 8 : 0;
+					tot += $(ele).val() > 14 ? $(ele).val()-14 : 0;
+					tot += $(ele).val() > 16 ? $(ele).val()-16 : 0;
+				}); 
+				return ( 28 - tot) ;
+			}
+			
+			$('#stat-roll').on('click',function () {
+				$.each($('input[type="number"]'), function(idx,ele) {
+					$(ele).val (rollStat());
+					updateScore(ele);
+				});
+			});
+			
+			$('#stat-reset').on('click',function () {
+				
+				$.each($('input[type="checkbox"]'), function(idx,ele) {
+					$(ele).attr('checked',false);
+				});
+				$.each($('input[type="number"]'), function(idx,ele) {
+					$(ele).val (8);
+					updateScore(ele);
+				});
+			});
+			
+			
+			function updateScore(ele) {
+				var stat = '#' + $(ele).closest('tr').attr('id');
+				var score = parseInt( $(stat + ' input[type="number"]').val(),10 );
+				
+				if ( $(stat + ' :checked').length > 0 ) {score += 2;}
+				
+				$(stat + ' [data-name="val"]').html ( score );
+				$(stat + ' [data-name="mod"]').html ( getMod(score) );
+				$('#points').html ('Points remaining: ' + getPointCost() );
+			}
+		});
+		
+		function rollStat()	{
+			var d1 = rollD(6);
+			var d2 = rollD(6);
+			var d3 = rollD(6);
+			var d4 = rollD(6);
+			return (d1 + d2 + d3 + d4 - Math.min (d1,d2,d3,d4));
+		}
+		function rollD(size) {
+			return (Math.floor(Math.random() * size) + 1);
+		}
+		
+		function getMod(stat)	{
+			var n = Math.floor( (stat -10)/2 );
+			return ( (n>0 ? '+' : '') + n );
+		}
+		
+		
+	</script>
+	<style>
+		.row { padding-bottom: 10px; }
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<h3>Archmage Engine Character Builder</h3>
+		</div>
+		<div class="col-sm-6">
+			<div class="row">
+				<form class="form-inline" role="form">
+					<div class="form-group">
+						<label for="char-class">Class: </label>
+						<select class="form-control" id="char-class">
+							<option>Barbarian</option>
+							<option>Bard</option>
+							<option>Fighter</option>
+							<option>Ranger</option>
+							<option>Rogue</option>
+							<option>Paladin</option>
+							<option>Sorcerer</option>
+							<option>Wizard</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="char-race">Race: </label>
+						<select class="form-control" id="char-race">
+							<option>Human</option>
+							<option>Elf - Wood</option>
+							<option>Elf - High</option>
+							<option>Elf - Dark</option>
+						</select>
+					</div>
+				</form>
+			</div>
+			<div class="row">
+				<table class="table table-condensed" id="stats" style="text-align: center;">
+					<tr>
+						<th>Ability</th>
+						<th>Value</th>
+						<th>Race\Class</th>
+						<th>Score</th>
+						<th>Mod</th>
+					</tr>
+					<tr id="str">
+						<td><b>STR</b></td>
+						<td><input type="number" style="width: 50px;" value="8"></td>
+						<td><input type="checkbox" ></td>
+						<td><span data-name="val">8</span></td>
+						<td><span data-name="mod">-1</span></td>
+					</tr>
+					<tr id="dex">
+						<td><b>DEX</b></td>
+						<td><input type="number" style="width: 50px;" value="8"></td>
+						<td><input type="checkbox" ></td>
+						<td><span data-name="val">8</span></td>
+						<td><span data-name="mod">-1</span></td>
+					</tr>
+					<tr id="con">
+						<td><b>CON</b></td>
+						<td><input type="number" style="width: 50px;" value="8"></td>
+						<td><input type="checkbox" ></td>
+						<td><span data-name="val">8</span></td>
+						<td><span data-name="mod">-1</span></td>
+					</tr>
+					<tr id="wis">
+						<td><b>WIS</b></td>
+						<td><input type="number" style="width: 50px;" value="8"></td>
+						<td><input type="checkbox" ></td>
+						<td><span data-name="val">8</span></td>
+						<td><span data-name="mod">-1</span></td>
+					</tr>
+					<tr id="int">
+						<td><b>INT</b></td>
+						<td><input type="number" style="width: 50px;" value="8"></td>
+						<td><input type="checkbox" ></td>
+						<td><span data-name="val">8</span></td>
+						<td><span data-name="mod">-1</span></td>
+					</tr>
+					<tr id="cha">
+						<td><b>CHA</b></td>
+						<td><input type="number" style="width: 50px;" value="8"></td>
+						<td><input type="checkbox" ></td>
+						<td><span data-name="val">8</span></td>
+						<td><span data-name="mod">-1</span></td>
+					</tr>
+				</table>
+				<div id="points">Points Remaining: 28</div><button class="btn btn-sm" id="stat-roll">Roll 'em</button><button class="btn btn-sm" id="stat-reset">Reset</button>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
