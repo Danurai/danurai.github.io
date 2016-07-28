@@ -8,7 +8,69 @@
 	
 	<script>
 	/* Archmage Engine */
+		var AM_CLASS = {
+			'Barbarian':
+				{'stats':["str","con"],'pd':11,'md':10,'hp':7,'recoveries':8,'recdice':10},
+			'Bard':
+				{'stats':["dex","cha"],'pd':10,'md':11,'hp':7,'recoveries':8,'recdice':8},
+			'Cleric':
+				{'stats':["str","wis"],'pd':11,'md':11,'hp':7,'recoveries':8,'recdice':8},
+			'Fighter':
+				{'stats':["str","con"],'pd':10,'md':10,'hp':8,'recoveries':9,'recdice':10},
+			'Paladin':
+				{'stats':["str","cha"],'pd':10,'md':12,'hp':8,'recoveries':8,'recdice':10},
+			'Ranger':
+				{'stats':["str","dex","wis"],'pd':11,'md':10,'hp':7,'recoveries':8,'recdice':8},
+			'Rogue':
+				{'stats':["dex","cha"],'pd':12,'md':10,'hp':6,'recoveries':8,'recdice':8},
+			'Sorcerer':
+				{'stats':["dex","cha"],'pd':11,'md':10,'hp':6,'recoveries':8,'recdice':6},
+			'Wizard':
+				{'stats':["int","wis"],'pd':10,'md':12,'hp':6,'recoveries':8,'recdice':6}
+		}
+		
+		var AM_RACE = {
+			'Human':
+				{'stats':['str','dex','con','wis','int','cha']},
+			'Dwarf':
+				{'stats':['con','wis']},
+			'Dark Elf':
+				{'stats':['dex','cha']},
+			'High Elf':
+				{'stats':['int','cha']},
+			'Wood Elf':
+				{'stats':['dex','wis']},
+			'Gnome':
+				{'stats':['dex','int']},
+			'Halfling':
+				{'stats':['con','dex']},
+			'Half-orc':
+				{'stats':['str','dex']},
+			'Draconic/Dragonspawn':
+				{'stats':['str','cha']},
+			'Holy One/Aasimar':
+				{'stats':['wis','cha']},
+			'Forgeborn/Dwarf-forged':
+				{'stats':['str','con']},
+			'Tiefling/Demontouched':
+				{'stats':['str','int']},
+		}
+		
 		$(document).ready( function () {
+		/* populate dropdowns */
+			var outp = '';
+			$.each(AM_CLASS, function(key,charclass) {
+				outp += '<option>' + key + '</option>';
+			});
+			$('#char-class').html (outp);
+			
+			outp = '';
+			$.each(AM_RACE, function(key,charrace) {
+				outp += '<option>' + key + '</option>';
+			});
+			$('#char-race').html (outp);
+			
+			
 			$('input')
 				.on('change',function () {
 					var stat = '#' + $(this).closest('tr').attr('id');
@@ -47,6 +109,30 @@
 				});
 			});
 			
+			$('#classrace').on('change', function () {
+				lockadj();
+			});
+			
+			function lockadj()	{
+				var stats = [];
+				
+				$.each(AM_CLASS[$('#char-class').val()].stats, function (idx, stat) {
+					stats.push (stat);
+				});
+				$.each(AM_RACE[$('#char-race').val()].stats, function (idx, stat) {
+					stats.push (stat);
+				});
+				console.log (stats);
+				
+				$.each($('input[type="checkbox"]'),function(idx,ele) {
+					if (stats.indexOf($(ele).closest('tr').attr('id')) == -1) {
+						$(ele).attr('disabled',true);
+						$(ele).attr('checked',false);
+					} else {
+						$(ele).attr('disabled',false);
+					}
+				});
+			}
 			
 			function updateScore(ele) {
 				var stat = '#' + $(ele).closest('tr').attr('id');
@@ -89,28 +175,14 @@
 		</div>
 		<div class="col-sm-6">
 			<div class="row">
-				<form class="form-inline" role="form">
+				<form class="form-inline" role="form" id="classrace">
 					<div class="form-group">
 						<label for="char-class">Class: </label>
-						<select class="form-control" id="char-class">
-							<option>Barbarian</option>
-							<option>Bard</option>
-							<option>Fighter</option>
-							<option>Ranger</option>
-							<option>Rogue</option>
-							<option>Paladin</option>
-							<option>Sorcerer</option>
-							<option>Wizard</option>
-						</select>
+						<select class="form-control" id="char-class"></select>
 					</div>
 					<div class="form-group">
 						<label for="char-race">Race: </label>
-						<select class="form-control" id="char-race">
-							<option>Human</option>
-							<option>Elf - Wood</option>
-							<option>Elf - High</option>
-							<option>Elf - Dark</option>
-						</select>
+						<select class="form-control" id="char-race"></select>
 					</div>
 				</form>
 			</div>
