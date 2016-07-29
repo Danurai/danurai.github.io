@@ -9,24 +9,141 @@
 	<script>
 	/* Archmage Engine */
 		var AM_CLASS = {
-			'Barbarian':
-				{'stats':["str","con"],'pd':11,'md':10,'hp':7,'recoveries':8,'recdice':10},
-			'Bard':
-				{'stats':["dex","cha"],'pd':10,'md':11,'hp':7,'recoveries':8,'recdice':8},
-			'Cleric':
-				{'stats':["str","wis"],'pd':11,'md':11,'hp':7,'recoveries':8,'recdice':8},
-			'Fighter':
-				{'stats':["str","con"],'pd':10,'md':10,'hp':8,'recoveries':9,'recdice':10},
-			'Paladin':
-				{'stats':["str","cha"],'pd':10,'md':12,'hp':8,'recoveries':8,'recdice':10},
-			'Ranger':
-				{'stats':["str","dex","wis"],'pd':11,'md':10,'hp':7,'recoveries':8,'recdice':8},
-			'Rogue':
-				{'stats':["dex","cha"],'pd':12,'md':10,'hp':6,'recoveries':8,'recdice':8},
-			'Sorcerer':
-				{'stats':["dex","cha"],'pd':11,'md':10,'hp':6,'recoveries':8,'recdice':6},
-			'Wizard':
-				{'stats':["int","wis"],'pd':10,'md':12,'hp':6,'recoveries':8,'recdice':6}
+			"Barbarian": {
+				"stats": ["str", "con"],
+				"pd": 11,
+				"md": 10,
+				"hp": 7,
+				"recoveries": 8,
+				"recdice": 10,
+				"ac": {
+					"none": [10, 0],
+					"light": [12, 0],
+					"heavy": [13, -2],
+					"shield": [1, 0]
+				},
+				"gold":[25,[6,10]]
+			},
+			"Bard": {
+				"stats": ["dex", "cha"],
+				"pd": 10,
+				"md": 11,
+				"hp": 7,
+				"recoveries": 8,
+				"recdice": 8,
+				"ac": {
+					"none": [10, 0],
+					"light": [12, 0],
+					"heavy": [13, -2],
+					"shield": [1, -1]
+				},
+				"gold":[25,[6,10]]
+			},
+			"Cleric": {
+				"stats": ["str", "wis"],
+				"pd": 11,
+				"md": 11,
+				"hp": 7,
+				"recoveries": 8,
+				"recdice": 8,
+				"ac": {
+					"none": [10, 0],
+					"light": [12, 0],
+					"heavy": [14, 0],
+					"shield": [1, 0]
+				},
+				"gold":[25,[6,10]]
+			},
+			"Fighter": {
+				"stats": ["str", "con"],
+				"pd": 10,
+				"md": 10,
+				"hp": 8,
+				"recoveries": 9,
+				"recdice": 10,
+				"ac": {
+					"none": [10, 0],
+					"light": [13, 0],
+					"heavy": [15, 0],
+					"shield": [1, 0]
+				},
+				"gold":[25,[6,10]]
+			},
+			"Paladin": {
+				"stats": ["str", "cha"],
+				"pd": 10,
+				"md": 12,
+				"hp": 8,
+				"recoveries": 8,
+				"recdice": 10,
+				"ac": {
+					"none": [10, 0],
+					"light": [12, 0],
+					"heavy": [16, 0],
+					"shield": [1, 0]
+				},
+				"gold":[25,[6,10]]
+			},
+			"Ranger": {
+				"stats": ["str", "dex", "wis"],
+				"pd": 11,
+				"md": 10,
+				"hp": 7,
+				"recoveries": 8,
+				"recdice": 8,
+				"ac": {
+					"none": [10, 0],
+					"light": [14, 0],
+					"heavy": [15, -2],
+					"shield": [1, -2]
+				},
+				"gold":[25,[6,10]]
+			},
+			"Rogue": {
+				"stats": ["dex", "cha"],
+				"pd": 12,
+				"md": 10,
+				"hp": 6,
+				"recoveries": 8,
+				"recdice": 8,
+				"ac": {
+					"none": [11, 0],
+					"light": [12, 0],
+					"heavy": [13, -2],
+					"shield": [1, -2]
+				},
+				"gold":[25,[6,10]]
+			},
+			"Sorcerer": {
+				"stats": ["dex", "cha"],
+				"pd": 11,
+				"md": 10,
+				"hp": 6,
+				"recoveries": 8,
+				"recdice": 6,
+				"ac": {
+					"none": [10, 0],
+					"light": [10, 0],
+					"heavy": [11, -2],
+					"shield": [1, -2]
+				},
+				"gold":[25,[6,10]]
+			},
+			"Wizard": {
+				"stats": ["int", "wis"],
+				"pd": 10,
+				"md": 12,
+				"hp": 6,
+				"recoveries": 8,
+				"recdice": 6,
+				"ac": {
+					"none": [10, 0],
+					"light": [12, 0],
+					"heavy": [13, -2],
+					"shield": [1, 0]
+				},
+				"gold":[25,[6,10]]
+			}
 		}
 		
 		var AM_RACE = {
@@ -46,13 +163,13 @@
 				{'stats':['con','dex']},
 			'Half-orc':
 				{'stats':['str','dex']},
-			'Draconic/Dragonspawn':
+			'Draconic':
 				{'stats':['str','cha']},
-			'Holy One/Aasimar':
+			'Holy One':
 				{'stats':['wis','cha']},
-			'Forgeborn/Dwarf-forged':
+			'Forgeborn':
 				{'stats':['str','con']},
-			'Tiefling/Demontouched':
+			'Tiefling':
 				{'stats':['str','int']},
 		}
 		
@@ -70,6 +187,8 @@
 			});
 			$('#char-race').html (outp);
 			
+			lockadj();
+			statsOther();
 			
 			$('input')
 				.on('change',function () {
@@ -79,6 +198,7 @@
 						if ( $(this).val() > 18 ) {$(this).val (18);}
 					}
 					updateScore(this);
+					lockadj();
 				});
 				
 			function getPointCost() {
@@ -98,8 +218,7 @@
 				});
 			});
 			
-			$('#stat-reset').on('click',function () {
-				
+			$('#stat-reset').on('click',function () {				
 				$.each($('input[type="checkbox"]'), function(idx,ele) {
 					$(ele).attr('checked',false);
 				});
@@ -111,6 +230,7 @@
 			
 			$('#classrace').on('change', function () {
 				lockadj();
+				statsOther();
 			});
 			
 			function lockadj()	{
@@ -122,9 +242,8 @@
 				$.each(AM_RACE[$('#char-race').val()].stats, function (idx, stat) {
 					stats.push (stat);
 				});
-				console.log (stats);
 				
-				$.each($('input[type="checkbox"]'),function(idx,ele) {
+				$.each($('#stats input[type="checkbox"]'),function(idx,ele) {
 					if (stats.indexOf($(ele).closest('tr').attr('id')) == -1) {
 						$(ele).attr('disabled',true);
 						$(ele).attr('checked',false);
@@ -132,6 +251,11 @@
 						$(ele).attr('disabled',false);
 					}
 				});
+				if ($('#stats :checked').length == 2) {
+					$.each($('#stats input:checkbox:not(:checked)'),function(idx,ele) {
+						$(ele).attr('disabled',true);
+					});
+				}
 			}
 			
 			function updateScore(ele) {
@@ -143,7 +267,47 @@
 				$(stat + ' [data-name="val"]').html ( score );
 				$(stat + ' [data-name="mod"]').html ( getMod(score) );
 				$('#points').html ('Points remaining: ' + getPointCost() );
+				
+				statsOther();
 			}
+			
+			function statsOther()	{
+				var lvl = parseInt($('#char-level').val(),10);
+				var cls = $('#char-class').val();
+				var stats = {};
+				
+				stats['str'] = parseInt($('#str [data-name="mod"]').html(),10);
+				stats['con'] = parseInt($('#con [data-name="mod"]').html(),10);
+				stats['dex'] = parseInt($('#dex [data-name="mod"]').html(),10);
+				stats['wis'] = parseInt($('#wis [data-name="mod"]').html(),10);
+				stats['int'] = parseInt($('#int [data-name="mod"]').html(),10);
+				stats['cha'] = parseInt($('#cha [data-name="mod"]').html(),10);
+				
+				var hp_mult = [3,4,5,6,8,10,12,16,20,24];
+				var hp = (AM_CLASS[cls].hp + stats.con) * hp_mult[lvl-1];
+				
+				var init = stats.dex + lvl;
+				
+				// Armor Class (shield and light armor) nn + middle mod of Con/Dex/Wis + Level
+				var ac = AM_CLASS[cls].ac[$('#char-arm').val().toLowerCase()][0] + ($('#char-shield').is(':checked')?AM_CLASS[cls].ac['shield'][0]:0) + lvl + [stats.con,stats.dex,stats.wis].sort()[1];
+				
+				var atk = AM_CLASS[cls].ac['none'][1] + AM_CLASS[cls].ac[$('#char-arm').val().toLowerCase()][1] + ($('#char-shield').is(':checked')?AM_CLASS[cls].ac['shield'][1]:0);
+				// Physical Defense nn + middle mod of Str/Con/Dex + Level
+				var pd = AM_CLASS[cls].pd + lvl + [stats.str,stats.con,stats.dex].sort()[1];
+				
+				// Mental Defense nn + middle mod of Int/Wis/Cha + Level
+				var md = AM_CLASS[cls].md + lvl + [stats.wis,stats.int,stats.cha].sort()[1];
+				
+				var outp = '<table class="table-condensed">'
+				+ '<tr><th>HP</th><td>' + hp + '</td></tr>'
+				+ '<tr><th>Initiative</th><td>' + (init>0?'+':'') + init + '</td></tr>'
+				+ '<tr><th>AC</th><td>' + ac + '</td></tr>'
+				+ '<tr><th>PD</th><td>' + pd + '</td></tr>'
+				+ '<tr><th>MD</th><td>' + md + '</td></tr>'
+				+ '<tr><th>Attack Mod</th><td>' + (atk>0?'+':'') + atk + '</td></tr>';
+				$('#stats-other').html (outp);
+			}
+			
 		});
 		
 		function rollStat()	{
@@ -165,7 +329,8 @@
 		
 	</script>
 	<style>
-		.row { padding-bottom: 10px; }
+		#stats th		{ text-align: center; }
+		.row 	{ padding-bottom: 10px; }
 	</style>
 </head>
 <body>
@@ -183,6 +348,33 @@
 					<div class="form-group">
 						<label for="char-race">Race: </label>
 						<select class="form-control" id="char-race"></select>
+					</div>
+					<div class="form-group">
+						<label for="char-level">Level: </label>
+						<select class="form-control" id="char-level">
+							<option>1</option>
+							<option>2</option>
+							<option>3</option>
+							<option>4</option>
+							<option>5</option>
+							<option>6</option>
+							<option>7</option>
+							<option>8</option>
+							<option>9</option>
+							<option>10</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="char-arm">Armour: </label>
+						<select class="form-control" id="char-arm">
+							<option>None</option>
+							<option>Light</option>
+							<option>Heavy</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="char-shield">Shield </label>
+						<input type="checkbox" id="char-shield">
 					</div>
 				</form>
 			</div>
@@ -202,15 +394,15 @@
 						<td><span data-name="val">8</span></td>
 						<td><span data-name="mod">-1</span></td>
 					</tr>
-					<tr id="dex">
-						<td><b>DEX</b></td>
+					<tr id="con">
+						<td><b>CON</b></td>
 						<td><input type="number" style="width: 50px;" value="8"></td>
 						<td><input type="checkbox" ></td>
 						<td><span data-name="val">8</span></td>
 						<td><span data-name="mod">-1</span></td>
 					</tr>
-					<tr id="con">
-						<td><b>CON</b></td>
+					<tr id="dex">
+						<td><b>DEX</b></td>
 						<td><input type="number" style="width: 50px;" value="8"></td>
 						<td><input type="checkbox" ></td>
 						<td><span data-name="val">8</span></td>
@@ -239,6 +431,9 @@
 					</tr>
 				</table>
 				<div id="points">Points Remaining: 28</div><button class="btn btn-sm" id="stat-roll">Roll 'em</button><button class="btn btn-sm" id="stat-reset">Reset</button>
+				<div id="stats-other">
+					HP: AC: PD: MD:
+				</div>
 			</div>
 		</div>
 	</div>
