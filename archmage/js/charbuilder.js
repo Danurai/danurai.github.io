@@ -13,20 +13,13 @@ var AM_CLASS = {
 			"heavy": [13, -2],
 			"shield": [1, 0]
 		},
-		"melee": {
-			"small": {
-					"onehanded" : {"type":"dagger","damage":"d4","attack":0},
-					"twohanded" : {"type":"club","damage":"d6","attack":0}
-			},
-			"light": {
-					"onehanded" : {"type":"hand-axe, warclub","damage":"d6","attack":0},
-					"twohanded" : {"type":"spear","damage":"d8","attack":0}
-			},
-			"heavy": {
-					"onehanded" : {"type":"longsword, battleaxe","damage":"d8","attack":0},
-					"twohanded" : {"type":"greatsword, greataxe","damage":"d10","attack":0}
-			}
-		},
+		"melee": [
+				{"type":"small","name":"dagger","damage":"d4","attack":0,"hands":1},
+				{"type":"small","name":"club","damage":"d6","attack":0,"hands":2},
+				{"type":"light","name":"hand-axe, warclub","damage":"d6","attack":0,"hands":1},
+				{"type":"light","name":"spear","damage":"d8","attack":0,"hands":2},
+				{"type":"heavy","name":"longsword, battleaxe","damage":"d8","attack":0},
+				{"type":"heavy","name":"greatsword, greataxe","damage":"d10","attack":0}],
 		"ranged": {
 			"small": {
 					"thrown" : {"type":"dagger","damage":"d4","attack":0},
@@ -57,35 +50,6 @@ var AM_CLASS = {
 			"heavy": [13, -2],
 			"shield": [1, -1]
 		},
-		"melee": {
-			"small": {
-					"onehanded" : {"type":"dagger","damage":"d4","attack":0},
-					"twohanded" : {"type":"club","damage":"d6","attack":0}
-			},
-			"light": {
-					"onehanded" : {"type":"mace, shortsword","damage":"d6","attack":0},
-					"twohanded" : {"type":"spear","damage":"d8","attack":0}
-			},
-			"heavy": {
-					"onehanded" : {"type":"longsword, scimitar","damage":"d8","attack":0},
-					"twohanded" : {"type":"greatsword, dire flail","damage":"d10","attack"-20}
-			}
-		},
-		"ranged": {
-			"small": {
-					"thrown" : {"type":"dagger","damage":"d4","attack":0},
-					"crossbow" : {"type":"hand crossbow","damage":"d4","attack":-5}
-			},
-			"light": {
-					"thrown" : {"type":"javelin, axe","damage":"d6","attack":0},
-					"crossbow" : {"type":"light crossbow","damage":"d6","attack":0},
-					"bow" : {"type": "shortbow","damage":"d6","attack":0}
-			},
-			"heavy": {
-					"crossbow" : {"type":"heavy crossbow","damage":"d8","attack":-1},
-					"bow" : {"type": "longbow","damage":"d8","attack":-2}
-			}
-		},
 		"gold":[25,[6,10]]
 	},
 	"Cleric": {
@@ -100,35 +64,6 @@ var AM_CLASS = {
 			"light": [12, 0],
 			"heavy": [14, 0],
 			"shield": [1, 0]
-		},
-		"melee": {
-			"small": {
-					"onehanded" : {"type":"dagger","damage":"d4","attack":0},
-					"twohanded" : {"type":"club","damage":"d6","attack":0}
-			},
-			"light": {
-					"onehanded" : {"type":"mace, shortsword","damage":"d6","attack":0},
-					"twohanded" : {"type":"spear","damage":"d8","attack":0}
-			},
-			"heavy": {
-					"onehanded" : {"type":"longsword, warhammer","damage":"d8","attack":-2},
-					"twohanded" : {"type":"greatsword, greataxe","damage":"d10","attack":-2}
-			}
-		},
-		"ranged": {
-			"small": {
-					"thrown" : {"type":"dagger","damage":"d4","attack":0},
-					"crossbow" : {"type":"hand crossbow","damage":"d4","attack":0}
-			},
-			"light": {
-					"thrown" : {"type":"javelin, axe","damage":"d6","attack":0},
-					"crossbow" : {"type":"light crossbow","damage":"d6","attack":0},
-					"bow" : {"type": "shortbow","damage":"d6","attack":-2}
-			},
-			"heavy": {
-					"crossbow" : {"type":"heavy crossbow","damage":"d8","attack":-1},
-					"bow" : {"type": "longbow","damage":"d8","attack":-5}
-			}
 		},
 		"gold":[25,[6,10]]
 	},
