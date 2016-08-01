@@ -5,329 +5,7 @@
 	<script src="https://code.jquery.com/jquery-2.2.2.min.js" integrity="sha256-36cp2Co+/62rEAAYHLmRCPIych47CvdM+uTBJwSzWjI=" crossorigin="anonymous"></script>
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-	
-	<script>
-	/* Archmage Engine */
-		var AM_CLASS = {
-			"Barbarian": {
-				"stats": ["str", "con"],
-				"pd": 11,
-				"md": 10,
-				"hp": 7,
-				"recoveries": 8,
-				"recdice": 10,
-				"ac": {
-					"none": [10, 0],
-					"light": [12, 0],
-					"heavy": [13, -2],
-					"shield": [1, 0]
-				},
-				"gold":[25,[6,10]]
-			},
-			"Bard": {
-				"stats": ["dex", "cha"],
-				"pd": 10,
-				"md": 11,
-				"hp": 7,
-				"recoveries": 8,
-				"recdice": 8,
-				"ac": {
-					"none": [10, 0],
-					"light": [12, 0],
-					"heavy": [13, -2],
-					"shield": [1, -1]
-				},
-				"gold":[25,[6,10]]
-			},
-			"Cleric": {
-				"stats": ["str", "wis"],
-				"pd": 11,
-				"md": 11,
-				"hp": 7,
-				"recoveries": 8,
-				"recdice": 8,
-				"ac": {
-					"none": [10, 0],
-					"light": [12, 0],
-					"heavy": [14, 0],
-					"shield": [1, 0]
-				},
-				"gold":[25,[6,10]]
-			},
-			"Fighter": {
-				"stats": ["str", "con"],
-				"pd": 10,
-				"md": 10,
-				"hp": 8,
-				"recoveries": 9,
-				"recdice": 10,
-				"ac": {
-					"none": [10, 0],
-					"light": [13, 0],
-					"heavy": [15, 0],
-					"shield": [1, 0]
-				},
-				"gold":[25,[6,10]]
-			},
-			"Paladin": {
-				"stats": ["str", "cha"],
-				"pd": 10,
-				"md": 12,
-				"hp": 8,
-				"recoveries": 8,
-				"recdice": 10,
-				"ac": {
-					"none": [10, 0],
-					"light": [12, 0],
-					"heavy": [16, 0],
-					"shield": [1, 0]
-				},
-				"gold":[25,[6,10]]
-			},
-			"Ranger": {
-				"stats": ["str", "dex", "wis"],
-				"pd": 11,
-				"md": 10,
-				"hp": 7,
-				"recoveries": 8,
-				"recdice": 8,
-				"ac": {
-					"none": [10, 0],
-					"light": [14, 0],
-					"heavy": [15, -2],
-					"shield": [1, -2]
-				},
-				"gold":[25,[6,10]]
-			},
-			"Rogue": {
-				"stats": ["dex", "cha"],
-				"pd": 12,
-				"md": 10,
-				"hp": 6,
-				"recoveries": 8,
-				"recdice": 8,
-				"ac": {
-					"none": [11, 0],
-					"light": [12, 0],
-					"heavy": [13, -2],
-					"shield": [1, -2]
-				},
-				"gold":[25,[6,10]]
-			},
-			"Sorcerer": {
-				"stats": ["dex", "cha"],
-				"pd": 11,
-				"md": 10,
-				"hp": 6,
-				"recoveries": 8,
-				"recdice": 6,
-				"ac": {
-					"none": [10, 0],
-					"light": [10, 0],
-					"heavy": [11, -2],
-					"shield": [1, -2]
-				},
-				"gold":[25,[6,10]]
-			},
-			"Wizard": {
-				"stats": ["int", "wis"],
-				"pd": 10,
-				"md": 12,
-				"hp": 6,
-				"recoveries": 8,
-				"recdice": 6,
-				"ac": {
-					"none": [10, 0],
-					"light": [12, 0],
-					"heavy": [13, -2],
-					"shield": [1, 0]
-				},
-				"gold":[25,[6,10]]
-			}
-		}
-		
-		var AM_RACE = {
-			'Human':
-				{'stats':['str','dex','con','wis','int','cha']},
-			'Dwarf':
-				{'stats':['con','wis']},
-			'Dark Elf':
-				{'stats':['dex','cha']},
-			'High Elf':
-				{'stats':['int','cha']},
-			'Wood Elf':
-				{'stats':['dex','wis']},
-			'Gnome':
-				{'stats':['dex','int']},
-			'Halfling':
-				{'stats':['con','dex']},
-			'Half-orc':
-				{'stats':['str','dex']},
-			'Draconic':
-				{'stats':['str','cha']},
-			'Holy One':
-				{'stats':['wis','cha']},
-			'Forgeborn':
-				{'stats':['str','con']},
-			'Tiefling':
-				{'stats':['str','int']},
-		}
-		
-		$(document).ready( function () {
-		/* populate dropdowns */
-			var outp = '';
-			$.each(AM_CLASS, function(key,charclass) {
-				outp += '<option>' + key + '</option>';
-			});
-			$('#char-class').html (outp);
-			
-			outp = '';
-			$.each(AM_RACE, function(key,charrace) {
-				outp += '<option>' + key + '</option>';
-			});
-			$('#char-race').html (outp);
-			
-			lockadj();
-			statsOther();
-			
-			$('input')
-				.on('change',function () {
-					var stat = '#' + $(this).closest('tr').attr('id');
-					if ( $(this).attr('type') == "number" ) {
-						if ( $(this).val() < 3 ) {$(this).val (3);}
-						if ( $(this).val() > 18 ) {$(this).val (18);}
-					}
-					updateScore(this);
-					lockadj();
-				});
-				
-			function getPointCost() {
-				var tot = 0;
-				$.each($('input[type="number"]'), function(idx,ele) {
-					tot += $(ele).val() > 8 ? $(ele).val() - 8 : 0;
-					tot += $(ele).val() > 14 ? $(ele).val()-14 : 0;
-					tot += $(ele).val() > 16 ? $(ele).val()-16 : 0;
-				}); 
-				return ( 28 - tot) ;
-			}
-			
-			$('#stat-roll').on('click',function () {
-				$.each($('input[type="number"]'), function(idx,ele) {
-					$(ele).val (rollStat());
-					updateScore(ele);
-				});
-			});
-			
-			$('#stat-reset').on('click',function () {				
-				$.each($('input[type="checkbox"]'), function(idx,ele) {
-					$(ele).attr('checked',false);
-				});
-				$.each($('input[type="number"]'), function(idx,ele) {
-					$(ele).val (8);
-					updateScore(ele);
-				});
-			});
-			
-			$('#classrace').on('change', function () {
-				lockadj();
-				statsOther();
-			});
-			
-			function lockadj()	{
-				var stats = [];
-				
-				$.each(AM_CLASS[$('#char-class').val()].stats, function (idx, stat) {
-					stats.push (stat);
-				});
-				$.each(AM_RACE[$('#char-race').val()].stats, function (idx, stat) {
-					stats.push (stat);
-				});
-				
-				$.each($('#stats input[type="checkbox"]'),function(idx,ele) {
-					if (stats.indexOf($(ele).closest('tr').attr('id')) == -1) {
-						$(ele).attr('disabled',true);
-						$(ele).attr('checked',false);
-					} else {
-						$(ele).attr('disabled',false);
-					}
-				});
-				if ($('#stats :checked').length == 2) {
-					$.each($('#stats input:checkbox:not(:checked)'),function(idx,ele) {
-						$(ele).attr('disabled',true);
-					});
-				}
-			}
-			
-			function updateScore(ele) {
-				var stat = '#' + $(ele).closest('tr').attr('id');
-				var score = parseInt( $(stat + ' input[type="number"]').val(),10 );
-				
-				if ( $(stat + ' :checked').length > 0 ) {score += 2;}
-				
-				$(stat + ' [data-name="val"]').html ( score );
-				$(stat + ' [data-name="mod"]').html ( getMod(score) );
-				$('#points').html ('Points remaining: ' + getPointCost() );
-				
-				statsOther();
-			}
-			
-			function statsOther()	{
-				var lvl = parseInt($('#char-level').val(),10);
-				var cls = $('#char-class').val();
-				var stats = {};
-				
-				stats['str'] = parseInt($('#str [data-name="mod"]').html(),10);
-				stats['con'] = parseInt($('#con [data-name="mod"]').html(),10);
-				stats['dex'] = parseInt($('#dex [data-name="mod"]').html(),10);
-				stats['wis'] = parseInt($('#wis [data-name="mod"]').html(),10);
-				stats['int'] = parseInt($('#int [data-name="mod"]').html(),10);
-				stats['cha'] = parseInt($('#cha [data-name="mod"]').html(),10);
-				
-				var hp_mult = [3,4,5,6,8,10,12,16,20,24];
-				var hp = (AM_CLASS[cls].hp + stats.con) * hp_mult[lvl-1];
-				
-				var init = stats.dex + lvl;
-				
-				// Armor Class (shield and light armor) nn + middle mod of Con/Dex/Wis + Level
-				var ac = AM_CLASS[cls].ac[$('#char-arm').val().toLowerCase()][0] + ($('#char-shield').is(':checked')?AM_CLASS[cls].ac['shield'][0]:0) + lvl + [stats.con,stats.dex,stats.wis].sort()[1];
-				
-				var atk = AM_CLASS[cls].ac['none'][1] + AM_CLASS[cls].ac[$('#char-arm').val().toLowerCase()][1] + ($('#char-shield').is(':checked')?AM_CLASS[cls].ac['shield'][1]:0);
-				// Physical Defense nn + middle mod of Str/Con/Dex + Level
-				var pd = AM_CLASS[cls].pd + lvl + [stats.str,stats.con,stats.dex].sort()[1];
-				
-				// Mental Defense nn + middle mod of Int/Wis/Cha + Level
-				var md = AM_CLASS[cls].md + lvl + [stats.wis,stats.int,stats.cha].sort()[1];
-				
-				var outp = '<table class="table-condensed">'
-				+ '<tr><th>HP</th><td>' + hp + '</td></tr>'
-				+ '<tr><th>Initiative</th><td>' + (init>0?'+':'') + init + '</td></tr>'
-				+ '<tr><th>AC</th><td>' + ac + '</td></tr>'
-				+ '<tr><th>PD</th><td>' + pd + '</td></tr>'
-				+ '<tr><th>MD</th><td>' + md + '</td></tr>'
-				+ '<tr><th>Attack Mod</th><td>' + (atk>0?'+':'') + atk + '</td></tr>';
-				$('#stats-other').html (outp);
-			}
-			
-		});
-		
-		function rollStat()	{
-			var d1 = rollD(6);
-			var d2 = rollD(6);
-			var d3 = rollD(6);
-			var d4 = rollD(6);
-			return (d1 + d2 + d3 + d4 - Math.min (d1,d2,d3,d4));
-		}
-		function rollD(size) {
-			return (Math.floor(Math.random() * size) + 1);
-		}
-		
-		function getMod(stat)	{
-			var n = Math.floor( (stat -10)/2 );
-			return ( (n>0 ? '+' : '') + n );
-		}
-		
-		
-	</script>
+	<script src="/archmage/js/charbuilder.js"></script>
 	<style>
 		#stats th		{ text-align: center; }
 		.row 	{ padding-bottom: 10px; }
@@ -335,10 +13,10 @@
 </head>
 <body>
 	<div class="container">
-		<div class="row">
-			<h3>Archmage Engine Character Builder</h3>
-		</div>
-		<div class="col-sm-6">
+		<div class="col-sm-12">
+			<div class="row">
+				<h3>Archmage Engine Character Builder</h3>
+			</div>
 			<div class="row">
 				<form class="form-inline" role="form" id="classrace">
 					<div class="form-group">
@@ -364,21 +42,12 @@
 							<option>10</option>
 						</select>
 					</div>
-					<div class="form-group">
-						<label for="char-arm">Armour: </label>
-						<select class="form-control" id="char-arm">
-							<option>None</option>
-							<option>Light</option>
-							<option>Heavy</option>
-						</select>
-					</div>
-					<div class="form-group">
-						<label for="char-shield">Shield </label>
-						<input type="checkbox" id="char-shield">
-					</div>
 				</form>
 			</div>
+		</div>
+		<div class="col-sm-6">
 			<div class="row">
+			<h3>Stats</h3>
 				<table class="table table-condensed" id="stats" style="text-align: center;">
 					<tr>
 						<th>Ability</th>
@@ -430,13 +99,32 @@
 						<td><span data-name="mod">-1</span></td>
 					</tr>
 				</table>
-				<div id="points">Points Remaining: 28</div><button class="btn btn-sm" id="stat-roll">Roll 'em</button><button class="btn btn-sm" id="stat-reset">Reset</button>
-				<div id="stats-other">
-					HP: AC: PD: MD:
-				</div>
+				<div><button class="btn btn-sm" id="stat-roll">Roll 'em</button><button class="btn btn-sm" id="stat-reset">Reset</button> <span id="points">Points remaining: 28</span></div>
 			</div>
 		</div>
+		<div class="col-sm-6">
+			<h3>Defenses</h3>
+			<form class="form-inline" role="form" id="defenses">
+				<div class="form-group">
+					<label for="char-arm">Armour: </label>
+					<select class="form-control" id="char-arm">
+						<option>None</option>
+						<option>Light</option>
+						<option>Heavy</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label for="char-shield">Shield </label>
+					<input type="checkbox" id="char-shield">
+				</div>
+			</form>
+			<div id="stats-other">
+				HP: AC: PD: MD:
+			</div>
+			<h3>Powers</h3>
+			<div id="char-powers"></div>
+		</div>
 	</div>
-	<div class="row small" style="background-color: #cce6ff; padding: 30px 50px; border-top: 2px solid #4da9ff">"This website uses trademarks and/or copyrights owned by Fire Opal Media, which are used under the Fire Opal Media, 13th Age Community Use Policy. We are expressly prohibited from charging you to use or access this content. This website is not published, endorsed, or specifically approved by Fire Opal Media. For more information about Fire Opal Media's 13th Age Community Use Policy, please visit <a href="www.fireopalmedia.com/communityuse">www.fireopalmedia.com/communityuse</a>. For more information about Fire Opal Media and 13th Age products, please visit <a href="www.fireopalmedia.com">www.fireopalmedia.com</a> and <a href="www.pelgranepress.com">www.pelgranepress.com</a>."</div>
+	<div class="row small" style="background-color: #cce6ff; padding: 30px 50px; border-top: 2px solid #4da9ff">"This website uses trademarks and/or copyrights owned by Fire Opal Media, which are used under the Fire Opal Media, 13th Age Community Use Policy. We are expressly prohibited from charging you to use or access this content. This website is not published, endorsed, or specifically approved by Fire Opal Media. For more information about Fire Opal Media's 13th Age Community Use Policy, please visit <a href="http://www.fireopalmedia.com/communityuse" target="_blank">www.fireopalmedia.com/communityuse</a>. For more information about Fire Opal Media and 13th Age products, please visit <a href="http://www.fireopalmedia.com" target="_blank">www.fireopalmedia.com</a> and <a href="http://www.pelgranepress.com" target="_blank">www.pelgranepress.com</a>."</div>
 </body>
 </html>
