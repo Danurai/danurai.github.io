@@ -13,7 +13,7 @@
 </head>
 <body>
 	<div class="container">
-		<div class="col-sm-12">
+		<div class="col-md-12">
 			<div class="row">
 				<h3>Archmage Engine Character Builder</h3>
 			</div>
@@ -45,7 +45,7 @@
 				</form>
 			</div>
 		</div>
-		<div class="col-sm-6">
+		<div class="col-md-4">
 			<div class="row">
 			<h3>Stats</h3>
 				<table class="table table-condensed" id="stats" style="text-align: center;">
@@ -102,15 +102,15 @@
 				<div><button class="btn btn-sm" id="stat-roll">Roll 'em</button><button class="btn btn-sm" id="stat-reset">Reset</button> <span id="points">Points remaining: 28</span></div>
 			</div>
 		</div>
-		<div class="col-sm-6">
+		<div class="col-md-4">
 			<h3>Defenses</h3>
 			<form class="form-inline" role="form" id="defenses">
 				<div class="form-group">
 					<label for="char-arm">Armour: </label>
 					<select class="form-control" id="char-arm">
-						<option>None</option>
-						<option>Light</option>
-						<option>Heavy</option>
+						<option val="none">None</option>
+						<option val="light">Light</option>
+						<option val="heavy">Heavy</option>
 					</select>
 				</div>
 				<div class="form-group">
@@ -124,7 +124,14 @@
 			<h3>Powers</h3>
 			<div id="char-powers"></div>
 		</div>
+		<div class="col-md-4">
+			<h3>Trappings</h3>
+			<div id="background"></div>
+			<div id="equipment"></div>
+			<div id="weapons"></div>
+		</div>
 	</div>
+	
 	<div class="row small" style="background-color: #cce6ff; padding: 30px 50px; border-top: 2px solid #4da9ff">"This website uses trademarks and/or copyrights owned by Fire Opal Media, which are used under the Fire Opal Media, 13th Age Community Use Policy. We are expressly prohibited from charging you to use or access this content. This website is not published, endorsed, or specifically approved by Fire Opal Media. For more information about Fire Opal Media's 13th Age Community Use Policy, please visit <a href="http://www.fireopalmedia.com/communityuse" target="_blank">www.fireopalmedia.com/communityuse</a>. For more information about Fire Opal Media and 13th Age products, please visit <a href="http://www.fireopalmedia.com" target="_blank">www.fireopalmedia.com</a> and <a href="http://www.pelgranepress.com" target="_blank">www.pelgranepress.com</a>."</div>
 </body>
 </html>

@@ -2,6 +2,15 @@
 var AM_CLASS = {
 	"Barbarian": {
 		"stats": ["str", "con"],
+		"background": ["clan champion", "caravan outrider", "fur trapper", "mountain tribeswoman", "wasteland survivalist", "gladiator"],
+		"gear": {
+			"text": "",
+			"melee": 1,
+			"ranged": 1,
+			"armor": ["none", "light"],
+			"class": []
+		},
+		"gold": [25, [6, 10]],
 		"pd": 11,
 		"md": 10,
 		"hp": 7,
@@ -13,47 +22,255 @@ var AM_CLASS = {
 			"heavy": [13, -2],
 			"shield": [1, 0]
 		},
-		"melee": [
-				{"type":"small","name":"dagger","damage":"d4","attack":0,"hands":1},
-				{"type":"small","name":"club","damage":"d6","attack":0,"hands":2},
-				{"type":"light","name":"hand-axe, warclub","damage":"d6","attack":0,"hands":1},
-				{"type":"light","name":"spear","damage":"d8","attack":0,"hands":2},
-				{"type":"heavy","name":"longsword, battleaxe","damage":"d8","attack":0},
-				{"type":"heavy","name":"greatsword, greataxe","damage":"d10","attack":0}],
-		"ranged": {
-			"small": {
-					"thrown" : {"type":"dagger","damage":"d4","attack":0},
-					"crossbow" : {"type":"hand crossbow","damage":"d4","attack":-5}
-			},
-			"light": {
-					"thrown" : {"type":"javelin, axe, spear","damage":"d6","attack":0},
-					"crossbow" : {"type":"light crossbow","damage":"d6","attack":-5},
-					"bow" : {"type": "shortbow","damage":"d6","attack":0}
-			},
-			"heavy": {
-					"crossbow" : {"type":"heavy crossbow","damage":"d8","attack":-5},
-					"bow" : {"type": "longbow","damage":"d8","attack":0}
-			}
+		"melee": [{
+			"type": "small",
+			"name": "dagger",
+			"damage": "d4",
+			"attack": 0,
+			"hands": 1
+		}, {
+			"type": "small",
+			"name": "club",
+			"damage": "d6",
+			"attack": 0,
+			"hands": 2
+		}, {
+			"type": "light",
+			"name": "hand-axe",
+			"damage": "d6",
+			"attack": 0,
+			"hands": 1
+		}, {
+			"type": "light",
+			"name": "warclub",
+			"damage": "d6",
+			"attack": 0,
+			"hands": 1
+		}, {
+			"type": "light",
+			"name": "spear",
+			"damage": "d8",
+			"attack": 0,
+			"hands": 2
+		}, {
+			"type": "heavy",
+			"name": "longsword",
+			"damage": "d8",
+			"attack": 0,
+			"hands": 1
+		}, {
+			"type": "heavy",
+			"name": "battleaxe",
+			"damage": "d8",
+			"attack": 0,
+			"hands": 1
+		}, {
+			"type": "heavy",
+			"name": "greatsword",
+			"damage": "d10",
+			"attack": 0,
+			"hands": 2
+		}, {
+			"type": "heavy",
+			"name": "greataxe",
+			"damage": "d10",
+			"attack": 0,
+			"hands": 2
+		}],
+		"ranged": [{
+			"type": "thrown",
+			"name": "dagger",
+			"damage": "d4",
+			"attack": 0
+		}, {
+			"type": "crossbow",
+			"name": "hand crossbow",
+			"damage": "d4",
+			"attack": -5
+		}, {
+			"type": "thrown",
+			"name": "javelin",
+			"damage": "d6",
+			"attack": 0
+		}, {
+			"type": "thrown",
+			"name": "axe",
+			"damage": "d6",
+			"attack": 0
+		}, {
+			"type": "thrown",
+			"name": "spear",
+			"damage": "d6",
+			"attack": 0
+		}, {
+			"type": "crossbow",
+			"name": "light crossbow",
+			"damage": "d6",
+			"attack": -5
+		}, {
+			"type": "bow",
+			"name": "shortbow",
+			"damage": "d6",
+			"attack": 0
+		}, {
+			"type": "crossbow",
+			"name": "heavy crossbow",
+			"damage": "d8",
+			"attack": -5
+		}, {
+			"type": "bow",
+			"name": "longbow",
+			"damage": "d8",
+			"attack": 0
+		}],
+		"attack": {
+			"melee": ["str"],
+			"ranged": ["dex"]
 		},
-		"gold":[25,[6,10]]
+		"damage": {
+			"melee": ["str"],
+			"ranged": ["dex"]
+		}
 	},
 	"Bard": {
 		"stats": ["dex", "cha"],
+		"background": ["wandering minstrel", "cathedral musician", "court jester", "mercenary", "tavern owner", "failed hedge wizard", "diplomat", "spy", "royal taster", "caravan guide", "smuggler", "battle skald"],
+		"gear": {
+			"text": "At 1st level, bards start with non-magical musical instruments, a melee and ranged weapon of their choice, some form of light armor, and any other minor elements of gear their backgrounds suggest.",
+			"melee": 1,
+			"ranged": 1,
+			"armor": ["none", "light"],
+			"class": ["Mundane Musical Instrument"]
+		},
+		"gold": [25, [6, 10]],
 		"pd": 10,
 		"md": 11,
 		"hp": 7,
 		"recoveries": 8,
 		"recdice": 8,
+		"talents": 3,
 		"ac": {
 			"none": [10, 0],
 			"light": [12, 0],
 			"heavy": [13, -2],
 			"shield": [1, -1]
 		},
-		"gold":[25,[6,10]]
+		"melee": [{
+			"type": "small",
+			"name": "dagger",
+			"damage": "d4",
+			"attack": 0,
+			"hands": 1
+		}, {
+			"type": "small",
+			"name": "club",
+			"damage": "d6",
+			"attack": 0,
+			"hands": 2
+		}, {
+			"type": "light",
+			"name": "mace",
+			"damage": "d6",
+			"attack": 0,
+			"hands": 1
+		}, {
+			"type": "light",
+			"name": "shortsword",
+			"damage": "d6",
+			"attack": 0,
+			"hands": 1
+		}, {
+			"type": "light",
+			"name": "spear",
+			"damage": "d8",
+			"attack": 0,
+			"hands": 2
+		}, {
+			"type": "heavy",
+			"name": "longsword",
+			"damage": "d8",
+			"attack": 0,
+			"hands": 1
+		}, {
+			"type": "heavy",
+			"name": "scimitar",
+			"damage": "d8",
+			"attack": 0,
+			"hands": 1
+		}, {
+			"type": "heavy",
+			"name": "greatsword",
+			"damage": "d10",
+			"attack": -2,
+			"hands": 2
+		}, {
+			"type": "heavy",
+			"name": "dire flail",
+			"damage": "d10",
+			"attack": -2,
+			"hands": 2
+		}],
+		"ranged": [{
+			"type": "thrown",
+			"name": "dagger",
+			"damage": "d4",
+			"attack": 0
+		}, {
+			"type": "crossbow",
+			"name": "hand crossbow",
+			"damage": "d4",
+			"attack": 0
+		}, {
+			"type": "thrown",
+			"name": "javelin",
+			"damage": "d6",
+			"attack": 0
+		}, {
+			"type": "thrown",
+			"name": "axe",
+			"damage": "d6",
+			"attack": 0
+		}, {
+			"type": "crossbow",
+			"name": "light crossbow",
+			"damage": "d6",
+			"attack": 0
+		}, {
+			"type": "bow",
+			"name": "shortbow",
+			"damage": "d6",
+			"attack": 0
+		}, {
+			"type": "crossbow",
+			"name": "heavy crossbow",
+			"damage": "d8",
+			"attack": -1
+		}, {
+			"type": "bow",
+			"name": "longbow",
+			"damage": "d8",
+			"attack": -2
+		}],
+		"attack": {
+			"melee": ["str", "dex"],
+			"ranged": ["dex"]
+		},
+		"damage": {
+			"melee": ["str", "dex"],
+			"ranged": ["dex"]
+		}
 	},
 	"Cleric": {
 		"stats": ["str", "wis"],
+		"background": ["healer", "archivist", "military chaplain", "temple guard", "bartender", "reformed thief", "dwarven hierophant", "initiate", "bishop"],
+		"gear": {
+			"text": "At 1st level, a cleric starts with a melee weapon, decent armor, a holy symbol, and other minor possessions suggested by their backgrounds. They might even have a crossbow.",
+			"melee": 1,
+			"ranged": 1,
+			"armor": ["none", "light", "heavy"],
+			"class": ["Holy Symbol"]
+		},
+		"gold": [25, [6, 10]],
 		"pd": 11,
 		"md": 11,
 		"hp": 7,
@@ -65,10 +282,121 @@ var AM_CLASS = {
 			"heavy": [14, 0],
 			"shield": [1, 0]
 		},
-		"gold":[25,[6,10]]
+		"melee": [{
+			"type": "small",
+			"name": "dagger",
+			"damage": "d4",
+			"attack": 0,
+			"hands": 1
+		}, {
+			"type": "small",
+			"name": "club",
+			"damage": "d6",
+			"attack": 0,
+			"hands": 2
+		}, {
+			"type": "light",
+			"name": "shortsword",
+			"damage": "d6",
+			"attack": 0,
+			"hands": 1
+		}, {
+			"type": "light",
+			"name": "mace",
+			"damage": "d6",
+			"attack": 0,
+			"hands": 1
+		}, {
+			"type": "light",
+			"name": "spear",
+			"damage": "d8",
+			"attack": 0,
+			"hands": 2
+		}, {
+			"type": "heavy",
+			"name": "longsword",
+			"damage": "d8",
+			"attack": -2,
+			"hands": 1
+		}, {
+			"type": "heavy",
+			"name": "warhammer",
+			"damage": "d8",
+			"attack": -2,
+			"hands": 1
+		}, {
+			"type": "heavy",
+			"name": "greatsword",
+			"damage": "d10",
+			"attack": -2,
+			"hands": 2
+		}, {
+			"type": "heavy",
+			"name": "dire flail",
+			"damage": "d10",
+			"attack": -2,
+			"hands": 2
+		}],
+		"ranged": [{
+			"type": "thrown",
+			"name": "dagger",
+			"damage": "d4",
+			"attack": 0
+		}, {
+			"type": "crossbow",
+			"name": "hand crossbow",
+			"damage": "d4",
+			"attack": 0
+		}, {
+			"type": "thrown",
+			"name": "javelin",
+			"damage": "d6",
+			"attack": 0
+		}, {
+			"type": "thrown",
+			"name": "axe",
+			"damage": "d6",
+			"attack": 0
+		}, {
+			"type": "crossbow",
+			"name": "light crossbow",
+			"damage": "d6",
+			"attack": 0
+		}, {
+			"type": "bow",
+			"name": "shortbow",
+			"damage": "d6",
+			"attack": -2
+		}, {
+			"type": "crossbow",
+			"name": "heavy crossbow",
+			"damage": "d8",
+			"attack": -1
+		}, {
+			"type": "bow",
+			"name": "longbow",
+			"damage": "d8",
+			"attack": -5
+		}],
+		"attack": {
+			"melee": ["str"],
+			"ranged": ["dex"]
+		},
+		"damage": {
+			"melee": ["str"],
+			"ranged": ["dex"]
+		}
 	},
 	"Fighter": {
 		"stats": ["str", "con"],
+		"background": ["swordmaster", "mercenary captain", "sea raider", "shieldwall", "spearman", "explorer", "bouncer", "thug", "city guardsman", "former gladiator", "former orc captive", "bankrupt nobleman", "duelist", "goblin-hunter"],
+		"gear": {
+			"text": "At 1st level, a fighter starts with a melee weapon or two, a ranged weapon if they want it, armor, and standard non-magical gear that is suggested by the character's backgrounds.",
+			"melee": 2,
+			"ranged": 1,
+			"armor": ["none", "light", "heavy"]
+		},
+		"gold": [25, [6, 10]],
 		"pd": 10,
 		"md": 10,
 		"hp": 8,
@@ -80,10 +408,122 @@ var AM_CLASS = {
 			"heavy": [15, 0],
 			"shield": [1, 0]
 		},
-		"gold":[25,[6,10]]
+		"melee": [{
+			"type": "small",
+			"name": "dagger",
+			"damage": "d4",
+			"attack": 0,
+			"hands": 1
+		}, {
+			"type": "small",
+			"name": "club",
+			"damage": "d6",
+			"attack": 0,
+			"hands": 2
+		}, {
+			"type": "light",
+			"name": "shortsword",
+			"damage": "d6",
+			"attack": 0,
+			"hands": 1
+		}, {
+			"type": "light",
+			"name": "handaxe",
+			"damage": "d6",
+			"attack": 0,
+			"hands": 1
+		}, {
+			"type": "light",
+			"name": "spear",
+			"damage": "d8",
+			"attack": 0,
+			"hands": 2
+		}, {
+			"type": "heavy",
+			"name": "longsword",
+			"damage": "d8",
+			"attack": 0,
+			"hands": 1
+		}, {
+			"type": "heavy",
+			"name": "warhammer",
+			"damage": "d8",
+			"attack": 0,
+			"hands": 1
+		}, {
+			"type": "heavy",
+			"name": "greatsword",
+			"damage": "d10",
+			"attack": 0,
+			"hands": 2
+		}, {
+			"type": "heavy",
+			"name": "greataxe",
+			"damage": "d10",
+			"attack": 0,
+			"hands": 2
+		}],
+		"ranged": [{
+			"type": "thrown",
+			"name": "dagger",
+			"damage": "d4",
+			"attack": 0
+		}, {
+			"type": "crossbow",
+			"name": "hand crossbow",
+			"damage": "d4",
+			"attack": 0
+		}, {
+			"type": "thrown",
+			"name": "javelin",
+			"damage": "d6",
+			"attack": 0
+		}, {
+			"type": "thrown",
+			"name": "axe",
+			"damage": "d6",
+			"attack": 0
+		}, {
+			"type": "crossbow",
+			"name": "light crossbow",
+			"damage": "d6",
+			"attack": 0
+		}, {
+			"type": "bow",
+			"name": "shortbow",
+			"damage": "d6",
+			"attack": 0
+		}, {
+			"type": "crossbow",
+			"name": "heavy crossbow",
+			"damage": "d8",
+			"attack": 0
+		}, {
+			"type": "bow",
+			"name": "longbow",
+			"damage": "d8",
+			"attack": 0
+		}],
+		"attack": {
+			"melee": ["str"],
+			"ranged": ["dex"]
+		},
+		"damage": {
+			"melee": ["str"],
+			"ranged": ["dex"]
+		}
 	},
 	"Paladin": {
 		"stats": ["str", "cha"],
+		"background": ["city guardsman", "combat medic", "bodyguard", "outlaw hunter", "inquisitor"],
+		"gear": {
+			"text": "At 1st level, a paladin starts with a melee weapon or two, a ranged weapon if they want it, armor, a shield, and standard non-magical gear that is suggested by the character''s backgrounds.",
+			"melee": 2,
+			"ranged": 1,
+			"armor": ["none", "light", "heavy", "shield"],
+			"class": []
+		},
+		"gold": [25, [6, 10]],
 		"pd": 10,
 		"md": 12,
 		"hp": 8,
@@ -95,10 +535,122 @@ var AM_CLASS = {
 			"heavy": [16, 0],
 			"shield": [1, 0]
 		},
-		"gold":[25,[6,10]]
+		"melee": [{
+			"type": "small",
+			"name": "dagger",
+			"damage": "d4",
+			"attack": 0,
+			"hands": 1
+		}, {
+			"type": "small",
+			"name": "club",
+			"damage": "d6",
+			"attack": 0,
+			"hands": 2
+		}, {
+			"type": "light",
+			"name": "scimitar",
+			"damage": "d6",
+			"attack": 0,
+			"hands": 1
+		}, {
+			"type": "light",
+			"name": "shortsword",
+			"damage": "d6",
+			"attack": 0,
+			"hands": 1
+		}, {
+			"type": "light",
+			"name": "spear",
+			"damage": "d8",
+			"attack": 0,
+			"hands": 2
+		}, {
+			"type": "heavy",
+			"name": "longsword",
+			"damage": "d8",
+			"attack": 0,
+			"hands": 1
+		}, {
+			"type": "heavy",
+			"name": "batlleaxe",
+			"damage": "d8",
+			"attack": 0,
+			"hands": 1
+		}, {
+			"type": "heavy",
+			"name": "greatsword",
+			"damage": "d10",
+			"attack": 0,
+			"hands": 2
+		}, {
+			"type": "heavy",
+			"name": "halberd",
+			"damage": "d10",
+			"attack": 0,
+			"hands": 2
+		}],
+		"ranged": [{
+			"type": "thrown",
+			"name": "dagger",
+			"damage": "d4",
+			"attack": 0
+		}, {
+			"type": "crossbow",
+			"name": "hand crossbow",
+			"damage": "d4",
+			"attack": 0
+		}, {
+			"type": "thrown",
+			"name": "axe",
+			"damage": "d6",
+			"attack": 0
+		}, {
+			"type": "thrown",
+			"name": "javelin",
+			"damage": "d6",
+			"attack": 0
+		}, {
+			"type": "crossbow",
+			"name": "light crossbow",
+			"damage": "d6",
+			"attack": 0
+		}, {
+			"type": "bow",
+			"name": "shortbow",
+			"damage": "d6",
+			"attack": 0
+		}, {
+			"type": "crossbow",
+			"name": "heavy crossbow",
+			"damage": "d8",
+			"attack": 0
+		}, {
+			"type": "bow",
+			"name": "longbow",
+			"damage": "d8",
+			"attack": 0
+		}],
+		"attack": {
+			"melee": ["str"],
+			"ranged": ["dex"]
+		},
+		"damage": {
+			"melee": ["str"],
+			"ranged": ["dex"]
+		}
 	},
 	"Ranger": {
 		"stats": ["str", "dex", "wis"],
+		"background": ["tracker", "bounty hunter", "beast slayer", "woodsy assassin", "orc slayer", "wanderer"],
+		"gear": {
+			"text": "At 1st level, a ranger starts with light armor, a melee weapon or two, a ranged weapon or two, and other mundane gear as suggested by their backgrounds.",
+			"melee": 2,
+			"ranged": 2,
+			"armor": ["none", "light"],
+			"class": []
+		},
+		"gold": [25, [6, 10]],
 		"pd": 11,
 		"md": 10,
 		"hp": 7,
@@ -110,10 +662,122 @@ var AM_CLASS = {
 			"heavy": [15, -2],
 			"shield": [1, -2]
 		},
-		"gold":[25,[6,10]]
+		"melee": [{
+			"type": "small",
+			"name": "dagger",
+			"damage": "d4",
+			"attack": 0,
+			"hands": 1
+		}, {
+			"type": "small",
+			"name": "club",
+			"damage": "d6",
+			"attack": 0,
+			"hands": 2
+		}, {
+			"type": "light",
+			"name": "shortsword",
+			"damage": "d6",
+			"attack": 0,
+			"hands": 1
+		}, {
+			"type": "light",
+			"name": "handaxe",
+			"damage": "d6",
+			"attack": 0,
+			"hands": 1
+		}, {
+			"type": "light",
+			"name": "spear",
+			"damage": "d8",
+			"attack": 0,
+			"hands": 2
+		}, {
+			"type": "heavy",
+			"name": "longsword",
+			"damage": "d8",
+			"attack": 0,
+			"hands": 1
+		}, {
+			"type": "heavy",
+			"name": "warhammer",
+			"damage": "d8",
+			"attack": 0,
+			"hands": 1
+		}, {
+			"type": "heavy",
+			"name": "greatsword",
+			"damage": "d10",
+			"attack": 0,
+			"hands": 2
+		}, {
+			"type": "heavy",
+			"name": "greataxe",
+			"damage": "d10",
+			"attack": 0,
+			"hands": 2
+		}],
+		"ranged": [{
+			"type": "thrown",
+			"name": "dagger",
+			"damage": "d4",
+			"attack": 0
+		}, {
+			"type": "crossbow",
+			"name": "hand crossbow",
+			"damage": "d4",
+			"attack": 0
+		}, {
+			"type": "thrown",
+			"name": "javelin",
+			"damage": "d6",
+			"attack": 0
+		}, {
+			"type": "thrown",
+			"name": "axe",
+			"damage": "d6",
+			"attack": 0
+		}, {
+			"type": "crossbow",
+			"name": "light crossbow",
+			"damage": "d6",
+			"attack": 0
+		}, {
+			"type": "bow",
+			"name": "shortbow",
+			"damage": "d6",
+			"attack": 0
+		}, {
+			"type": "crossbow",
+			"name": "heavy crossbow",
+			"damage": "d8",
+			"attack": 0
+		}, {
+			"type": "bow",
+			"name": "longbow",
+			"damage": "d8",
+			"attack": 0
+		}],
+		"attack": {
+			"melee": ["str", "dex"],
+			"ranged": ["dex"]
+		},
+		"damage": {
+			"melee": ["str"],
+			"ranged": ["dex"]
+		}
 	},
 	"Rogue": {
 		"stats": ["dex", "cha"],
+		"background": ["street thug", "cat burglar", "diplomat", "professional gambler", "courtier", "jewel thief", "acrobat", "con artist", "bartender", "spy master", "pirate", "dandy", "rat catcher"],
+		"gear": {
+			"text": "At 1st level, rogues start with the clothes on their back and the dice in their pockets. They also start with various bladed weapons and some armor. Plus various oddments suggested by their backgrounds.",
+			"melee": 3,
+			"ranged": 3,
+			"class": ["dice"],
+			"armor": ["none", "light"]
+		},
+		"gold": [25, [6, 10]],
 		"pd": 12,
 		"md": 10,
 		"hp": 6,
@@ -125,10 +789,116 @@ var AM_CLASS = {
 			"heavy": [13, -2],
 			"shield": [1, -2]
 		},
-		"gold":[25,[6,10]]
+		"melee": [{
+			"type": "small",
+			"name": "dagger",
+			"damage": "d8",
+			"attack": 0,
+			"hands": 1
+		}, {
+			"type": "small",
+			"name": "club",
+			"damage": "d6",
+			"attack": 0,
+			"hands": 2
+		}, {
+			"type": "light",
+			"name": "wicked knife",
+			"damage": "d8",
+			"attack": 0,
+			"hands": 1
+		}, {
+			"type": "light",
+			"name": "shortsword",
+			"damage": "d8",
+			"attack": 0,
+			"hands": 1
+		}, {
+			"type": "light",
+			"name": "spear",
+			"damage": "d8",
+			"attack": 0,
+			"hands": 2
+		}, {
+			"type": "heavy",
+			"name": "scimitar",
+			"damage": "d8",
+			"attack": -2,
+			"hands": 1
+		}, {
+			"type": "heavy",
+			"name": "longsword",
+			"damage": "d8",
+			"attack": -2,
+			"hands": 1
+		}, {
+			"type": "heavy",
+			"name": "greatsword",
+			"damage": "d10",
+			"attack": -2,
+			"hands": 2
+		}],
+		"ranged": [{
+			"type": "thrown",
+			"name": "dagger",
+			"damage": "d4",
+			"attack": 0
+		}, {
+			"type": "crossbow",
+			"name": "hand crossbow",
+			"damage": "d4",
+			"attack": 0
+		}, {
+			"type": "thrown",
+			"name": "javelin",
+			"damage": "d6",
+			"attack": 0
+		}, {
+			"type": "thrown",
+			"name": "axe",
+			"damage": "d6",
+			"attack": 0
+		}, {
+			"type": "crossbow",
+			"name": "light crossbow",
+			"damage": "d6",
+			"attack": 0
+		}, {
+			"type": "bow",
+			"name": "shortbow",
+			"damage": "d6",
+			"attack": 0
+		}, {
+			"type": "crossbow",
+			"name": "heavy crossbow",
+			"damage": "d8",
+			"attack": -1
+		}, {
+			"type": "bow",
+			"name": "longbow",
+			"damage": "d8",
+			"attack": -2
+		}],
+		"attack": {
+			"melee": ["dex"],
+			"ranged": ["dex"]
+		},
+		"damage": {
+			"melee": ["dex"],
+			"ranged": ["dex"]
+		}
 	},
 	"Sorcerer": {
 		"stats": ["dex", "cha"],
+		"background": ["tribal shaman", "pirate captain", "spell-arena gladiator", "failed wizard", "sahuagin hunter"],
+		"gear": {
+			"text": "At 1st level, a sorcerer usually has a simple melee weapon, a few changes of clothing, a wand or staff, and other paraphernalia suggested by their backgrounds.",
+			"melee": 1,
+			"ranged": 0,
+			"armor": ["none"],
+			"class": ["Wand or Staff"]
+		},
+		"gold": [25, [6, 10]],
 		"pd": 11,
 		"md": 10,
 		"hp": 6,
@@ -140,10 +910,104 @@ var AM_CLASS = {
 			"heavy": [11, -2],
 			"shield": [1, -2]
 		},
-		"gold":[25,[6,10]]
+		"melee": [{
+			"type": "small",
+			"name": "dagger",
+			"damage": "d4",
+			"attack": 0,
+			"hands": 1
+		}, {
+			"type": "small",
+			"name": "staff",
+			"damage": "d6",
+			"attack": 0,
+			"hands": 2
+		}, {
+			"type": "light",
+			"name": "shortsword",
+			"damage": "d6",
+			"attack": 0,
+			"hands": 1
+		}, {
+			"type": "light",
+			"name": "spear",
+			"damage": "d8",
+			"attack": 0,
+			"hands": 2
+		}, {
+			"type": "heavy",
+			"name": "longsword,",
+			"damage": "d8",
+			"attack": -2,
+			"hands": 1
+		}, {
+			"type": "heavy",
+			"name": "greatsword",
+			"damage": "d10",
+			"attack": -2,
+			"hands": 2
+		}],
+		"ranged": [{
+			"type": "thrown",
+			"name": "dagger",
+			"damage": "d4",
+			"attack": 0
+		}, {
+			"type": "crossbow",
+			"name": "hand crossbow",
+			"damage": "d4",
+			"attack": 0
+		}, {
+			"type": "thrown",
+			"name": "javelin",
+			"damage": "d6",
+			"attack": 0
+		}, {
+			"type": "thrown",
+			"name": "axe",
+			"damage": "d6",
+			"attack": 0
+		}, {
+			"type": "crossbow",
+			"name": "light crossbow",
+			"damage": "d6",
+			"attack": -1
+		}, {
+			"type": "bow",
+			"name": "shortbow",
+			"damage": "d6",
+			"attack": -2
+		}, {
+			"type": "crossbow",
+			"name": "heavy crossbow",
+			"damage": "d8",
+			"attack": -3
+		}, {
+			"type": "bow",
+			"name": "longbow",
+			"damage": "d8",
+			"attack": -4
+		}],
+		"attack": {
+			"melee": ["str"],
+			"ranged": ["dex"]
+		},
+		"damage": {
+			"melee": ["str"],
+			"ranged": ["dex"]
+		}
 	},
 	"Wizard": {
 		"stats": ["int", "wis"],
+		"background": ["magical prodigy", "spell thief", "hedge wizard", "transformed familiar", "ship's wizard", "royal poisoner"],
+		"gear": {
+			"text": "At 1st level, a wizard usually has a dagger, a robe or two, a wand, ritual components in pouches, and other minor accouterments suggested by their backgrounds",
+			"melee": 1,
+			"ranged": 0,
+			"armor": ["none"],
+			"class": ["wand", "ritual components in pouches"]
+		},
+		"gold": [25, [6, 10]],
 		"pd": 10,
 		"md": 12,
 		"hp": 6,
@@ -155,7 +1019,92 @@ var AM_CLASS = {
 			"heavy": [13, -2],
 			"shield": [1, 0]
 		},
-		"gold":[25,[6,10]]
+		"melee": [{
+			"type": "small",
+			"name": "dagger",
+			"damage": "d4",
+			"attack": 0,
+			"hands": 1
+		}, {
+			"type": "small",
+			"name": "staff",
+			"damage": "d6",
+			"attack": 0,
+			"hands": 2
+		}, {
+			"type": "light",
+			"name": "shortsword",
+			"damage": "d6",
+			"attack": -2,
+			"hands": 1
+		}, {
+			"type": "light",
+			"name": "spear",
+			"damage": "d8",
+			"attack": -2,
+			"hands": 2
+		}, {
+			"type": "heavy",
+			"name": "longsword,",
+			"damage": "d8",
+			"attack": -5,
+			"hands": 1
+		}, {
+			"type": "heavy",
+			"name": "greatsword",
+			"damage": "d10",
+			"attack": -5,
+			"hands": 2
+		}],
+		"ranged": [{
+			"type": "thrown",
+			"name": "dagger",
+			"damage": "d4",
+			"attack": 0
+		}, {
+			"type": "crossbow",
+			"name": "hand crossbow",
+			"damage": "d4",
+			"attack": 0
+		}, {
+			"type": "thrown",
+			"name": "axe",
+			"damage": "d6",
+			"attack": -2
+		}, {
+			"type": "thrown",
+			"name": "javelin",
+			"damage": "d6",
+			"attack": -2
+		}, {
+			"type": "crossbow",
+			"name": "light crossbow",
+			"damage": "d6",
+			"attack": -1
+		}, {
+			"type": "bow",
+			"name": "shortbow",
+			"damage": "d6",
+			"attack": -2
+		}, {
+			"type": "crossbow",
+			"name": "heavy crossbow",
+			"damage": "d8",
+			"attack": -4
+		}, {
+			"type": "bow",
+			"name": "longbow",
+			"damage": "d8",
+			"attack": -5
+		}],
+		"attack": {
+			"melee": ["str"],
+			"ranged": ["dex"]
+		},
+		"damage": {
+			"melee": ["str"],
+			"ranged": ["dex"]
+		}
 	}
 }
 
@@ -193,14 +1142,20 @@ var AM_RACE = {
 	"High Elf": {
 		"stats": ["int", "cha"],
 		"power": [{
+			"name": "Heritage of the Sword",
+			"a": "If you can already use swords that deal d6 and d8 damage without attack penalties, you gain a +2 damage bonus with them. (This bonus doesn't increase miss damage.)<p>Otherwise, if your class would ordinarily have an attack penalty with such swords, you can now use them without penalties."
+		}, {
 			"name": "Highblood Teleport",
 			"a": "Once per battle as a move action, place yourself in a nearby location you can see.",
 			"c": "Deal damage equal to twice your level to one enemy engaged with you before or after you teleport."
 		}]
 	},
-		"Wood Elf": {
+	"Wood Elf": {
 		"stats": ["dex", "wis"],
 		"power": [{
+			"name": "Heritage of the Sword",
+			"a": "If you can already use swords that deal d6 and d8 damage without attack penalties, you gain a +2 damage bonus with them. (This bonus doesn't increase miss damage.)<p>Otherwise, if your class would ordinarily have an attack penalty with such swords, you can now use them without penalties."
+		}, {
 			"name": "Elven Grace",
 			"a": "At the start of each of your turns, roll a die to see if you get an extra standard action. If your roll is equal to or lower than the escalation die, you get an extra standard action that turn. At the start of battle, you roll a d6. Each time you successfully gain an extra action, the size of the die you roll increases by one step on the following progression: (d4), d6, d8, d10, d12, d20. If you get an extra action after rolling a d20, you can't get any more extra actions that battle.",
 			"c": "Once per day, start a battle rolling a d4 for elven grace instead of a d6."
@@ -243,7 +1198,7 @@ var AM_RACE = {
 			}
 		]
 	},
-		"Half-orc": {
+	"Half-orc": {
 		"stats": ["str", "dex"],
 		"power": [{
 			"name": "Lethal",
@@ -251,7 +1206,7 @@ var AM_RACE = {
 			"c": "If the lethal attack reroll is a natural 16+, you can use lethal again later this battle."
 		}]
 	},
-		"Draconic": {
+	"Draconic": {
 		"stats": ["str", "cha"],
 		"power": [{
 			"name": "Breath Weapon",
@@ -259,7 +1214,7 @@ var AM_RACE = {
 			"c": "Your breath weapon attack targets 1d3 nearby enemies in a group instead."
 		}]
 	},
-		"Holy One": {
+	"Holy One": {
 		"stats": ["wis", "cha"],
 		"power": [{
 			"name": "Halo",
@@ -285,8 +1240,10 @@ var AM_RACE = {
 	}
 }
 
+/* Functions */
+
 $(document).ready( function () {
-/* populate dropdowns */
+	// populate dropdowns
 	var outp = '';
 	$.each(AM_CLASS, function(key,charclass) {
 		outp += '<option>' + key + '</option>';
@@ -298,30 +1255,22 @@ $(document).ready( function () {
 		outp += '<option>' + key + '</option>';
 	});
 	$('#char-race').html (outp);
+
+	// update Adjustments and Stats 
+	getPowers();
+	getClassInfo();
+	updateSheet();
 	
-	lockadj();
-	statsOther();
-	
-	$('input')
-		.on('change',function () {
-			var stat = '#' + $(this).closest('tr').attr('id');
-			if ( $(this).attr('type') == "number" ) {
-				if ( $(this).val() < 3 ) {$(this).val (3);}
-				if ( $(this).val() > 18 ) {$(this).val (18);}
-			}
-			updateScore(this);
-			lockadj();
-		});
-		
-	function getPointCost() {
-		var tot = 0;
-		$.each($('input[type="number"]'), function(idx,ele) {
-			tot += $(ele).val() > 8 ? $(ele).val() - 8 : 0;
-			tot += $(ele).val() > 14 ? $(ele).val()-14 : 0;
-			tot += $(ele).val() > 16 ? $(ele).val()-16 : 0;
-		}); 
-		return ( 28 - tot) ;
-	}
+/* LISTENERS */
+	$('input').on('change',function () {
+		var stat = '#' + $(this).closest('tr').attr('id');
+		if ( $(this).attr('type') == "number" ) {
+			if ( $(this).val() < 3 ) {$(this).val (3);}
+			if ( $(this).val() > 18 ) {$(this).val (18);}
+		}
+		updateScore(this);
+		lockadj();
+	});
 	
 	$('#stat-roll').on('click',function () {
 		$.each($('input[type="number"]'), function(idx,ele) {
@@ -341,14 +1290,60 @@ $(document).ready( function () {
 	});
 	
 	$('#classrace').on('change', function () {
-		lockadj();
-		statsOther();
+		getPowers();
+		getClassInfo();
+	});	
+	$('#defenses').on('change', updateSheet);	
+	
+	/* Weapon Stats */
+	$('#weapons').on('change','select',function() {
+		updateWeapon(this);
 	});
 	
-	$('#defenses').on('change', function () {
+	function updateWeapon (ele) {		
+		var cls = AM_CLASS[$('#char-class').val()];
+		var wpn = $(ele).val().toLowerCase();
+		var data = cls.melee.filter(function (entry) { return entry.name == wpn; });
+		
+		var id = $(ele).closest('tr').attr('id');
+		var atk = getStat('level') + getStat('str') + data[0].attack;
+		$('#' + id + 'att').html ( (atk>0 ? '+' : '') + atk);
+		$('#' + id + 'hit').html ( data[0].damage + '+' + (getStat('str') + getStat('level')) );
+		$('#' + id + 'mis').html ( '-' );
+	}
+	
+	function updateScore(ele) {
+		var stat = '#' + $(ele).closest('tr').attr('id');
+		var score = parseInt( $(stat + ' input[type="number"]').val(),10 );
+		
+		if ( $(stat + ' :checked').length > 0 ) {score += 2;}
+		
+		$(stat + ' [data-name="val"]').html ( score );
+		$(stat + ' [data-name="mod"]').html ( getMod(score) );
+		
+		// Calculate remaining points
+		var tot = 0;
+		$.each($('input[type="number"]'), function(idx,ele) {
+			tot += $(ele).val() > 8 ? $(ele).val() - 8 : 0;
+			tot += $(ele).val() > 14 ? $(ele).val()-14 : 0;
+			tot += $(ele).val() > 16 ? $(ele).val()-16 : 0;
+		}); 
+		
+		$('#points').html ('Points remaining: ' + 28 - tot );
+		
+		updateSheet();
+	}
+	
+/* Update the Character Sheet */	
+	function updateSheet()	{
+		lockadj();
 		statsOther();
-	});
+		weaponInfo();
+	}
+		
 	function lockadj()	{
+	// Lock Stat Adjustment checkbox based on class and race 
+	// TODO: Stat Increases for Level > 1
 		var stats = [];
 		
 		$.each(AM_CLASS[$('#char-class').val()].stats, function (idx, stat) {
@@ -373,20 +1368,8 @@ $(document).ready( function () {
 		}
 	}
 	
-	function updateScore(ele) {
-		var stat = '#' + $(ele).closest('tr').attr('id');
-		var score = parseInt( $(stat + ' input[type="number"]').val(),10 );
-		
-		if ( $(stat + ' :checked').length > 0 ) {score += 2;}
-		
-		$(stat + ' [data-name="val"]').html ( score );
-		$(stat + ' [data-name="mod"]').html ( getMod(score) );
-		$('#points').html ('Points remaining: ' + getPointCost() );
-		
-		statsOther();
-	}
-	
 	function statsOther()	{
+	// Write other useful stats - AC/PD/MD/Hits/Initiative
 		var lvl = parseInt($('#char-level').val(),10);
 		var cls = $('#char-class').val();
 		var stats = {};
@@ -427,11 +1410,24 @@ $(document).ready( function () {
 		+ '<th>Attack Mod</th><td>' + (atk>0?'+':'') + atk + '</td>';
 		+ '</tr>'
 		$('#stats-other').html (outp);
-		
-		getPowers()	
+	}
+	
+	function weaponInfo()	{
+		$.each($('#weapons select'), function(id, ele) {
+			updateWeapon(ele);
+		});
+	}
+	
+	function getStat(stat)	{
+		if (stat == 'level') {
+			return parseInt($('#char-level').val(),10);
+		} else {
+			return parseInt($('#' + stat + ' [data-name="mod"]').html(),10);
+		}
 	}
 	
 	function getPowers()	{
+	// Write Powers
 		var race = $('#char-race').val();
 		var outp = '';
 		$.each(AM_RACE[race].power, function (idx, pow) {
@@ -441,6 +1437,81 @@ $(document).ready( function () {
 		})
 		
 		$('#char-powers').html (outp);
+	}
+	
+	function getClassInfo()	{
+	// Write Class Info, weapons and attack values
+	// Get class
+		var cls = AM_CLASS[$('#char-class').val()];
+		var oupt = '';
+	
+	// Background
+		outp = '<form class="form-inline" role="form"><label for="sel-bg">Background: </label><select class="form-control" id="sel-bg">';
+		var sel = Math.floor(Math.random() * cls.background.length);
+		$.each(cls.background, function (idx,bg) {
+			outp += '<option value="' + bg + '">' + bg.toProperCase() + '</option>';
+		});
+		outp += '</select></form>';
+		
+		$('#background').html(outp);
+		$('#sel-bg').val(cls.background[sel]);
+
+	// Gear
+		$('#equipment').html(cls.gear.text);
+	
+	// Armour
+		$.each($('#char-arm option'), function (idx,arm) {
+			if ( $.inArray($(arm).val().toLowerCase(),cls.gear.armor) != -1 ) {
+				$(arm).attr('disabled',false);
+			} else {
+				$(arm).attr('disabled',true);
+			}
+		});
+	// Weapon Options in table - weapon / attribute - show attack and damage values
+		outp = '<table class="table-condensed table-striped">'
+			+ '<tr><th>Weapon</th><th>Attack</th><th>Hit</th><th>Miss</th></td>';
+		var att = '';
+		var dmg = '';
+		// Melee
+		if (cls.gear.melee > 0) {
+			
+			outp += '<tr><th colspan="4">Melee</th></tr>' ;
+			for (var i=0; i<cls.gear.melee; i++) {
+				outp += '<tr id="m' + i + '">';
+				outp += '<td><select class="form-control">'
+				$.each(cls.melee, function (idx, wpn) {
+					outp += '<option>' + wpn.name.toProperCase() + '</option>';
+				})
+				outp += '</select></td>';
+				outp += '<td id="m' + i + 'att"></td>';
+				outp += '<td id="m' + i + 'hit"></td>';
+				outp += '<td id="m' + i + 'mis">-</td>';
+				outp += '</tr>';
+			}
+		}
+		// Ranged
+		if (cls.gear.ranged > 0) {
+			outp += '<tr><th colspan="4">Ranged</th></tr>' ;
+			for (var i=0; i<cls.gear.melee; i++) {
+				outp += '<tr id="r' + i + '">';
+				outp += '<td><select class="form-control">'
+				$.each(cls.ranged, function (idx, wpn) {
+					outp += '<option>' + wpn.name.toProperCase() + '</option>';
+				})
+				outp += '</select></td>';
+				outp += '<td id="r' + i + 'att"></td>';
+				outp += '<td id="r' + i + 'hit"></td>';
+				outp += '<td id="r' + i + 'mis">-</td>';
+				outp += '</tr>';
+			}
+		}
+		outp += '</table>';
+		$('#weapons').html (outp);
+		
+	// Weapon | Attack (stat) | Hit (stat) | Miss (summary of adjustments?)
+	
+	// Adjust for ELFs ability
+	
 	}
 	
 });
@@ -460,3 +1531,7 @@ function getMod(stat)	{
 	var n = Math.floor( (stat -10)/2 );
 	return ( (n>0 ? '+' : '') + n );
 }
+
+String.prototype.toProperCase = function () {
+    return this.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+};
