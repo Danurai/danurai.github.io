@@ -1259,6 +1259,7 @@ $(document).ready( function () {
 	// update Adjustments and Stats 
 	getPowers();
 	getClassInfo();
+	updateScore();
 	updateSheet();
 	
 /* LISTENERS */
@@ -1293,6 +1294,7 @@ $(document).ready( function () {
 		getPowers();
 		getClassInfo();
 	});	
+	
 	$('#defenses').on('change', updateSheet);	
 	
 	/* Weapon Stats */
@@ -1329,7 +1331,7 @@ $(document).ready( function () {
 			tot += $(ele).val() > 16 ? $(ele).val()-16 : 0;
 		}); 
 		
-		$('#points').html ('Points remaining: ' + 28 - tot );
+		$('#points').html ('Points remaining: ' + (28 - tot) );
 		
 		updateSheet();
 	}
