@@ -129,7 +129,11 @@ var AM_CLASS = {
 		},
 		"damage": {
 			"melee": ["str"],
-			"ranged": ["dex"]
+			"ranged": ["dex"],
+		},
+		"miss": {
+			"melee":true,
+			"ranged":false
 		}
 	},
 	"Bard": {
@@ -258,6 +262,10 @@ var AM_CLASS = {
 		"damage": {
 			"melee": ["str", "dex"],
 			"ranged": ["dex"]
+		},
+		"miss": {
+			"melee":true,
+			"ranged":false
 		}
 	},
 	"Cleric": {
@@ -385,6 +393,10 @@ var AM_CLASS = {
 		"damage": {
 			"melee": ["str"],
 			"ranged": ["dex"]
+		},
+		"miss": {
+			"melee":true,
+			"ranged":false
 		}
 	},
 	"Fighter": {
@@ -511,6 +523,10 @@ var AM_CLASS = {
 		"damage": {
 			"melee": ["str"],
 			"ranged": ["dex"]
+		},
+		"miss": {
+			"melee":true,
+			"ranged":false
 		}
 	},
 	"Paladin": {
@@ -638,6 +654,10 @@ var AM_CLASS = {
 		"damage": {
 			"melee": ["str"],
 			"ranged": ["dex"]
+		},
+		"miss": {
+			"melee":true,
+			"ranged":false
 		}
 	},
 	"Ranger": {
@@ -765,6 +785,10 @@ var AM_CLASS = {
 		"damage": {
 			"melee": ["str"],
 			"ranged": ["dex"]
+		},
+		"miss": {
+			"melee":true,
+			"ranged":true
 		}
 	},
 	"Rogue": {
@@ -886,6 +910,10 @@ var AM_CLASS = {
 		"damage": {
 			"melee": ["dex"],
 			"ranged": ["dex"]
+		},
+		"miss": {
+			"melee":true,
+			"ranged":true
 		}
 	},
 	"Sorcerer": {
@@ -936,7 +964,7 @@ var AM_CLASS = {
 			"hands": 2
 		}, {
 			"type": "heavy",
-			"name": "longsword,",
+			"name": "longsword",
 			"damage": "d8",
 			"attack": -2,
 			"hands": 1
@@ -995,6 +1023,10 @@ var AM_CLASS = {
 		"damage": {
 			"melee": ["str"],
 			"ranged": ["dex"]
+		},
+		"miss": {
+			"melee":true,
+			"ranged":false
 		}
 	},
 	"Wizard": {
@@ -1045,7 +1077,7 @@ var AM_CLASS = {
 			"hands": 2
 		}, {
 			"type": "heavy",
-			"name": "longsword,",
+			"name": "longsword",
 			"damage": "d8",
 			"attack": -5,
 			"hands": 1
@@ -1104,6 +1136,10 @@ var AM_CLASS = {
 		"damage": {
 			"melee": ["str"],
 			"ranged": ["dex"]
+		},
+		"miss": {
+			"melee":false,
+			"ranged":false
 		}
 	}
 }
@@ -1290,28 +1326,67 @@ $(document).ready( function () {
 		});
 	});
 	
-	$('#classrace').on('change', function () {
+	$('#char-class').on('change', function () {
 		getPowers();
 		getClassInfo();
+		updateSheet();
+	});	
+	$('#char-race').on('change', function () {
+		getPowers();
+		//getClassInfo();
+		updateSheet();
+	});	
+	$('#char-level').on('change', function () {
+		updateSheet();
 	});	
 	
 	$('#defenses').on('change', updateSheet);	
 	
 	/* Weapon Stats */
-	$('#weapons').on('change','select',function() {
-		updateWeapon(this);
-	});
+	$('#weapons')
+		.on('change','[select-type="wpn"]',function() {
+			updateWeapon(this);
+		})
+		.on('change','[select-type="stat"]',function() {
+			weaponInfo();
+		});
+		
 	
 	function updateWeapon (ele) {		
 		var cls = AM_CLASS[$('#char-class').val()];
 		var wpn = $(ele).val().toLowerCase();
-		var data = cls.melee.filter(function (entry) { return entry.name == wpn; });
+		var dmgmult = [1,1,1,1,2,2,2,3,3,3];
+		var HotS = ["Dark Elf","Wood Elf","High Elf"];
+		var HotSwpn = ["shortsword","longsword","scimitar"]
+		
+		/* Melee */
+		if ($(ele).closest('tr').attr('id')[0] == "m") {
+			var data = cls.melee.filter(function (entry) { return entry.name == wpn; });
+			var atkstat = $('#melee-atk').val().toLowerCase();
+			var dmgstat = $('#melee-dmg').val().toLowerCase();
+			var miss = cls.miss.melee;
+		} else {
+			// assume ranged
+			var data = cls.ranged.filter(function (entry) { return entry.name == wpn; });
+			var atkstat = $('#ranged-atk').val().toLowerCase();
+			var dmgstat = $('#ranged-dmg').val().toLowerCase();
+			var miss = cls.miss.ranged;
+		}
 		
 		var id = $(ele).closest('tr').attr('id');
-		var atk = getStat('level') + getStat('str') + data[0].attack;
+		var lvl = getStat('level');
+		var atk = lvl + getStat(atkstat) + data[0].attack;
+		var dmg = (lvl + getStat(dmgstat)) * dmgmult[lvl-1];
+		
+	// Adjust atk and dmg for ELFs HotS ability
+		if ($.inArray($('#char-race').val(),HotS) > -1 && $.inArray(data[0].name.toLowerCase(),HotSwpn) > -1) {
+			atk -= data[0].attack;
+			dmg += data[0].attack == 0 ? 2 : 0;
+		}
+	
 		$('#' + id + 'att').html ( (atk>0 ? '+' : '') + atk);
-		$('#' + id + 'hit').html ( data[0].damage + '+' + (getStat('str') + getStat('level')) );
-		$('#' + id + 'mis').html ( '-' );
+		$('#' + id + 'hit').html ( lvl + data[0].damage + '+' + dmg );
+		$('#' + id + 'mis').html ( miss == true ? lvl : '-' );
 	}
 	
 	function updateScore(ele) {
@@ -1415,7 +1490,7 @@ $(document).ready( function () {
 	}
 	
 	function weaponInfo()	{
-		$.each($('#weapons select'), function(id, ele) {
+		$.each($('#weapons [select-type="wpn"]'), function(id, ele) {
 			updateWeapon(ele);
 		});
 	}
@@ -1470,50 +1545,76 @@ $(document).ready( function () {
 			}
 		});
 	// Weapon Options in table - weapon / attribute - show attack and damage values
+	// Weapon | Attack (stat) | Hit (stat) | Miss (summary of adjustments?)
 		outp = '<table class="table-condensed table-striped">'
 			+ '<tr><th>Weapon</th><th>Attack</th><th>Hit</th><th>Miss</th></td>';
 		var att = '';
 		var dmg = '';
-		// Melee
-		if (cls.gear.melee > 0) {
+		
+		/* Melee table */
+		if (cls.gear.melee > 0) {		
+			outp += '<tr><th>Melee</th>';
 			
-			outp += '<tr><th colspan="4">Melee</th></tr>' ;
+			// Attack and Damage Stats
+			outp += '<td><select id="melee-atk" select-type="stat">';
+			for (var i=0; i<cls.attack.melee.length; i++) {
+				outp += '<option>' + cls.attack.melee[i].toProperCase() + '</option>';
+			}
+			outp += '</select></td>';
+			outp += '<td><select id="melee-dmg" select-type="stat">';
+			for (var i=0; i<cls.damage.melee.length; i++) {
+				outp += '<option>' + cls.damage.melee[i].toProperCase() + '</option>';
+			}
+			outp += '</select></td>';
+			outp += '<td><i class="fa fa-' + (cls.miss.melee == true ? 'check':'times') + '" aria-hidden="true"></i></td></tr>';
+			
+			// Weapons
 			for (var i=0; i<cls.gear.melee; i++) {
 				outp += '<tr id="m' + i + '">';
-				outp += '<td><select class="form-control">'
+				outp += '<td><select class="form-control" select-type="wpn">';
 				$.each(cls.melee, function (idx, wpn) {
 					outp += '<option>' + wpn.name.toProperCase() + '</option>';
 				})
 				outp += '</select></td>';
 				outp += '<td id="m' + i + 'att"></td>';
 				outp += '<td id="m' + i + 'hit"></td>';
-				outp += '<td id="m' + i + 'mis">-</td>';
+				outp += '<td id="m' + i + 'mis"></td>';
 				outp += '</tr>';
 			}
 		}
-		// Ranged
+		/* Ranged Table */
 		if (cls.gear.ranged > 0) {
-			outp += '<tr><th colspan="4">Ranged</th></tr>' ;
+			outp += '<tr><th>Ranged</th>';
+			
+			// Attack and Damage Stats
+			outp += '<td><select id="ranged-atk" select-type="stat">';
+			for (var i=0; i<cls.attack.ranged.length; i++) {
+				outp += '<option>' + cls.attack.ranged[i].toProperCase() + '</option>';
+			}
+			outp += '</select></td>';
+			outp += '<td><select id="ranged-dmg" select-type="stat">';
+			for (var i=0; i<cls.damage.ranged.length; i++) {
+				outp += '<option>' + cls.damage.ranged[i].toProperCase() + '</option>';
+			}
+			outp += '</select></td>';
+			outp += '<td><i class="fa fa-' + (cls.miss.ranged == true ? 'check':'times') + '" aria-hidden="true"></i></td></tr>';
+			
+			// Weapons
 			for (var i=0; i<cls.gear.melee; i++) {
 				outp += '<tr id="r' + i + '">';
-				outp += '<td><select class="form-control">'
+				outp += '<td><select class="form-control" select-type="wpn">'
 				$.each(cls.ranged, function (idx, wpn) {
 					outp += '<option>' + wpn.name.toProperCase() + '</option>';
 				})
 				outp += '</select></td>';
 				outp += '<td id="r' + i + 'att"></td>';
 				outp += '<td id="r' + i + 'hit"></td>';
-				outp += '<td id="r' + i + 'mis">-</td>';
+				outp += '<td id="r' + i + 'mis"></td>';
 				outp += '</tr>';
 			}
 		}
 		outp += '</table>';
 		$('#weapons').html (outp);
-		
-	// Weapon | Attack (stat) | Hit (stat) | Miss (summary of adjustments?)
-	
-	// Adjust for ELFs ability
-	
 	}
 	
 });
