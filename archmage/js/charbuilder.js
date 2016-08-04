@@ -134,7 +134,26 @@ var AM_CLASS = {
 		"miss": {
 			"melee":true,
 			"ranged":false
-		}
+		},
+		"talents":3,
+		"features": [
+			{
+				"type":"class",
+				"name":"Barbarian Rage",
+				"text":"Once per day, use a quick action to start raging. A rage lasts until the end of battle, or about 5 minutes.<p>While raging, you roll 2d20 to hit with your barbarian melee and thrown weapon attacks instead of 1d20. Use the higher roll for the attack. If you roll a natural 11+ with both dice and your highest attack roll is a hit, the attack is a critical hit! <p><i>Recharge 16+: After a battle in which you rage, roll a d20 and add your Constitution modifier. On a 16+, you can use Barbarian Rage again later in the day.</i>",
+				"a":"Whenever the escalation die is 4+, as a quick action, you can start raging for free. (It doesn’t count against your normal usage.) This rage lasts until the end of the battle, as normal.",
+				"c":"You can now start raging freely when the escalation die is 3+.",
+				"e":"You can now start raging freely when the escalation die is 2+."
+			},
+			{
+				"type":"",
+				"name":"",
+				"text":"",
+				"a":"",
+				"c":"",
+				"e":,""
+			}
+		]
 	},
 	"Bard": {
 		"stats": ["dex", "cha"],
@@ -1300,17 +1319,23 @@ $(document).ready( function () {
 	
 /* LISTENERS */
 	$('input').on('change',function () {
-		var stat = '#' + $(this).closest('tr').attr('id');
-		if ( $(this).attr('type') == "number" ) {
-			if ( $(this).val() < 3 ) {$(this).val (3);}
-			if ( $(this).val() > 18 ) {$(this).val (18);}
-		}
 		updateScore(this);
 		lockadj();
 	});
 	
+	$('#stats button').on('click',function() {
+		var val = 0;
+		var inp = $(this).closest('tr').find('input[type="text"]');
+		val = $(this).hasClass('btn-minus') ? -1 : val;
+		val = $(this).hasClass('btn-plus') ? 1 : val;
+		inp.val( parseInt(inp.val(),10) + val);
+		
+		updateScore(inp);
+		lockadj();
+	});
+	
 	$('#stat-roll').on('click',function () {
-		$.each($('input[type="number"]'), function(idx,ele) {
+		$.each($('input[type="text"]'), function(idx,ele) {
 			$(ele).val (rollStat());
 			updateScore(ele);
 		});
@@ -1320,7 +1345,7 @@ $(document).ready( function () {
 		$.each($('input[type="checkbox"]'), function(idx,ele) {
 			$(ele).attr('checked',false);
 		});
-		$.each($('input[type="number"]'), function(idx,ele) {
+		$.each($('input[type="text"]'), function(idx,ele) {
 			$(ele).val (8);
 			updateScore(ele);
 		});
@@ -1391,7 +1416,7 @@ $(document).ready( function () {
 	
 	function updateScore(ele) {
 		var stat = '#' + $(ele).closest('tr').attr('id');
-		var score = parseInt( $(stat + ' input[type="number"]').val(),10 );
+		var score =  parseInt( $(stat + ' input[type="text"]').val(),10 );
 		
 		if ( $(stat + ' :checked').length > 0 ) {score += 2;}
 		
@@ -1400,7 +1425,7 @@ $(document).ready( function () {
 		
 		// Calculate remaining points
 		var tot = 0;
-		$.each($('input[type="number"]'), function(idx,ele) {
+		$.each($('input[type="text"]'), function(idx,ele) {
 			tot += $(ele).val() > 8 ? $(ele).val() - 8 : 0;
 			tot += $(ele).val() > 14 ? $(ele).val()-14 : 0;
 			tot += $(ele).val() > 16 ? $(ele).val()-16 : 0;
@@ -1467,23 +1492,24 @@ $(document).ready( function () {
 		var ac = AM_CLASS[cls].ac[$('#char-arm').val().toLowerCase()][0] + ($('#char-shield').is(':checked')?AM_CLASS[cls].ac['shield'][0]:0) + lvl + [stats.con,stats.dex,stats.wis].sort()[1];
 		
 		var atk = AM_CLASS[cls].ac['none'][1] + AM_CLASS[cls].ac[$('#char-arm').val().toLowerCase()][1] + ($('#char-shield').is(':checked')?AM_CLASS[cls].ac['shield'][1]:0);
+		
 		// Physical Defense nn + middle mod of Str/Con/Dex + Level
-		var pd = AM_CLASS[cls].pd + lvl + [stats.str,stats.con,stats.dex].sort()[1];
+		var pd = AM_CLASS[cls].pd + lvl + [stats.str, stats.con, stats.dex].sort()[1];
 		
 		// Mental Defense nn + middle mod of Int/Wis/Cha + Level
 		var md = AM_CLASS[cls].md + lvl + [stats.wis,stats.int,stats.cha].sort()[1];
 		
 		var outp = '<table class="table-condensed">'
 		+ '<tr>'
-		+ '<th>AC</th><td>' + ac + '</td>'
+		+ '<th><i class="fa fa-shield"></i> AC</th><td>' + ac + '</td>'
 		+ '<th>HP</th><td>' + hp + '</td>'
 		+ '</tr>'
 		+ '<tr>'
-		+ '<th>PD</th><td>' + pd + '</td>'
+		+ '<th><i class="fa fa-street-view"></i> PD</th><td>' + pd + '</td>'
 		+ '<th>Initiative</th><td>' + (init>0?'+':'') + init + '</td>'
 		+ '</tr>'
 		+ '<tr>'
-		+ '<th>MD</th><td>' + md + '</td>'
+		+ '<th><i class="fa fa-user"></i> MD</th><td>' + md + '</td>'
 		+ '<th>Attack Mod</th><td>' + (atk>0?'+':'') + atk + '</td>';
 		+ '</tr>'
 		$('#stats-other').html (outp);
