@@ -134,26 +134,7 @@ var AM_CLASS = {
 		"miss": {
 			"melee":true,
 			"ranged":false
-		},
-		"talents":3,
-		"features": [
-			{
-				"type":"class",
-				"name":"Barbarian Rage",
-				"text":"Once per day, use a quick action to start raging. A rage lasts until the end of battle, or about 5 minutes.<p>While raging, you roll 2d20 to hit with your barbarian melee and thrown weapon attacks instead of 1d20. Use the higher roll for the attack. If you roll a natural 11+ with both dice and your highest attack roll is a hit, the attack is a critical hit! <p><i>Recharge 16+: After a battle in which you rage, roll a d20 and add your Constitution modifier. On a 16+, you can use Barbarian Rage again later in the day.</i>",
-				"a":"Whenever the escalation die is 4+, as a quick action, you can start raging for free. (It doesn’t count against your normal usage.) This rage lasts until the end of the battle, as normal.",
-				"c":"You can now start raging freely when the escalation die is 3+.",
-				"e":"You can now start raging freely when the escalation die is 2+."
-			},
-			{
-				"type":"",
-				"name":"",
-				"text":"",
-				"a":"",
-				"c":"",
-				"e":,""
-			}
-		]
+		}
 	},
 	"Bard": {
 		"stats": ["dex", "cha"],
