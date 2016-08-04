@@ -1,6 +1,14 @@
+// Action: clear action lis
+
+
+// Attack: Temporary Attack Array, refresh on formation update, use to show which swarms have attacked
 
 // EV: Rescue Space Marine...
+// Special Menu - add clickable names & info on discarded Marines. (Deactivate after use)
+
 // ++ Alt 'Skins' - Wrath of Amaerthis
+// ++ Alt 'Skins' - Dark Souls
+// ++ Alt 'Skins' - Expansions
 
 // Actions
 // AA: Reorganize Move to anywhere in the formation.
@@ -16,16 +24,15 @@
 
 // Terrain
 // Artefact - assign to Space Marine
-// Discard A Terrain Card
 
-// TRAVEL Door action
+// TRAVEL: Door action
 
 // ++ Display: Location Text, terrain text
 // ++ Event Text: replace Instinct (bold) [0] [1] [skull]
 
-// ATTACK: Temporary Attack Array, refresh on formation update, use to show which swarms have attacked
 
-/* Done */
+
+/* DONE */
 // AA: Activate - Add support token to terrain
 // ++ Display Phase Indicator/turn/support tokens
 // EV: H: Intimidation - Shuffle stealer into smallest blip pile
@@ -36,6 +43,7 @@
 // ++ Resolve Actions: add checkbox
 // AA: Target Lock: Add a support token to a swarm, remove when swarm is defeated
 // Change Terrain NAME to ID (file and script)
+// TT: Discard A Terrain Card
 
 $(document).ready(function () {
 	var debug = false;
@@ -180,26 +188,28 @@ $(document).ready(function () {
 	function da_refresh() {
 	   /* Head */
 		$('#addinfo').html ('Turn: <b>' + turn + ' </b>Phase:<b> ' + _phase[phase] + ' </b>Support Pool:<b> ' + support + ' </b>Total Losses:<b> ' + marineDiscard.length + '</b>');
-		$('#blip_discard').html ('Blip Discard: ' + stealerDiscard.length);
+		$('#blip_discard').html ('<span class="counter-value">' +  stealerDiscard.length + '</span>');
 		
-		$('#blip_deck').html ('Blips: ' + stealerDeck.length);
+		$('#blip_deck').html ('<span class="counter-value">' + stealerDeck.length + '</span>');
 		$("#location_deck").html ('Deck ids: ' + locationDeck);
-		$('#event_deck').html ('Events: ' + eventDeck.length + '<div class="clickable bottomright" id="drawevent"><i class="fa fa-plus-circle"></i></div>');
+		$('#event_deck').html ('<div class="topleft counter"><span class="counter-value">' + eventDeck.length + '</span></div><div class="clickable bottomright" id="drawevent"><i class="fa fa-plus-circle"></i></div>');
 		
 		var blipLbuttons = '<div class="bottomleft clickable" data-side="L" data-action="remove" title="Discard Blip"><i class="fa fa-minus-circle"></i></div>'
 		 + '<div class="bottomright clickable" data-side="L" data-action="add" title="Add Blip"><i class="fa fa-plus-circle"></i></div>';
-		$("#blipL").html (blipDeckL.length + blipLbuttons);
+		var blipLcounter = '<div class="topleft counter"><span class="counter-value">' + blipDeckL.length + '</span></div>';
+		$("#blipL").html (blipLcounter + blipLbuttons);
 		
-		var locData = currLocation.name 
+		var locData = '<div class="topleft">' + currLocation.name 
 			+ '<br>' + currLocation.text
-			+ '<br>' + currLocation.spawn['major'] +  ' ' + currLocation.spawn['minor'] 
+			+ '<br>' + currLocation.spawn['major'] +  ' ' + currLocation.spawn['minor'] + '</div>'
 			+ '<div class="clickable bottomright" id="travel" title="Travel!"><i class="fa fa-plus-circle"></i></div>';
 		
 		$("#location_active").html (locData);
 		
 		var blipRbuttons = '<div class="bottomleft clickable" data-side="R" data-action="remove" title="Discard Blip"><i class="fa fa-minus-circle"></i></div>'
 		 + '<div class="bottomright clickable" data-side="R" data-action="add" title="Add Blip"><i class="fa fa-plus-circle"></i></div>';
-		$("#blipR").html (blipDeckR.length + blipRbuttons);
+		var blipRcounter = '<div class="topright counter"><span class="counter-value">' + blipDeckR.length + '</span></div>';
+		$("#blipR").html (blipRcounter + blipRbuttons);
 		
 		var event = _event({id:currEvent}).first();
 		var outp = '<b>' + event.name + '</b>'
@@ -878,7 +888,30 @@ $(document).ready(function () {
 			});
 		}
 	});
-			
+	$('img').on('mouseenter',function () {
+		var tt = $(this).data('tt');
+		if (tt !== '') {
+			$(this).qtip({
+				overwrite: false,
+				show: {
+					ready: true
+				},
+				content: {
+					text: tt
+				},
+				style: {
+					classes: 'qtip-dark qtip-rounded qtip-shadow',
+					tip: false
+				},
+				position: {
+					my: 'bottom center',
+					at: 'bottom center',
+					target: $(this)
+				}
+			});
+		}
+	});
+
 	
 // Dice roller
 	$('#dice').on({

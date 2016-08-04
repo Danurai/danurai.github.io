@@ -71,16 +71,36 @@
 					<table>
 						<thead>
 							<tr id="decks">
-								<td rowspan="2"><div id="blip_discard">blip_discard</div></td>
-								<td><div id="blip_deck">blip_deck</div></td>
-								<td><div id="location_deck">location_deck</div></td>
-								<td><div id="event_deck">event_deck</div></td>
-								<td rowspan="2" width = "200px"><div id="event_active">event_active</div></td>
+								<td rowspan="2" valign="top">
+									<img src="/DA/res/blipV.png" class="cardV" data-tt="Blip Discard Pile"></img>
+									<div id="blip_discard" class="topleft counter">blip_discard</div>
+								</td>
+								<td>
+									<img src="/DA/res/blip.png" class="card" data-tt="Blip Pile"></img>
+									<div id="blip_deck" class="topleft counter">blip_deck</div>
+								</td>
+								<td>
+									<div id="location_deck">location_deck</div>
+								</td>
+								<td>
+									<img src="/DA/res/event_back.png" class="card" data-tt="Event Deck"></img>
+									<div id="event_deck">event_deck</div>
+								</td>
+								<td rowspan="2" style= "min-width: 175px;"><div id="event_active">event_active</div></td>
 							</tr>
 							<tr id="location">
-								<td><div id="blipL">blipL</div></td>
-								<td><div id="location_active">location_active</div></td>
-								<td><div id="blipR">blipR</div></td>
+								<td>
+									<img src="/DA/res/blip.png" class="card" data-tt="Blip Deck (L)"></img>
+									<div id="blipL">blipL</div>
+								</td>
+								<td>
+									<img src="/DA/res/voidlock.png" class="card" data-tt="Current Location"></img>
+									<div id="location_active">location_active</div>
+								</td>
+								<td>
+									<img src="/DA/res/blip.png" class="card" data-tt="Blip Deck (R)"></img>
+									<div id="blipR">blipR</div>
+								</td>
 							</tr>
 						</thead>
 						<tbody id="playmat">
@@ -90,7 +110,7 @@
 						</tbody>
 					</table>
 				</div>
-				<div class="col-sm-6">
+				<div class="col-sm-12">
 					<h4>Phase</h4>
 					<div style="border: 1px solid;">
 						<h4>1. Choose Actions</h4>
