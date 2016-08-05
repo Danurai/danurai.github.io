@@ -112,7 +112,7 @@ $(document).ready(function () {
        Start
 *******************/
 	$(document).ajaxStop(function () {
-		setup(["blue","green","purple","red"]);
+		setup(["blue","gray","red"]);
 		
 		da_refresh();
 		
@@ -191,35 +191,43 @@ $(document).ready(function () {
 		$('#blip_discard').html ('<span class="counter-value">' +  stealerDiscard.length + '</span>');
 		
 		$('#blip_deck').html ('<span class="counter-value">' + stealerDeck.length + '</span>');
-		$("#location_deck").html ('Deck ids: ' + locationDeck);
-		$('#event_deck').html ('<div class="topleft counter"><span class="counter-value">' + eventDeck.length + '</span></div><div class="clickable bottomright" id="drawevent"><i class="fa fa-plus-circle"></i></div>');
+		//$("#location_deck").html ('Deck ids: ' + locationDeck);
+		$('#event_deck').html ('<div class="topleft counter"><span class="counter-value">' + eventDeck.length + '</span></div><div class="topright"></div>');
 		
-		var blipLbuttons = '<div class="bottomleft clickable" data-side="L" data-action="remove" title="Discard Blip"><i class="fa fa-minus-circle"></i></div>'
-		 + '<div class="bottomright clickable" data-side="L" data-action="add" title="Add Blip"><i class="fa fa-plus-circle"></i></div>';
+		var blipLbuttons = '<div class="topright">' 
+			+ '<i class="fa fa-level-down clickable btn-card" data-side="L" data-action="add" title="Add Blip"></i>'
+			+ '<i class="fa fa-trash clickable btn-card" data-side="L" data-action="remove" title="Discard Blip"></i>'
+			+ '</div>';
 		var blipLcounter = '<div class="topleft counter"><span class="counter-value">' + blipDeckL.length + '</span></div>';
 		$("#blipL").html (blipLcounter + blipLbuttons);
 		
-		var locData = '<div class="topleft">' + currLocation.name 
-			+ '<br>' + currLocation.text
-			+ '<br>' + currLocation.spawn['major'] +  ' ' + currLocation.spawn['minor'] + '</div>'
-			+ '<div class="clickable bottomright" id="travel" title="Travel!"><i class="fa fa-plus-circle"></i></div>';
+		var locData = '<div>' + currLocation.name 
+			+ '<span style="font-size: 12px; line-height: 1;"><br>' + currLocation.text + '</span>'
+			+ '<br><span style="color: yellow">' + currLocation.spawn['major'] +  '</span> ' + currLocation.spawn['minor'] + '</div>'
+			+ '<div class="clickable bottomright" id="travel" title="Travel!"><i class="fa fa-fast-forward btn-card"></i></div>';
 		
 		$("#location_active").html (locData);
 		
-		var blipRbuttons = '<div class="bottomleft clickable" data-side="R" data-action="remove" title="Discard Blip"><i class="fa fa-minus-circle"></i></div>'
-		 + '<div class="bottomright clickable" data-side="R" data-action="add" title="Add Blip"><i class="fa fa-plus-circle"></i></div>';
-		var blipRcounter = '<div class="topright counter"><span class="counter-value">' + blipDeckR.length + '</span></div>';
+		var blipRbuttons = '<div class="topright">'
+			+ '<i class="fa fa-level-down clickable btn-card" data-side="R" data-action="add" title="Add Blip"></i>'
+			+ '<i class="fa fa-trash clickable btn-card" data-side="R" data-action="remove" title="Discard Blip"></i>'
+			+ '</div>';
+		var blipRcounter = '<div class="topleft counter"><span class="counter-value">' + blipDeckR.length + '</span></div>';
 		$("#blipR").html (blipRcounter + blipRbuttons);
 		
 		var event = _event({id:currEvent}).first();
-		var outp = '<b>' + event.name + '</b>'
+		var outp = '<div class="topoffset"><b>' + event.name + '</b>'
 			+ '<br>' + threaticon[event.spawn[0]['threat']] + ' ' + event.spawn[0]['type'] 
 			+ ' ' + threaticon[event.spawn[1]['threat']] + ' ' + event.spawn[1]['type']
 			+ (turn == 1 ? '<div style="color: #AAAAAA;">' : '<div>')
 			+ event.swarm[0] + ' ' + (event.action=="move" ? '<i class="fa fa-angle-double-up"></i>' : '<i class="fa fa-undo"></i>')
-			+ '<br><div class="small">' + event.text + '</div>'
+			+ '<br></div>'
+			+ '<div class="small">' + event.text + '</div>'
 			+ '</div>'
-			+ '<div class="clickable bottomright" id="spawnevent" title="draw"><i class="fa fa-plus-circle"></i></div>';
+			+ '<div class="topright">'
+			+ '<i class="fa fa-level-down clickable btn-card" id="drawevent" title="Draw"></i>'
+			+ '<i class="fa fa-fast-forward clickable btn-card" id="spawnevent" title="Apply Spawn Event"></i>'
+			+ '</div>';
 		$("#event_active").html (outp);
 	
 		
@@ -242,8 +250,8 @@ $(document).ready(function () {
 			+ '<br>' 
 			+ marine.squad + ' ' + marine.team
 			+ '</div>'
-			+ ' R:' + marine.range
-			+ ' <span class="clickable m_support" data-id="' + marine.id + '" data-side="" title="Support"> S:' + item['marine']['support'] + '</span>'
+			+ '<i class="fa fa-crosshairs"></i> ' + marine.range
+			+ '&nbsp;&nbsp;<i class="fa fa-power-off clickable m_support" data-id="' + marine.id + '" data-side="" title="Support"></i> ' + item['marine']['support'] + '</span>'
 			+ '<br><span class="move clickable" value="1" title="move down" name="' + marine.id + '"><i class="fa fa-angle-double-down"></i></span>';
 		mdata = '<td class="form-center marine" name="' + marine.id + '">' + mdata + '</div>';
 		
@@ -274,7 +282,7 @@ $(document).ready(function () {
 		var blipLdata = '';
 		if (item['blipL'].length > 0) {
 			$.each(item['blipL'],function(b,blip){
-				blipLdata += '<span class="blip-sel" value="L' + b + '">[ ' + blip + ' ]</span>';
+				blipLdata += '<span class="blip-sel clickable" value="L' + b + '">' + getBlipImg(blip) + '</span>';
 			});
 			blipLdata += item['blipSupport'][0] > 0 ? ' (' + item['blipSupport'][0] + ')' : '';
 			// Blip Buttons
@@ -296,7 +304,7 @@ $(document).ready(function () {
 		var blipRdata = '';
 		if (item['blipR'].length > 0) {
 			$.each(item['blipR'],function(b,blip){
-				blipRdata += '<span class="blip-sel" value="R' + b + '">[ ' + blip + ' ]</span>';
+				blipRdata += '<span class="blip-sel clickable" value="R' + b + '">' + getBlipImg(blip) + '</span>';
 			});
 			blipRdata += item['blipSupport'][1] > 0 ? ' (' + item['blipSupport'][1] + ')' : '';
 			// Blip Buttons
@@ -321,7 +329,7 @@ $(document).ready(function () {
 		 + '<td class="form-right" colspan="2">' + trdata + ' ' + blipRdata + '</td>';
 		 return (outp);		 
 	}
-
+	
 // update action\phase section	
 	function order_refresh() {
 		var outp = '';
@@ -353,6 +361,27 @@ $(document).ready(function () {
 /***********************************
             functions
 ***********************************/
+	/* Display */
+	function getBlipImg(blip)	{
+		var img = '';
+		switch (blip)	{
+			case 'b':
+				img = '<img src="/DA/res/tongue_icon.png" class="icon"></img>';
+				break;
+			case 'c':
+				img = '<img src="/DA/res/claw_icon.png" class="icon"></img>';
+				break;
+			case 's':
+				img = '<img src="/DA/res/skull_icon.png" class="icon""></img>';
+				break;
+			case 't':
+				img = '<img src="/DA/res/tail_icon.png" class="icon"></img>';
+				break;
+			default:
+				img='[' + blip + ']';
+		}
+		return img;
+	}
 
 	/* Orders */
 	function addOrder(team,order) {
@@ -389,6 +418,7 @@ $(document).ready(function () {
 		}
 		blipDeck.push (stealerDeck.shift());
 	}
+	
 	/* Movement - marine */
 	function updateSupport(idx, value) {
 		var item = formation[idx];
@@ -731,35 +761,43 @@ $(document).ready(function () {
 	$('#location_active').on('click','#travel',travel);
 	
 	$('#playmat')
-	  .on('click','.move',function(event) {
-		updateFormation($(this).attr('name'),parseInt($(this).attr('value'),10))
-	}).on('click','.support',function() {		
-		updateSupport($(this).attr('name'),parseInt($(this).attr('value'),10));
-	}).on('click','.swarm',function() {
-		updateSwarm($(this).data('id'),$(this).data('side'),$(this).data('action'));
-	}).on('click','.facing',function() {
-		changeFacing($(this).attr('name'));
-	}).on('click','.marine-name',function(event) {
-		$('#menu-marine').css({'left':event.pageX +20,'top': Math.max(event.pageY - $('#menu-marine').height() + 20,0)});
-		$('#menu-marine').toggle();
-		$('#menu-marine-data').val( $('#menu').is(':hidden') ? '' : '{"type":"marine","row":' + $(this).closest('tr').index() + ',"id":"' + this.id + '"}');
-	}).on('click','.blip-sel',function(event) {
-		$('#menu-stealer').css({'left':event.pageX +20,'top': Math.max(event.pageY - $('#menu-stealer').height() + 20,0)});
-		$('#menu-stealer').toggle();
-		$('#menu-stealer-data').val( $('#menu').is(':hidden') ? '' : '{"type":"genestealer","row":' + $(this).closest('tr').index() + ',"id":"' + $(this).attr('value') + '"}');
-	}).on('click','.spawn',function () {
-		spawnOne($(this).data('id'),$(this).data('side'));
-	}).on('click','.terrain',function () {
-		$('#btn-remove').show();
-		$('#menu-support').css({'left':event.pageX +20,'top': Math.max(event.pageY - $('#menu-terrain').height() + 20,0)});
-		$('#menu-support').toggle();
-		$('#menu-support-data').val( $('#menu-support').is(':hidden') ? '' : '{"type":"terrain","row":' + $(this).closest('tr').index() + ',"id":"' + $(this).data('id') + '","side":"' + $(this).data('side') + '"}');
-	}).on('click','.m_support',function () {
-		$('#btn-remove').hide();
-		$('#menu-support').css({'left':event.pageX +20,'top': Math.max(event.pageY - $('#menu-support').height() + 20,0)});
-		$('#menu-support').toggle();
-		$('#menu-support-data').val( $('#menu-support').is(':hidden') ? '' : '{"type":"marine","row":' + $(this).closest('tr').index() + ',"id":"' + $(this).data('id') + '","side":""}');
-	});
+		.on('click','.move',function(event) {
+			updateFormation($(this).attr('name'),parseInt($(this).attr('value'),10))
+		})
+		.on('click','.support',function() {		
+			updateSupport($(this).attr('name'),parseInt($(this).attr('value'),10));
+		})
+		.on('click','.swarm',function() {
+			updateSwarm($(this).data('id'),$(this).data('side'),$(this).data('action'));
+		})
+		.on('click','.facing',function() {
+			changeFacing($(this).attr('name'));
+		})
+		.on('click','.marine-name',function(event) {
+			$('#menu-marine').css({'left':event.pageX +20,'top': Math.max(event.pageY - $('#menu-marine').height() + 20,0)});
+			$('#menu-marine').toggle();
+			$('#menu-marine-data').val( $('#menu').is(':hidden') ? '' : '{"type":"marine","row":' + $(this).closest('tr').index() + ',"id":"' + this.id + '"}');
+		})
+		.on('click','.blip-sel',function(event) {
+			$('#menu-stealer').css({'left':event.pageX +20,'top': Math.max(event.pageY - $('#menu-stealer').height() + 20,0)});
+			$('#menu-stealer').toggle();
+			$('#menu-stealer-data').val( $('#menu').is(':hidden') ? '' : '{"type":"genestealer","row":' + $(this).closest('tr').index() + ',"id":"' + $(this).attr('value') + '"}');
+		})
+		.on('click','.spawn',function () {
+			spawnOne($(this).data('id'),$(this).data('side'));
+		})
+		.on('click','.terrain',function () {
+			$('#btn-remove').show();
+			$('#menu-support').css({'left':event.pageX +20,'top': Math.max(event.pageY - $('#menu-terrain').height() + 20,0)});
+			$('#menu-support').toggle();
+			$('#menu-support-data').val( $('#menu-support').is(':hidden') ? '' : '{"type":"terrain","row":' + $(this).closest('tr').index() + ',"id":"' + $(this).data('id') + '","side":"' + $(this).data('side') + '"}');
+		})
+		.on('click','.m_support',function () {
+			$('#btn-remove').hide();
+			$('#menu-support').css({'left':event.pageX +20,'top': Math.max(event.pageY - $('#menu-support').height() + 20,0)});
+			$('#menu-support').toggle();
+			$('#menu-support-data').val( $('#menu-support').is(':hidden') ? '' : '{"type":"marine","row":' + $(this).closest('tr').index() + ',"id":"' + $(this).data('id') + '","side":""}');
+		});
 	
 	$('#menu-marine').on('click','.clickable',function() {
 		$('#menu-marine').toggle();
@@ -824,6 +862,7 @@ $(document).ready(function () {
 				break;
 		}
 	});
+	
 	$('#blipL').on('click','.clickable',function() {
 		switch ($(this).data('action')) {
 			case 'add':
@@ -920,7 +959,7 @@ $(document).ready(function () {
 		},
 		mouseup: function() {
 			i = Math.floor(Math.random() * 6);
-			outp = i + (i>0 && i<4 ? 'X' : '');
+			outp = '<span class="dice-value inset">' + i + ' ' + (i>0 && i<4 ? '<i class="fi-skull"></i>' : '') + '</span>';
 			$('#dice').html (outp);
 		}
 	});
@@ -946,11 +985,11 @@ $(document).ready(function () {
 		// Increase support for 1 location
 			updateTerrainSupport(0,'Door','L',1)
 		
-		// Increase support to 13 - support should not exceed 11
+		// Increase support to 13 - support should not exceed 10
 			for (var x=0; x<14; x++)	{
 				updateSupport(2,1);
 			}
-			var res = formation[2]['marine']['support'] == 11 ? 'pass' : 'fail';
+			var res = formation[2]['marine']['support'] == 10 ? 'pass' : 'fail';
 			console.log ('Support test 3: ' + res + ' support=' + support);
 			
 		// Decrease support to -1 - support should not exceed 0

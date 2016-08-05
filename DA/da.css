@@ -1,14 +1,38 @@
-.bg1 {
-	margin: 20px;
+@import 'https://fonts.googleapis.com/css?family=Aldrich|Metamorphous';
+
+.background	{ 
+	background-color: #CCC;
+    background: -webkit-linear-gradient(#CCC, #000); 	/* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#CCC, #000); 		/* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#CCC, #000); 		/* For Firefox 3.6 to 15 */
+    background: linear-gradient(#CCC, #000); 			/* Standard syntax */	
 }
-.container {
-	margin: 0px 20px;
+.container 	{ margin: 0; padding: 0;}
+.row			{ margin: 5px; padding: 0;}
+*[class^='col-'] {
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+.hulk 	{
+	text-align:		center;
+	font-family: 	Metamorphous, cursive; 
+	font-size: 		48px; 
+	font-weight: 	bold;
+	background-color: #565656;
+	color: transparent;
+	text-shadow: 0px 1px 1px rgba(255,255,255,0.8);
+	-webkit-background-clip: text;
+	-moz-background-clip: text;
+	-background-clip: text;
 }
 table, tr, td {
-	border: 		1px solid;
+	border: 		2px;
 	padding: 	2px 5px;
 	text-align: center;
 	position: 	relative;
+	font-family: Aldrich, cursive;
+	font-size:	11pt;
 }
 td.form-left {
 	text-align: right;
@@ -26,20 +50,43 @@ td.form-right {
 }
 
 .dice {
-	width: 2em;
-	height:	2em;
+	width: 				2.5em;
+	height:				2.5em;
 	background-color: #800;
-	font: bold 12px;
-	color: #fff;
-	text-align: center;
-	cursor: pointer;
+	font-family:		Aldrich, cursive;
+	font-weight:		bold;
+	font-size:			24px;
+	color:				#fff;
+	text-align: 		center;
+	cursor: 				pointer;
+	border-radius:		10px;
+	position:			fixed;
+	bottom:				10px;
+	right:				2px;
+	z-index:				999;
 }
+.dice-value {
+	line-height: 		2.5em;
+	display: 			inline-block;
+	vertical-align: 	middle;
+}
+/*
+.inset {
+  background-color: 	#565656;
+  color: 				transparent;
+  text-shadow: 0px 1px 1px rgba(255,255,255,0.9);
+  -webkit-background-clip: text;
+     -moz-background-clip: text;
+          background-clip: text;
+}*/
 
 .swarm {
 	color: red;
 }
 
 .menu {
+	font-family:	Aldrich, cursive;
+	font-size: 		14px;
 	visibility:		visible;
 	position: 		absolute;
 	background-color: rgba(255,255,255,0.9);
@@ -75,14 +122,24 @@ td.form-right {
   right: 0;
 }
 
-/* Playmat Styling */
-
-.cardV {
-	height: 150px;
+.topoffset {
+	position: absolute;
+	top: 30px; 
+	left: 0;
 }
 
-.card {
-	width: 175px;
+/* Playmat Styling */
+
+.cardV { height: 150px; }
+.card { width: 140px; }
+
+/* Spawn Divs <div class="arrow-major"> */
+.arrow-major {
+	width: 0;
+	height: 0;
+	border-top: 10px solid yellow;
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
 }
 		
 .counter {
@@ -110,4 +167,14 @@ td.form-right {
 	vertical-align: middle;
 	color: #ffffff;
 	font-weight: bold;
+}
+
+.icon {
+	width:		40px;
+}
+
+.btn-card {
+	font-size: 20px;
+	letter-spacing:	5px;
+	color:	#AAFFAA;
 }

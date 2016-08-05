@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="mobile-web-app-capable" content="yes">
-
+	
 <!-- JQuery -->
 	<script src="https://code.jquery.com/jquery-2.2.2.min.js" integrity="sha256-36cp2Co+/62rEAAYHLmRCPIych47CvdM+uTBJwSzWjI=" crossorigin="anonymous"></script>
 <!-- BOOTSTRAP -->
@@ -19,7 +19,9 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/taffydb/2.7.2/taffy-min.js"></script>
 <!-- Font Awesome -->
 	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-XdYbMnZ/QjLh6iI4ogqCTaIjrFk87ip+ekIjefZch0Y+PvJ8CDYtEs1ipDmPorQ+" crossorigin="anonymous">
-
+<!-- Foundation Icons -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/foundation-icons/3.0/foundation-icons.min.css">
+	
 <!-- DA Scripts -->
 	<script src="da_engine.js"></script>
 	<link rel="stylesheet" href="da.css">
@@ -45,17 +47,16 @@
 	</script>
 </head>
 <body>
+	<div class="dice" id="dice"><span class="dice-value inset">5</span></div>
 	<div class="background">
 		<div class="container">
 			<div class="row">
-				<div class="col-md-6">
-					<em>Sin of Damnation</em>
-					<div id="dice" class="dice">0</div>
-					
+				<div class="col-sm-12">
 					<div>
 						Test Area
 						<div class="btn" data-target="#tests" data-toggle="collapse" id="tests_toggle"><i class="fa fa-plus-square-o"></i></div>
 					</div>
+					<div class="hulk">SIN OF DAMNATION</div>
 					<div id="tests" class="collapse">
 						<div class="btn-group">
 							<div class="btn btn-warning" id="testbutton">TEST</div>
@@ -68,11 +69,12 @@
 					</div>
 					
 					<div id="addinfo"></div>
-					<table>
+					<table style = "background: #222222; color: #FFFFFF;"  align="center">
 						<thead>
 							<tr id="decks">
-								<td rowspan="2" valign="top">
-									<img src="/DA/res/blipV.png" class="cardV" data-tt="Blip Discard Pile"></img>
+								<td rowspan="2"></td>
+								<td>
+									<img src="/DA/res/blip.png" class="card" data-tt="Blip Discard Pile"></img>
 									<div id="blip_discard" class="topleft counter">blip_discard</div>
 								</td>
 								<td>
@@ -80,33 +82,31 @@
 									<div id="blip_deck" class="topleft counter">blip_deck</div>
 								</td>
 								<td>
-									<div id="location_deck">location_deck</div>
-								</td>
-								<td>
 									<img src="/DA/res/event_back.png" class="card" data-tt="Event Deck"></img>
 									<div id="event_deck">event_deck</div>
 								</td>
-								<td rowspan="2" style= "min-width: 175px;"><div id="event_active">event_active</div></td>
+								<td rowspan="2" valign="top" style="min-width: 175px;">
+									<img src="/DA/res/event_backV.png" class="card" data-tt="Current Event"></img>
+									<div id="event_active">event_active</div>
+								</td>
 							</tr>
 							<tr id="location">
-								<td>
+								<td  valign="top">
 									<img src="/DA/res/blip.png" class="card" data-tt="Blip Deck (L)"></img>
 									<div id="blipL">blipL</div>
 								</td>
 								<td>
+									<!-- div id="location_deck"></div -->
 									<img src="/DA/res/voidlock.png" class="card" data-tt="Current Location"></img>
 									<div id="location_active">location_active</div>
 								</td>
-								<td>
+								<td  valign="top">
 									<img src="/DA/res/blip.png" class="card" data-tt="Blip Deck (R)"></img>
 									<div id="blipR">blipR</div>
 								</td>
 							</tr>
 						</thead>
 						<tbody id="playmat">
-							<tr>
-								<td class="swarm">Claw, Claw, Tail</td><td class="terrain">Dark Corridor</td><td class="marine">&lt;&lt;&nbsp;Scipio</td><td class="terrain"></td><td class="swarm"></td>
-							</tr>
 						</tbody>
 					</table>
 				</div>
@@ -136,14 +136,14 @@
 	<div>
 		<div id='menu-marine' class='menu' hidden>
 			<div class='clickable btn-da' id='btn-slay'>[ Slay ]</div>
-			<div class='clickable btn-da' id='btn-close'>[ x ]</div>
+			<div class='clickable btn-da' id='btn-close' align="right">[ x ]</div>
 			<input type='text' id='menu-marine-data' hidden>
 		</div>
 		<div id='menu-support' class='menu' hidden>
 			<div class='clickable btn-da' id='btn-remove'>[ Remove ]</div>
 			<div class='clickable btn-da' id='support-add'>[ +Support+ ]</div>
 			<div class='clickable btn-da' id='support-sub'>[ - Support - ]</div>
-			<div class='clickable btn-da' id='btn-close'>[ x ]</div>
+			<div class='clickable btn-da' id='btn-close' align="right">[ x ]</div>
 			<input type='text' id='menu-support-data' hidden>
 		</div>
 		<div id='menu-stealer' class='menu' hidden>
@@ -152,7 +152,7 @@
 			<div class='clickable btn-da' id='btn-rtnblipR' title="Return to Right Blip Pile">[ Add to Blip R ]</div>
 			<div class='clickable btn-da' id='support-add'>[ +Support+ ]</div>
 			<div class='clickable btn-da' id='support-sub'>[ - Support - ]</div>
-			<div class='clickable btn-da' id='btn-close' title="Close">[ x ]</div>
+			<div class='clickable btn-da' id='btn-close' title="Close" align="right">[ x ]</div>
 			<input type='text' id='menu-stealer-data' hidden>
 		</div>
 	</div>
