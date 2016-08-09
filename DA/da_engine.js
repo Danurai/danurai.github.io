@@ -1,6 +1,6 @@
-// Action: clear action lis
 
-
+{
+// Action: clear action list
 // Attack: Temporary Attack Array, refresh on formation update, use to show which swarms have attacked
 
 // EV: Rescue Space Marine...
@@ -44,6 +44,7 @@
 // AA: Target Lock: Add a support token to a swarm, remove when swarm is defeated
 // Change Terrain NAME to ID (file and script)
 // TT: Discard A Terrain Card
+}
 
 $(document).ready(function () {
 	var debug = false;
@@ -60,7 +61,8 @@ $(document).ready(function () {
 		's','s','s','s','s','s','s','s','s',
 		't','t','t','t','t','t','t','t','t'];
 	var _phase = ['Choose Actions','Resolve Actions','Attack','Event']; // Attack - set temporary array before attacking ;) Event - Resolve, Spawn(user input?), Move
-		
+
+// load json
 	$.ajax("/DA/res/json/locations.txt")
 		.done (function(data) {
 			_location = TAFFY(data);
@@ -81,6 +83,7 @@ $(document).ready(function () {
 		.done(function(data) {
 			_action = TAFFY(data);
 		});
+
 // Globals	
 	var _maxsupport = 12;
 	var _squads = 6;
@@ -112,7 +115,7 @@ $(document).ready(function () {
        Start
 *******************/
 	$(document).ajaxStop(function () {
-		setup(["blue","gray","red"]);
+		setup(["blue","green","red"]);
 		
 		da_refresh();
 		
@@ -150,6 +153,8 @@ $(document).ready(function () {
 		tmp = shuffle(tmp);
 		
 		resetOrders()
+		// Hide menu
+		$('#ordermenu').css('bottom', ( $('#ordertable').outerHeight() + 15 )* -1);
 		console.log (actionDeck);
 		
 	// 5. FORMATION
@@ -203,7 +208,7 @@ $(document).ready(function () {
 		
 		var locData = '<div>' + currLocation.name 
 			+ '<span style="font-size: 12px; line-height: 1;"><br>' + currLocation.text + '</span>'
-			+ '<br><span style="color: yellow">' + currLocation.spawn['major'] +  '</span> ' + currLocation.spawn['minor'] + '</div>'
+			+ '<br><i class="fa fa-caret-square-o-down spawn-major"></i>:' + currLocation.spawn['major'] +  '  <i class="fa fa-caret-square-o-down spawn-minor"></i>:' + currLocation.spawn['minor'] + '</div>'
 			+ '<div class="clickable bottomright" id="travel" title="Travel!"><i class="fa fa-fast-forward btn-card"></i></div>';
 		
 		$("#location_active").html (locData);
@@ -217,8 +222,11 @@ $(document).ready(function () {
 		
 		var event = _event({id:currEvent}).first();
 		var outp = '<div class="topoffset"><b>' + event.name + '</b>'
-			+ '<br>' + threaticon[event.spawn[0]['threat']] + ' ' + event.spawn[0]['type'] 
-			+ ' ' + threaticon[event.spawn[1]['threat']] + ' ' + event.spawn[1]['type']
+			+ '<br><span title="' + event.spawn[0]['type'].toProperCase() + ' spawn">'
+			+ threaticon[event.spawn[0]['threat']] + ' <i class="fa fa-caret-square-o-down spawn-' + event.spawn[0]['type'] + '"></i></span>'
+			+ '&nbsp;&nbsp;&nbsp;&nbsp;' 
+			+ '<span title="' + event.spawn[1]['type'].toProperCase() + ' spawn">'
+			+ threaticon[event.spawn[1]['threat']] + ' <i class="fa fa-caret-square-o-down spawn-' + event.spawn[1]['type'] + '"></i></span>'
 			+ (turn == 1 ? '<div style="color: #AAAAAA;">' : '<div>')
 			+ event.swarm[0] + ' ' + (event.action=="move" ? '<i class="fa fa-angle-double-up"></i>' : '<i class="fa fa-undo"></i>')
 			+ '<br></div>'
@@ -241,14 +249,19 @@ $(document).ready(function () {
 	}
 	function buildrow(item) {
 	// Blip | Terrain | Marine | Terrain  | Blip 
+	
 		/* Marine */
 		var marine = _marine({id:item['marine']['id']}).first();
+		var act_id = parseInt(phaseDeck[marine.team],10);
+		var action = _action({id:act_id}).first();
 		var mdata = '<span class="move clickable" value="-1" title="move up" name="' + marine.id + '"><i class="fa fa-angle-double-up"></i></span>'
 			+ '<div>'
 			+ (item['marine']['facingL'] ? '<span class="facing clickable" name="' + marine.id + '" ><<</span> '
 			+ '<span class="clickable marine-name" id="' + marine.id + '">' + marine.name + '</span>': '<span class="marine-name"  id="' + marine.id + '">' + marine.name +  '</span> <span class="facing clickable" name="' + marine.id + '">>></span>')
 			+ '<br>' 
-			+ marine.squad + ' ' + marine.team
+			+ '<span class="clickable order">' + (typeof phaseDeck[marine.team] !== 'undefined' ?  '<span class="action" id="' + act_id + '">' + acticon[action.type] +  ' <i>' + action.name + '</i></span>' :  '<i>receiving...</i>') + '</span>'
+			+ '<br>'
+			+ '<div class="bottomleft" style="color: ' + marine.team + ';">' + marine.squad.toProperCase() + '</div>'
 			+ '</div>'
 			+ '<i class="fa fa-crosshairs"></i> ' + marine.range
 			+ '&nbsp;&nbsp;<i class="fa fa-power-off clickable m_support" data-id="' + marine.id + '" data-side="" title="Support"></i> ' + item['marine']['support'] + '</span>'
@@ -326,7 +339,8 @@ $(document).ready(function () {
 		var outp = '<tr>'
 		 + '<td class="form-left" colspan="2">' + blipLdata + ' ' + tldata + '</td>'
 		 + mdata
-		 + '<td class="form-right" colspan="2">' + trdata + ' ' + blipRdata + '</td>';
+		 + '<td class="form-right">' + trdata + ' ' + blipRdata + '</td>'  //colspan="2"
+		 + '<td></td>';
 		 return (outp);		 
 	}
 	
@@ -334,6 +348,8 @@ $(document).ready(function () {
 	function order_refresh() {
 		var outp = '';
 		var ords = '';
+		
+		
 		$.each(teams,function (i,tm) {
 			ords = '<div style="color: ' + tm + ';"><b>'  + tm.toProperCase() + ' Team Orders</b></div><form>';
 			_action({team:tm}).each(function(record) {
@@ -344,8 +360,7 @@ $(document).ready(function () {
 		});
 		$('#choosephase').html (outp);
 		$('#resolvephase').html ('');
-	}
-	
+	}	
 	function resolveRefresh() {
 		var outp = '';
 		_action({team:teams}).order('number').each( function (record) {
@@ -394,6 +409,7 @@ $(document).ready(function () {
 		});
 		order_refresh();
 	}
+	
 	/* Blip Piles */
 	function returnBlip(idx,id,side) {
 		var blipDeck = side == 'L' ? blipDeckL : blipDeckR;
@@ -477,6 +493,7 @@ $(document).ready(function () {
 			}
 		});
 	}
+	
 	/* Movement - Swarm */
 	function updateSwarm(marine_id, side, action) {
 		var idx = getMarineIndex(marine_id);
@@ -572,6 +589,7 @@ $(document).ready(function () {
 		formation[x]['terrainR'] = formation[x]['terrainR'].concat(formation[idx]['terrainR']);
 		formation.splice(idx,1);
 	}
+	
 	/* Events */
 	function drawEvent() {
 		eventDiscard.push(currEvent);
@@ -656,6 +674,7 @@ $(document).ready(function () {
 		}
 		da_refresh();
 	}
+	
 	/* Travel! */
 	function travel() {
 		// 1. Place new Location Card
@@ -735,6 +754,7 @@ $(document).ready(function () {
 
 		return array;
 	}
+	
 	function getMarineIndex(m_id) {
 		for (var i=0; i<formation.length; i++)	{
 			if (formation[i]['marine']['id'] == m_id) {
@@ -751,12 +771,7 @@ $(document).ready(function () {
 *  Listeners
 /******************************************/
 
-	$('#choosephase').on('change','[type="radio"]',function() {
-		addOrder(this.name, this.value);
-	});
-	$('#resolve').on('click', resetOrders);
-
-	$('#event_deck').on('click','#drawevent',drawEvent);
+	$('#event_active').on('click','#drawevent',drawEvent);
 	$('#event_active').on('click','#spawnevent',spawnEvent);
 	$('#location_active').on('click','#travel',travel);
 	
@@ -797,8 +812,24 @@ $(document).ready(function () {
 			$('#menu-support').css({'left':event.pageX +20,'top': Math.max(event.pageY - $('#menu-support').height() + 20,0)});
 			$('#menu-support').toggle();
 			$('#menu-support-data').val( $('#menu-support').is(':hidden') ? '' : '{"type":"marine","row":' + $(this).closest('tr').index() + ',"id":"' + $(this).data('id') + '","side":""}');
+		})
+		.on('click','.order', function () {
+			var m_id = parseInt($(this).closest('td').attr('name'),10);
+			var marine = _marine({id:m_id}).first();
+			var outp = marine.team.toProperCase() + " Team Orders";
+			outp += '<table class="table-condensed"><tr>';
+			_action({team:marine.team}).each(function (record) {
+				outp += '<td class="order" id=' + record.id + ' name="' + marine.team + '">'
+					+ '<div class="topright">' + record.number + '</div>'
+					+ '<span style="color: ' + marine.team + ';"><b>' + record.name + '</b>'
+					+ '<br><i>' + record.type + '</i></span>'
+					+ '<p class="small">' + record.text
+					+ '</td>';
+			});
+			outp += '</tr></table>';
+			$('#teamorders').html (outp);
+			$('#teamorders').toggle();
 		});
-	
 	$('#menu-marine').on('click','.clickable',function() {
 		$('#menu-marine').toggle();
 		var data = JSON.parse($('#menu-marine-data').val());
@@ -890,6 +921,24 @@ $(document).ready(function () {
 		da_refresh();
 	});
 
+	// Orders
+	$('#teamorders').on('click','td',function() {
+		if ($(this).hasClass('order-disabled') == false) {
+			$(this).parent().find('td').removeClass('order-selected');
+			$(this).addClass('order-selected');
+			addOrder($(this).attr('name'), this.id);
+			$('#teamorders').toggle();
+			da_refresh();
+		}
+   });
+	
+	$('#choosephase').on('change','[type="radio"]',function() {
+		addOrder(this.name, this.value);
+	});
+	$('#resolve').on('click', resetOrders);
+	
+	
+
 // QTIPS
 	$('#choosephase, #resolvephase').on("mouseenter","span[class=actionCard]", function() {
 		var act_id = parseInt($(this).attr('id'),10);
@@ -908,25 +957,43 @@ $(document).ready(function () {
 			}
 		});
 	});
-	$('#playmat').on('mouseenter','.terrain',function() {
-		var ter_id = $(this).data('id');
-		var terrain = _terrain({id:ter_id}).select('text');
-		if (terrain != '') {
+	$('#playmat')
+		.on('mouseenter','.terrain',function() {
+			var ter_id = $(this).data('id');
+			var terrain = _terrain({id:ter_id}).select('text');
+			if (terrain != '') {
+				$(this).qtip({
+					overwrite: false,
+					show: {
+						ready: true
+					},
+					content: {
+						text: terrain
+					},
+					style: {
+						classes: 'qtip-dark qtip-rounded qtip-shadow',
+						tip: false
+					}
+				});
+			}
+		})
+		.on('mouseenter','span[class=action]', function () {
+			var act_id = parseInt($(this).attr('id'),10);
+			var action = _action({id:act_id}).select('text');
 			$(this).qtip({
 				overwrite: false,
 				show: {
 					ready: true
 				},
 				content: {
-					text: terrain
+					text: action
 				},
 				style: {
 					classes: 'qtip-dark qtip-rounded qtip-shadow',
 					tip: false
 				}
 			});
-		}
-	});
+		});
 	$('img').on('mouseenter',function () {
 		var tt = $(this).data('tt');
 		if (tt !== '') {
@@ -963,6 +1030,8 @@ $(document).ready(function () {
 			$('#dice').html (outp);
 		}
 	});
+
+});
 	
 // TESTS
 	$('#testbutton').on('click',function () {
@@ -1056,7 +1125,7 @@ $(document).ready(function () {
 
 		da_refresh();
 	});
-});
+
 
 var threaticon = [
 '',
@@ -1064,4 +1133,10 @@ var threaticon = [
 '<i class="fa fa-battery-half" style="color:yellow;"></i>',
 '<i class="fa fa-battery-three-quarters" style="color:orange;"></i>',
 '<i class="fa fa-battery-full" style="color:red;"></i>']
+
+var acticon = {
+	'Support':'<i class="fi-shield icon-action"></i>',
+	'Move + Activate':'<i class="fa fa-location-arrow"></i>',
+	'Attack':'<i class="fi-target-two icon-action"></i>'
+}
 
