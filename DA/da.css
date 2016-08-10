@@ -3,9 +3,9 @@
 .background	{ 
 	background-color: #CCC;
 	background: -webkit-linear-gradient(#CCC, #000); 	/* For Safari 5.1 to 6.0 */
-	background: -o-linear-gradient(#CCC, #000); 		/* For Opera 11.1 to 12.0 */
+	background: -o-linear-gradient(#CCC, #000); 			/* For Opera 11.1 to 12.0 */
 	background: -moz-linear-gradient(#CCC, #000); 		/* For Firefox 3.6 to 15 */
-	background: linear-gradient(#CCC, #000); 			/* Standard syntax */	
+	background: linear-gradient(#CCC, #000); 				/* Standard syntax */	
 }
 .container 	{ margin: 0; padding: 0;}
 .row			{ margin: 5px; padding: 0;}
@@ -16,7 +16,7 @@
 
 .hulk 	{
 	text-align:		center;
-	font-family: 	Metamorphous, cursive; 
+	font-family: 	Metamorphous; 
 	font-size: 		48px; 
 	font-weight: 	bold;
 	background-color: #565656;
@@ -31,7 +31,7 @@ table, tr, td {
 	padding: 	2px 5px;
 	text-align: center;
 	position: 	relative;
-	font-family: Aldrich, cursive;
+	font-family: Aldrich;
 	font-size:	11pt;
 	background: #222222; 
 	color: 		#FFFFFF;
@@ -239,4 +239,51 @@ div.ordertable {
 	position: fixed;
 	z-index: 100; 
 	font-family: Aldrich;
+}
+
+/* Marine Styling */
+.marineCell {
+}
+
+.grad-red {
+  background: rgba(255,0,0,0.6); /* For browsers that do not support gradients */
+  background: -webkit-radial-gradient(rgba(255,0,0,0.6),rgba(255,0,0,0)); 	/* Safari */
+  background: -o-radial-gradient(rgba(255,0,0,0.6),rgba(255,0,0,0)); 		/* Opera 11.6 to 12.0 */
+  background: -moz-radial-gradient(rgba(255,0,0,0.6),rgba(255,0,0,0)); 		/* Firefox 3.6 to 15 */
+  background: radial-gradient(rgba(255,0,0,0.6),rgba(255,0,0,0)); 			/* Standard syntax */
+}
+.grad-blue {
+  background: rgba(0,0,255,0.6); /* For browsers that do not support gradients */
+  background: -webkit-radial-gradient(rgba(0,0,255,0.6),rgba(255,0,0,0)); 	/* Safari */
+  background: -o-radial-gradient(rgba(0,0,255,0.6),rgba(255,0,0,0)); 		/* Opera 11.6 to 12.0 */
+  background: -moz-radial-gradient(rgba(0,0,255,0.6),rgba(255,0,0,0)); 		/* Firefox 3.6 to 15 */
+  background: radial-gradient(rgba(0,0,255,0.6),rgba(255,0,0,0)); 			/* Standard syntax */
+}
+.grad-green {
+  background: rgba(0,255,0,0.6); /* For browsers that do not support gradients */
+  background: -webkit-radial-gradient(rgba(0,255,0,0.6),rgba(0,255,0,0)); 	/* Safari */
+  background: -o-radial-gradient(rgba(0,255,0,0.6),rgba(0,255,0,0)); 		/* Opera 11.6 to 12.0 */
+  background: -moz-radial-gradient(rgba(0,255,0,0.6),rgba(0,255,0,0)); 		/* Firefox 3.6 to 15 */
+  background: radial-gradient(rgba(0,255,0,0.6),rgba(0,255,0,0)); 			/* Standard syntax */
+}
+.grad-gray {
+  background: rgba(128,128,128,0.6); /* For browsers that do not support gradients */
+  background: -webkit-radial-gradient(rgba(128,128,128,0.6),rgba(128,128,128,0)); 	/* Safari */
+  background: -o-radial-gradient(rgba(128,128,128,0.6),rgba(128,128,128,0)); 		/* Opera 11.6 to 12.0 */
+  background: -moz-radial-gradient(rgba(128,128,128,0.6),rgba(128,128,128,0)); 		/* Firefox 3.6 to 15 */
+  background: radial-gradient(rgba(128,128,128,0.6),rgba(128,128,128,0)); 			/* Standard syntax */
+}
+.grad-purple {
+  background: rgba(128,0,128,0.6); /* For browsers that do not support gradients */
+  background: -webkit-radial-gradient(rgba(128,0,128,0.6),rgba(128,0,128,0)); 	/* Safari */
+  background: -o-radial-gradient(rgba(128,0,128,0.6),rgba(128,0,128,0)); 		/* Opera 11.6 to 12.0 */
+  background: -moz-radial-gradient(rgba(128,0,128,0.6),rgba(128,0,128,0)); 		/* Firefox 3.6 to 15 */
+  background: radial-gradient(rgba(128,0,128,0.6),rgba(128,0,128,0)); 			/* Standard syntax */
+}
+.grad-yellow {
+  background: rgba(255,255,0,0.6); /* For browsers that do not support gradients */
+  background: -webkit-radial-gradient(rgba(255,255,0,0.6),rgba(255,255,0,0)); 	/* Safari */
+  background: -o-radial-gradient(rgba(255,255,0,0.6),rgba(255,255,0,0)); 		/* Opera 11.6 to 12.0 */
+  background: -moz-radial-gradient(rgba(255,255,0,0.6),rgba(255,255,0,0); 		/* Firefox 3.6 to 15 */
+  background: radial-gradient(rgba(255,255,0,0.6),rgba(255,255,0,0)); 			/* Standard syntax */
 }

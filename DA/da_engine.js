@@ -103,11 +103,11 @@ $(document).ready(function () {
 	var support;
 	var turn;
 	var phase;
-// Actiondeck {cardnumber:state}
-	var actionDeck = {};
+	var actionDeck = {};				// Actiondeck {cardnumber:state}
 	var phaseDeck = [];
 	var teams = [];
 	var marineDiscard = [];
+	
 // Save\Load
 	var savedstate = {};
 
@@ -115,17 +115,17 @@ $(document).ready(function () {
        Start
 *******************/
 	$(document).ajaxStop(function () {
-		setup(["blue","green","red"]);
 		
+		//setup(["blue","green","red"]);
+		setup(["yellow","gray","purple"]);
 		da_refresh();
-		
 		order_refresh();
-		
+
 	})
 
 // Setup a new game
 	function setup(teamlist) {
-	// #Combat Teams
+	// Combat Teams
 		teams = teamlist;
 		turn = 0;
 		phase = 0;
@@ -191,7 +191,7 @@ $(document).ready(function () {
 
 // Re-draw the playmat
 	function da_refresh() {
-	   /* Head */
+	/* Head */
 		$('#addinfo').html ('Turn: <b>' + turn + ' </b>Phase:<b> ' + _phase[phase] + ' </b>Support Pool:<b> ' + support + ' </b>Total Losses:<b> ' + marineDiscard.length + '</b>');
 		$('#blip_discard').html ('<span class="counter-value">' +  stealerDiscard.length + '</span>');
 		
@@ -206,10 +206,12 @@ $(document).ready(function () {
 		var blipLcounter = '<div class="topleft counter"><span class="counter-value">' + blipDeckL.length + '</span></div>';
 		$("#blipL").html (blipLcounter + blipLbuttons);
 		
-		var locData = '<div>' + currLocation.name 
+		var locData = '<div>'
+			+ currLocation.name 
 			+ '<span style="font-size: 12px; line-height: 1;"><br>' + currLocation.text + '</span>'
 			+ '<br><i class="fa fa-caret-square-o-down spawn-major"></i>:' + currLocation.spawn['major'] +  '  <i class="fa fa-caret-square-o-down spawn-minor"></i>:' + currLocation.spawn['minor'] + '</div>'
-			+ '<div class="clickable bottomright" id="travel" title="Travel!"><i class="fa fa-fast-forward btn-card"></i></div>';
+			+ '<div class="clickable topright" id="travel" title="Travel!"><i class="fa fa-fast-forward btn-card"></i>'
+			+ '</div>';
 		
 		$("#location_active").html (locData);
 		
@@ -239,7 +241,7 @@ $(document).ready(function () {
 		$("#event_active").html (outp);
 	
 		
-		/* playmat */
+	/* playmat */
 		$("#playmat").empty();
 		$.each(formation,function (i,item) {
 			row = buildrow(item);
@@ -248,29 +250,20 @@ $(document).ready(function () {
 		if (debug) {console.log(formation);}
 	}
 	function buildrow(item) {
-	// Blip | Terrain | Marine | Terrain  | Blip 
+	// Blip | Terrain | Marine | Terrain  | Blip | _empty_
 	
 		/* Marine */
 		var marine = _marine({id:item['marine']['id']}).first();
 		var act_id = parseInt(phaseDeck[marine.team],10);
 		var action = _action({id:act_id}).first();
-		var mdata = '<span class="move clickable" value="-1" title="move up" name="' + marine.id + '"><i class="fa fa-angle-double-up"></i></span>'
-			+ '<div>'
-			+ (item['marine']['facingL'] ? '<span class="facing clickable" name="' + marine.id + '" ><<</span> '
-			+ '<span class="clickable marine-name" id="' + marine.id + '">' + marine.name + '</span>': '<span class="marine-name"  id="' + marine.id + '">' + marine.name +  '</span> <span class="facing clickable" name="' + marine.id + '">>></span>')
-			+ '<br>' 
-			+ '<span class="clickable order">' + (typeof phaseDeck[marine.team] !== 'undefined' ?  '<span class="action" id="' + act_id + '">' + acticon[action.type] +  ' <i>' + action.name + '</i></span>' :  '<i>receiving...</i>') + '</span>'
-			+ '<br>'
-			+ '<div class="bottomleft" style="color: ' + marine.team + ';">' + marine.squad.toProperCase() + '</div>'
-			+ '</div>'
-			+ '<i class="fa fa-crosshairs"></i> ' + marine.range
-			+ '&nbsp;&nbsp;<i class="fa fa-power-off clickable m_support" data-id="' + marine.id + '" data-side="" title="Support"></i> ' + item['marine']['support'] + '</span>'
-			+ '<br><span class="move clickable" value="1" title="move down" name="' + marine.id + '"><i class="fa fa-angle-double-down"></i></span>';
-		mdata = '<td class="form-center marine" name="' + marine.id + '">' + mdata + '</div>';
+		// da_drawing.js
+		mdata = drawMarine(marine, item['marine'],action);
 		
 		/* Terrain: Left */
 		var tldata = '';
 		tldata += '<div class="spawn bottomleft clickable" data-id="' + marine.id + '" data-side="L" title="Spawn"><i class="fa fa-plus-circle"></i></div>';
+		
+		tldata += '<div style="float: right;">'
 		$.each(item['terrainL'],function (t,terrain) {
 			var res = _terrain({id:terrain.id}).first();
 			tldata += '<span class="clickable terrain" data-id="' + res.id +'" data-side="L">'
@@ -279,10 +272,15 @@ $(document).ready(function () {
 				+ threaticon[res.threat]
 				+ '</span>';
 		})
+		tldata += '</div>';
+		
+		//tldata = drawTerrain(item.terrainL);
 		
 		/* Terrain: Right */
 		var trdata = '';
 		trdata += '<div class="spawn bottomright clickable" data-id="' + marine.id + '" data-side="R" title="Spawn"><i class="fa fa-plus-circle"></i></div>'
+		
+		trdata += '<div style="float: left;">'
 		$.each(item['terrainR'],function (t,terrain) {
 			var res = _terrain({id:terrain.id}).first();
 			trdata += '<span class="clickable terrain" data-id="' + res.id +'" data-side="R">'
@@ -291,13 +289,19 @@ $(document).ready(function () {
 				+ threaticon[res.threat]
 				+ '</span>';
 		})
+		trdata += '</div>';
+		
+		//trdata =  drawTerrain(item.terrainR);
 		
 		var blipLdata = '';
 		if (item['blipL'].length > 0) {
+			blipLdata += '<div style="float: left;">';
 			$.each(item['blipL'],function(b,blip){
 				blipLdata += '<span class="blip-sel clickable" value="L' + b + '">' + getBlipImg(blip) + '</span>';
 			});
 			blipLdata += item['blipSupport'][0] > 0 ? ' (' + item['blipSupport'][0] + ')' : '';
+			blipLdata += '</div>';
+			
 			// Blip Buttons
 			blipLdata += '<div class="bottomright">'
 				+ '<span class="swarm clickable" data-side="L" data-action="flank" data-id="' + marine.id + '">'
@@ -316,10 +320,13 @@ $(document).ready(function () {
 		
 		var blipRdata = '';
 		if (item['blipR'].length > 0) {
+			blipRdata += '<div style="float: right;">';
 			$.each(item['blipR'],function(b,blip){
 				blipRdata += '<span class="blip-sel clickable" value="R' + b + '">' + getBlipImg(blip) + '</span>';
 			});
 			blipRdata += item['blipSupport'][1] > 0 ? ' (' + item['blipSupport'][1] + ')' : '';
+			blipRdata += '</div>';
+			
 			// Blip Buttons
 			blipRdata += '<div class="bottomleft">'
 				+ '<span class="swarm clickable" data-side="R" data-action="movedown" data-id="' + marine.id + '">'
@@ -381,16 +388,16 @@ $(document).ready(function () {
 		var img = '';
 		switch (blip)	{
 			case 'b':
-				img = '<img src="/DA/res/tongue_icon.png" class="icon"></img>';
+				img = '<img src="/DA/res/img/tongue_icon.png" class="icon"></img>';
 				break;
 			case 'c':
-				img = '<img src="/DA/res/claw_icon.png" class="icon"></img>';
+				img = '<img src="/DA/res/img/claw_icon.png" class="icon"></img>';
 				break;
 			case 's':
-				img = '<img src="/DA/res/skull_icon.png" class="icon""></img>';
+				img = '<img src="/DA/res/img/skull_icon.png" class="icon""></img>';
 				break;
 			case 't':
-				img = '<img src="/DA/res/tail_icon.png" class="icon"></img>';
+				img = '<img src="/DA/res/img/tail_icon.png" class="icon"></img>';
 				break;
 			default:
 				img='[' + blip + ']';
@@ -1134,9 +1141,5 @@ var threaticon = [
 '<i class="fa fa-battery-three-quarters" style="color:orange;"></i>',
 '<i class="fa fa-battery-full" style="color:red;"></i>']
 
-var acticon = {
-	'Support':'<i class="fi-shield icon-action"></i>',
-	'Move + Activate':'<i class="fa fa-location-arrow"></i>',
-	'Attack':'<i class="fi-target-two icon-action"></i>'
-}
+
 
