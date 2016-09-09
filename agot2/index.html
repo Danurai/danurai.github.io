@@ -28,10 +28,13 @@
 				var outp = '';
 				var str = $('#decklist').val();
 				//console.log (str);
-				str.match(/Faction:\s+(\w+)/g);
+				str.match(/Faction:\s+(.+)/g);
 				faction = RegExp.$1;
 				var regex = /([0-9])x\s(.+)\s\((.+)\)/g;
 				var res = str.match(regex);
+				
+				plot = [];
+				
 				$.each(res, function (id, item) {
 					item.match(regex);
 					var qty = RegExp.$1;
@@ -74,8 +77,9 @@
 			// Make cards 50% opaque when clicked
 			$('#plot_cards').on('click','.card',function() {
 				$(this).css('opacity', 1.5 - parseFloat($(this).css('opacity')));
-				var id = $(this).attr('id');
-				var card = _cards({"Number":id}).first();
+				var id = $(this).data('cardno');
+				var set = $(this).data('cardset')
+				var card = _cards({"Number":id,"Set":set}).first();
 				$('#plot_data').html ('<h4>Plot: ' + card.name + '</h4>Gold: ' + card.Gold + ' Initiative: ' + card.Initiative + ' Claim: ' + card.Claim + ' Reserve: ' + card.Reserve); // + '<br><br>' + card.CardText);
 			});
 			
@@ -84,7 +88,7 @@
 			})
 			
 			$("body").on("mouseenter",".card", function() {
-				var card = _cards({"Number":$(this).data('cardno').toString()}).first();
+				var card = _cards({"Number":$(this).data('cardno').toString(),"Set":$(this).data('cardset')}).first();
 				
 				var faction_s = typeof card.Faction !== "undefined" ? card.Faction.match(/\w+/) : "Neutral";
 				var icons = '';
@@ -102,11 +106,12 @@
 					},
 					content: {
 						text: '<b class="card-title">' 
-						//	+ (card.unique ? '&diams;&nbsp;' : '')
+							+ (card.Unique ? '&diams;&nbsp;' : '')
 							+ card.name + '</b>'
 							+ '<br><br>'
-							+ (typeof card.Cost !== "undefined" ? '<div class="gold-icon"><div class="number">' + card.Cost + '</div></div>' : '')
-							+ (typeof card.Strength !== "undefined" ? '<div class="strength-icon"><div class="number">' + card.Strength + '</div></div>' : '')
+							+ (card.Type == "Plot" ? 'Gold: ' + card.Gold + ' Initiative: ' + card.Initiative + ' Claim: ' + card.Claim + ' Reserve: ' + card.Reserve : '')
+							+ (typeof card.Cost !== "undefined" ? 'Cost: ' + card.Cost + ' ' : '' ) //+ (typeof card.Cost !== "undefined" ? '<div class="gold-icon"><div class="number">' + card.Cost + '</div></div>' : '')
+							+ (typeof card.Strength !== "undefined" ? 'Str: ' + card.Strength + ' ' : '') 	//(typeof card.Strength !== "undefined" ? '<div class="strength-icon"><div class="number">' + card.Strength + '</div></div>' : '')
 							+ (icons != '' ? icons : '')
 							+ '<p class="' + faction_s + '-card">' + card.CardText
 							+ (typeof card.Faction !== "undefined" ? '<div class="small" style="float: left;">' + card.Faction + '</div>' : 'Neutral')
@@ -115,6 +120,33 @@
 					style: {
 						classes: 'qtip-bootstrap',
 						tip: false
+					},
+					position: {
+						my: 'left-center',
+						at: 'right-center',
+						viewport : $(window)
+					},
+					hide:	{
+						//event: 'unfocus'
+					}
+				});
+			});
+			$('#decklist').on("mouseenter",function () {
+				$(this).qtip({
+					overwrite: false,
+					show: {
+						ready: true
+					},
+					content: {
+						text: 'Paste in a decklist in <a href="http://www.cardgamedb.com">CardGameDB.com</a> format.'
+						+ '<br><br>Faction should be in the format:<br><em>Faction:<br>&nbsp;&lt;faction&gt;</em>'
+						+ '<br><br>Cards should be in the format:<br><em>3x &lt;card name&gt; (&lt;Card Set&gt;)</em>'
+						+ '<br><br>Agenda listed as a standard card e.g. <em>1x Fealty (Core Set)</em>'
+					},
+					style: {
+						classes: 'qtip-bootstrap',
+						tip: false,
+						width: 500
 					},
 					position: {
 						my: 'left-center',
@@ -141,7 +173,7 @@
 				$('#faction_name').html ('<h2 class="faction">House ' + faction  + (typeof agenda !== "undefined" ? ' <span class="card" data-cardno="' + agenda.Number + '">(' + agenda.name + ')' : '')  + '</span></h2>' );
 				
 				$.each(plot, function (id, plot) {
-					outp += '<img src="' + plot.img + '" class="card plot_card" data-cardno="' + plot.Number + '"></img>'
+					outp += '<img src="' + plot.img + '" class="card plot_card" data-cardno="' + plot.Number + '" data-cardset="' + plot.Set + '"></img>'
 				});
 				$('#plot_cards').html (outp);
 				$('#plot_data').html("Gold: 8");
@@ -149,14 +181,14 @@
 			function drawTitle() {
 				_titles = shuffle(_titles);
 				var title = _titles[0];
-				$('#title_card').html('<h4>Title:</h4><img src="' + title.img + '" data-cardno="' + title.Number + '" class="card plot_card"></img>');
+				$('#title_card').html('<h4>Title:</h4><img src="' + title.img + '" data-cardno="' + title.Number + '" data-cardset="' + title.Set + '" class="card plot_card"></img>');
 			}
 			
 			function drawCards(n) {
 				var card 
 				for (var i = 0; i < n; i++) {
 					card = deck.pop();
-					$('#hand').append('<img src="' + card.img + '" class="card deck_card" data-cardno="' + card.Number + '"></img>');
+					$('#hand').append('<img src="' + card.img + '" class="card deck_card" data-cardno="' + card.Number + '" data-cardset="' + card.Set + '"></img>');
 				}
 			}
 		});
@@ -288,8 +320,8 @@
 <body>
 	<div class="container">
 		<div class="row">
-			<div class="col-md-12">
-				<textarea class="form-control" type="text" id="decklist"></textarea>
+			<div class="col-md-6">
+				<textarea class="form-control" type="text" id="decklist" rows="5"></textarea>
 				<button class="btn btn-default" id="loaddeck">Load</button>
 			</div>
 		</div>
