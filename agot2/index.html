@@ -89,7 +89,7 @@
 				//var set = $(this).data('cardset')
 				//var card = _cards({"Number":id,"Set":set}).first();
 				
-				var card = _cards({"code":$(this).data('code')});
+				var card = _cards({"code":$(this).data('code')}).first();
 				$('#plot_data').html ('<h4>Plot: ' + card.name + '</h4>Gold: ' + card.Gold + ' Initiative: ' + card.Initiative + ' Claim: ' + card.Claim + ' Reserve: ' + card.Reserve); // + '<br><br>' + card.CardText);
 			});
 			
