@@ -11,7 +11,14 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/qtip2/2.1.1/jquery.qtip.js"></script>
 <!-- TAFFYdb -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/taffydb/2.7.2/taffy-min.js"></script>
+	
+	
 	<script src="/agot2/js/agot2_data.js"></script>
+	<script src="/agot2/js/deckbuilder.js"></script>
+	<script src="/agot2/js/agot2_qtip.js"></script>
+	
+	<link href="/agot2/css/agot2.css" rel="stylesheet">
+	
 	<script>
 		$(document).ready( function() {
 			_cards = TAFFY(CARDS);
@@ -78,9 +85,11 @@
 			// Make cards 50% opaque when clicked
 			$('#plot_cards').on('click','.card',function() {
 				$(this).css('opacity', 1.5 - parseFloat($(this).css('opacity')));
-				var id = $(this).data('cardno');
-				var set = $(this).data('cardset')
-				var card = _cards({"Number":id,"Set":set}).first();
+				//var id = $(this).data('cardno');
+				//var set = $(this).data('cardset')
+				//var card = _cards({"Number":id,"Set":set}).first();
+				
+				var card = _cards({"code":$(this).data('code')});
 				$('#plot_data').html ('<h4>Plot: ' + card.name + '</h4>Gold: ' + card.Gold + ' Initiative: ' + card.Initiative + ' Claim: ' + card.Claim + ' Reserve: ' + card.Reserve); // + '<br><br>' + card.CardText);
 			});
 			
@@ -88,50 +97,6 @@
 				$(this).css('opacity', 1.5 - parseFloat($(this).css('opacity')));
 			})
 			
-			$("body").on("mouseenter",".card", function() {
-				var card = _cards({"Number":$(this).data('cardno').toString(),"Set":$(this).data('cardset')}).first();
-				
-				var faction_s = typeof card.Faction !== "undefined" ? card.Faction.match(/\w+/) : "Neutral";
-				var icons = '';
-				
-				if (typeof card.Icons !== "undefined") {
-					icons += card.Icons.indexOf('Military') != -1 ? '<img src="/agot2/img/gt01_challengeicons_military.png" class="card-icon"></img>' : '<span class="card-icon"></span>';
-					icons += card.Icons.indexOf('Intrigue') != -1 ? '<img src="/agot2/img/gt01_challengeicons_intrigue.png" class="card-icon"></img>' : '<span class="card-icon"></span>';
-					icons += card.Icons.indexOf('Power') != -1 ? '<img src="/agot2/img/gt01_challengeicons_power.png" class="card-icon"></img>' : '<span style="display: inline-block; width: 30px;"></span>';
-				}
-				
-				$(this).qtip({
-					overwrite: false,
-					show: {
-						ready: true
-					},
-					content: {
-						text: '<b class="card-title">' 
-							+ (card.Unique ? '&diams;&nbsp;' : '')
-							+ card.name + '</b>'
-							+ '<br><br>'
-							+ (card.Type == "Plot" ? 'Gold: ' + card.Gold + ' Initiative: ' + card.Initiative + ' Claim: ' + card.Claim + ' Reserve: ' + card.Reserve : '')
-							+ (typeof card.Cost !== "undefined" ? 'Cost: ' + card.Cost + ' ' : '' ) //+ (typeof card.Cost !== "undefined" ? '<div class="gold-icon"><div class="number">' + card.Cost + '</div></div>' : '')
-							+ (typeof card.Strength !== "undefined" ? 'Str: ' + card.Strength + ' ' : '') 	//(typeof card.Strength !== "undefined" ? '<div class="strength-icon"><div class="number">' + card.Strength + '</div></div>' : '')
-							+ (icons != '' ? icons : '')
-							+ '<p class="' + faction_s + '-card">' + card.CardText
-							+ (typeof card.Faction !== "undefined" ? '<div class="small" style="float: left;">' + card.Faction + '</div>' : 'Neutral')
-							+ '<div class="small" style="text-align: right;">' + card.Set + ' #' + card.Number + '</div>'
-					},
-					style: {
-						classes: 'qtip-bootstrap',
-						tip: false
-					},
-					position: {
-						my: 'left-center',
-						at: 'right-center',
-						viewport : $(window)
-					},
-					hide:	{
-						//event: 'unfocus'
-					}
-				});
-			});
 			$('#decklist').on("mouseenter",function () {
 				$(this).qtip({
 					overwrite: false,
@@ -171,10 +136,11 @@
 			
 			function drawFactionPlots()	{
 				var outp = '';
-				$('#faction_name').html ('<h2 class="faction">House ' + faction  + (typeof agenda !== "undefined" ? ' <span class="card" data-cardno="' + agenda.Number + '">(' + agenda.name + ')' : '')  + '</span></h2>' );
+				$('#faction_name').html ('<h2 class="faction">' + (faction != "The Night's Watch" ? "House " + faction : faction) + (typeof agenda !== "undefined" ? ' <span class="card" data-cardno="' + agenda.Number + '">(' + agenda.name + ')' : '')  + '</span></h2>' );
 				
 				$.each(plot, function (id, plot) {
-					outp += '<img src="' + plot.img + '" class="card plot_card" data-cardno="' + plot.Number + '" data-cardset="' + plot.Set + '"></img>'
+					//outp += '<img src="' + plot.img + '" class="card plot_card" data-cardno="' + plot.Number + '" data-cardset="' + plot.Set + '"></img>'
+					outp += '<img src="' + plot.img + '" class="card plot_card" data-code="' + plot.code + '"></img>';
 				});
 				$('#plot_cards').html (outp);
 				$('#plot_data').html("Gold: 8");
@@ -182,14 +148,16 @@
 			function drawTitle() {
 				_titles = shuffle(_titles);
 				var title = _titles[0];
-				$('#title_card').html('<h4>Title:</h4><img src="' + title.img + '" data-cardno="' + title.Number + '" data-cardset="' + title.Set + '" class="card plot_card"></img>');
+				//$('#title_card').html('<h4>Title:</h4><img src="' + title.img + '" data-cardno="' + title.Number + '" data-cardset="' + title.Set + '" class="card plot_card"></img>');
+				$('#title_card').html('<h4>Title:</h4><img src="' + title.img + '" data-code="' + title.code + '" class="card plot_card"></img>');
 			}
 			
 			function drawCards(n) {
 				var card 
 				for (var i = 0; i < n; i++) {
 					card = deck.pop();
-					$('#hand').append('<img src="' + card.img + '" class="card deck_card" data-cardno="' + card.Number + '" data-cardset="' + card.Set + '"></img>');
+					//$('#hand').append('<img src="' + card.img + '" class="card deck_card" data-cardno="' + card.Number + '" data-cardset="' + card.Set + '"></img>');
+					$('#hand').append('<img src="' + card.img + '" class="card deck_card" data-code="' + card.code + '"></img>');
 				}
 			}
 		});
@@ -214,146 +182,78 @@
 	}
 	</script>
 </head>
-<style>
-	.card {
-		padding: 2px;
-	}
-	.deck_card {
-		width: 120px;
-	}
-	.plot_card {
-		width: 150px;
-	}
-	.title_card {
-		width: 150px;
-		height: 80px;
-		overflow: hidden;
-		float: left;
-	}
-	#plot_cards {
-		text-align: center;
-	}
-	.row {
-		padding-top: 10px;
-	}
-	
-	.card-title {
-		font-size: 18px;
-		font-weight: bold;
-	}
-	
-	.card-icon {
-		width: 30px;
-		padding-right: 2px;
-	}
-	.gold-icon {
-		text-align: center;
-		padding-right: 2px;
-		width: 30px;
-		height: 30px;
-		display: inline-block;
-		padding-right: 2px;
-		border-radius: 50%;
-		background-image: -moz-radial-gradient(30px 30px 45deg, circle cover, yellow 0%, orange 100%, red 95%);
-		background-image: -webkit-radial-gradient(30px 30px, circle cover, yellow, orange);
-		background-image: radial-gradient(15px 15px 45deg, circle cover, yellow 0%, orange 100%, red 95%);
-	}
-	.strength-icon {
-		text-align: center;
-		padding-right: 2px;
-		width: 30px;
-		height: 30px;
-		display: inline-block;
-		padding-right: 2px;
-		border-radius: 50%;
-		background-image: -moz-radial-gradient(30px 30px 45deg, circle cover, grey 0%, orange black%, white 95%);
-		background-image: -webkit-radial-gradient(30px 30px, circle cover, grey, white);
-		background-image: radial-gradient(15px 15px 45deg, circle cover, grey 0%, black 100%, white 95%);
-	}
-	.number {
-		line-height: 30px;
-		display: inline-block;
-		vertical-align: middle;
-		font-weight: bold;
-	}
-	
-	.Baratheon-card{
-		padding-left: 5px;
-		border-left-style: solid;
-		border-left-color: #e6e600;
-	}
-	.Greyjoy-card{
-		padding-left: 5px;
-		border-left-style: solid;
-		border-left-color: #006666;
-	}
-	.Lannister-card{
-		padding-left: 5px;
-		border-left-style: solid;
-		border-left-color: #ff0000;
-	}
-	.Martell-card{
-		padding-left: 5px;
-		border-left-style: solid;
-		border-left-color: #ff9900;
-	}
-	.Stark-card{
-		padding-left: 5px;
-		border-left-style: solid;
-		border-left-color: #d9d9d9;
-	}
-	.Targaryen-card{
-		padding-left: 5px;
-		border-left-style: solid;
-		border-left-color: #990000;
-	}
-	.The-card{
-		padding-left: 5px;
-		border-left-style: solid;
-		border-left-color: #29293d;
-	}
-	.Tyrell-card {
-		padding-left: 5px;
-		border-left-style: solid;
-		border-left-color: #004d00;
-	}
-</style>
 <body>
 	<div class="container">
-		<div class="row">
-			<div class="col-md-6">
-				<textarea class="form-control" type="text" id="decklist" rows="5"></textarea>
-				<button class="btn btn-default" id="loaddeck">Load</button>
+		<ul class="nav nav-tabs">
+			<li class="active"><a data-toggle="tab" href="#deckbuild">Build</a></li>
+			<li><a data-toggle="tab" href="#deckcheck">Check</a></li>
+			<li><a data-toggle="tab" href="#decksets">Sets</a></li>
+		</ul>
+		<div class="tab-content">
+			<div id="deckbuild" class="tab-pane active">
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="input-group">
+							<label>Filter:&nbsp;</label>
+							<input class="text"></input>
+						</div>
+						<table id="cardtbl" class="table-condensed">
+							<tr>
+								<th>Quantity</th>
+								<!--th>House</th-->
+								<th>Name</th>
+								<th>Type</th>
+								<th>Cost</th>
+								<th>Strength</th>
+								<!--th>Set</th-->
+							</tr>
+							<tbody id="tablebody"></tbody>
+						</table>
+					</div>
+				</div>
 			</div>
-		</div>
-		<br>
-		<div class="row">
-			<div class="col-md-12">
-				<div id="faction_name"></div>
-				<div id="plot_cards"></div>
+			<div id="deckcheck" class="tab-pane">
+				<div class="row">
+					<div class="col-md-6">
+						<textarea class="form-control" type="text" id="decklist" rows="5"></textarea>
+						<button class="btn btn-default" id="loaddeck">Load</button>
+					</div>
+				</div>
+				<br>
+				<div class="row">
+					<div class="col-md-12">
+						<div id="faction_name"></div>
+						<div id="plot_cards"></div>
+					</div>
+					<div class="col-md-12">
+						<div id="title_card" title="click to refresh" class="title_card"></div>
+						<div id="plot_data"></div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12" align="center">
+						<b>Draw:&nbsp;</b>
+						<div class="btn-group">
+							<button type="button" class="btn btn-default btn-sm btn-draw" val="1" id="draw1">1</button>
+							<button type="button" class="btn btn-default btn-sm btn-draw" val="2" id="draw2">2</button>
+							<button type="button" class="btn btn-default btn-sm btn-draw" val="7" id="draw7">7</button>
+							<button type="button" class="btn btn-default btn-sm btn-draw" val="all" id="drawall">All</button>
+							<button type="button" class="btn btn-default btn-sm btn-draw" val="0" id="drawreset">Reset</button>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12" align="center">
+						<div id="hand"></div>
+					</div>
+				</div>
+				<div id="tmp"></div>
 			</div>
-			<div class="col-md-12">
-				<div id="title_card" title="click to refresh" class="title_card"></div>
-				<div id="plot_data"></div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-12" align="center">
-				<b>Draw:&nbsp;</b>
-				<div class="btn-group">
-					<button type="button" class="btn btn-default btn-sm btn-draw" val="1" id="draw1">1</button>
-					<button type="button" class="btn btn-default btn-sm btn-draw" val="2" id="draw2">2</button>
-					<button type="button" class="btn btn-default btn-sm btn-draw" val="7" id="draw7">7</button>
-					<button type="button" class="btn btn-default btn-sm btn-draw" val="all" id="drawall">All</button>
-					<button type="button" class="btn btn-default btn-sm btn-draw" val="0" id="drawreset">Reset</button>
+			<div id="decksets" class="tab-pane">
+				<div class="row">
+				
 				</div>
 			</div>
 		</div>
-		<div class="row">
-			<div class="col-md-12" align="center">
-				<div id="hand"></div>
-			</div>
-		</div>
-		<div id="tmp"></div>
 	</div>
 </body>

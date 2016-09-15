@@ -1,0 +1,128 @@
+	.card {
+		padding: 2px;
+	}
+	.deck_card {
+		width: 120px;
+	}
+	.plot_card {
+		width: 150px;
+	}
+	.title_card {
+		width: 150px;
+		height: 80px;
+		overflow: hidden;
+		float: left;
+	}
+	#plot_cards {
+		text-align: center;
+	}
+	.row {
+		padding-top: 10px;
+	}
+	
+	.card-title {
+		font-size: 18px;
+		font-weight: bold;
+	}
+	
+	.card-icon {
+		width: 30px;
+		padding-right: 2px;
+	}
+	.gold-icon {
+		text-align: center;
+		padding-right: 2px;
+		width: 30px;
+		height: 30px;
+		display: inline-block;
+		padding-right: 2px;
+		border-radius: 50%;
+		background-image: -moz-radial-gradient(30px 30px 45deg, circle cover, yellow 0%, orange 100%, red 95%);
+		background-image: -webkit-radial-gradient(30px 30px, circle cover, yellow, orange);
+		background-image: radial-gradient(15px 15px 45deg, circle cover, yellow 0%, orange 100%, red 95%);
+	}
+	.strength-icon {
+		text-align: center;
+		padding-right: 2px;
+		width: 30px;
+		height: 30px;
+		display: inline-block;
+		padding-right: 2px;
+		border-radius: 50%;
+		background-image: -moz-radial-gradient(30px 30px 45deg, circle cover, grey 0%, orange black%, white 95%);
+		background-image: -webkit-radial-gradient(30px 30px, circle cover, grey, white);
+		background-image: radial-gradient(15px 15px 45deg, circle cover, grey 0%, black 100%, white 95%);
+	}
+	.number {
+		line-height: 30px;
+		display: inline-block;
+		vertical-align: middle;
+		font-weight: bold;
+	}
+	
+	.Baratheon-card{
+		padding-left: 5px;
+		border-left-style: solid;
+		border-left-color: #e6e600;
+	}
+	.Greyjoy-card{
+		padding-left: 5px;
+		border-left-style: solid;
+		border-left-color: #006666;
+	}
+	.Lannister-card{
+		padding-left: 5px;
+		border-left-style: solid;
+		border-left-color: #ff0000;
+	}
+	.Martell-card{
+		padding-left: 5px;
+		border-left-style: solid;
+		border-left-color: #ff9900;
+	}
+	.Stark-card{
+		padding-left: 5px;
+		border-left-style: solid;
+		border-left-color: #d9d9d9;
+	}
+	.Targaryen-card{
+		padding-left: 5px;
+		border-left-style: solid;
+		border-left-color: #990000;
+	}
+	.The-card{
+		padding-left: 5px;
+		border-left-style: solid;
+		border-left-color: #29293d;
+	}
+	.Tyrell-card {
+		padding-left: 5px;
+		border-left-style: solid;
+		border-left-color: #004d00;
+	}
+
+/* QTIP Styling */
+
+	.qtip {
+		max-width: 350px;
+	}
+	.cardthumb {
+		width: 100px;
+		height: 100px;
+		background-repeat: no-repeat;
+		margin: 2px;
+		background-size: 140px;
+		background-position-x: 80%;
+		background-position-y: 10%;
+	}
+	.cardthumb-event {
+		background-size: 150px;
+		background-position-x: 50%;
+		background-position-y: 30%;
+	}
+	.cardthumb-plot {
+		width: 150px;
+		background-size: 260px;
+		background-position-x: 60%;
+		background-position-y: 0%;
+	}
