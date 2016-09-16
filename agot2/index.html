@@ -11,10 +11,14 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/qtip2/2.1.1/jquery.qtip.js"></script>
 <!-- TAFFYdb -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/taffydb/2.7.2/taffy-min.js"></script>
+
+<!-- FONT AWESOME -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
 	
+	<script src="/agot2/js/agot2_filter.js"></script>
 	
 	<script src="/agot2/js/agot2_data.js"></script>
-	<script src="/agot2/js/deckbuilder.js"></script>
+	<script src="/agot2/js/agot2_deckbuilder.js"></script>
 	<script src="/agot2/js/agot2_qtip.js"></script>
 	
 	<link href="/agot2/css/agot2.css" rel="stylesheet">
@@ -29,11 +33,12 @@
 			var agenda;
 			var faction;
 			
+			
 			$('#decklist').val("Deck Created with CardGameDB.com A Game of Thrones 2nd Edition Deckbuilder\n\n\nTotal Cards: (50)\n\nFaction: \n Targaryen\n\n\nAgenda: (1)\n1x Fealty (Core Set)\n\nPlot: (7)\n1x Counting Coppers (Core Set)\n1x Confiscation (Core Set)\n1x Fortified Position (Core Set)\n2x The Winds of Winter (Core Set)\n1x Supporting the Faith (Core Set)\n1x A Noble Cause (Core Set)\n\nCharacter: (35)\n3x Braided Warrior (Core Set)\n3x Daenerys Targaryen (Core Set)\n3x Drogon (Core Set)\n3x Handmaiden (Core Set)\n3x Khal Drogo (Core Set)\n2x Magister Illyrio (Core Set)\n3x Rhaegal (Core Set)\n3x Ser Jorah Mormont (Core Set)\n3x Targaryen Loyalist (Core Set)\n3x Unsullied (Core Set)\n3x Viserion (Core Set)\n3x Viserys Targaryen (Core Set)\n\nAttachment: (0)\n\n\nEvent: (9)\n3x Dracarys! (Core Set)\n3x Fire and Blood (Core Set)\n3x Waking the Dragon (Core Set)\n\nLocation: (6)\n3x Illyrio's Estate (Core Set)\n3x Plaza of Punishment (Core Set)");
 			
 			$('#loaddeck').on('click',function () {
 				var outp = '';
-				var str = $('#decklist').val();
+				var str = $('#deckload').val();
 				//console.log (str);
 				str.match(/Faction:\s+(.+)/g);
 				faction = RegExp.$1;
@@ -97,7 +102,7 @@
 				$(this).css('opacity', 1.5 - parseFloat($(this).css('opacity')));
 			})
 			
-			$('#decklist').on("mouseenter",function () {
+			$('#deckload').on("mouseenter",function () {
 				$(this).qtip({
 					overwrite: false,
 					show: {
@@ -192,10 +197,31 @@
 		<div class="tab-content">
 			<div id="deckbuild" class="tab-pane active">
 				<div class="row">
-					<div class="col-sm-6">
-						<div class="input-group">
-							<label>Filter:&nbsp;</label>
-							<input class="text"></input>
+					<div class="col-md-6">
+						<div class="row">
+							<input type="text" class="form-control" placeholder="Filter List" id="filterlist">
+						</div>
+						<div class="row">
+							<div class="btn-group" data-toggle="buttons" id="cardfilter">
+								<label class="btn btn-default btn-sm" title="Faction"><input type="checkbox" name="Faction"><i class="fa fa-flag" aria-hidden="true"></i></label>
+								<label class="btn btn-default btn-sm" title="Agenda"><input type="checkbox" name="Agenda"><i class="fa fa-user-plus" aria-hidden="true"></i></label>
+								<label class="btn btn-default btn-sm" title="Plot"><input type="checkbox" name="Plot"><i class="fa fa-bookmark" aria-hidden="true"></i></label>
+								<label class="btn btn-default btn-sm" title="Character"><input type="checkbox" name="Character"><i class="fa fa-users" aria-hidden="true"></i></label>
+								<label class="btn btn-default btn-sm" title="Attachment"><input type="checkbox" name="Attachment"><i class="fa fa-paperclip" aria-hidden="true"></i></label>
+								<label class="btn btn-default btn-sm" title="Event"><input type="checkbox" name="Event"><i class="fa fa-bolt" aria-hidden="true"></i></label>
+								<label class="btn btn-default btn-sm" title="Location"><input type="checkbox" name="Location"><i class="fa fa-map-marker" aria-hidden="true"></i></label>
+							</div>
+							<div class="btn-group pull-right" data-toggle="buttons" id="factionfilter">
+								<label class="btn btn-default btn-sm" title="House Lannister"><input type="checkbox" name="Lannister"><i class="icon icon-lannister"></i></label>
+								<label class="btn btn-default btn-sm" title="House Martell"><input type="checkbox" name="Martell"><i class="icon icon-martell" aria-hidden="true"></i></label>
+								<label class="btn btn-default btn-sm" title="The Night's Watch"><input type="checkbox" name="The Night's Watch"><i class="icon icon-watch" aria-hidden="true"></i></label>
+								<label class="btn btn-default btn-sm" title="House Stark"><input type="checkbox" name="Stark"><i class="icon icon-stark" aria-hidden="true"></i></label>
+								<label class="btn btn-default btn-sm" title="House Targaryen"><input type="checkbox" name="Targaryen"><i class="icon icon-targaryen" aria-hidden="true"></i></label>
+								<label class="btn btn-default btn-sm" title="House Tyrell"><input type="checkbox" name="Tyrell"><i class="icon icon-tyrell" aria-hidden="true"></i></label>
+								<label class="btn btn-default btn-sm" title="House Baratheon"><input type="checkbox" name="Baratheon"><i class="icon icon-baratheon" aria-hidden="true"></i></label>
+								<label class="btn btn-default btn-sm" title="House Greyjoy"><input type="checkbox" name="Greyjoy"><i class="icon icon-greyjoy" aria-hidden="true"></i></label>
+								<label class="btn btn-default btn-sm" title="Neutral"><input type="checkbox" name="Neutral"><i class="fa fa-plus" aria-hidden="true"></i></label>
+							</div>
 						</div>
 						<table id="cardtbl" class="table-condensed">
 							<tr>
@@ -210,12 +236,15 @@
 							<tbody id="tablebody"></tbody>
 						</table>
 					</div>
+					<div class="col-md-6">
+						<div id="decklist"></div>
+					</div>
 				</div>
 			</div>
 			<div id="deckcheck" class="tab-pane">
 				<div class="row">
 					<div class="col-md-6">
-						<textarea class="form-control" type="text" id="decklist" rows="5"></textarea>
+						<textarea class="form-control" type="text" id="deckload" rows="5"></textarea>
 						<button class="btn btn-default" id="loaddeck">Load</button>
 					</div>
 				</div>
@@ -251,9 +280,15 @@
 			</div>
 			<div id="decksets" class="tab-pane">
 				<div class="row">
-				
+					<div class="col-md-12">
+						<div id="setlist">
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
+	</div>
+	<div style="background-color: #DDD; border-top: black solid 2px; padding: 10px 10px 100px;">
+		<p><a href="https://icons8.com" target="_blank">Icon pack by Icons8</a>
 	</div>
 </body>

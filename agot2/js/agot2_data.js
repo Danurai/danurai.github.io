@@ -2,6 +2,8 @@
 // Westeros Cycle
 // Wolves of the North
 
+SETS = {"Core Set":{"code":"core","number":1},"Taking the Black":{"code":"ttb","number":2},"The Road to Winterfell":{"code":"trtw","number":3},"The King's Peace":{"code":"tkp","number":4},"No Middle Ground":{"code":"nmg","number":5},"Calm Over Westeros":{"code":"cow","number":6},"True Steel":{"code":"ts","number":7},"Wolves of the North":{"code":"wotn","number":8},"Across the Seven Kingdoms":{"code":"atsk","number":9},"Called to Arms":{"code":"cta","number":10},"For Family Honor":{"code":"ffh","number":11},"There Is My Claim":{"code":"timc","number":12},"Ghosts of Harrenhal":{"code":"goh","number":13},"Tyrion's Chain":{"code":"tc","number":14},"Lions of Casterly Rock":{"code":"locr","number":15}}
+
 CARDS = 
 [
     {
@@ -18,6 +20,7 @@ CARDS =
         "code":"01001",
         "Initiative":"9",
         "CardText":"<strong>Noble.</strong><br><strong>Reaction</strong>: After you win a [Power] challenge, move 1 power from the losing opponent's faction card to your own.",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"core",
@@ -37,6 +40,7 @@ CARDS =
         "code":"01002",
         "Initiative":"1",
         "CardText":"<strong>Edict.</strong><br>Plot deck limit: 1.<br><strong>Reaction</strong>: After you win dominance, gain 2 power for your faction.<br>",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"core",
@@ -56,6 +60,7 @@ CARDS =
         "code":"01003",
         "Initiative":"2",
         "CardText":"<strong>Scheme.</strong><br>Plot deck limit: 1.<br>A player cannot initiate a [Military] or [Power] challenge unless he or she has won an [Intrigue] challenge that phase.",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"core",
@@ -91,6 +96,7 @@ CARDS =
         "code":"01004",
         "Initiative":"0",
         "CardText":"<strong>Kingdom. Noble.</strong><br>Reduce the cost of the first <em><strong>Lord</strong></em> or <em><strong>Lady</strong></em> character you marshal this round by 2.",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"core",
@@ -110,6 +116,7 @@ CARDS =
         "code":"01005",
         "Initiative":"8",
         "CardText":"<strong>War.</strong><br>You may initiate an additional [Military] challenge during the challenges phase.",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"core",
@@ -200,7 +207,7 @@ CARDS =
     {
         "setcode":"core",
         "Strength":"2",
-        "Illustrator":"Joshua Cair\u00f3s",
+        "Illustrator":"Joshua Cairós",
         "name":"Arya Stark",
         "img":"http://lcg-cdn.fantasyflightgames.com/got2nd/GT01_141.jpg",
         "Faction":"Stark",
@@ -512,6 +519,7 @@ CARDS =
         "code":"01006",
         "Initiative":"1",
         "CardText":"<strong>Kingdom.</strong><br><strong>When Revealed: </strong>Search the top 10 cards of your deck for an attachment or a location, reveal it, and add it to your hand. Shuffle your deck.",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"core",
@@ -551,6 +559,7 @@ CARDS =
         "code":"01007",
         "Initiative":"6",
         "CardText":"<strong>Kingdom.</strong><br><strong>When Revealed</strong>: Choose an opponent. Gain 1 gold for each character that player controls.",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"core",
@@ -570,6 +579,7 @@ CARDS =
         "code":"01008",
         "Initiative":"3",
         "CardText":"<strong>Summer.</strong><br>Plot deck limit: 1.<br><strong>When Revealed: </strong>Name a challenge type. Until you reveal a new plot card, reduce the claim value on the attacking player's revealed plot card by 1 during challenges of that type in which you are the defending player.<br>",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"core",
@@ -695,6 +705,7 @@ CARDS =
         "code":"01009",
         "Initiative":"5",
         "CardText":"<strong>Edict.</strong><br><strong>When Revealed: </strong>Choose an attachment, and discard it from play.",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"core",
@@ -720,7 +731,7 @@ CARDS =
         "Loyal":false,
         "Claim":"1",
         "Set":"Core Set",
-        "Illustrator":"Antonio Jos\u00e9 Manzanedo",
+        "Illustrator":"Antonio José Manzanedo",
         "name":"Counting Coppers",
         "Gold":"2",
         "Faction":"Neutral",
@@ -730,6 +741,7 @@ CARDS =
         "code":"01010",
         "Initiative":"3",
         "CardText":"<strong>Kingdom.</strong><br><strong>When Revealed: </strong>Draw 3 cards.",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"core",
@@ -1137,6 +1149,7 @@ CARDS =
         "code":"01011",
         "Initiative":"4",
         "CardText":"<strong>Scheme.</strong><br><strong>When Revealed</strong>: Choose and kneel a character.<br>",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"core",
@@ -1188,6 +1201,7 @@ CARDS =
         "code":"01012",
         "Initiative":"1",
         "CardText":"<strong>Siege. War.</strong><br>Plot deck limit: 1.<br>Treat each character as if its printed text box were blank (except for <em><strong>Traits</strong></em>).",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"core",
@@ -1232,7 +1246,7 @@ CARDS =
     {
         "setcode":"core",
         "Set":"Core Set",
-        "Illustrator":"Ignacio Baz\u00e1n Lazcano",
+        "Illustrator":"Ignacio Bazán Lazcano",
         "name":"Ghaston Grey",
         "img":"http://lcg-cdn.fantasyflightgames.com/got2nd/GT01_116.jpg",
         "Faction":"Martell",
@@ -1427,6 +1441,7 @@ CARDS =
         "code":"01013",
         "Initiative":"6",
         "CardText":"<strong>Edict. War.</strong><br><strong>When Revealed</strong>: Choose an opponent. Discard 1 card at random from that player's hand. If that card is a character, gain 2 power for your faction and place the discarded character in its owner's dead pile.",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"core",
@@ -1744,6 +1759,7 @@ CARDS =
         "code":"01014",
         "Initiative":"3",
         "CardText":"<strong>Summer.</strong><br>Each player cannot declare more than 1 character as an attacker or defender in each challenge.",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"core",
@@ -1994,7 +2010,7 @@ CARDS =
     {
         "setcode":"core",
         "Strength":"2",
-        "Illustrator":"Joshua Cair\u00f3s",
+        "Illustrator":"Joshua Cairós",
         "name":"Maester Caleotte",
         "img":"http://lcg-cdn.fantasyflightgames.com/got2nd/GT01_107.jpg",
         "Faction":"Martell",
@@ -2107,6 +2123,7 @@ CARDS =
         "code":"01015",
         "Initiative":"8",
         "CardText":"<strong>Edict.</strong><br><strong>When Revealed: Each player chooses a character he or she controls ( if able), and discards it from play (cannot be saved).<br></strong>",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"core",
@@ -2126,6 +2143,7 @@ CARDS =
         "code":"01016",
         "Initiative":"3",
         "CardText":"<strong>Edict. War.</strong><br>You cannot marshal locations or attachments, or play events.",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"core",
@@ -2273,6 +2291,7 @@ CARDS =
         "code":"01017",
         "Initiative":"7",
         "CardText":"<strong>Siege. War. </strong><br>Plot deck limit: 1.<br>Treat the base gold value on each revealed <em><strong>Kingdom</strong></em> and each revealed <em><strong>Edict</strong></em> plot card as if it were 0.",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"core",
@@ -2317,7 +2336,7 @@ CARDS =
     {
         "setcode":"core",
         "Strength":"6",
-        "Illustrator":"Antonio Jos\u00e9 Manzanedo",
+        "Illustrator":"Antonio José Manzanedo",
         "name":"Old Bear Mormont",
         "img":"http://lcg-cdn.fantasyflightgames.com/got2nd/GT01_126.jpg",
         "Faction":"The Night's Watch",
@@ -2395,7 +2414,7 @@ CARDS =
     {
         "setcode":"core",
         "Set":"Core Set",
-        "Illustrator":"Joshua Cair\u00f3s",
+        "Illustrator":"Joshua Cairós",
         "name":"Ours is the Fury",
         "img":"http://lcg-cdn.fantasyflightgames.com/got2nd/GT01_63.jpg",
         "Faction":"Baratheon",
@@ -2479,6 +2498,7 @@ CARDS =
         "code":"01018",
         "Initiative":"1",
         "CardText":"<strong>Noble. Scheme.</strong><br><strong>When Revealed</strong>: Place 1 stand token on Power Behind the Throne.<em><br></em><strong>Action</strong>: Discard 1 stand token from Power Behind the Throne to choose and stand a character.",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"core",
@@ -2519,7 +2539,7 @@ CARDS =
     {
         "setcode":"core",
         "Strength":"5",
-        "Illustrator":"Joshua Cair\u00f3s",
+        "Illustrator":"Joshua Cairós",
         "name":"Randyll Tarly",
         "img":"http://lcg-cdn.fantasyflightgames.com/got2nd/GT01_183.jpg",
         "Faction":"Tyrell",
@@ -2592,6 +2612,7 @@ CARDS =
         "code":"01019",
         "Initiative":"5",
         "CardText":"<strong>Kingdom.</strong><br><strong>When Revealed</strong>: Choose up to 3 cards in your discard pile, and shuffle them into your deck.",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"core",
@@ -2611,6 +2632,7 @@ CARDS =
         "code":"01020",
         "Initiative":"0",
         "CardText":"<strong>Kingdom. War.</strong><br><strong>When Revealed: </strong>Choose a character with printed cost 5 or lower in your hand or discard pile, and put it into play.",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"core",
@@ -2668,7 +2690,7 @@ CARDS =
         "Number":"081",
         "Loyal":false,
         "Cost":"0",
-        "CardText":"<strong>Interrupt</strong>: When a [Greyjoy] character would be killed, save it. Then, attach Risen from the Sea to that character as a <em><strong>Condition</strong></em> attachment with the text: \u201cTerminal. Attached character gets +1 STR.\u201d",
+        "CardText":"<strong>Interrupt</strong>: When a [Greyjoy] character would be killed, save it. Then, attach Risen from the Sea to that character as a <em><strong>Condition</strong></em> attachment with the text: \"Terminal. Attached character gets +1 STR.\"",
         "Unique":false,
         "Type":"Event",
         "Quantity":"1"
@@ -2697,7 +2719,7 @@ CARDS =
     {
         "setcode":"core",
         "Strength":"5",
-        "Illustrator":"Joshua Cair\u00f3s",
+        "Illustrator":"Joshua Cairós",
         "name":"Robert Baratheon",
         "img":"http://lcg-cdn.fantasyflightgames.com/got2nd/GT01_48.jpg",
         "Faction":"Baratheon",
@@ -2979,6 +3001,7 @@ CARDS =
         "code":"01021",
         "Initiative":"11",
         "CardText":"<strong>Scheme.</strong><br>You cannot initiate more than 1 challenge during the challenges phase.",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"core",
@@ -2987,7 +3010,7 @@ CARDS =
     {
         "setcode":"core",
         "Strength":"5",
-        "Illustrator":"Joshua Cair\u00f3s",
+        "Illustrator":"Joshua Cairós",
         "name":"Stannis Baratheon",
         "img":"http://lcg-cdn.fantasyflightgames.com/got2nd/GT01_52.jpg",
         "Faction":"Baratheon",
@@ -3059,6 +3082,7 @@ CARDS =
         "code":"01022",
         "Initiative":"0",
         "CardText":"<strong>Kingdom.</strong><br><strong>When Revealed: </strong>Search the top 10 cards of your deck for a character, reveal it, and add it to your hand. Shuffle your deck.",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"core",
@@ -3110,6 +3134,7 @@ CARDS =
         "code":"01023",
         "Initiative":"2",
         "CardText":"<strong>Edict. The Seven.</strong><br><strong>Forced Reaction</strong>: After the challenges phase begins, each player returns all gold in his or her gold pool to the treasury.",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"core",
@@ -3181,6 +3206,7 @@ CARDS =
         "code":"01024",
         "Initiative":"6",
         "CardText":"<strong>Edict. Kingdom.</strong><br>You may marshal or play an additional limited card this round.",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"core",
@@ -3496,6 +3522,7 @@ CARDS =
         "code":"01025",
         "Initiative":"4",
         "CardText":"<strong>Winter.</strong><br>(no special ability)",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"core",
@@ -3865,7 +3892,7 @@ CARDS =
     {
         "setcode":"core",
         "Set":"Core Set",
-        "Illustrator":"Joshua Cair\u00f3s",
+        "Illustrator":"Joshua Cairós",
         "name":"Widow's Wail",
         "img":"http://lcg-cdn.fantasyflightgames.com/got2nd/GT01_96.jpg",
         "Faction":"Lannister",
@@ -3892,6 +3919,7 @@ CARDS =
         "code":"01026",
         "Initiative":"7",
         "CardText":"<strong>Scheme. War.</strong><br><strong>When Revealed: </strong>Each player chooses up to 3 characters he or she controls. Kill each  character not chosen (cannot be saved).",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"core",
@@ -3978,7 +4006,7 @@ CARDS =
         "setcode":"core",
         "Set":"Core Set",
         "Illustrator":"Serena Malyon",
-        "name":"\u201cThe Bear and the Maiden Fair\u201d",
+        "name":"\"The Bear and the Maiden Fair\"",
         "img":"http://lcg-cdn.fantasyflightgames.com/got2nd/GT01_197.jpg",
         "Faction":"Tyrell",
         "code":"01197",
@@ -4009,7 +4037,7 @@ CARDS =
         "CardText":"<strong>House Redwyne. Knight.</strong><br><strong>Challenges Action</strong>: Pay 1 gold to choose a participating <em><strong>House Redwyne</strong></em> character. Until the end of the challenge, that character gets +1 STR. (Limit 3 times per phase.)",
         "Unique":false,
         "Type":"Character",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"ttb",
@@ -4029,7 +4057,7 @@ CARDS =
         "CardText":"<strong>Bastard. Sand Snake.</strong><br><strong>Interrupt</strong>: When Bastard Daughter or The Red Viper is killed, discard 1 card at random from each opponent's hand.",
         "Unique":false,
         "Type":"Character",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"ttb",
@@ -4045,7 +4073,7 @@ CARDS =
         "CardText":"<strong>Vehicle.</strong><br><strong>Reaction</strong>: After you become the first player, either: gain 1 gold, or draw 1 card.<br><strong>[-1 Initiative]</strong>",
         "Unique":true,
         "Type":"Location",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "Loyal":false,
@@ -4057,10 +4085,11 @@ CARDS =
         "Faction":"Neutral",
         "img":"http://lcg-cdn.fantasyflightgames.com/got2nd/GT02_20.jpg",
         "Number":"020",
-        "Quantity":"",
+        "Quantity":3,
         "code":"02020",
         "Initiative":"3",
         "CardText":"<strong>Conclave.Kingdom.</strong><br><strong>When Revealed</strong>: Search your deck for a <em><strong>Maester</strong></em> character with printed cost 3 or lower, and put it into play. Shuffle your deck.",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"ttb",
@@ -4080,7 +4109,7 @@ CARDS =
         "CardText":"<strong>Weapon.</strong><br>Attached character gets +1 STR.<br><strong>Reaction</strong>: After you win a challenge in which attached character is participating as an attacker, choose and kneel up to X total STR worth of characters, where X is attached character's STR. Then, sacrifice King Robert's Warhammer.<br>",
         "Unique":true,
         "Type":"Attachment",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"ttb",
@@ -4096,12 +4125,12 @@ CARDS =
         "CardText":"<strong>Direwolf.</strong><br>[Stark] character only. Terminal.<br>Attached character gets +2 STR.<br><strong>Action</strong>: Pay 1 gold to attach Lady to a different character. Then, if attached character is Sansa Stark, stand her. (Limit once per phase.)",
         "Unique":true,
         "Type":"Attachment",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"ttb",
         "Strength":"2",
-        "Illustrator":"Joshua Cair\u00f3s",
+        "Illustrator":"Joshua Cairós",
         "name":"Maester Luwin",
         "img":"http://lcg-cdn.fantasyflightgames.com/got2nd/GT02_3.jpg",
         "Faction":"Stark",
@@ -4114,10 +4143,10 @@ CARDS =
         "Set":"Taking the Black",
         "Loyal":false,
         "Cost":"3",
-        "CardText":"<strong>Maester.</strong><br>While you control:<br>  -Robb Stark, he gains insight.<br>  -Jon Snow, he gains stealth.<br>  -Bran Stark, he gains: \u201cimmune to opponents' plot effects.\u201d<br>  -Rickon Stark, he gains pillage.<br><br><br><br>",
+        "CardText":"<strong>Maester.</strong><br>While you control:<br>  -Robb Stark, he gains insight.<br>  -Jon Snow, he gains stealth.<br>  -Bran Stark, he gains: \"immune to opponents' plot effects.\"<br>  -Rickon Stark, he gains pillage.<br><br><br><br>",
         "Unique":true,
         "Type":"Character",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"ttb",
@@ -4137,7 +4166,7 @@ CARDS =
         "CardText":"<strong>Companion.</strong><br>While Merchant Prince has an attachment, he gets +1 STR and gains a [Military] icon.",
         "Unique":false,
         "Type":"Character",
-        "Quantity":"3"
+        "Quantity":3
     },
     {
         "Loyal":false,
@@ -4149,10 +4178,11 @@ CARDS =
         "Faction":"Neutral",
         "img":"http://lcg-cdn.fantasyflightgames.com/got2nd/GT02_19.jpg",
         "Number":"019",
-        "Quantity":"",
+        "Quantity":3,
         "code":"02019",
         "Initiative":"5",
         "CardText":"<strong>Edict.</strong><br>During a challenge in which you control an attacking <em><strong>Army</strong></em> character, raise the claim value on Muster the Realm by 1.",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"ttb",
@@ -4172,7 +4202,7 @@ CARDS =
         "CardText":"<strong>Barge.</strong><br>Immune to card effects.<br><strong>Reaction</strong>: After you marshal Pleasure Barge, if you have not yet drawn any cards this phase, draw 3 cards.<br><strong>                [-1 Gold]</strong>",
         "Unique":false,
         "Type":"Location",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"ttb",
@@ -4194,7 +4224,7 @@ CARDS =
         "CardText":"<strong>Lord. Small Council.</strong><br>Reduce the cost of the first non-[Baratheon] character you marshal each round by 1.",
         "Unique":true,
         "Type":"Character",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "Loyal":true,
@@ -4206,10 +4236,11 @@ CARDS =
         "Faction":"Greyjoy",
         "img":"http://lcg-cdn.fantasyflightgames.com/got2nd/GT02_12.jpg",
         "Number":"012",
-        "Quantity":"",
+        "Quantity":3,
         "code":"02012",
         "Initiative":"8",
         "CardText":"<strong>War.</strong><br>Plot deck limit: 1.<br><strong>Interrupt</strong> :When you gain power for winning an unopposed challenge, gain 2 power instead.<br>",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"ttb",
@@ -4229,7 +4260,7 @@ CARDS =
         "CardText":"<strong>King's Landing.</strong><br><strong>Reaction</strong>: After you win a [Power] challenge by 5 or more STR, kneel your faction card to gain 1 power for your faction.",
         "Unique":true,
         "Type":"Location",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"ttb",
@@ -4245,12 +4276,12 @@ CARDS =
         "CardText":"<strong>Reaction</strong>: After you win a [Power] challenge by 5 or more STR, search your deck for a location with printed cost 3 or lower, and put it into play. Shuffle your deck. (Max 1 per challenge.)",
         "Unique":false,
         "Type":"Event",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"ttb",
         "Strength":"6",
-        "Illustrator":"Joshua Cair\u00f3s",
+        "Illustrator":"Joshua Cairós",
         "name":"The Hound",
         "img":"http://lcg-cdn.fantasyflightgames.com/got2nd/GT02_9.jpg",
         "Faction":"Lannister",
@@ -4266,7 +4297,7 @@ CARDS =
         "CardText":"<strong>House Clegane.</strong><br>Ambush (4).<br><strong>Forced Reaction</strong>: After you win a challenge in which The Hound is participating, you may discard 1 card at random from your hand. If you do not, return The Hound to your hand.",
         "Unique":true,
         "Type":"Character",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "Loyal":true,
@@ -4278,10 +4309,11 @@ CARDS =
         "Faction":"Martell",
         "img":"http://lcg-cdn.fantasyflightgames.com/got2nd/GT02_16.jpg",
         "Number":"016",
-        "Quantity":"",
+        "Quantity":3,
         "code":"02016",
         "Initiative":"3",
         "CardText":"<strong>Scheme.</strong><br>Plot deck limit: 1.<br>You do not return unspent gold to the treasury during the taxation phase.<br><strong>Reaction</strong>: After you lose a challenge, gain 1 gold.",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"ttb",
@@ -4301,7 +4333,7 @@ CARDS =
         "CardText":"<strong>Iron Islands.</strong><br><strong>Interrupt</strong>: When claim is applied for an unopposed [Military] challenge in which you are the attacking player, kneel your faction card to choose a character without attachments, controlled by the losing opponent. Instead of the normal claim effects, kill that character.<br>",
         "Unique":true,
         "Type":"Location",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"ttb",
@@ -4317,7 +4349,7 @@ CARDS =
         "CardText":"<strong>Action</strong>: Name a trait: <em><strong>Builder</strong></em>, <em><strong>Ranger</strong></em>, or <em><strong>Steward</strong></em>. Search the top X cards of your deck for any number of characters with that trait, reveal them, and add them to your hand. Shuffle the other cards back into your deck. X is your reserve value.",
         "Unique":false,
         "Type":"Event",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"ttb",
@@ -4333,12 +4365,12 @@ CARDS =
         "CardText":"<strong>Essos.</strong><br><strong>Reaction</strong>: After you reveal a plot card, discard an attachment from your hand to choose an attachment with equal or lower printed cost, and discard it from play.",
         "Unique":true,
         "Type":"Location",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"ttb",
         "Strength":"3",
-        "Illustrator":"Joshua Cair\u00f3s",
+        "Illustrator":"Joshua Cairós",
         "name":"Will",
         "img":"http://lcg-cdn.fantasyflightgames.com/got2nd/GT02_1.jpg",
         "Faction":"The Night's Watch",
@@ -4354,7 +4386,7 @@ CARDS =
         "CardText":"<strong>Ranger.</strong><br>Stealth. Insight.<br><strong>Forced Reaction</strong>: After you lose an unopposed challenge, sacrifice a <em><strong>Ranger</strong></em> character you control.",
         "Unique":true,
         "Type":"Character",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"trtw",
@@ -4370,7 +4402,7 @@ CARDS =
         "CardText":"<strong>The North.</strong><br><strong>Reaction</strong>: After you marshal a <em><strong>Builder</strong></em> character, reduce the cost of the next [Night's Watch] card you marshal this phase by 1. (Limit 3 times per phase.)",
         "Unique":true,
         "Type":"Location",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"trtw",
@@ -4390,7 +4422,7 @@ CARDS =
         "CardText":"<strong>Companion.</strong><br><strong>Reaction</strong>: After the challenges phase begins, choose a player. That player may give you 1 gold from his or her gold pool. Until the end of the phase, if that player has not given you gold this phase, he or she cannot initiate [Military] challenges against you.",
         "Unique":false,
         "Type":"Character",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"trtw",
@@ -4406,7 +4438,7 @@ CARDS =
         "CardText":"<strong>Item.</strong><br>Deck Limit: 1. Terminal.<br>Attached character gains the <em><strong>King</strong></em> trait.<br>Attached character gets -4 STR and is killed if its STR is 0.",
         "Unique":true,
         "Type":"Attachment",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"trtw",
@@ -4422,7 +4454,7 @@ CARDS =
         "CardText":"<strong>Action</strong>: Kneel your faction card to gain X gold. X is the number of plot cards in your used pile.",
         "Unique":false,
         "Type":"Event",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"trtw",
@@ -4438,7 +4470,7 @@ CARDS =
         "CardText":"Play only during a [Military] challenge in which you are the defending player.<br><strong>Action</strong>: Kneel your faction card to end this challenge with no winner or loser. Until the end of the phase, you cannot initiate [Military] challenges.",
         "Unique":false,
         "Type":"Event",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"trtw",
@@ -4454,7 +4486,7 @@ CARDS =
         "CardText":"<strong>Reaction</strong>: After you win a challenge in which you control a <em><strong>Knight</strong></em> character that is attacking or defending alone, that character gains 1 power. (3 power instead if you control a <em><strong>Lady</strong></em> character.) (Max 1 per challenge.)",
         "Unique":false,
         "Type":"Event",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"trtw",
@@ -4474,7 +4506,7 @@ CARDS =
         "CardText":"<strong>Companion.</strong><br>Lady-in-Waiting may be marshaled as a duplicate <em>(at no cost)</em> on a <em><strong>Lady</strong></em> character you own and control.",
         "Unique":false,
         "Type":"Character",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"trtw",
@@ -4492,7 +4524,7 @@ CARDS =
         "CardText":"<strong>Bastard. Sand Snake.</strong><br><strong>Challenges Action</strong>: Choose an opponent's character. Until the end of the phase, that character loses a challenge icon of your choice, and each <em><strong>Sand Snake</strong></em> character you control gains that challenge icon. (Limit once per phase.)",
         "Unique":true,
         "Type":"Character",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "Loyal":false,
@@ -4504,10 +4536,11 @@ CARDS =
         "Faction":"Neutral",
         "img":"http://lcg-cdn.fantasyflightgames.com/got2nd/GT03_40.jpg",
         "Number":"040",
-        "Quantity":"",
+        "Quantity":3,
         "code":"03040",
         "Initiative":"3",
         "CardText":"<strong>Edict.</strong><br>Plot deck limit: 1.<br><strong>When Revealed</strong>: Each player chooses up to 2 locations he or she controls. Each location not chosen is discarded from play.",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"trtw",
@@ -4527,7 +4560,7 @@ CARDS =
         "CardText":"<strong>Warship.</strong><br><strong>Challenges Action</strong>: If you are the first player, kneel Raiding Longship to choose a defending character without attachments. That character does not contribute its STR to this challenge.",
         "Unique":false,
         "Type":"Location",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"trtw",
@@ -4548,7 +4581,7 @@ CARDS =
         "CardText":"<strong>Bloodrider. Dothraki.</strong><br>While you control another <em><strong>Bloodrider</strong></em> character, Rakharo gains intimidate.<br><strong>Reaction</strong>: After a character is killed to satisfy claim during a challenge you initiated, Rakharo gains 1 power.",
         "Unique":true,
         "Type":"Character",
-        "Quantity":"3"
+        "Quantity":3
     },
     {
         "setcode":"trtw",
@@ -4569,7 +4602,7 @@ CARDS =
         "CardText":"<strong>Ally.</strong><br><strong>Forced Reaction</strong>: After you lose an [Intrigue] challenge, kneel Royal Entourage.",
         "Unique":false,
         "Type":"Character",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"trtw",
@@ -4585,7 +4618,7 @@ CARDS =
         "CardText":"<strong>King's Landing.</strong><br><strong>Reaction</strong>: After you win an [Intrigue] challenge, kneel your faction card to search the top 10 cards of your deck for an in-faction event, reveal it, and add it to your hand. Shuffle your deck.",
         "Unique":true,
         "Type":"Location",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"trtw",
@@ -4605,7 +4638,7 @@ CARDS =
         "CardText":"<strong>Companion.</strong><br>Stealth.<br><strong>Challenges Action</strong>: Choose a character. Until the end of the phase, that character gains a [Military] icon and stealth. (Limit once per phase.)",
         "Unique":true,
         "Type":"Character",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"trtw",
@@ -4626,7 +4659,7 @@ CARDS =
         "CardText":"<strong>House Harlaw. Lord.</strong><br><strong>Reaction</strong>: After you win an unopposed challenge in which a unique [Greyjoy] character is participating, either: draw 1 card, or discard the top 3 cards from each opponent's deck. (Limit once per phase.)<br><strong>Card design by 2011 European Joust Champion, Mart\u00ed Foz Hernandez.</strong>",
         "Unique":true,
         "Type":"Character",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "Loyal":false,
@@ -4638,10 +4671,11 @@ CARDS =
         "Faction":"Neutral",
         "img":"http://lcg-cdn.fantasyflightgames.com/got2nd/GT03_39.jpg",
         "Number":"039",
-        "Quantity":"",
+        "Quantity":3,
         "code":"03039",
         "Initiative":"2",
         "CardText":"<strong>Kingdom.</strong><br>Plot deck limit: 1.<br><strong>When Revealed</strong>: Each opponent gains 3 gold. (Cannot be canceled.)",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"trtw",
@@ -4663,7 +4697,7 @@ CARDS =
         "CardText":"<strong>Companion.</strong><br>No attachments except <em><strong>Weapon</strong></em>..<br><strong>Challenges Action</strong>: Unsworn Apprentice gains a challenge icon of your choice until the end of the phase. (Limit once per phase.)",
         "Unique":false,
         "Type":"Character",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "Loyal":true,
@@ -4675,10 +4709,11 @@ CARDS =
         "Faction":"Lannister",
         "img":"http://lcg-cdn.fantasyflightgames.com/got2nd/GT03_30.jpg",
         "Number":"030",
-        "Quantity":"",
+        "Quantity":3,
         "code":"03030",
         "Initiative":"4",
         "CardText":"<strong>Scheme.</strong><br>Plot deck limit: 1.<br><strong>Reaction</strong>: After you win an [Intrigue] challenge, pay 2 gold to have the losing opponent choose and discard 2 cards from his or her hand.",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"trtw",
@@ -4698,7 +4733,7 @@ CARDS =
         "CardText":"<strong>Stronghold. Winterfell.</strong><br>During a [Military] or [Power] challenge in which you control 2 or more unique participating [Stark] characters, each of those characters gets +2 STR.<br>",
         "Unique":true,
         "Type":"Location",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"trtw",
@@ -4718,7 +4753,7 @@ CARDS =
         "CardText":"<strong>Ally.</strong><br><strong>Challenges Action</strong>: If you control a participating [Stark] character, kneel a <em><strong>Direwolf</strong></em> character or a character with a <em><strong>Direwolf</strong></em> attachment to have it participate in the current challenge on your side. (Limit once per phase.)",
         "Unique":false,
         "Type":"Character",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "Loyal":false,
@@ -4730,10 +4765,11 @@ CARDS =
         "Faction":"Neutral",
         "img":"http://lcg-cdn.fantasyflightgames.com/got2nd/GT04_59.jpg",
         "Number":"059",
-        "Quantity":"",
+        "Quantity":3,
         "code":"04059",
         "Initiative":"8",
-        "CardText":"<strong>Summer.</strong><br>Each<em><strong> Knight</strong></em> character you control gains renown and \u201cimmune to opponents' events.\u201d",
+        "CardText":"<strong>Summer.</strong><br>Each<em><strong> Knight</strong></em> character you control gains renown and \"immune to opponents' events.\"",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"tkp",
@@ -4753,7 +4789,7 @@ CARDS =
         "CardText":"<strong>Condition.</strong><br>Opponent's character only.<br>Attached character loses an [Intrigue] icon.",
         "Unique":false,
         "Type":"Attachment",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"tkp",
@@ -4773,7 +4809,7 @@ CARDS =
         "CardText":"<strong>Dothraki.</strong><br><strong>Reaction</strong>: After a character is discarded from an opponent's hand or deck, kneel a <em><strong>Dothraki</strong></em> character to place that card in its owner's dead pile.",
         "Unique":false,
         "Type":"Character",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"tkp",
@@ -4789,7 +4825,7 @@ CARDS =
         "CardText":"<strong>Condition. Item. Weapon.</strong><br>Opponent's character only.<br>Attached character cannot be declared as a defender.",
         "Unique":false,
         "Type":"Attachment",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"tkp",
@@ -4809,7 +4845,7 @@ CARDS =
         "CardText":"<strong>Knight.</strong><br>While you control another <em><strong>Knight</strong></em> character, Hedge Knight gets +1 STR and gains a [Power] icon.",
         "Unique":false,
         "Type":"Character",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"tkp",
@@ -4825,7 +4861,7 @@ CARDS =
         "CardText":"<strong>Challenges Action</strong>: Kneel your faction card to reveal the bottom 5 cards of your deck. You may put 1 unique [Stark] character revealed by this effect into play; return the other cards to the bottom of your deck in any order. At the end of the phase, if that card is still in play, discard it from play (cannot be saved).<br><br>",
         "Unique":false,
         "Type":"Event",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"tkp",
@@ -4841,7 +4877,7 @@ CARDS =
         "CardText":"<strong>Title.</strong><br>Attached character gets +1 STR and gains the <em><strong>Knight</strong></em> trait.",
         "Unique":false,
         "Type":"Attachment",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"tkp",
@@ -4854,10 +4890,10 @@ CARDS =
         "Number":"044",
         "Loyal":false,
         "Cost":"2",
-        "CardText":"<strong>Warhorse.</strong><br><em><strong>Knight</strong></em> character only.<br>While attached character is attacking or defending alone, Mare in Heat gains: \u201c<strong>Action</strong>: Kneel Mare in Heat to choose a participating character with STR higher than that of attached character, and remove that character from the challenge.\u201d",
+        "CardText":"<strong>Warhorse.</strong><br><em><strong>Knight</strong></em> character only.<br>While attached character is attacking or defending alone, Mare in Heat gains: \"<strong>Action</strong>: Kneel Mare in Heat to choose a participating character with STR higher than that of attached character, and remove that character from the challenge.\"",
         "Unique":false,
         "Type":"Attachment",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"tkp",
@@ -4877,7 +4913,7 @@ CARDS =
         "CardText":"<strong>Fool.</strong><br>Insight.<br><strong>Forced Reaction</strong>: After you lose a challenge in which Moon Boy is participating, discard 1 card at random from your hand.",
         "Unique":true,
         "Type":"Character",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"tkp",
@@ -4897,7 +4933,7 @@ CARDS =
         "CardText":"<strong>Lord.</strong><br><strong>Reaction</strong>: After you marshal Newly-Made Lord, choose a non-limited location with printed cost 3 or lower, and discard it from play.<br><br><strong>Card design by 2003 World Champion, Casey Galvan.</strong>",
         "Unique":false,
         "Type":"Character",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"tkp",
@@ -4913,7 +4949,7 @@ CARDS =
         "CardText":"<strong>Weapon.</strong><br>[Night's Watch] character only. Ambush (2).<br>Attached character gets +1 STR and gains a [Military] icon.",
         "Unique":false,
         "Type":"Attachment",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"tkp",
@@ -4934,7 +4970,7 @@ CARDS =
         "CardText":"<strong>Knight. Ranger.</strong><br>While you are the defending player, each [Night's Watch] character you control gains a [Military] icon.<br><strong>Reaction</strong>: After a [Military] challenge is initiated against you, kneel your faction card and pay 4 gold to put Ser Alliser Thorne into play from your hand.<br>",
         "Unique":true,
         "Type":"Character",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"tkp",
@@ -4954,12 +4990,12 @@ CARDS =
         "CardText":"<strong>House Clegane. Knight. Lord.</strong><br>Pillage. Renown.<br><strong>Reaction</strong>: After Ser Gregor Clegane discards a character using pillage, place that card in its owner's dead pile. Then, you may choose and kill a character with printed cost equal to that card's printed cost.",
         "Unique":true,
         "Type":"Character",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"tkp",
         "Strength":"4",
-        "Illustrator":"Joshua Cair\u00f3s",
+        "Illustrator":"Joshua Cairós",
         "name":"Ser Hobber Redwyne",
         "img":"http://lcg-cdn.fantasyflightgames.com/got2nd/GT04_43.jpg",
         "Faction":"Tyrell",
@@ -4975,7 +5011,7 @@ CARDS =
         "CardText":"<strong>House Redwyne. Knight.</strong><br><strong>Reaction</strong>: After you marshal Ser Hobber Redwyne, search your deck for a <em><strong>Lady</strong></em> character, reveal it, and add it to your hand. Shuffle your deck.",
         "Unique":true,
         "Type":"Character",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"tkp",
@@ -4996,7 +5032,7 @@ CARDS =
         "CardText":"<strong>Knight.</strong><br>No attachments except <em><strong>Weapon</strong></em>.<br>While Ser Rodrik Cassel is attacking in a [Military] challenge, each unique [Stark] character you control gains insight.<br>(icon = Military/ bug)",
         "Unique":true,
         "Type":"Character",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"tkp",
@@ -5012,7 +5048,7 @@ CARDS =
         "CardText":"<strong>Dorne.</strong><br><strong>Reaction</strong>: After you lose a challenge, place 1 vengeance token on The Boneway.<br><strong>Dominance Action</strong>: Kneel The Boneway and discard 6 vengeance tokens from it to gain 3 power for your faction.",
         "Unique":true,
         "Type":"Location",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "Loyal":true,
@@ -5024,10 +5060,11 @@ CARDS =
         "Faction":"Baratheon",
         "img":"http://lcg-cdn.fantasyflightgames.com/got2nd/GT04_48.jpg",
         "Number":"048",
-        "Quantity":"",
+        "Quantity":3,
         "code":"04048",
         "Initiative":"0",
         "CardText":"<strong>Edict. Scheme.</strong><br>Plot deck limit: 1.<br><strong>Reaction</strong>: After a [Military] or [Power] challenge is initiated against you, the attacking player may either: kneel his or her faction card, or move 1 power from that faction card to yours. If that player does not, the challenge immediately ends with no winner or loser.<br>",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"tkp",
@@ -5044,7 +5081,7 @@ CARDS =
         "CardText":"<strong>House Frey.</strong><br>During the first challenge you initiate each phase, each of your participating characters gets -1 STR.<br>During the third challenge you initiate each phase, each of your participating characters gets +2 STR. If you win this challenge, gain 1 power for your faction.",
         "Unique":false,
         "Type":"Agenda",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"tkp",
@@ -5060,7 +5097,7 @@ CARDS =
         "CardText":"<strong>Warhorse.</strong><br><em><strong>Dothraki</strong></em> character or Daenerys Targaryen only.<br>While attached character is participating in a [Power] challenge, it gains renown.<br><strong>Reaction</strong>: After attached character gains power using renown, sacrifice The Silver Steed. You may initiate an additional [Power]challenge this phase.",
         "Unique":true,
         "Type":"Attachment",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"tkp",
@@ -5076,7 +5113,7 @@ CARDS =
         "CardText":"<strong>Dream.</strong><br><strong>Action</strong>: Kneel your faction card to search your deck for a <em><strong>Direwolf</strong></em> card, reveal it, and add it to your hand. Shuffle your deck.",
         "Unique":false,
         "Type":"Event",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "Loyal":true,
@@ -5088,10 +5125,11 @@ CARDS =
         "Faction":"Targaryen",
         "img":"http://lcg-cdn.fantasyflightgames.com/got2nd/GT05_75.jpg",
         "Number":"075",
-        "Quantity":"1",
+        "Quantity":3,
         "code":"05075",
         "Initiative":"2",
         "CardText":"<strong>Legacy.</strong><br>Plot deck limit: 1.<br>Each non-<em><strong>Dragon</strong></em> character gets -1 STR and is killed if its STR is 0.",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"nmg",
@@ -5111,7 +5149,7 @@ CARDS =
         "CardText":"<strong>Condition.</strong><br>Opponent's character only.<br>Attached character loses a [Power] icon.",
         "Unique":false,
         "Type":"Attachment",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"nmg",
@@ -5132,7 +5170,7 @@ CARDS =
         "CardText":"<strong>Army. Dothraki.</strong><br>No attachments. Pillage.<br>Reduce the cost to marshal Dothraki Outriders by 1 for each <em><strong>Dothraki</strong></em> character you control.",
         "Unique":false,
         "Type":"Character",
-        "Quantity":"3"
+        "Quantity":3
     },
     {
         "Loyal":true,
@@ -5144,10 +5182,11 @@ CARDS =
         "Faction":"The Night's Watch",
         "img":"http://lcg-cdn.fantasyflightgames.com/got2nd/GT05_67.jpg",
         "Number":"067",
-        "Quantity":"",
+        "Quantity":3,
         "code":"05067",
         "Initiative":"6",
         "CardText":"<strong>Siege.</strong><br>Plot deck limit: 1.<br>You cannot lose <em>(and your opponent cannot win)</em> the first challenge initiated against you each phase.",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"nmg",
@@ -5172,7 +5211,7 @@ CARDS =
         "CardText":"<strong>Bastard.</strong><br><strong>Reaction</strong>: After you win dominance, Gendry gains 1 power.<br><strong>Forced Reaction</strong>: After an opponent wins dominance, you may discard 1 power from Gendry. If you do not, sacrifice a <em><strong>Bastard</strong></em> character.",
         "Unique":true,
         "Type":"Character",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"nmg",
@@ -5192,7 +5231,7 @@ CARDS =
         "CardText":"<strong>Builder.</strong><br>No attachments except <em><strong>Weapon</strong></em>.<br><strong>Action</strong>: Kneel a [Night's Watch] location or attachment to choose a [Night's Watch] character. Until the end of the phase, that character gets +1 STR.",
         "Unique":true,
         "Type":"Character",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"nmg",
@@ -5213,7 +5252,7 @@ CARDS =
         "CardText":"<strong>Companion.</strong><br>No attachments.<br>Hodor cannot be declared as an attacker unless you control Bran Stark.<br>Hodor does not contribute his STR to your total for dominance.",
         "Unique":true,
         "Type":"Character",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"nmg",
@@ -5229,7 +5268,7 @@ CARDS =
         "CardText":"You may only use gold from the losing opponent's gold pool to pay for Loot.<br><strong>Reaction</strong>: After you win an unopposed challenge, discard the top X cards from the losing opponent's deck.",
         "Unique":false,
         "Type":"Event",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"nmg",
@@ -5249,7 +5288,7 @@ CARDS =
         "CardText":"<strong>House Dayne. Maester.</strong><br><strong>Challenges Action</strong>: Kneel Maester of Starfall to choose a character. Until the end of the phase, that character loses (choose one): insight, intimidate, pillage, or renown.",
         "Unique":false,
         "Type":"Character",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"nmg",
@@ -5265,7 +5304,7 @@ CARDS =
         "CardText":"<strong>Condition.</strong><br>Opponent's character only. Ambush (1). <br><strong>Reaction</strong>: After you win an [Intrigue] challenge, kneel attached character. Then, that character's controller may give you 1 gold from his or her gold pool to stand that character.",
         "Unique":false,
         "Type":"Attachment",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"nmg",
@@ -5286,7 +5325,7 @@ CARDS =
         "CardText":"<strong>Drowned God.</strong><br>Each <em><strong>Drowned God</strong></em> character you control gets +1 STR.",
         "Unique":false,
         "Type":"Character",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"nmg",
@@ -5307,12 +5346,12 @@ CARDS =
         "CardText":"<strong>Army. Mercenary.</strong><br>During [Intrigue] challenges, Red Cloaks gets +1 STR for each gold on it.<br><strong>Action</strong>: Move 1 gold from your gold pool to Red Cloaks. (Limit once per phase.)",
         "Unique":false,
         "Type":"Character",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"nmg",
         "Strength":"4",
-        "Illustrator":"Joshua Cair\u00f3s",
+        "Illustrator":"Joshua Cairós",
         "name":"Ser Horas Redwyne",
         "img":"http://lcg-cdn.fantasyflightgames.com/got2nd/GT05_63.jpg",
         "Faction":"Tyrell",
@@ -5328,7 +5367,7 @@ CARDS =
         "CardText":"<strong>House Redwyne. Knight.</strong><br><strong>Reaction</strong>: After Ser Horas Redwyne is knelt, choose and stand a <em><strong>Lady</strong></em> charater.",
         "Unique":true,
         "Type":"Character",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"nmg",
@@ -5344,7 +5383,7 @@ CARDS =
         "CardText":"<strong>House Redwyne.</strong><br>Limited.<br><strong><br>                      [+3 gold]</strong>",
         "Unique":true,
         "Type":"Location",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "Loyal":false,
@@ -5356,10 +5395,11 @@ CARDS =
         "Faction":"Neutral",
         "img":"http://lcg-cdn.fantasyflightgames.com/got2nd/GT05_79.jpg",
         "Number":"079",
-        "Quantity":"",
+        "Quantity":3,
         "code":"05079",
         "Initiative":"5",
         "CardText":"<strong>Omen. Winter.</strong><br>Plot deck limit: 1.<br><strong>Forced Reaction</strong>: After the challenges phase begins, return each character with printed cost 3 or lower to its owner's hand.<br><strong>Card design by 2005 World Champion, John M. Bruno.</strong>",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"nmg",
@@ -5379,7 +5419,7 @@ CARDS =
         "CardText":"<strong>Ranger.</strong><br>Play only during a [Military] challenge.<br><strong>Challenges Action</strong>: Kneel 2 <em><strong>Ranger</strong></em> characters to kill each attacking character.",
         "Unique":false,
         "Type":"Event",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"nmg",
@@ -5395,7 +5435,7 @@ CARDS =
         "CardText":"<strong>King's Landing.</strong><br><strong>Reaction</strong>: After you win dominance, kneel Tobho Mott's Armory to draw 1 card.",
         "Unique":true,
         "Type":"Location",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "Loyal":true,
@@ -5407,10 +5447,11 @@ CARDS =
         "Faction":"Stark",
         "img":"http://lcg-cdn.fantasyflightgames.com/got2nd/GT05_62.jpg",
         "Number":"062",
-        "Quantity":"1",
+        "Quantity":3,
         "code":"05062",
         "Initiative":"5",
         "CardText":"<strong>War.</strong><br>Plot deck limit: 1.<br><strong>Challenges Action</strong>: During a challenge in which you control a participating [Stark] character, kneel another [Stark] character to have it participate in that challenge on your side. (Limit twice per round.)",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"nmg",
@@ -5434,7 +5475,7 @@ CARDS =
         "CardText":"<strong>Wildling.</strong><br><strong>Action</strong>: Sacrifice Wildling Scout to choose a character. Until the end of the phase, that character gains stealth.",
         "Unique":false,
         "Type":"Character",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "Loyal":false,
@@ -5446,10 +5487,11 @@ CARDS =
         "Faction":"Neutral",
         "img":"http://lcg-cdn.fantasyflightgames.com/got2nd/GT05_80.jpg",
         "Number":"080",
-        "Quantity":"",
+        "Quantity":3,
         "code":"05080",
         "Initiative":"1",
         "CardText":"<strong>Winter.</strong><br>Reduce the reserve value on each opponent's revealed plot card by 2 (to a minimum of 2).",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"nmg",
@@ -5466,10 +5508,10 @@ CARDS =
         "Number":"094",
         "Loyal":false,
         "Cost":"1",
-        "CardText":"<strong>Interrupt</strong>: When a non-<strong><em>Army  </em></strong>character would be killed, save it. Then, attach Blood Magic Ritual to that character as a <strong><em>Condition  </em></strong>attachment with the text:  \u201cTerminal. Treat attached character's printed text box as if it were blank (except for <strong><em>Traits</em></strong>).\u201d",
+        "CardText":"<strong>Interrupt</strong>: When a non-<strong><em>Army  </em></strong>character would be killed, save it. Then, attach Blood Magic Ritual to that character as a <strong><em>Condition  </em></strong>attachment with the text:  \"Terminal. Treat attached character's printed text box as if it were blank (except for <strong><em>Traits</em></strong>).\"",
         "Unique":false,
         "Type":"Event",
-        "Quantity":"2"
+        "Quantity":3
     },
     {
         "setcode":"cow",
@@ -5489,7 +5531,7 @@ CARDS =
         "CardText":"<strong>Mercenary.</strong><br>During a challenge in which you are the defending player, Bronn gains a [Military], an [Intrigue], and a [Power] icon.<br><strong>Marshaling Action</strong>: Pay 1 gold to take control of Bronn. Any player may initiate this ability.",
         "Unique":true,
         "Type":"Character",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"cow",
@@ -5509,7 +5551,7 @@ CARDS =
         "CardText":"<strong>Steward.</strong><br>No attachments except <em><strong>Weapon</strong></em>.<br><strong>Dominance Action</strong>: Kneel a <em><strong>Steward</strong></em> character to return a <em><strong>Direwolf</strong></em> or <em><strong>Raven</strong></em> card from your discard pile to your hand. (Limit once per phase.)",
         "Unique":true,
         "Type":"Character",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "Loyal":false,
@@ -5521,10 +5563,11 @@ CARDS =
         "Faction":"Neutral",
         "img":"http://lcg-cdn.fantasyflightgames.com/got2nd/GT06_100.jpg",
         "Number":"100",
-        "Quantity":"",
+        "Quantity":3,
         "code":"06100",
         "Initiative":"0",
         "CardText":"<strong>Winter.</strong><br>Increase the cost for each opponent to marshal each of his or her characters by 1.",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"cow",
@@ -5549,7 +5592,7 @@ CARDS =
         "CardText":"<strong>Army. House Umber.</strong><br>No attachments.<br>While there are fewer than 3 plots in your used pile, Greatjon's Vanguard gets +2 STR and gains renown.",
         "Unique":false,
         "Type":"Character",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"cow",
@@ -5565,7 +5608,7 @@ CARDS =
         "CardText":"<strong>Iron Islands.</strong><br><strong>Interrupt</strong>: When a character would be killed, sacrifice Iron Mines to save that character.",
         "Unique":false,
         "Type":"Location",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"cow",
@@ -5581,7 +5624,7 @@ CARDS =
         "CardText":"<strong>Westeros.</strong><br>During [Power] challenges in which you are the defending player, each attacking character gets -1 STR.<br><strong>Forced Reaction</strong>: After you lose a [Power] challenge, sacrifice Kingswood.<br>(icon = power)",
         "Unique":false,
         "Type":"Location",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"cow",
@@ -5602,7 +5645,7 @@ CARDS =
         "CardText":"<strong>Army. Knight.</strong><br>No attachments except <em><strong>Weapon</strong></em>.<br>While there are 3 or more plot cards in your used pile, Knights of the Sun gains renown.",
         "Unique":false,
         "Type":"Character",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"cow",
@@ -5623,7 +5666,7 @@ CARDS =
         "CardText":"<strong>Maegi.</strong><br><strong>Interrupt</strong>: When claim is applied for a challenge in which Mirri Maz Duur is attacking alone,  choose a character controlled by the losing opponent. Instead of the normal claim effects, kill that character.<br>",
         "Unique":true,
         "Type":"Character",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"cow",
@@ -5639,7 +5682,7 @@ CARDS =
         "CardText":"<strong>Dream.</strong><br><strong>Action: </strong>Choose a character or location. Until the end of the phase, treat that card's printed text box as if it were blank (except for <em><strong>Traits</strong></em>).",
         "Unique":false,
         "Type":"Event",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"cow",
@@ -5655,7 +5698,7 @@ CARDS =
         "CardText":"<strong>The North.</strong><br><strong>Reaction</strong>: After you marshal Northern Rookery, draw 1 card.<br><br><strong>          [+1 Reserve]</strong>",
         "Unique":false,
         "Type":"Location",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "Loyal":true,
@@ -5667,10 +5710,11 @@ CARDS =
         "Faction":"Tyrell",
         "img":"http://lcg-cdn.fantasyflightgames.com/got2nd/GT06_84.jpg",
         "Number":"084",
-        "Quantity":"",
+        "Quantity":3,
         "code":"06084",
         "Initiative":"2",
         "CardText":"<strong>Scheme.</strong><br>Plot deck limit: 1.<br><strong>When Revealed</strong>: Choose an <em><strong>Edict</strong></em>, <em><strong>Kingdom</strong></em>, or <em><strong>Scheme</strong></em> plot card in an opponent's used pile. Initiate the when revealed ability on that card as if you had just revealed it.",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"cow",
@@ -5694,7 +5738,7 @@ CARDS =
         "CardText":"<strong>Raider.</strong><br>Each<em><strong> Weapon</strong></em> card in your hand gains ambush (X). X is that card's printed cost.",
         "Unique":false,
         "Type":"Character",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"cow",
@@ -5715,7 +5759,7 @@ CARDS =
         "CardText":"<strong>Army.</strong><br>No attachments.<br>While you control a character with the highest STR in play, Roseroad Patrol gains stealth.",
         "Unique":false,
         "Type":"Character",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"cow",
@@ -5731,7 +5775,7 @@ CARDS =
         "CardText":"<strong>Condition.</strong><br>Opponent's character only.<br><strong>Reaction</strong>: After attached character stands, sacrifice Stinking Drunk to kneel that character.",
         "Unique":false,
         "Type":"Attachment",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"cow",
@@ -5747,7 +5791,7 @@ CARDS =
         "CardText":"<strong>King's Landing.</strong><br><strong>Reaction</strong>: After you win a [Military] challenge, kneel your faction card to search the top 10 cards of your deck for a <em><strong>Weapon</strong></em> or <em><strong>Item</strong></em> attachment, reveal it, and add it to your hand. Shuffle your deck.",
         "Unique":true,
         "Type":"Location",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"cow",
@@ -5763,7 +5807,7 @@ CARDS =
         "CardText":"<strong>House Arryn. Stronghold.</strong><br><strong>Reaction</strong>: After a phase begins, kneel The Eyrie to choose a character. Until the end of the phase, that character cannot be killed.",
         "Unique":true,
         "Type":"Location",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"cow",
@@ -5779,7 +5823,7 @@ CARDS =
         "CardText":"<strong>Interrupt</strong>: When claim is applied for an [Intrigue] challenge, apply [Military] claim instead.",
         "Unique":false,
         "Type":"Event",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"cow",
@@ -5795,7 +5839,7 @@ CARDS =
         "CardText":"<strong>Interrupt</strong>: When claim is applied for a challenge in which you are the defending player, choose an opponent. That player must satisfy the normal claim effect instead of you as if he or she were the defending player.<br>",
         "Unique":false,
         "Type":"Event",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"cow",
@@ -5811,7 +5855,7 @@ CARDS =
         "CardText":"<strong>Winterfell.</strong><br><strong>Reaction</strong>: After a unique [Stark] character you control is killed or sacrificed during the challenges phase, sacrifice Winterfell Crypt to choose a character with equal or lower printed STR. At the end of the phase, if that character is still in play, shuffle it back into its owner's deck.",
         "Unique":true,
         "Type":"Location",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"ts",
@@ -5827,7 +5871,7 @@ CARDS =
         "CardText":"<strong>House Redwyne.</strong><br><strong>Action</strong>: Kneel your faction card to have each player reveal the top 4 cards of his or her deck. Choose 1 card revealed by each player, and add it to that player's hand. Shuffle the other cards back into their owners' decks.",
         "Unique":false,
         "Type":"Event",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"ts",
@@ -5847,7 +5891,7 @@ CARDS =
         "CardText":"<strong>Fool.</strong><br>Insight.<br><strong>Forced Reaction</strong>: After you lose a challenge in which Butterbumps is participating, discard 1 card at random from your hand.",
         "Unique":true,
         "Type":"Character",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"ts",
@@ -5868,7 +5912,7 @@ CARDS =
         "CardText":"<strong>Army.</strong><br>Ambush (6). No attachments except <em><strong>Weapon</strong></em>.<br>While you have more power on your faction card than an opponent, reduce the cost to ambush City Watch by 2.",
         "Unique":false,
         "Type":"Character",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "Loyal":false,
@@ -5880,10 +5924,11 @@ CARDS =
         "Faction":"Neutral",
         "img":"http://lcg-cdn.fantasyflightgames.com/got2nd/GT07_120.jpg",
         "Number":"120",
-        "Quantity":"1",
+        "Quantity":3,
         "code":"07120",
         "Initiative":"0",
         "CardText":"<strong>Summer.</strong><br><strong>When Revealed</strong>: Move a character from your dead pile to your discard pile. Then, if there are no <em><strong>Winter</strong></em> plot cards in play, draw 1 card.",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"ts",
@@ -5908,7 +5953,7 @@ CARDS =
         "CardText":"<strong>Captain. Ironborn.</strong><br>Renown.<br><strong>Interrupt</strong>: When claim is applied for a challenge in which Dagmer Cleftjaw is attacking alone, choose a non-limited location with printed cost 3 or lower controlled by the losing opponent. Instead of the normal claim effects, take control of that location.<br>",
         "Unique":true,
         "Type":"Character",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"ts",
@@ -5924,7 +5969,7 @@ CARDS =
         "CardText":"<strong>Blessing.</strong><br>[Greyjoy] character only.<br>Attached character gains the <em><strong>Drowned God</strong></em> trait and cannot be chosen as the only target of opponents' events.<br><br>                 <strong> [+1 Initiative]</strong>",
         "Unique":false,
         "Type":"Attachment",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "Loyal":false,
@@ -5936,10 +5981,11 @@ CARDS =
         "Faction":"Neutral",
         "img":"http://lcg-cdn.fantasyflightgames.com/got2nd/GT07_119.jpg",
         "Number":"119",
-        "Quantity":"",
+        "Quantity":3,
         "code":"07119",
         "Initiative":"2",
         "CardText":"<strong>Scheme.</strong><br>Plot deck limit: 1.<br>While it is not the plot phase, treat the text box on each revealed non-<em><strong>Scheme</strong></em> plot card as if it were blank (except for <em><strong>Traits</strong></em>).",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"ts",
@@ -5959,7 +6005,7 @@ CARDS =
         "CardText":"<strong>Reaction</strong>: After a <em><strong>Lord</strong></em> or <em><strong>Lady</strong></em> character is killed, kneel your faction card to draw 3 cards.",
         "Unique":false,
         "Type":"Event",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"ts",
@@ -5975,7 +6021,7 @@ CARDS =
         "CardText":"<strong>Condition.</strong><br>Opponent's character only.<br>Attached character loses a [Military] icon.",
         "Unique":false,
         "Type":"Attachment",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"ts",
@@ -5996,7 +6042,7 @@ CARDS =
         "CardText":"<strong>Bloodrider.Dothraki.</strong><br>While you control another  <em><strong>Bloodrider</strong></em> character, Jhogo gains stealth.<br>While Jhogo is attacking, he gets +X STR. X is the number of characters in the defending player's dead pile.<br>",
         "Unique":true,
         "Type":"Character",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"ts",
@@ -6012,7 +6058,7 @@ CARDS =
         "CardText":"<strong>Item.</strong><br><em><strong>Maester</strong></em> character only.<br><strong>Dominance Action</strong>: Kneel Maester's Chain to choose a <em><strong>Condition</strong></em> attachment, and discard it from play.",
         "Unique":false,
         "Type":"Attachment",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"ts",
@@ -6028,7 +6074,7 @@ CARDS =
         "CardText":"<strong>Companion. Raven.</strong><br>Attached character gains stealth.<br>If attached character is Old Bear Mormont, he gains an [Intrigue] icon.",
         "Unique":true,
         "Type":"Attachment",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"ts",
@@ -6045,10 +6091,10 @@ CARDS =
         "Set":"True Steel",
         "Loyal":false,
         "Cost":"3",
-        "CardText":"<strong>The Seven.</strong><br>While you control:<br>    \u2013Sansa Stark, she gets +2 STR and gains renown.<br>    \u2013Arya Stark, she gains an [Intrigue]icon and \u201c immune to opponents' plot effects.\u201d",
+        "CardText":"<strong>The Seven.</strong><br>While you control:<br>    &bull;Sansa Stark, she gets +2 STR and gains renown.<br>    &bull;Arya Stark, she gains an [Intrigue]icon and \" immune to opponents' plot effects.\"",
         "Unique":true,
         "Type":"Character",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"ts",
@@ -6069,7 +6115,7 @@ CARDS =
         "CardText":"<strong>Kingsguard. Knight. Small Council.</strong><br>Renown.<br><strong>Interrupt</strong>: When a <em><strong>Lord</strong></em> or <em><strong>Lady</strong></em> character you control would be killed, stand Ser Barristan Selmy to save that character.",
         "Unique":true,
         "Type":"Character",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"ts",
@@ -6090,7 +6136,7 @@ CARDS =
         "CardText":"<strong>Knight.</strong><br><strong>Marshaling Action</strong>: Kneel Ser Ilyn Payne to choose and kill a character with printed cost 3 or lower.",
         "Unique":true,
         "Type":"Character",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"ts",
@@ -6106,7 +6152,7 @@ CARDS =
         "CardText":"<strong>King's Landing.</strong><br>Immune to events.<br><strong><br>Reaction</strong>: After you win an [Intrigue] challenge, Small Council Chamber gains 1 power.",
         "Unique":true,
         "Type":"Location",
-        "Quantity":"3"
+        "Quantity":3
     },
     {
         "setcode":"ts",
@@ -6122,7 +6168,7 @@ CARDS =
         "CardText":"<strong>King's Landing.</strong><br><strong>Reaction</strong>: After you win a challenge in which you control a participating <em><strong>Lord</strong></em> or <em><strong>Lady</strong></em> character, kneel your faction card to search the top 5 cards of your deck  for an <em><strong>Ally</strong></em> or <em><strong>Companion</strong></em> card, reveal it, and add it to your hand. Shuffle the other cards back into your deck.",
         "Unique":true,
         "Type":"Location",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"ts",
@@ -6142,7 +6188,7 @@ CARDS =
         "CardText":"<strong>Builder.</strong><br>No attachments except <em><strong>Weapon</strong></em>.<br>Reduce the cost of the first location you marshal each round by 1.",
         "Unique":false,
         "Type":"Character",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"ts",
@@ -6163,7 +6209,7 @@ CARDS =
         "CardText":"<strong>Bastard. Sand Snake.</strong><br><strong>Reaction</strong>: After you win an [Intrigue] challenge in which Tyene Sand is participating as an attacker, place a poison token on a character without an [Intrigue] icon. At the end of the phase, if that character still has that poison token, remove it and kill that character.",
         "Unique":true,
         "Type":"Character",
-        "Quantity":""
+        "Quantity":3
     },
     {
         "setcode":"ts",
@@ -6179,7 +6225,7 @@ CARDS =
         "CardText":"<strong>Condition.</strong><br>Character with printed cost 4 or lower only. Terminal.<br>Take control of attached character. <br>Attached character gains the [Stark] affiliation.",
         "Unique":true,
         "Type":"Attachment",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "Loyal":false,
@@ -6191,10 +6237,11 @@ CARDS =
         "Faction":"Neutral",
         "img":"http://lcg-cdn.fantasyflightgames.com/got2nd/GT08_50.jpg",
         "Number":"050",
-        "Quantity":"1",
+        "Quantity":3,
         "code":"08050",
         "Initiative":"3",
         "CardText":"<strong>Summer.</strong><br>While there are no <em><strong>Winter</strong></em> plot cards revealed, each character you control gets +1 STR.",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"wotn",
@@ -6210,10 +6257,11 @@ CARDS =
         "Faction":"Stark",
         "img":"http://lcg-cdn.fantasyflightgames.com/got2nd/GT08_46.jpg",
         "Number":"046",
-        "Quantity":"1",
+        "Quantity":3,
         "code":"08046",
         "Initiative":"1",
         "CardText":"<strong>Winter.</strong><br><strong>When Revealed</strong>: Search your deck for a <em><strong>Direwolf</strong></em> card, reveal it, and add it to your hand. If that card's printed cost is 3 or lower, you may put it into play instead. Shuffle your deck.<br><strong>Card design by 2012 North American Champion, Dan Seefeldt.</strong>",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"wotn",
@@ -6238,7 +6286,7 @@ CARDS =
         "CardText":"<strong>Bloodrider. Dothraki.</strong><br><strong>Action</strong>: If there is a <em><strong>Summer</strong></em> plot card revealed, choose and stand a <em><strong>Bloodrider</strong></em> character. (Limit once per round.)",
         "Unique":true,
         "Type":"Character",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"wotn",
@@ -6254,7 +6302,7 @@ CARDS =
         "CardText":"<strong>Interrupt</strong>: When you compare initiative, your revealed plot card gets +3 initiative until the end of the phase. If you win initiative this phase, draw 1 card.",
         "Unique":false,
         "Type":"Event",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"wotn",
@@ -6275,7 +6323,7 @@ CARDS =
         "CardText":"<strong>Lady.</strong><br><strong>Reaction</strong>: After a [Stark] character you control is killed, sacrifice Arya Stark to choose and kill a character with STR 3 or lower.",
         "Unique":true,
         "Type":"Character",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"wotn",
@@ -6291,7 +6339,7 @@ CARDS =
         "CardText":"<strong>Action</strong>: Move an attachment from a [Stark] character you control to another eligible character you control.",
         "Unique":false,
         "Type":"Event",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"wotn",
@@ -6307,7 +6355,7 @@ CARDS =
         "CardText":"Play only if there is a <em><strong>Winter</strong></em> plot card in your used pile.<br><strong>Reaction</strong>: After a [Stark] character you control is sacrificed or killed, put a [Stark] character with equal or lower printed cost into play from your hand.",
         "Unique":false,
         "Type":"Event",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"wotn",
@@ -6325,10 +6373,10 @@ CARDS =
         "Set":"Wolves of the North",
         "Loyal":true,
         "Cost":"3",
-        "CardText":"<strong>House Mormont.</strong><br>While Bear Island Loyalist is participating in a challenge, each other participating [Stark] character you control gains \u201cimmune to opponents' events.\u201d<br>",
+        "CardText":"<strong>House Mormont.</strong><br>While Bear Island Loyalist is participating in a challenge, each other participating [Stark] character you control gains \"immune to opponents' events.\"<br>",
         "Unique":false,
         "Type":"Character",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"wotn",
@@ -6349,7 +6397,7 @@ CARDS =
         "CardText":"<strong>House Tully. Lady. The Seven.</strong><br>Catelyn Stark gets +1 STR for each power she has.<br><strong>Reaction</strong>: After a [Stark] character you control is sacrificed or killed, Catelyn Stark gains 1 power. (Limit twice per round.)",
         "Unique":true,
         "Type":"Character",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"wotn",
@@ -6370,7 +6418,7 @@ CARDS =
         "CardText":"<strong>Mercenary.</strong><br><strong>Interrupt</strong>: When Crossroads Sellsword is killed during the challenges phase, gain 2 gold.",
         "Unique":false,
         "Type":"Character",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"wotn",
@@ -6386,12 +6434,12 @@ CARDS =
         "CardText":"<strong>Action</strong>: Each participating non-<em><strong>Dragon</strong></em> character gets -1 STR until the end of the challenge.",
         "Unique":false,
         "Type":"Event",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"wotn",
         "Strength":"6",
-        "Illustrator":"Joshua Cair\u00f3s",
+        "Illustrator":"Joshua Cairós",
         "name":"Eddard Stark",
         "img":"http://lcg-cdn.fantasyflightgames.com/got2nd/GT08_3.jpg",
         "Faction":"Stark",
@@ -6407,12 +6455,12 @@ CARDS =
         "CardText":"<strong>Lord. Small Council.</strong><br>Renown.<br><strong>Reaction: </strong>After Eddard Stark gains power using renown, choose another participating character you control. That character gains 1 power.",
         "Unique":true,
         "Type":"Character",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"wotn",
         "Set":"Wolves of the North",
-        "Illustrator":"Joshua Cair\u00f3s",
+        "Illustrator":"Joshua Cairós",
         "name":"Even-Handed Justice",
         "img":"http://lcg-cdn.fantasyflightgames.com/got2nd/GT08_26.jpg",
         "Faction":"Baratheon",
@@ -6423,7 +6471,7 @@ CARDS =
         "CardText":"<strong>Action</strong>: Choose a standing character controlled by each player. Kneel each of those characters.",
         "Unique":false,
         "Type":"Event",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "Loyal":false,
@@ -6435,10 +6483,11 @@ CARDS =
         "Faction":"Neutral",
         "img":"http://lcg-cdn.fantasyflightgames.com/got2nd/GT08_47.jpg",
         "Number":"047",
-        "Quantity":"1",
+        "Quantity":3,
         "code":"08047",
         "Initiative":"7",
         "CardText":"<strong>Edict.</strong><br><strong>When Revealed</strong>: Sacrifice a character you control.",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"wotn",
@@ -6463,7 +6512,7 @@ CARDS =
         "CardText":"<strong>House Botley. Ironborn.</strong><br>While Fishwhiskers is attacking, if there are more <em><strong>Winter</strong></em> plot cards than <em><strong>Summer</strong></em> plot cards revealed, each defending character does not contribute its STR to that challenge.",
         "Unique":true,
         "Type":"Character",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"wotn",
@@ -6479,7 +6528,7 @@ CARDS =
         "CardText":"<strong>Condition.</strong><br>Non-limited location with printed cost 3 or lower only. Terminal.<br>Treat attached location's printed text box as if it were blank (except for <em><strong>Traits</strong></em>).",
         "Unique":false,
         "Type":"Attachment",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"wotn",
@@ -6495,7 +6544,7 @@ CARDS =
         "CardText":"<strong>Dream.</strong><br>Terminal.<br><strong>Reaction</strong>: After attached character is knelt, look at the top card of your deck. You may put that card on the bottom of your deck.",
         "Unique":false,
         "Type":"Attachment",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"wotn",
@@ -6511,7 +6560,7 @@ CARDS =
         "CardText":"<strong>Citadel.</strong><br><strong>Interrupt</strong>: When a non-<em><strong>Army </strong></em>character you control would be killed, kneel a <em><strong>Maester</strong></em> character to save it.",
         "Unique":false,
         "Type":"Event",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"wotn",
@@ -6527,7 +6576,7 @@ CARDS =
         "CardText":"<strong>Reaction</strong>: After you lose a [Military] or [Power] challenge as the defending player, look at the winning opponent's hand. Then, choose and discard 1 card from that hand.",
         "Unique":false,
         "Type":"Event",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"wotn",
@@ -6548,7 +6597,7 @@ CARDS =
         "CardText":"<strong>House Florent. Knight.</strong><br><strong>Forced Reaction</strong>: After House Florent Knight enters play, choose a character with the lowest STR in play, and discard it from play.",
         "Unique":false,
         "Type":"Character",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"wotn",
@@ -6569,7 +6618,7 @@ CARDS =
         "CardText":"<strong>Maester.</strong><br>",
         "Unique":false,
         "Type":"Character",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"wotn",
@@ -6589,7 +6638,7 @@ CARDS =
         "CardText":"<strong>Ally. House Tully. The Seven.</strong><br><strong>Marshaling Action</strong>: Discard 1 power from a character you control to reduce the cost of the next <em><strong>House Tully</strong></em> or <em><strong>The Seven</strong></em> character you marshal this phase by 2. (Limit once per phase.)",
         "Unique":false,
         "Type":"Character",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"wotn",
@@ -6609,7 +6658,7 @@ CARDS =
         "CardText":"<strong>Bastard.</strong><br><strong>Action</strong>: Sacrifice a [Stark] character to choose and stand a unique [Stark] character. (Limit once per round.)",
         "Unique":true,
         "Type":"Character",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"wotn",
@@ -6630,7 +6679,7 @@ CARDS =
         "CardText":"<strong>Guard.</strong><br><strong>Interrupt</strong>: When a unique [Stark] character you control would be killed, sacrifice Jory Cassel to save it. Then, if there is a <em><strong>Winter</strong></em> plot card revealed, that character gains 1 power.",
         "Unique":true,
         "Type":"Character",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"wotn",
@@ -6651,12 +6700,12 @@ CARDS =
         "CardText":"<strong>Army.</strong><br>No attachments.<strong><br>Reaction</strong>: After you win a [Military] challenge in which King Robb's Host is participating, move 1 power from the losing opponent's faction card to an attacking character.  (2 power instead if there is a <em><strong>War</strong></em> plot card revealed.)",
         "Unique":true,
         "Type":"Character",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"wotn",
         "Strength":"5",
-        "Illustrator":"Joshua Cair\u00f3s",
+        "Illustrator":"Joshua Cairós",
         "name":"Mance Rayder",
         "img":"http://lcg-cdn.fantasyflightgames.com/got2nd/GT08_39.jpg",
         "Faction":"Neutral",
@@ -6673,7 +6722,7 @@ CARDS =
         "CardText":"<strong>King. Wildling.</strong><br>Renown.<br>Each <em><strong>Wildling</strong></em> character in your hand gains ambush (X). X is that card's printed cost.<br>While there is a <em><strong>Winter</strong></em> plot card revealed, reduce the cost to ambush each of your <em><strong>Wildling</strong></em> characters by 1.",
         "Unique":true,
         "Type":"Character",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"wotn",
@@ -6689,7 +6738,7 @@ CARDS =
         "CardText":"<strong>Condition.</strong><br>Opponent's character only.<br>Attached character gains the <em><strong>Fool</strong></em> trait.<br><strong>Reaction</strong>: After attached character is declared as an attacker or defender, discard 1 card at random from its controller's hand.",
         "Unique":false,
         "Type":"Attachment",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"wotn",
@@ -6705,7 +6754,7 @@ CARDS =
         "CardText":"<strong>Weapon.</strong><br>[Stark] character only.<br>Attached character gets +2 STR.<br><strong>Interrupt</strong>: When attached character is sacrificed, sacrifice Needle to return that character to your hand instead of placing it in your discard pile.",
         "Unique":true,
         "Type":"Attachment",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"wotn",
@@ -6721,7 +6770,7 @@ CARDS =
         "CardText":"<strong>Direwolf.</strong><br>Unique [Stark] character only.<br>Attached character gains intimidate.<br><strong>Action</strong>: Pay 1 gold to attach Nymeria to a different character. (Limit once per phase.)",
         "Unique":true,
         "Type":"Attachment",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"wotn",
@@ -6741,7 +6790,7 @@ CARDS =
         "CardText":"<strong>Storyteller.</strong><br><strong>Interrupt</strong>: When a plot card is revealed, kneel Old Nan to have that plot card gain the <em><strong>Summer </strong></em>or <em><strong>Winter</strong></em> trait until the end of the round.",
         "Unique":true,
         "Type":"Character",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"wotn",
@@ -6762,7 +6811,7 @@ CARDS =
         "CardText":"<strong>Wildling.</strong><br><strong>Challenges Action</strong>: Remove Osha from the challenge. Then, stand her. (Limit once per phase.)",
         "Unique":true,
         "Type":"Character",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"wotn",
@@ -6783,7 +6832,7 @@ CARDS =
         "CardText":"<strong>Knight. Lord.</strong><br>While you are not the first player, Quentyn Martell gets +1 STR and gains stealth.<br><strong>Interrupt</strong>: When Quentyn Martell is killed, choose and kill a character with a lower STR than his.",
         "Unique":true,
         "Type":"Character",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "Loyal":false,
@@ -6795,10 +6844,11 @@ CARDS =
         "Faction":"Neutral",
         "img":"http://lcg-cdn.fantasyflightgames.com/got2nd/GT08_52.jpg",
         "Number":"052",
-        "Quantity":"1",
+        "Quantity":3,
         "code":"08052",
         "Initiative":"0",
         "CardText":"<strong>Kingdom. Winter.</strong><br>Plot deck limit: 1.<br><strong>Interrupt</strong>: When the taxation phase ends, either: draw 2 cards or gain 3 gold.<br>",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"wotn",
@@ -6817,10 +6867,10 @@ CARDS =
         "Set":"Wolves of the North",
         "Loyal":false,
         "Cost":"1",
-        "CardText":"<strong>Lord.</strong><br><strong>Interrupt: </strong>When the effects of a triggered ability with the word \u201csearch\u201d in it would initiate, sacrifice Rickon Stark to cancel those effects.",
+        "CardText":"<strong>Lord.</strong><br><strong>Interrupt: </strong>When the effects of a triggered ability with the word \"search\" in it would initiate, sacrifice Rickon Stark to cancel those effects.",
         "Unique":true,
         "Type":"Character",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"wotn",
@@ -6841,7 +6891,7 @@ CARDS =
         "CardText":"<strong>House Tully. Minstrel.</strong><br><strong>Reaction</strong>: After Riverrun Minstrel enters play, choose a <em><strong>House Tully</strong></em> character. That character gains 1 power.",
         "Unique":false,
         "Type":"Character",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"wotn",
@@ -6862,7 +6912,7 @@ CARDS =
         "CardText":"<strong>Lady.</strong><br>Sansa Stark gets -1 STR for each [Stark] character in your dead pile.<br>While Sansa Stark's STR is 0, she gains insight.",
         "Unique":true,
         "Type":"Character",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"wotn",
@@ -6882,7 +6932,7 @@ CARDS =
         "CardText":"<strong>Direwolf.</strong><br>No attachments.<br>While you control Rickon Stark, he gets +2 STR and gains a [Military] icon.",
         "Unique":true,
         "Type":"Character",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "Loyal":false,
@@ -6894,10 +6944,11 @@ CARDS =
         "Faction":"Neutral",
         "img":"http://lcg-cdn.fantasyflightgames.com/got2nd/GT08_48.jpg",
         "Number":"048",
-        "Quantity":"1",
+        "Quantity":3,
         "code":"08048",
         "Initiative":"0",
         "CardText":"<strong>Winter.</strong><br>Treat the base initiative value on each revealed plot card as if it were 0.",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"wotn",
@@ -6921,7 +6972,7 @@ CARDS =
         "CardText":"<strong>Ranger.</strong><br>Stealth.<br><strong>Reaction</strong>: After Stonesnake bypasses a character using stealth, choose one of that character's keywords. Stonesnake gains that keyword until the end of the phase.",
         "Unique":true,
         "Type":"Character",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"wotn",
@@ -6942,7 +6993,7 @@ CARDS =
         "CardText":"<strong>House Tully. Knight. Lord.</strong><br>Renown.<br>While The Blackfish has 4 or more power, each <em><strong>House Tully </strong></em>character you control does not kneel when declared as an attacker.<br><strong>Reaction</strong>: After you win a [Military] challenge as the attacking player, draw 1 card. (Limit once per phase.)<br><strong>Card design by 2009 World Champion, Erick A. Butzlaff.</strong>",
         "Unique":true,
         "Type":"Character",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "Loyal":false,
@@ -6954,10 +7005,11 @@ CARDS =
         "Faction":"Neutral",
         "img":"http://lcg-cdn.fantasyflightgames.com/got2nd/GT08_49.jpg",
         "Number":"049",
-        "Quantity":"1",
+        "Quantity":3,
         "code":"08049",
         "Initiative":"2",
         "CardText":"<strong>Winter.</strong><br>Plot deck limit: 1.<br><strong>When Revealed</strong>: Each player without a <em><strong>Summer</strong></em> plot revealed discards 1 power from a card he or she controls.",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"wotn",
@@ -6977,7 +7029,7 @@ CARDS =
         "CardText":"<strong>Interrupt</strong>: When the effects of an opponent's event would initiate, sacrifice a <em><strong>Direwolf</strong></em> card or kneel 2 [Stark] characters to cancel those effects.",
         "Unique":false,
         "Type":"Event",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"wotn",
@@ -6993,7 +7045,7 @@ CARDS =
         "CardText":"<strong>The North.</strong><br><strong>Reaction</strong>: After you win a challenge as the defending player, kneel The Shadow Tower to choose a character controlled by the losing opponent. That character cannot be declared as an attacker this phase.",
         "Unique":true,
         "Type":"Location",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"wotn",
@@ -7009,7 +7061,7 @@ CARDS =
         "CardText":"<strong>Action</strong>: Kneel a neutral character to gain 2 gold.",
         "Unique":false,
         "Type":"Event",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"wotn",
@@ -7025,7 +7077,7 @@ CARDS =
         "CardText":"<strong>Marshaling Action</strong>: Choose a [Tyrell]character you control. Gain X gold, where X is that character's STR. Then, sacrifice that character.<br>",
         "Unique":false,
         "Type":"Event",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"wotn",
@@ -7041,7 +7093,7 @@ CARDS =
         "CardText":"<strong>Contested.Westeros.</strong><br><strong>Action</strong>: Kneel Tourney Grounds to reduce the cost of the next event you play this phase by 1.",
         "Unique":false,
         "Type":"Location",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"wotn",
@@ -7057,7 +7109,7 @@ CARDS =
         "CardText":"<strong>King's Landing.</strong><br><strong>Reaction</strong>: After you win an [Intrigue] challenge, kneel Tower of the Hand and return a participating [Lannister] character to your hand to choose a character with lower printed cost controlled by the losing opponent. Return that character to its owner's hand.",
         "Unique":true,
         "Type":"Location",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "Loyal":false,
@@ -7069,10 +7121,11 @@ CARDS =
         "Faction":"Neutral",
         "img":"http://lcg-cdn.fantasyflightgames.com/got2nd/GT08_51.jpg",
         "Number":"051",
-        "Quantity":"1",
+        "Quantity":3,
         "code":"08051",
         "Initiative":"9",
         "CardText":"<strong>Edict.</strong><br>Plot deck limit: 1.<br><strong>Forced Reaction</strong>: After the challenges phase begins, return each card with the printed attachment cardtype to its owner's hand.",
+        "limit":2,
         "Unique":false,
         "Type":"Plot",
         "setcode":"wotn",
@@ -7092,7 +7145,7 @@ CARDS =
         "CardText":"<strong>The North. Winterfell.</strong><br>Each [Stark] character you control gets +1 STR.<br><strong>Reaction</strong>: After a challenge is initiated, kneel Winterfell. Then, each player with a non-<em><strong>Winter</strong></em> plot card revealed cannot trigger card abilities until the end of the challenge.",
         "Unique":true,
         "Type":"Location",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"wotn",
@@ -7105,10 +7158,10 @@ CARDS =
         "Number":"018",
         "Loyal":false,
         "Cost":"1",
-        "CardText":"<strong>Old Gods. Winterfell.</strong><br><strong>Reaction</strong>: After a phase begins, sacrifice Winterfell Heart Tree to choose a [Stark] card you control. Until the end of the phase, that card gains \u201cimmune to opponents' plot effects.\u201d",
+        "CardText":"<strong>Old Gods. Winterfell.</strong><br><strong>Reaction</strong>: After a phase begins, sacrifice Winterfell Heart Tree to choose a [Stark] card you control. Until the end of the phase, that card gains \"immune to opponents' plot effects.\"",
         "Unique":true,
         "Type":"Location",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"wotn",
@@ -7128,7 +7181,7 @@ CARDS =
         "CardText":"<strong>Direwolf.</strong><br>No attachments. Stealth.<br><strong>Reaction</strong>: After Wolves of the North bypasses a character using stealth, that character gets -X STR until the end of the phase. X is the number of <em><strong>Direwolf</strong></em> cards you control.",
         "Unique":false,
         "Type":"Character",
-        "Quantity":"1"
+        "Quantity":3
     },
     {
         "setcode":"wotn",
@@ -7148,6 +7201,6 @@ CARDS =
         "CardText":"<strong>Wildling.</strong><br>While you have less power on your faction card than an opponent, Young Spearwife gains stealth.",
         "Unique":false,
         "Type":"Character",
-        "Quantity":"1"
+        "Quantity":3
     }
 ]
