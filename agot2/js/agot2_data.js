@@ -40,7 +40,7 @@ CARDS =
         "code":"01002",
         "Initiative":"1",
         "CardText":"<strong>Edict.</strong><br>Plot deck limit: 1.<br><strong>Reaction</strong>: After you win dominance, gain 2 power for your faction.<br>",
-        "limit":2,
+        "limit":1,
         "Unique":false,
         "Type":"Plot",
         "setcode":"core",
@@ -60,7 +60,7 @@ CARDS =
         "code":"01003",
         "Initiative":"2",
         "CardText":"<strong>Scheme.</strong><br>Plot deck limit: 1.<br>A player cannot initiate a [Military] or [Power] challenge unless he or she has won an [Intrigue] challenge that phase.",
-        "limit":2,
+        "limit":1,
         "Unique":false,
         "Type":"Plot",
         "setcode":"core",
@@ -277,7 +277,9 @@ CARDS =
         "CardText":"<strong>Banner.</strong><br>You may include non-loyal [Targaryen] cards in your deck.<br><br>You must include at least 12 [Targaryen] cards in your deck.",
         "Unique":false,
         "Type":"Agenda",
-        "Quantity":"1"
+        "Quantity":"1",
+        "Faction":"Targaryen",
+		  "Loyal":false
     },
     {
         "setcode":"core",
@@ -290,7 +292,9 @@ CARDS =
         "CardText":"<strong>Banner.</strong><br>You may include non-loyal [Greyjoy] cards in your deck.<br><br>You must include at least 12 [Greyjoy] cards in your deck.",
         "Unique":false,
         "Type":"Agenda",
-        "Quantity":"1"
+        "Quantity":"1",
+        "Faction":"Greyjoy",
+		  "Loyal":false
     },
     {
         "setcode":"core",
@@ -303,7 +307,9 @@ CARDS =
         "CardText":"<strong>Banner.</strong><br>You may include non-loyal [Lannister] cards in your deck.<br><br>You must include at least 12 [Lannister] cards in your deck.",
         "Unique":false,
         "Type":"Agenda",
-        "Quantity":"1"
+        "Quantity":"1",
+        "Faction":"Lannister",
+		  "Loyal":false
     },
     {
         "setcode":"core",
@@ -316,7 +322,9 @@ CARDS =
         "CardText":"<strong>Banner.</strong><br>You may include non-loyal [Tyrell] cards in your deck.<br><br>You must include at least 12 [Tyrell] cards in your deck.",
         "Unique":false,
         "Type":"Agenda",
-        "Quantity":"1"
+        "Quantity":"1",
+        "Faction":"Tyrell",
+		  "Loyal":false
     },
     {
         "setcode":"core",
@@ -329,7 +337,9 @@ CARDS =
         "CardText":"<strong>Banner.</strong><br>You may include non-loyal [Baratheon] cards in your deck.<br><br>You must include at least 12 [Baratheon] cards in your deck.",
         "Unique":false,
         "Type":"Agenda",
-        "Quantity":"1"
+        "Quantity":"1",
+        "Faction":"Baratheon",
+		  "Loyal":false
     },
     {
         "setcode":"core",
@@ -342,7 +352,9 @@ CARDS =
         "CardText":"<strong>Banner.</strong><br>You may include non-loyal [Martell] cards in your deck.<br><br>You must include at least 12 [Martell] cards in your deck.",
         "Unique":false,
         "Type":"Agenda",
-        "Quantity":"1"
+        "Quantity":"1",
+        "Faction":"Martell",
+		  "Loyal":false
     },
     {
         "setcode":"core",
@@ -355,7 +367,9 @@ CARDS =
         "CardText":"<strong>Banner.</strong><br>You may include non-loyal [Night's Watch] cards in your deck.<br><br>You must include at least 12 [Night's Watch] cards in your deck.",
         "Unique":false,
         "Type":"Agenda",
-        "Quantity":"1"
+        "Quantity":"1",
+        "Faction":"The Night's Watch",
+		  "Loyal":false
     },
     {
         "setcode":"core",
@@ -368,7 +382,9 @@ CARDS =
         "CardText":"<strong>Banner.</strong><br>You may include non-loyal [Stark] cards in your deck.<br><br>You must include at least 12 [Stark] cards in your deck.",
         "Unique":false,
         "Type":"Agenda",
-        "Quantity":"1"
+        "Quantity":"1",
+        "Faction":"Stark",
+		  "Loyal":false
     },
     {
         "setcode":"core",
@@ -579,7 +595,7 @@ CARDS =
         "code":"01008",
         "Initiative":"3",
         "CardText":"<strong>Summer.</strong><br>Plot deck limit: 1.<br><strong>When Revealed: </strong>Name a challenge type. Until you reveal a new plot card, reduce the claim value on the attacking player's revealed plot card by 1 during challenges of that type in which you are the defending player.<br>",
-        "limit":2,
+        "limit":1,
         "Unique":false,
         "Type":"Plot",
         "setcode":"core",
@@ -1112,7 +1128,9 @@ CARDS =
         "CardText":"You cannot include more than 15 neutral cards in your deck.<br><strong>Action</strong>: Kneel your faction card to reduce the cost of the next loyal card you marshal or play this phase by 1.",
         "Unique":true,
         "Type":"Agenda",
-        "Quantity":"1"
+        "Quantity":"1",
+        "Faction":"Neutral",
+		  "Loyal":false
     },
     {
         "setcode":"core",
@@ -1201,7 +1219,7 @@ CARDS =
         "code":"01012",
         "Initiative":"1",
         "CardText":"<strong>Siege. War.</strong><br>Plot deck limit: 1.<br>Treat each character as if its printed text box were blank (except for <em><strong>Traits</strong></em>).",
-        "limit":2,
+        "limit":1,
         "Unique":false,
         "Type":"Plot",
         "setcode":"core",
@@ -2291,7 +2309,7 @@ CARDS =
         "code":"01017",
         "Initiative":"7",
         "CardText":"<strong>Siege. War. </strong><br>Plot deck limit: 1.<br>Treat the base gold value on each revealed <em><strong>Kingdom</strong></em> and each revealed <em><strong>Edict</strong></em> plot card as if it were 0.",
-        "limit":2,
+        "limit":1,
         "Unique":false,
         "Type":"Plot",
         "setcode":"core",
@@ -4240,7 +4258,7 @@ CARDS =
         "code":"02012",
         "Initiative":"8",
         "CardText":"<strong>War.</strong><br>Plot deck limit: 1.<br><strong>Interrupt</strong> :When you gain power for winning an unopposed challenge, gain 2 power instead.<br>",
-        "limit":2,
+        "limit":1,
         "Unique":false,
         "Type":"Plot",
         "setcode":"ttb",
@@ -4313,7 +4331,7 @@ CARDS =
         "code":"02016",
         "Initiative":"3",
         "CardText":"<strong>Scheme.</strong><br>Plot deck limit: 1.<br>You do not return unspent gold to the treasury during the taxation phase.<br><strong>Reaction</strong>: After you lose a challenge, gain 1 gold.",
-        "limit":2,
+        "limit":1,
         "Unique":false,
         "Type":"Plot",
         "setcode":"ttb",
@@ -4438,7 +4456,8 @@ CARDS =
         "CardText":"<strong>Item.</strong><br>Deck Limit: 1. Terminal.<br>Attached character gains the <em><strong>King</strong></em> trait.<br>Attached character gets -4 STR and is killed if its STR is 0.",
         "Unique":true,
         "Type":"Attachment",
-        "Quantity":3
+        "Quantity":3,
+		  "limit":1
     },
     {
         "setcode":"trtw",
@@ -4540,7 +4559,7 @@ CARDS =
         "code":"03040",
         "Initiative":"3",
         "CardText":"<strong>Edict.</strong><br>Plot deck limit: 1.<br><strong>When Revealed</strong>: Each player chooses up to 2 locations he or she controls. Each location not chosen is discarded from play.",
-        "limit":2,
+        "limit":1,
         "Unique":false,
         "Type":"Plot",
         "setcode":"trtw",
@@ -4675,7 +4694,7 @@ CARDS =
         "code":"03039",
         "Initiative":"2",
         "CardText":"<strong>Kingdom.</strong><br>Plot deck limit: 1.<br><strong>When Revealed</strong>: Each opponent gains 3 gold. (Cannot be canceled.)",
-        "limit":2,
+        "limit":1,
         "Unique":false,
         "Type":"Plot",
         "setcode":"trtw",
@@ -4713,7 +4732,7 @@ CARDS =
         "code":"03030",
         "Initiative":"4",
         "CardText":"<strong>Scheme.</strong><br>Plot deck limit: 1.<br><strong>Reaction</strong>: After you win an [Intrigue] challenge, pay 2 gold to have the losing opponent choose and discard 2 cards from his or her hand.",
-        "limit":2,
+        "limit":1,
         "Unique":false,
         "Type":"Plot",
         "setcode":"trtw",
@@ -5064,7 +5083,7 @@ CARDS =
         "code":"04048",
         "Initiative":"0",
         "CardText":"<strong>Edict. Scheme.</strong><br>Plot deck limit: 1.<br><strong>Reaction</strong>: After a [Military] or [Power] challenge is initiated against you, the attacking player may either: kneel his or her faction card, or move 1 power from that faction card to yours. If that player does not, the challenge immediately ends with no winner or loser.<br>",
-        "limit":2,
+        "limit":1,
         "Unique":false,
         "Type":"Plot",
         "setcode":"tkp",
@@ -5081,7 +5100,9 @@ CARDS =
         "CardText":"<strong>House Frey.</strong><br>During the first challenge you initiate each phase, each of your participating characters gets -1 STR.<br>During the third challenge you initiate each phase, each of your participating characters gets +2 STR. If you win this challenge, gain 1 power for your faction.",
         "Unique":false,
         "Type":"Agenda",
-        "Quantity":3
+        "Quantity":3,
+        "Faction":"Neutral",
+		  "Loyal":false
     },
     {
         "setcode":"tkp",
@@ -5129,7 +5150,7 @@ CARDS =
         "code":"05075",
         "Initiative":"2",
         "CardText":"<strong>Legacy.</strong><br>Plot deck limit: 1.<br>Each non-<em><strong>Dragon</strong></em> character gets -1 STR and is killed if its STR is 0.",
-        "limit":2,
+        "limit":1,
         "Unique":false,
         "Type":"Plot",
         "setcode":"nmg",
@@ -5186,7 +5207,7 @@ CARDS =
         "code":"05067",
         "Initiative":"6",
         "CardText":"<strong>Siege.</strong><br>Plot deck limit: 1.<br>You cannot lose <em>(and your opponent cannot win)</em> the first challenge initiated against you each phase.",
-        "limit":2,
+        "limit":1,
         "Unique":false,
         "Type":"Plot",
         "setcode":"nmg",
@@ -5399,7 +5420,7 @@ CARDS =
         "code":"05079",
         "Initiative":"5",
         "CardText":"<strong>Omen. Winter.</strong><br>Plot deck limit: 1.<br><strong>Forced Reaction</strong>: After the challenges phase begins, return each character with printed cost 3 or lower to its owner's hand.<br><strong>Card design by 2005 World Champion, John M. Bruno.</strong>",
-        "limit":2,
+        "limit":1,
         "Unique":false,
         "Type":"Plot",
         "setcode":"nmg",
@@ -5451,7 +5472,7 @@ CARDS =
         "code":"05062",
         "Initiative":"5",
         "CardText":"<strong>War.</strong><br>Plot deck limit: 1.<br><strong>Challenges Action</strong>: During a challenge in which you control a participating [Stark] character, kneel another [Stark] character to have it participate in that challenge on your side. (Limit twice per round.)",
-        "limit":2,
+        "limit":1,
         "Unique":false,
         "Type":"Plot",
         "setcode":"nmg",
@@ -5714,7 +5735,7 @@ CARDS =
         "code":"06084",
         "Initiative":"2",
         "CardText":"<strong>Scheme.</strong><br>Plot deck limit: 1.<br><strong>When Revealed</strong>: Choose an <em><strong>Edict</strong></em>, <em><strong>Kingdom</strong></em>, or <em><strong>Scheme</strong></em> plot card in an opponent's used pile. Initiate the when revealed ability on that card as if you had just revealed it.",
-        "limit":2,
+        "limit":1,
         "Unique":false,
         "Type":"Plot",
         "setcode":"cow",
@@ -5985,7 +6006,7 @@ CARDS =
         "code":"07119",
         "Initiative":"2",
         "CardText":"<strong>Scheme.</strong><br>Plot deck limit: 1.<br>While it is not the plot phase, treat the text box on each revealed non-<em><strong>Scheme</strong></em> plot card as if it were blank (except for <em><strong>Traits</strong></em>).",
-        "limit":2,
+        "limit":1,
         "Unique":false,
         "Type":"Plot",
         "setcode":"ts",
@@ -6848,7 +6869,7 @@ CARDS =
         "code":"08052",
         "Initiative":"0",
         "CardText":"<strong>Kingdom. Winter.</strong><br>Plot deck limit: 1.<br><strong>Interrupt</strong>: When the taxation phase ends, either: draw 2 cards or gain 3 gold.<br>",
-        "limit":2,
+        "limit":1,
         "Unique":false,
         "Type":"Plot",
         "setcode":"wotn",
@@ -7009,7 +7030,7 @@ CARDS =
         "code":"08049",
         "Initiative":"2",
         "CardText":"<strong>Winter.</strong><br>Plot deck limit: 1.<br><strong>When Revealed</strong>: Each player without a <em><strong>Summer</strong></em> plot revealed discards 1 power from a card he or she controls.",
-        "limit":2,
+        "limit":1,
         "Unique":false,
         "Type":"Plot",
         "setcode":"wotn",
@@ -7125,7 +7146,7 @@ CARDS =
         "code":"08051",
         "Initiative":"9",
         "CardText":"<strong>Edict.</strong><br>Plot deck limit: 1.<br><strong>Forced Reaction</strong>: After the challenges phase begins, return each card with the printed attachment cardtype to its owner's hand.",
-        "limit":2,
+        "limit":1,
         "Unique":false,
         "Type":"Plot",
         "setcode":"wotn",

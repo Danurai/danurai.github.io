@@ -30,7 +30,7 @@ $(document).ready(function () {
 					+ (typeof card.Strength !== "undefined" ? 'Str: ' + card.Strength + ' ' : '') 	//(typeof card.Strength !== "undefined" ? '<div class="strength-icon"><div class="number">' + card.Strength + '</div></div>' : '')
 					+ (icons != '' ? icons : '')
 					+ '<p class="' + faction_s + '-card">' + card.CardText
-					+ (typeof card.Faction !== "undefined" ? '<div class="small" style="float: left;">' + card.Faction + '</div>' : 'Neutral')
+					+ (typeof card.Faction !== "undefined" ? '<div class="small" style="float: left;">' + card.Faction + (card.Loyal == true ? ' (Loyal)' : '') + '</div>' : 'Neutral')
 					+ '<div class="small" style="text-align: right;">' + card.Set + ' #' + card.Number + '</div>'
 			},
 			style: {
