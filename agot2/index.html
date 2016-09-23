@@ -25,62 +25,13 @@
 	
 	<script>
 		$(document).ready( function() {
-			_cards = TAFFY(CARDS);
-			var _titles = JSON.parse(_cards({"Type":"Title"}).stringify());
-			var _deck = [];
-			var deck = [];
-			var plot = [];
-			var agenda;
-			var faction;
 						
 			$('#deckload').val("Deck Created with CardGameDB.com A Game of Thrones 2nd Edition Deckbuilder\n\n\nTotal Cards: (50)\n\nFaction: \n Targaryen\n\n\nAgenda: (1)\n1x Fealty (Core Set)\n\nPlot: (7)\n1x Counting Coppers (Core Set)\n1x Confiscation (Core Set)\n1x Fortified Position (Core Set)\n2x The Winds of Winter (Core Set)\n1x Supporting the Faith (Core Set)\n1x A Noble Cause (Core Set)\n\nCharacter: (35)\n3x Braided Warrior (Core Set)\n3x Daenerys Targaryen (Core Set)\n3x Drogon (Core Set)\n3x Handmaiden (Core Set)\n3x Khal Drogo (Core Set)\n2x Magister Illyrio (Core Set)\n3x Rhaegal (Core Set)\n3x Ser Jorah Mormont (Core Set)\n3x Targaryen Loyalist (Core Set)\n3x Unsullied (Core Set)\n3x Viserion (Core Set)\n3x Viserys Targaryen (Core Set)\n\nAttachment: (0)\n\n\nEvent: (9)\n3x Dracarys! (Core Set)\n3x Fire and Blood (Core Set)\n3x Waking the Dragon (Core Set)\n\nLocation: (6)\n3x Illyrio's Estate (Core Set)\n3x Plaza of Punishment (Core Set)");
 			
-			function drawFactionPlots()	{
-				var outp = '';
-				$('#faction_name').html ('<h2 class="faction">' + (faction != "The Night's Watch" ? "House " + faction : faction) + (typeof agenda !== "undefined" ? ' <span class="card" data-cardno="' + agenda.Number + '">(' + agenda.name + ')' : '')  + '</span></h2>' );
-				
-				$.each(plot, function (id, plot) {
-					//outp += '<img src="' + plot.img + '" class="card plot_card" data-cardno="' + plot.Number + '" data-cardset="' + plot.Set + '"></img>'
-					outp += '<img src="' + plot.img + '" class="card plot_card" data-code="' + plot.code + '"></img>';
-				});
-				$('#plot_cards').html (outp);
-				$('#plot_data').html("Gold: 8");
-			}
-			function drawTitle() {
-				_titles = shuffle(_titles);
-				var title = _titles[0];
-				//$('#title_card').html('<h4>Title:</h4><img src="' + title.img + '" data-cardno="' + title.Number + '" data-cardset="' + title.Set + '" class="card plot_card"></img>');
-				$('#title_card').html('<h4>Title:</h4><img src="' + title.img + '" data-code="' + title.code + '" class="card plot_card"></img>');
-			}
 			
-			function drawCards(n) {
-				var card 
-				for (var i = 0; i < n; i++) {
-					card = deck.pop();
-					//$('#hand').append('<img src="' + card.img + '" class="card deck_card" data-cardno="' + card.Number + '" data-cardset="' + card.Set + '"></img>');
-					$('#hand').append('<img src="' + card.img + '" class="card deck_card" data-code="' + card.code + '"></img>');
-				}
-			}
 		});
 		
-		/* Fisher-Yates Shuffle  */
-	function shuffle(array) {
-		var m = array.length, t, i;
-
-		// While there remain elements to shuffle…
-		while (m) {
-
-			// Pick a remaining element…
-			i = Math.floor(Math.random() * m--);
-
-			// And swap it with the current element.
-			t = array[m];
-			array[m] = array[i];
-			array[i] = t;
-		}
-
-		return array;
-	}
+	
 	</script>
 </head>
 <body>

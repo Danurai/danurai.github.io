@@ -3,6 +3,8 @@
 $(document).ready(function () {
 	// Cards and TAFFY loaded in prior includes
 	_cards = TAFFY(CARDS);
+	var _titles = JSON.parse(_cards({"Type":"Title"}).stringify());
+	
 	var filter = {};
 	var crdFilter = [];
 	var facFilter = [];
@@ -150,7 +152,14 @@ $(document).ready(function () {
 	
 	function writedeck()	{
 		var outp = '';
+		var faction; 
+		var faction_short; 
 		
+		if (decklist({"Type":"Faction"}).count() > 0) {
+			faction = decklist({"Type":"Faction"}).first().name;
+			faction_short = faction.match(/\w+$/);
+			if (faction_short != "Watch") {faction = faction_short;}
+		}
 		outp += '<h4>Faction: '
 			+ (decklist({"Type":"Faction"}).count() > 0 ? decklist({"Type":"Faction"}).first().name : '')
 			+ (decklist({"Type":"Agenda"}).count() > 0 ? ' (' + decklist({"Type":"Agenda"}).first().name + ')': '')
@@ -158,7 +167,9 @@ $(document).ready(function () {
 		
 		outp += '<h4>Plot (' + decklist({"Type":"Plot"}).sum("qty") + ')</h4>';
 		decklist({"Type":"Plot"}).order("name").each(function (card) {
-			outp += '<div class="card" data-code="' + card.code + '">' + card.qty + 'x ' + card.name + '</div>';
+			outp += '<div class="card" data-code="' + card.code + '">' + card.qty + 'x ' + card.name;
+			if (card.Faction == faction) { outp += ' <i class="fa fa-flag ' + card.Faction.match(/\w+$/) + '"></i>'}
+			outp += '</div>';
 		});
 		
 		
@@ -172,10 +183,14 @@ $(document).ready(function () {
 				outp += '<div><b>' + cardtype + ' (' + decklist({"Type":cardtype}).sum("qty") + ')</b>';
 				decklist({"Type":cardtype}).order("name").each(function (card) {
 					outp += '<br>' + card.qty + 'x <a href="#" class="card" data-code="' + card.code + '">' + card.name + '</a>';
+					if (card.Faction != faction) { outp += ' <i class="fa fa-flag ' + card.Faction.match(/\w+$/) + '"></i>'}
 				});
 				outp += '</div>';
 			}
 		});
+		
+		// TODO Deck Checks (Agenda)
+		// #Plots = 7, Cards => 50, Banner Agenda => 12 Non-Loyal, Fealty <= 15, Non-Faction/Banner
 		
 		$('#decklist').html(outp);
 	}
@@ -191,6 +206,7 @@ $(document).ready(function () {
 			});
 		});
 		$('#deckload').val(exp);}
+
 
 		
 /* SETS TAB */
@@ -243,11 +259,15 @@ $(document).ready(function () {
 		updateTableBody();
 	}
 	
+
+	
 /* CHECK TAB */
 	$('#loaddeck').on('click',function () {
 	// Create decklist from cards
 		var str = $('#deckload').val();
 		var crd;
+		
+		decklist().remove();
 		
 		str.match(/Faction:\s+(.+)/g);
 		faction = RegExp.$1;
@@ -275,7 +295,10 @@ $(document).ready(function () {
 		
 		updateTableBody();
 		writedeck();
-		//newGame();
+		
+		
+		// _deck[], deck[], plot[]
+		newGame();
 	});
 	
 	$('.btn-draw').on('click',function() {
@@ -338,11 +361,64 @@ $(document).ready(function () {
 	});
 	
 	function newGame() {
+		_deck = [];
+		decklist({"Type":["Character","Event","Attachment","Location"]}).each(function(card) {
+			_deck.push({"code":card.code,"img":card.img});
+		});
 		_deck = shuffle(_deck);
 		deck = _deck.slice();
+		
 		drawFactionPlots();
 		drawTitle();
 		$('#hand').html ('');
 		drawCards(7);
 	}
+	
+	function drawFactionPlots()	{
+		var outp = '';
+		
+		// Faction and Agenda
+		var faction = decklist({"Type":"Faction"}).count()>0 ? decklist({"Type":"Faction"}).first().name : '';
+		var agenda = decklist({"Type":"Agenda"}).count()>0 ? ' (' + decklist({"Type":"Agenda"}).first().name + ')' : '';
+		$('#faction_name').html ('<h2 class="faction">' + faction + agenda + '</span></h2>' );
+		
+		// Plots
+		decklist({"Type":"Plot"}).each(function (plot) {
+			outp += '<img src="' + plot.img + '" class="card plot_card" data-code="' + plot.code + '"></img>';
+		});
+		$('#plot_cards').html (outp);
+		$('#plot_data').html("Gold: 8");
+	}
+	function drawTitle() {
+		_titles = shuffle(_titles);
+		var title = _titles[0];
+		$('#title_card').html('<h4>Title:</h4><img src="' + title.img + '" data-code="' + title.code + '" class="card plot_card"></img>');
+	}
+	
+	function drawCards(n) {
+		var card 
+		for (var i = 0; i < n; i++) {
+			card = deck.pop();
+			$('#hand').append('<img src="' + card.img + '" class="card deck_card" data-code="' + card.code + '"></img>');
+		}
+	}
 });
+
+/* Fisher-Yates Shuffle  */
+function shuffle(array) {
+	var m = array.length, t, i;
+
+	// While there remain elements to shuffle…
+	while (m) {
+
+		// Pick a remaining element…
+		i = Math.floor(Math.random() * m--);
+
+		// And swap it with the current element.
+		t = array[m];
+		array[m] = array[i];
+		array[i] = t;
+	}
+
+	return array;
+}

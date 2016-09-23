@@ -60,40 +60,64 @@
 		font-weight: bold;
 	}
 	
+	.Baratheon {
+		color: #e6e600;
+	}
 	.Baratheon-card{
 		padding-left: 5px;
 		border-left-style: solid;
 		border-left-color: #e6e600;
+	}
+	.Greyjoy {
+		color: #006666;
 	}
 	.Greyjoy-card{
 		padding-left: 5px;
 		border-left-style: solid;
 		border-left-color: #006666;
 	}
+	.Lannister {
+		color: #ff0000;
+	}
 	.Lannister-card{
 		padding-left: 5px;
 		border-left-style: solid;
 		border-left-color: #ff0000;
+	}
+	.Maertell {
+		color: #ff9900;
 	}
 	.Martell-card{
 		padding-left: 5px;
 		border-left-style: solid;
 		border-left-color: #ff9900;
 	}
+	.Stark {
+		color: #d9d9d9;
+	}
 	.Stark-card{
 		padding-left: 5px;
 		border-left-style: solid;
 		border-left-color: #d9d9d9;
+	}
+	.Targaryen {
+		color: #990000;
 	}
 	.Targaryen-card{
 		padding-left: 5px;
 		border-left-style: solid;
 		border-left-color: #990000;
 	}
+	.Watch {
+		color: #29293d;
+	}
 	.The-card{
 		padding-left: 5px;
 		border-left-style: solid;
 		border-left-color: #29293d;
+	}
+	.Tyrell {
+		color: #004d00;
 	}
 	.Tyrell-card {
 		padding-left: 5px;
