@@ -12,33 +12,59 @@ $(document).ready(function () {
 	
 	var decklist = TAFFY();
 	
-	updateSets()
+	updateSets();
+	
+	loadDeck();
+	writedeck();
+	writeoutput();
+	
 	updateTableBody();
+	
 
+/* Decklist */
+	$('#decklist').on('click','.card',function () {
+		var outp = '';
+		var card = _cards({"code":$(this).data("code")}).first();
+		
+		var maxallowed = maxindeck(card);
+		var inset = decklist({"code":card.code}).count() != 0 ? decklist({"code":card.code}).first().qty : 0;
+		
+		var btns = '<div class="btn-group" data-toggle="buttons">';
+		for (var i=0; i<=maxallowed; i++) {
+			btns += '<label class="btn btn-md btn-default' + (i==inset?' active':'') + '"><input type="radio" name="qty-' + card.code + '" value="' + i + '">' + i + '</label>';
+		}
+		btns += '</div>';
+		
+		
+		outp = '<div class="modal-dialog">'
+			+ '<div class="modal-content">'
+			+ '<div class="modal-header">'
+			+ '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>'
+			+ '<h4 class="modal-title">' + card.name  + '</h4>'
+			+ '<div class="row"><div class="col-sm-12">' + btns + '</div></div>'
+			+ '</div>'
+			+ '<div class="modal-body">'
+			+ '<div class="row"><div class="col-sm-12"><img src="' + card.img + '"></div>'
+			//+ '<div class="col-sm-6">' + card.Type + '</div>'
+			+ '</div>'
+			+ '</div>'
+			+ '</div>';
+		
+		$('#cardmodal').html (outp);
+	});
+	$('#cardmodal').on('change','input[type=radio]',function () {
+		updateDeck(this.name.substring(4), parseInt($(this).val(),10));
+		$('#cardmodal').modal('hide');
+	});
+
+	
+	//showSnack("Hello");
+/* LOAD DECK */
+	
+	
 /* BUILD TAB */
 	$('#tablebody').on('change','input[type=radio]',function() {
-		var cardcode = this.name.substring(4);
-
-		var card = _cards({"code":cardcode}).first();
-		card["qty"] = parseInt($(this).val(),10);
-		
-		switch (card.Type) {
-			case ("Faction"):
-				decklist({"Type":"Faction"}).remove();
-				if (card.qty>0) {decklist.insert(card)};
-				break;
-			case ("Agenda"):
-				decklist({"Type":"Agenda"}).remove();
-				if (card.qty>0) {decklist.insert(card)};
-				break;
-			default:
-				decklist({"code":card.code}).remove();
-				if (card.qty>0) {decklist.insert(card);}
-		}
-		
-		updateTableBody();
-		writedeck();
-		writeoutput();
+		updateDeck(this.name.substring(4), parseInt($(this).val(),10));
 	});
 	
 	$('#cardfilter').on('change','input[type=checkbox]',function() {
@@ -77,6 +103,40 @@ $(document).ready(function () {
 	$('#agendaFilter').on('change', function () {
 		updateTableBody();
 	});
+	$('#filterlist').on('input', function () {
+		updateTableBody()
+	});
+	
+	function loadDeck() {
+		var deck = $.parseJSON($('#deck-content').val());
+		$.each(deck, function(id,item) {
+			card = _cards({"code":item.code}).first();
+			card.qty = item.qty;
+			decklist.insert(card);
+		})
+	}
+	function updateDeck(cardcode, cardqty)	{
+		var card = _cards({"code":cardcode}).first();
+		card["qty"] = cardqty;
+		
+		switch (card.Type) {
+			case ("Faction"):
+				decklist({"Type":"Faction"}).remove();
+				if (card.qty>0) {decklist.insert(card)};
+				break;
+			case ("Agenda"):
+				decklist({"Type":"Agenda"}).remove();
+				if (card.qty>0) {decklist.insert(card)};
+				break;
+			default:
+				decklist({"code":card.code}).remove();
+				if (card.qty>0) {decklist.insert(card);}
+		}
+		
+		updateTableBody();
+		writedeck();
+		writeoutput();
+	}
 	
 	function updateTableBody() {
 		$('#tablebody').empty();
@@ -108,29 +168,22 @@ $(document).ready(function () {
 			});
 		}
 		
+		// Add text filter
+		
+		var f = parsefilter($('#filterlist').val());
+		if ( $.isEmptyObject(f) == false) {
+			$.extend(filter, f);
+		}
+		
 		console.log (filter);
-		_cards(filter).order("code").each(function(r) {
+		_cards(filter).order("Type, name").each(function(r) {
 			$('#tablebody').append (buildRow(r));
 		});
 	}
 	function buildRow (r) {
 	/* Row: House, Name, Cost, Strength */
-		var outp = '';
-		var core = localStorage.getItem('set-core') == null ? 1 : localStorage.getItem('set-core') ;
-		
-		var inset = 0;
-		var maxallowed = 0;
-		
-		switch (r.Type) {
-			case ("Faction"):
-			case ("Agenda"):
-				maxallowed = 1;
-				break;
-			default:
-				maxallowed = typeof r.limit !== "undefined" ? r.limit : 3;
-				maxallowed = (r.Set == "Core Set" ? Math.min(r.Quantity * core, maxallowed) : maxallowed);
-		}
-		inset = decklist({"code":r.code}).count() != 0 ? decklist({"code":r.code}).first().qty : 0;
+		var maxallowed = maxindeck(r);
+		var inset = decklist({"code":r.code}).count() != 0 ? decklist({"code":r.code}).first().qty : 0;
 		
 		var btns = '<div class="btn-group" data-toggle="buttons">';
 		for (var i=0; i<=maxallowed; i++) {
@@ -143,11 +196,26 @@ $(document).ready(function () {
 			//+ '<td>' + (typeof r.Faction !== "undefined" ? r.Faction : "") + '</td>'
 			+ '<td><span class="card" data-code="' + r.code + '">' + (r.Unique ? '&diams;&nbsp;' : '') + r.name + '</td>'
 			+ '<td>' + (typeof r.Type !== "undefined" ? r.Type : "") + '</td>'
-			+ '<td>' + (typeof r.Cost !== "undefined" ? r.Cost : "") + '</td>'
-			+ '<td>' + (typeof r.Strength !== "undefined" ? r.Strength : "") + '</td>'
+			+ '<td>' + (typeof r.Cost !== "undefined" ? r.Cost : "") + (typeof r.Gold !== "undefined" ? r.Gold : "") + '</td>'
+			+ '<td>' + (typeof r.Strength !== "undefined" ? r.Strength : "") + (typeof r.Initiative !== "undefined" ? r.Initiative : "") + '</td>'
 			//+ '<td>' + r.Set + ' #' + r.Number + '</td>'
 			+ '</tr>';
 		return (outp);
+	}
+	function maxindeck(r) {
+		var core = localStorage.getItem('set-core') == null ? 1 : localStorage.getItem('set-core') ;
+		var maxallowed = 0;
+		
+		switch (r.Type) {
+			case ("Faction"):
+			case ("Agenda"):
+				maxallowed = 1;
+				break;
+			default:
+				maxallowed = typeof r.limit !== "undefined" ? r.limit : 3;
+				maxallowed = (r.Set == "Core Set" ? Math.min(r.Quantity * core, maxallowed) : maxallowed);
+		}
+		return maxallowed;
 	}
 	
 	function writedeck()	{
@@ -155,6 +223,7 @@ $(document).ready(function () {
 		var faction; 
 		var faction_short; 
 		
+		// Faction and Agenda
 		if (decklist({"Type":"Faction"}).count() > 0) {
 			faction = decklist({"Type":"Faction"}).first().name;
 			faction_short = faction.match(/\w+$/);
@@ -165,39 +234,51 @@ $(document).ready(function () {
 			+ (decklist({"Type":"Agenda"}).count() > 0 ? ' (' + decklist({"Type":"Agenda"}).first().name + ')': '')
 			+ '</h4>';
 		
-		outp += '<h4>Plot (' + decklist({"Type":"Plot"}).sum("qty") + ')</h4>';
+		// Deck Validity 
+		outp += checkDeck();
+		
+		// Plots
+		outp += '<div><b>Plot (' + decklist({"Type":"Plot"}).sum("qty") + ')</b>';
 		decklist({"Type":"Plot"}).order("name").each(function (card) {
-			outp += '<div class="card" data-code="' + card.code + '">' + card.qty + 'x ' + card.name;
+			outp += '<br>' + card.qty + 'x <a href="/card/' + card.code + '" class="card" data-code="' + card.code + '" data-toggle="modal" data-remote="false" data-target="#cardmodal">' + card.name + '</a>';
 			if (card.Faction == faction) { outp += ' <i class="fa fa-flag ' + card.Faction.match(/\w+$/) + '"></i>'}
-			outp += '</div>';
+			outp += '</a>';
 		});
+		outp += '</div>';
 		
-		
+		// Cards
 		deckTypes = ["Character","Attachment","Event","Location"];
 		outp += '<h4>Total Cards: (' + decklist({"Type":deckTypes}).sum("qty") + ')</h4>';
-		
-		console.log (decklist({"Type":deckTypes}).stringify());
-		
+			
 		$.each(deckTypes, function (id,cardtype) {
+			outp += (id < 2 ? '<div class="col-sm-6">' : '');
 			if (decklist({"Type":cardtype}).count() > 0) {
 				outp += '<div><b>' + cardtype + ' (' + decklist({"Type":cardtype}).sum("qty") + ')</b>';
 				decklist({"Type":cardtype}).order("name").each(function (card) {
-					outp += '<br>' + card.qty + 'x <a href="#" class="card" data-code="' + card.code + '">' + card.name + '</a>';
+					outp += '<br>' + card.qty + 'x <a href="/card/' + card.code + '" class="card" data-code="' + card.code + '" data-toggle="modal" data-remote="false" data-target="#cardmodal">' + card.name + '</a>';
 					if (card.Faction != faction) { outp += ' <i class="fa fa-flag ' + card.Faction.match(/\w+$/) + '"></i>'}
 				});
 				outp += '</div>';
 			}
+			outp += (id == 0 || id == 3 ? '</div>' : '');
 		});
-		
-		// TODO Deck Checks (Agenda)
-		// #Plots = 7, Cards => 50, Banner Agenda => 12 Non-Loyal, Fealty <= 15, Non-Faction/Banner
-		
+				
 		$('#decklist').html(outp);
+		
+		content = '';
+		decklist().each(function(card) {
+			content += '{"code":"' + card.code + '","qty":' + card.qty + '},';
+		})
+		
+		$('#deck-content').val('[' + content.slice(0,-1) + ']');
+		
+		newGame();
 	}
 	function writeoutput() {
 		var exp = '';
 		
-		exp = 'Created using danurai.github.io/agot2 deck builder\n\nFaction:\n ' + decklist({"Type":"Faction"}).first().name.replace('House ','');
+		exp = 'Created using danurai.github.io/agot2 deck builder\n\nFaction:\n ' 
+		exp += typeof decklist({"Type":"Faction"}).first().name != "undefined" ? decklist({"Type":"Faction"}).first().name.replace('House ','') : "";
 		exp += '\n\nTotal Cards: (' + decklist({"Type":["Character","Attachment","Event","Location"]}).sum("qty") + ')';
 		$.each(["Agenda","Plot","Character","Attachment","Event","Location"],function (id,type) {
 			exp += '\n\n' + type;
@@ -205,9 +286,48 @@ $(document).ready(function () {
 				exp += '\n' + card.qty + 'x ' + card.name + ' (' + card.Set + ')'
 			});
 		});
-		$('#deckload').val(exp);}
+		$('#deckload').val(exp);
+	}
 
-
+	function checkDeck()	{
+	// Validates the deck against Conventional and Agenda Limitations
+		var pass = '<i style="color: green;" class="fa fa-check-circle-o" aria-hidden="true"></i>';
+		var fail = '<i style="color: red;" class="fa fa-times-circle-o" aria-hidden="true"></i>';
+		var deckTypes = ["Character","Attachment","Event","Location"];
+		var checkoutp = '<b>Card Count Validations:</b> ';
+		var x = 0;
+		
+		// Faction !?!?
+		x = decklist({"Type":"Faction"}).sum("qty");
+		checkoutp += (x < 1 ? 'Faction: ' + fail + ' ' : '');		
+		
+		// Plot Count
+		x = decklist({"Type":"Plot"}).sum("qty");
+		checkoutp += '7 Plots: ' + x + ' ' + (x != 7 ? fail : pass) + ' ';
+		
+		// Card Count
+		x = decklist({"Type":deckTypes}).sum("qty");
+		checkoutp += '60+ cards: ' + x + ' ' + (x < 60 ? fail : pass) + ' ';
+		
+		// Agenda
+		// - Fealty
+		var agenda = decklist({"Type":"Agenda"}).first();
+		
+		if (agenda) {	// Deck has Agenda
+			if (agenda.name == 'Fealty') {
+				x = decklist({"Type":deckTypes,"Faction":"Neutral"}).sum("qty");
+				checkoutp += '15- Neutral: '  + x + ' ' +  (x > 15 ? fail : pass) + ' ';
+			}
+			if (agenda.name.substring(0,6) == "Banner") {
+				x = decklist({"Type":deckTypes,"Faction":agenda.Faction}).sum("qty");
+				checkoutp += '12+ Non-Loyal ' + agenda.Faction + ': ' + x + ' ' + (x < 12 ? fail : pass) + ' ';
+				x = decklist({"Type":deckTypes,"Faction":agenda.Faction,"Loyal":true}).sum("qty");
+				checkoutp += 'loyal ' + x + ' ' + (x == 0 ? pass : fail);
+			}
+		}
+		
+		return '<div class="small">' + checkoutp + '</div><br>';
+	}
 		
 /* SETS TAB */
 	// SETS: Json {Set: {code: code: number: number}}
@@ -258,9 +378,7 @@ $(document).ready(function () {
 		console.log (filter);
 		updateTableBody();
 	}
-	
-
-	
+		
 /* CHECK TAB */
 	$('#loaddeck').on('click',function () {
 	// Create decklist from cards
@@ -313,13 +431,9 @@ $(document).ready(function () {
 		$('#draw2').prop('disabled',deck.length < 2);
 		$('#draw7').prop('disabled',deck.length < 7);
 	});
-	// Refresh Title
-	$('#title_card').on('click','img',function () {
-		drawTitle();
-	});
 	
 	// Make cards 50% opaque when clicked
-	$('#plot_cards').on('click','.card',function() {
+	$('#plot_cards').on('click','.check_card',function() {
 		$(this).css('opacity', 1.5 - parseFloat($(this).css('opacity')));
 		//var id = $(this).data('cardno');
 		//var set = $(this).data('cardset')
@@ -328,7 +442,7 @@ $(document).ready(function () {
 		var card = _cards({"code":$(this).data('code')}).first();
 		$('#plot_data').html ('<h4>Plot: ' + card.name + '</h4>Gold: ' + card.Gold + ' Initiative: ' + card.Initiative + ' Claim: ' + card.Claim + ' Reserve: ' + card.Reserve); // + '<br><br>' + card.CardText);
 	});
-	$('#hand').on('click','.card',function() {
+	$('#hand').on('click','.check_card',function() {
 		$(this).css('opacity', 1.5 - parseFloat($(this).css('opacity')));
 	})
 			
@@ -363,13 +477,14 @@ $(document).ready(function () {
 	function newGame() {
 		_deck = [];
 		decklist({"Type":["Character","Event","Attachment","Location"]}).each(function(card) {
-			_deck.push({"code":card.code,"img":card.img});
+			for (i=0; i<card.qty; i++) {
+				_deck.push({"code":card.code,"img":card.img,"name":card.name});
+			}
 		});
 		_deck = shuffle(_deck);
 		deck = _deck.slice();
 		
 		drawFactionPlots();
-		drawTitle();
 		$('#hand').html ('');
 		drawCards(7);
 	}
@@ -378,30 +493,69 @@ $(document).ready(function () {
 		var outp = '';
 		
 		// Faction and Agenda
-		var faction = decklist({"Type":"Faction"}).count()>0 ? decklist({"Type":"Faction"}).first().name : '';
-		var agenda = decklist({"Type":"Agenda"}).count()>0 ? ' (' + decklist({"Type":"Agenda"}).first().name + ')' : '';
-		$('#faction_name').html ('<h2 class="faction">' + faction + agenda + '</span></h2>' );
+		var faction = decklist({"Type":"Faction"}).count()>0 ? decklist({"Type":"Faction"}).first() : '';
+		var agenda = decklist({"Type":"Agenda"}).count()>0 ? decklist({"Type":"Agenda"}).first() : '';
 		
+		outp += faction != '' ? '<h2 class="card faction" data-code="' + faction.code + '">' + faction.name + '</h2>'  : '';
+		outp += agenda != '' ? '<h4 class="card agenda" data-code="' + agenda.code + '">' + agenda.name + '</h4>' : '';
+				
+		$('#faction_name').html (outp);
+		
+		outp='';
 		// Plots
 		decklist({"Type":"Plot"}).each(function (plot) {
-			outp += '<img src="' + plot.img + '" class="card plot_card" data-code="' + plot.code + '"></img>';
+			for (var i=0; i<plot.qty; i++) {
+				outp += '<img src="' + plot.img + '" class="check_card plot_card" data-code="' + plot.code + '"></img>';
+			}
 		});
 		$('#plot_cards').html (outp);
 		$('#plot_data').html("Gold: 8");
 	}
-	function drawTitle() {
-		_titles = shuffle(_titles);
-		var title = _titles[0];
-		$('#title_card').html('<h4>Title:</h4><img src="' + title.img + '" data-code="' + title.code + '" class="card plot_card"></img>');
-	}
 	
 	function drawCards(n) {
-		var card 
+		var card;
+		n = Math.min(n, deck.length);
 		for (var i = 0; i < n; i++) {
-			card = deck.pop();
-			$('#hand').append('<img src="' + card.img + '" class="card deck_card" data-code="' + card.code + '"></img>');
+			card = deck.shift();
+			$('#hand').append('<img src="' + card.img + '" class="check_card deck_card" data-code="' + card.code + '"></img>');
+			updateChooseList();
 		}
 	}
+	
+	function updateChooseList()	{
+		var outp='';
+		outp += '<div class="btn-group"><button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">Choose<span class="caret"></span></button>';
+		outp += '<ul style="max-height: 250px; overflow-y: scroll;"class="dropdown-menu scrollable-menu" role="menu">';
+		var x = 0;
+		$.each(deck,function (id,card) {
+			outp += '<li role="presentation"><a role="menuitem" class="card deck_card" data-code="' + card.code + '" data-index="' + x + '">#' + (x+1) + ' ' + card.name + '</a></li>';
+			if (x++ == 9) {
+				outp +='<li role="presentation" class="divider"></li>';
+			}
+		});
+		outp += '</ul>';
+		outp += '</div>';
+		$('#choosecardlist').html (outp);
+	}
+	
+	$('#choosecardlist').on('click','a',function () {
+		var card = deck.splice($(this).data('index'),1)[0];
+		$('#hand').append('<img src="' + card.img + '" class="check_card deck_card" data-code="' + card.code + '"></img>');
+		updateChooseList();
+	});
+	
+/* DELETE Confirm */
+	$('#delete_deck').on('click',function () {
+		if (confirm("Are you sure you want to delete " + $('#deckname') + '?')) {
+			alert ("Dodelerte");
+		}
+	});
+	
+	function showSnack(message) {
+		$('#snackbar').html (message);
+		$('#snackbar').fadeIn(1000).delay(5000).fadeOut(1000);
+	}
+	
 });
 
 /* Fisher-Yates Shuffle  */
@@ -422,3 +576,4 @@ function shuffle(array) {
 
 	return array;
 }
+

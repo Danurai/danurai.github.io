@@ -3,7 +3,7 @@
 $(document).ready(function () {
 	
 	$("body").on("mouseenter",".card", function() {
-		var card = _cards({"code":$(this).data('code')}).first();
+		var card = _cards({"code":$(this).data('code').toString()}).first();
 		
 		var faction_s = typeof card.Faction !== "undefined" ? card.Faction.match(/\w+/) : "Neutral";
 		var icons = '';
@@ -38,8 +38,48 @@ $(document).ready(function () {
 				tip: false
 			},
 			position: {
-				my: 'left-center',
-				at: 'right-center',
+				my: 'left center',
+				at: 'right center',
+				viewport : $(window)
+			},
+			hide:	{
+				//event: 'unfocus'
+			}
+		});
+	});
+	
+/* CHECK Tab - Draw simulator */
+
+	$("body").on("mouseenter",".check_card", function() {
+		var card = _cards({"code":$(this).data('code').toString()}).first();
+		
+		var faction_s = typeof card.Faction !== "undefined" ? card.Faction.match(/\w+/) : "Neutral";
+			
+		$(this).qtip({
+			overwrite: false,
+			show: {
+				ready: true
+			},
+			content: {
+				text:  '<b>' 
+					+ (card.Unique ? '&diams;&nbsp;' : '')
+					+ card.name + '</b>'
+					+ '<br>'
+					+ (card.Type == "Plot" ? 'Gold: ' + card.Gold + ' Initiative: ' + card.Initiative + ' Claim: ' + card.Claim + ' Reserve: ' + card.Reserve : '')
+					+ (typeof card.Cost !== "undefined" ? 'Cost: ' + card.Cost + ' ' : '' )
+					+ (typeof card.Strength !== "undefined" ? 'Str: ' + card.Strength + ' ' : '')
+//					+ (icons != '' ? icons : '')
+					+ '<p class="' + faction_s + '-card">' + card.CardText
+					+ (typeof card.Faction !== "undefined" ? '<div class="small" style="float: left;">' + card.Faction + (card.Loyal == true ? ' (Loyal)' : '') + '</div>' : 'Neutral')
+					+ '<div class="small" style="text-align: right;">' + card.Set + ' #' + card.Number + '</div>'
+			},
+			style: {
+				classes: 'qtip-bootstrap',
+				tip: false
+			},
+			position: {
+				my: 'top center',
+				at: 'bottom center',
 				viewport : $(window)
 			},
 			hide:	{
