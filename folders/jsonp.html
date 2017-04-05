@@ -45,7 +45,7 @@
 			$.ajax({
 				datatype: "jsonp",
 				jsonp: "callback",
-				url: "https://netrunnerdb.com/api/2.0/public/packs",
+				url: "https://thronesdb.com/api/2.0/public/packs",
 				success: function (data) {
 					_packs = TAFFY(data)
 					$('#dump').html(_packs().stringify());
