@@ -17,7 +17,17 @@
 	<link href="https://fonts.googleapis.com/css?family=Lato|Orbitron" rel="stylesheet">
 	<style>
 		div { font-family: 'Orbitron', sans-serif; }
-		#folderpages td { width: 33%; }
+		#folderpages td { 
+			width: 33%; 
+			position: relative;
+			text-align: center;
+		}
+		.footer	{
+			font-size: 0.8em;
+			position: absolute;
+			bottom: 	0;
+			right:	0;
+		}
 	</style>
 	
 	
@@ -135,9 +145,14 @@
 					outp += '<tr>';
 					for (var x=0; x<3; x++)	{
 						id = (pagenum*9)+(i*3)+x;
-						outp += '<td data-code="' + (id < section.length ? section[id].code : '') + '">'
-							+ (section[id].title != "-" ? '<div>' + section[id].title + '</div>' : '-')
-							+ '</td>';
+						outp += '<td data-code="' + (id < section.length ? section[id].code : '') + '">';
+						if (section[id].title != "-") {
+							outp += '<div>' + section[id].title + '</div>' 
+								+ '<br><div class="footer">' + _packs({"code":section[id].pack_code}).first().name + ' #' + section[id].position + '</div>';
+						} else {
+							outp += '-';
+						}
+						outp += '</div></td>';
 							//<br><div class="small">' +  section[id].text + '</div>'
 					}
 					outp += '</tr>';
@@ -177,6 +192,7 @@
 					},
 					content: {
 						text: '<div class="small">' +  card.text + '</div>'
+							+ '<br><div style="font-size: 0.8em">' + _packs({"code":card.pack_code}).first().name + ' #' + card.position + '</div>'
 					},
 					style: {
 						classes: 'qtip-bootstrap',
