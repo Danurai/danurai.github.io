@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- JQuery -->
+	<script src="https://code.jquery.com/jquery-2.2.2.min.js" integrity="sha256-36cp2Co+/62rEAAYHLmRCPIych47CvdM+uTBJwSzWjI=" crossorigin="anonymous"></script>
+<!-- BOOTSTRAP -->
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+	
+<!-- jquery QTIPs -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/qtip2/2.1.1/jquery.qtip.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/qtip2/2.1.1/jquery.qtip.js"></script>
+<!-- TAFFYdb -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/taffydb/2.7.2/taffy-min.js"></script>
+
+	<!--link href="https://fonts.googleapis.com/css?family=Cinzel" rel="stylesheet"-->
+	<link href="https://fonts.googleapis.com/css?family=Lato|Orbitron" rel="stylesheet">
+	<style>
+		div { font-family: 'Orbitron', sans-serif; }
+		#folderpages td { width: 33%; }
+	</style>
+	
+	
+	<script>
+		var pagenum = 0;
+		var section = [];
+		var factions = [];
+		
+		$(document).ready(function () {
+			var outp = '';
+			var checked = false;
+			var indent = false;
+			var _cycles;
+			var _packs;
+			var _cards;
+			var _factions;
+			var _types;
+			
+			//$.getJSON('http://ringsdb.com/api/public/packs/', function (data) {
+			//$.getJSON('http://thronesdb.com/api/public/packs?callback=?', function (data) {
+			$.getJSON('https://netrunnerdb.com/api/2.0/public/factions?jsoncallback', function (data) {
+				console.log (data.data);
+				_factions = TAFFY(data.data);
+				$.getJSON('https://netrunnerdb.com/api/2.0/public/types?jsoncallback', function (data) {
+					console.log (data.data);
+					_types = TAFFY(data.data);
+					$.getJSON('https://netrunnerdb.com/api/2.0/public/cycles?jsoncallback', function (data) {
+						console.log (data.data);
+						_cycles = TAFFY(data.data);
+						$.getJSON('https://netrunnerdb.com/api/2.0/public/packs?jsoncallback', function (data) {
+							console.log(data.data);
+							_packs = TAFFY(data.data);
+							$.getJSON('https://netrunnerdb.com/api/2.0/public/cards?jsoncallback', function (data) {
+								console.log(data.data);
+								_cards = TAFFY(data.data);
+								
+								oupt = '';
+								_cycles().order("position").each( function (cycle) {
+									indent = false;
+									_packs({"cycle_code":cycle.code,"date_release":{isNull:false}}).order("position").each( function (pack,idx) {
+										if (typeof(Storage) !== "undefined") {
+											checked = localStorage.getItem("anr-pack-" + pack.code) == null ? true : localStorage.getItem("anr-pack-" + pack.code) == "true";
+										} else {
+											checked = true;
+										}
+										if (cycle.name != pack.name && idx == 0) {
+											outp +='<div><b>' + cycle.name + '</b></div>';
+											indent = true;
+										}
+										outp += '<div class="checkbox" style = "'
+											+ (indent ? 'padding-left: 10px;' : '') + '">'
+											+ '<label><input type="checkbox" data-code="'  + pack.code + '" value=""' + (checked == true ? ' checked="checked"' : '') + '">'
+											+ (cycle.name == pack.name ? '<b>' : '') 
+											+ pack.name 
+											+ (cycle.name == pack.name ? '</b>' : '')
+											+ ' (' + _cards({"pack_code":pack.code}).sum("quantity") + ')'
+											+ '</label></div>';
+									});
+									$('#packlist').html (outp);
+
+								});
+								
+								updateFolder()
+							});
+						});
+					});
+				});
+			});
+			
+			function updateFolder() {
+				var outp = '';
+				var filter_pack = [];
+				var plots;
+			
+			// Pack Filter
+				_packs({"date_release":{isNull:false}}).order("position").each( function (pack) {
+					if (typeof(Storage) !== "undefined") {
+						if (localStorage.getItem("anr-pack-" + pack.code) == null || localStorage.getItem("anr-pack-" + pack.code) == "true") {
+							filter_pack.push(pack.code);
+						}
+					} else {
+						filter_pack.push(pack.code)
+					}
+				});
+				
+				outp = '<ul class="breadcrumb">'
+				_factions().each( function (faction, idx)	{
+					outp += '<li data-faction="' + faction.code + '"><a href="#">' + faction.name + '</a></li>';
+					
+					factions[faction.code] = [];
+					_types().order("position").each( function (type) {
+						factions[faction.code] = factions[faction.code].concat(_cards({"type_code":type.code,"faction_code":faction.code,"pack_code":filter_pack}).order("title").get());
+						while (factions[faction.code].length % 9 != 0) { factions[faction.code].push({"title":"-"}); }
+					});
+					
+				});
+				outp += '</ul>';
+				
+				$('#foldersections').html(outp);
+				
+				pagenum = 0;
+				section = factions[_factions().first().code];
+				drawpage();
+			}
+			
+			function drawpage()	{
+				var id;
+				var pages = Math.floor(section.length/9);
+				pagenum = Math.max(0,pagenum);
+				pagenum = Math.min(pages,pagenum)
+				var outp = '';
+				outp = '<div><b>' + _factions({"code":section[0].faction_code}).first().name + '</b> :: Page ' + (pagenum + 1) + ' of ' + (pages) + ' :: ' + _types({"code":section[pagenum*9].type_code}).first().name;
+				outp += '<table class="table">';
+				for (var i=0; i<3; i++)	{
+					outp += '<tr>';
+					for (var x=0; x<3; x++)	{
+						id = (pagenum*9)+(i*3)+x;
+						outp += '<td data-code="' + (id < section.length ? section[id].code : '') + '">'
+							+ (section[id].title != "-" ? '<div>' + section[id].title + '</div>' : '-')
+							+ '</td>';
+							//<br><div class="small">' +  section[id].text + '</div>'
+					}
+					outp += '</tr>';
+				}
+				outp += '</table>';
+				$('#folderpages').html(outp);
+			}
+			
+	// Listeners //
+			$('#foldersections').on('click','li',function () {
+				pagenum = 0;
+				//$(this)
+				section = factions[$(this).data('faction')];
+				drawpage();
+			});
+			
+			$('#packlist').on('click','input',function () {
+				localStorage.setItem("anr-pack-" + $(this).data('code'),$(this).prop('checked') );
+				updateFolder();
+			});
+			
+			$('#pageprev').on('click',function () {
+				pagenum--;
+				drawpage();
+			});
+			$('#pagenext').on('click',function () {
+				pagenum++;
+				drawpage();
+			});
+		// card qtip
+			$('#folderpages').on('mouseover','td',function() {
+				var card = _cards({"code":$(this).data('code').toString()}).first();
+				$(this).qtip({
+					overwrite: false,
+					show: {
+						ready: true
+					},
+					content: {
+						text: '<div class="small">' +  card.text + '</div>'
+					},
+					style: {
+						classes: 'qtip-bootstrap',
+						tip: false
+					},
+					position: {
+						my: 'left center',
+						at: 'right center',
+						viewport : $(window)
+					},
+					hide:	{
+						//event: 'unfocus'
+					}
+				});
+			});
+		});
+	</script>
+</head>
+<body>
+	<div class="container">
+		<div class="col-sm-4">
+			<div class="row">
+				<h2>Packs</h2>
+				<div id="packlist"></div>
+			</div>
+		</div>
+		<div class="col-sm-8">
+			<div class="row">
+				<h2>Virtual Folders</h2>
+				<div id="foldersections"></div>
+				<ul class="pager">
+					<li class="previous" id="pageprev"><a href="#">&larr; Previous</a></li>
+					<li class="next" id="pagenext"><a href="#">Next &rarr;</a></li>
+					<div id="folderpages">
+					</div>
+				</ul>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
