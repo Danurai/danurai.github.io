@@ -119,7 +119,11 @@
 					
 					factions[faction.code] = [];
 					_types().order("position").each( function (type) {
-						factions[faction.code] = factions[faction.code].concat(_cards({"type_code":type.code,"faction_code":faction.code,"pack_code":filter_pack}).order("title").get());
+						_cycles().order("position").each( function (cycle)	{
+							// Order by Cycle \ Title
+							cycle_packs = _packs({"code":filter_pack,"cycle_code":cycle.code}).select("code");
+							factions[faction.code] = factions[faction.code].concat(_cards({"type_code":type.code,"faction_code":faction.code,"pack_code":cycle_packs}).order("title").get());
+						});
 						while (factions[faction.code].length % 9 != 0) { factions[faction.code].push({"title":"-"}); }
 					});
 					
@@ -148,7 +152,8 @@
 						outp += '<td data-code="' + (id < section.length ? section[id].code : '') + '">';
 						if (section[id].title != "-") {
 							outp += '<div>' + section[id].title + '</div>' 
-								+ '<br><div class="footer">' + _packs({"code":section[id].pack_code}).first().name + ' #' + section[id].position + '</div>';
+								+ '<br><div class="footer">' + _cycles({"code":_packs({"code":section[id].pack_code}).first().cycle_code}).first().name + ' #' + section[id].position + '</div>';
+							//	+ '<br><div class="footer">' + _packs({"code":section[id].pack_code}).first().name + ' #' + section[id].position + '</div>';
 						} else {
 							outp += '-';
 						}
