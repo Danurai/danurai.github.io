@@ -28,6 +28,9 @@
 			bottom: 	0;
 			right:	0;
 		}
+		.card{
+			width: 200px;
+		}
 	</style>
 	
 	
@@ -45,23 +48,32 @@
 			var _cards;
 			var _factions;
 			var _types;
+			var imageUrlTemplate;
 			
 			//$.getJSON('http://ringsdb.com/api/public/packs/', function (data) {
 			//$.getJSON('http://thronesdb.com/api/public/packs?callback=?', function (data) {
 			$.getJSON('https://netrunnerdb.com/api/2.0/public/factions?jsoncallback', function (data) {
+				console.log ("Factions");
 				console.log (data.data);
 				_factions = TAFFY(data.data);
 				$.getJSON('https://netrunnerdb.com/api/2.0/public/types?jsoncallback', function (data) {
+					console.log ("Types");
 					console.log (data.data);
 					_types = TAFFY(data.data);
 					$.getJSON('https://netrunnerdb.com/api/2.0/public/cycles?jsoncallback', function (data) {
+						console.log ("Cycles");
 						console.log (data.data);
 						_cycles = TAFFY(data.data);
 						$.getJSON('https://netrunnerdb.com/api/2.0/public/packs?jsoncallback', function (data) {
+							console.log ("Packs");
 							console.log(data.data);
 							_packs = TAFFY(data.data);
 							$.getJSON('https://netrunnerdb.com/api/2.0/public/cards?jsoncallback', function (data) {
+								console.log ("cards");
+								console.log (data.imageUrlTemplate);
 								console.log(data.data);
+								
+								imageUrlTemplate = data.imageUrlTemplate;
 								_cards = TAFFY(data.data);
 								
 								oupt = '';
@@ -115,16 +127,18 @@
 				
 				outp = '<ul class="breadcrumb">'
 				_factions().each( function (faction, idx)	{
-					outp += '<li data-faction="' + faction.code + '"><a href="#">' + faction.name + '</a></li>';
+					outp += '<li data-faction="' + faction.code + '"><a href="#" style="color: #' + faction.color + '">' + faction.name + '</a></li>';
 					
 					factions[faction.code] = [];
 					_types().order("position").each( function (type) {
 						_cycles().order("position").each( function (cycle)	{
 							// Order by Cycle \ Title
-							cycle_packs = _packs({"code":filter_pack,"cycle_code":cycle.code}).select("code");
+							cycle_packs = _packs({"code":filter_pack,"cycle_code":cycle.code}).order("position").select("code");
 							factions[faction.code] = factions[faction.code].concat(_cards({"type_code":type.code,"faction_code":faction.code,"pack_code":cycle_packs}).order("title").get());
 						});
-						while (factions[faction.code].length % 9 != 0) { factions[faction.code].push({"title":"-"}); }
+						if (_cards({"faction_code":faction.code,"pack_code":filter_pack}).count() > 9) {
+							while (factions[faction.code].length % 9 != 0) { factions[faction.code].push({"title":"-"}); }
+						}
 					});
 					
 				});
@@ -151,8 +165,13 @@
 						id = (pagenum*9)+(i*3)+x;
 						outp += '<td data-code="' + (id < section.length ? section[id].code : '') + '">';
 						if (section[id].title != "-") {
-							outp += '<div>' + section[id].title + '</div>' 
-								+ '<br><div class="footer">' + _cycles({"code":_packs({"code":section[id].pack_code}).first().cycle_code}).first().name + ' #' + section[id].position + '</div>';
+							if ($('#showimg').prop('checked'))	{
+								outp += '<div><img class="card" src="' + imageUrlTemplate.replace('{code}',section[id].code) + '"><div>';
+								section[id].code
+							} else {
+								outp += '<div>' + section[id].title + '</div>'
+									+ '<br><div class="footer">' + _cycles({"code":_packs({"code":section[id].pack_code}).first().cycle_code}).first().name + ' #' + section[id].position + '</div>';
+							}
 							//	+ '<br><div class="footer">' + _packs({"code":section[id].pack_code}).first().name + ' #' + section[id].position + '</div>';
 						} else {
 							outp += '-';
@@ -187,6 +206,9 @@
 				pagenum++;
 				drawpage();
 			});
+			$('#showimg').on('change',function() {
+				drawpage();
+			});
 		// card qtip
 			$('#folderpages').on('mouseover','td',function() {
 				var card = _cards({"code":$(this).data('code').toString()}).first();
@@ -196,8 +218,13 @@
 						ready: true
 					},
 					content: {
-						text: '<div class="small">' +  card.text + '</div>'
-							+ '<br><div style="font-size: 0.8em">' + _packs({"code":card.pack_code}).first().name + ' #' + card.position + '</div>'
+						text: 
+							'<div><h4>' + card.title + '</h4></div>'
+							+ '<div class="small">' +  card.text + '</div>'
+							+ '<br><div style="font-size: 0.8em">' 
+							+ _cycles({"code":_packs({"code":card.pack_code}).first().cycle_code}).first().name
+							+ ' - '							 
+							+ _packs({"code":card.pack_code}).first().name + ' #' + card.position + '</div>'
 					},
 					style: {
 						classes: 'qtip-bootstrap',
@@ -214,6 +241,7 @@
 				});
 			});
 		});
+	
 	</script>
 </head>
 <body>
@@ -225,8 +253,15 @@
 			</div>
 		</div>
 		<div class="col-sm-8">
+			<div class="row" style="position: relative;">
+				<div class="col-sm-6">
+					<h2>Virtual Folders</h2>
+				</div>
+				<div class="footer col-sm-6">
+					<label class="pull-right"><input type="checkbox" id="showimg" value> Show Card Images</label>
+				</div>
+			</div>
 			<div class="row">
-				<h2>Virtual Folders</h2>
 				<div id="foldersections"></div>
 				<ul class="pager">
 					<li class="previous" id="pageprev"><a href="#">&larr; Previous</a></li>
