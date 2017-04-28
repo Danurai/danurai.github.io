@@ -1,12 +1,26 @@
 //props to https://www.phpied.com/3-ways-to-define-a-javascript-class/
 
+function XFGame()	{
+	// add player
+	// setup decks
+	
+}
+
 function XFPlayer(metaType,roleType)	{		//OptionalArg = 'defaultValue'
-	this.metaId = metaType.id;
-	this.roleID = roleType.id;
+	this.meta = metaType;
+	this.role = roleType;
 	this.hits = this.maxhits = metaType.starthits;
 	this.nuyen = metaType.startnuyen;
 	//this.startcards = metaType.startcards;
 	this.cards = new XFDeck(roleType.startdeck);
+	
+	this.playsheet = function() {
+		var outp;
+		outp = '<div>' + this.meta.meta + ' - ' + this.role.rolename + '</div>'
+			+ '<div>' + this.hits + '/' + this.maxhits + ' hits'
+			+ '<br>' + this.nuyen + ' nuYen</div>';
+		return outp;
+	}
 }
 
 function XFDeck(cardIDs)	{

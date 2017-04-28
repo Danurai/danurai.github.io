@@ -61,6 +61,8 @@ $(document).ready(function () {
 	console.log (obstacleH);
 	console.log (crossfire);
 	
+	$('#output').html (plr.playsheet());
+	
 });
 
 
