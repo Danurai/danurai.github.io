@@ -131,11 +131,15 @@
 					
 					factions[faction.code] = [];
 					_types().order("position").each( function (type) {
+						// Order by Title
+						factions[faction.code] = factions[faction.code].concat(_cards({"type_code":type.code,"faction_code":faction.code,"pack_code":filter_pack}).order("title").get());
+						/*
+						// Order by Cycle \ Title
 						_cycles().order("position").each( function (cycle)	{
-							// Order by Cycle \ Title
 							cycle_packs = _packs({"code":filter_pack,"cycle_code":cycle.code}).order("position").select("code");
 							factions[faction.code] = factions[faction.code].concat(_cards({"type_code":type.code,"faction_code":faction.code,"pack_code":cycle_packs}).order("title").get());
 						});
+						*/
 						if (_cards({"faction_code":faction.code,"pack_code":filter_pack}).count() > 9) {
 							while (factions[faction.code].length % 9 != 0) { factions[faction.code].push({"title":"-"}); }
 						}
