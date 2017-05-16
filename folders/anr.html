@@ -196,12 +196,12 @@
 		}
 		
 		function drawpage()	{
-			var pagecount = (pages.length/9);;
+			var pagecount = (pages.length/9);
 			var outp = '';
 			var id;
 			
 			pagenum = Math.max(0,pagenum);
-			pagenum = Math.min(pagecount,pagenum);
+			pagenum = Math.min(pagecount-1,pagenum);
 			
 			var outp = _factions({"code":faction_code}).first().name 
 				+ ' page ' + (pagenum + 1)
