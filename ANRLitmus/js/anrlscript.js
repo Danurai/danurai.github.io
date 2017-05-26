@@ -98,7 +98,7 @@ $(document).ready(function ()	{
 		
 		$.each(decks[faction].getDeck(),function (id,code) {
 			card = _cards({"code":code}).first();
-			outp += '<li role="presentation" class="card-picker" data-index="' + id + '"><a role="menuitem" class="card-picker" data-code="' + code + '">' + card.title + '</a></li>';
+			outp += '<li style="cursor: pointer;" role="presentation" class="card-picker" data-index="' + id + '"><a role="menuitem" class="card-picker" data-code="' + code + '">' + card.title + '</a></li>';
 		});
 		
 		outp += '</ul>';
