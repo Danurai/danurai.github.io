@@ -40,7 +40,7 @@ $(document).ready(function ()	{
 		$(this).css('opacity', 1.5 - parseFloat($(this).css('opacity')));
 	})
 	
-	$(document).on('click','a.card-picker',function () {
+	$(document).on('click','li.card-picker',function () {
 		//alert ($(this).closest('ul').attr('for') + ': ' + $(this).data('index'));
 		var faction = decks[$(this).closest('ul').attr('for')];
 		drawCard(faction, $(this).data('index'))
@@ -85,7 +85,8 @@ $(document).ready(function ()	{
 		var faction = deck.getMeta('faction');
 		if (deck.draw(idx))	{
 			var code = deck.getHand().slice(-1)[0].toString();
-			$('#' + faction + 'hand').append('<img draggable="true" src="' + imgurl.replace("{code}",code) + '" class="check_card deck_card" data-code="' + code + '"></img>');
+			var crd = _cards({"code":code}).first();
+			$('#' + faction + 'hand').append('<img alt="' + crd.title + '" src="' + imgurl.replace("{code}",code) + '" class="check_card deck_card" data-code="' + code + '"></img>');
 			updateChooseList(faction);
 		}
 	}
@@ -97,7 +98,7 @@ $(document).ready(function ()	{
 		
 		$.each(decks[faction].getDeck(),function (id,code) {
 			card = _cards({"code":code}).first();
-			outp += '<li role="presentation"><a role="menuitem" class="card-picker" data-code="' + code + '" data-index="' + id + '">' + card.title + '</a></li>';
+			outp += '<li role="presentation" class="card-picker" data-index="' + id + '"><a role="menuitem" class="card-picker" data-code="' + code + '">' + card.title + '</a></li>';
 		});
 		
 		outp += '</ul>';
