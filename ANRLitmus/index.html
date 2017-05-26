@@ -1,0 +1,144 @@
+<!DOCTYPE HTML>
+<head>
+<head>
+<!-- JQuery -->
+	<script src="https://code.jquery.com/jquery-2.2.2.min.js" integrity="sha256-36cp2Co+/62rEAAYHLmRCPIych47CvdM+uTBJwSzWjI=" crossorigin="anonymous"></script>
+<!-- BOOTSTRAP -->
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+	
+<!-- jquery QTIPs -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/qtip2/2.1.1/jquery.qtip.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/qtip2/2.1.1/jquery.qtip.js"></script>
+<!-- TAFFYdb -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/taffydb/2.7.2/taffy-min.js"></script>
+
+<!-- FONT AWESOME -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+
+<!-- Site Pages -->
+	<link rel="stylesheet" href="css/anrlstyle.css">
+	<link rel="stylesheet" href="css/iconstyle.css">
+	<script src="js/netrunnerdb_cards.js"></script>
+	<script src="js/anrlclass.js"></script>
+	<script src="js/anrlscript.js"></script>
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="panel-group" style="margin-bottom: 0px;">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title">
+							<a data-toggle="collapse" href="#collapse1">Load Decks</a>
+							</h4>
+						</div>
+						<div id="collapse1" class="panel-collapse collapse">
+							<div class="panel-body">
+								<div class="col-sm-6">
+									Corp
+									<textarea class="form-control" type="text" id="corpdl" rows="5"></textarea>
+									<button type="button" class="btn btn-default btn-load" for="corp">Load</button>
+								</div>
+								<div class="col-sm-6">
+									Runner
+									<textarea class="form-control" type="text" id="rundl" rows="5"></textarea>
+									<button type="button" class="btn btn-default btn-load" for="run">Load</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-6">
+				<div class="row">
+					<div class="col-md-12" align="center" id="corpinfo">
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12" align="center">
+						<span class="form-group">
+							<span class="icon-credit"></span>
+							<label id="corpcreds">5</label>&nbsp;&nbsp;
+							<span class="btn-group" for="corp">
+								<button type="button" class="btn btn-default btn-sm btn-cred" val="-1">-</i></button>
+								<button type="button" class="btn btn-default btn-sm btn-cred" val="1">+</i></button>
+							</span>
+						</span>&nbsp;&nbsp;
+						<span class="form-group">
+							<span class="icon-agenda"></span>
+							<label id="corpscore">0</label>&nbsp;&nbsp;
+							<span class="btn-group" for="corp">
+								<button type="button" class="btn btn-default btn-sm btn-score" val="-1">-</i></button>
+								<button type="button" class="btn btn-default btn-sm btn-score" val="1">+</i></button>
+							</span>
+						</span>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12" align="center" id="corpbtns">
+						<b>Draw:&nbsp;</b>
+						<div class="btn-group" for="corp">
+							<button type="button" class="btn btn-default btn-sm btn-draw" val="1" id="draw1">1</button>
+							<button type="button" class="btn btn-default btn-sm btn-draw" val="2" id="draw1">2</button>
+							<button type="button" class="btn btn-default btn-sm btn-draw" val="4" id="draw4">4</button>
+							<button type="button" class="btn btn-default btn-sm btn-draw" val="all" id="drawall">All</button>
+							<button type="button" class="btn btn-default btn-sm btn-draw" val="0" id="drawreset">Reset</button>
+						</div>
+						<span id="corpcardlist"></span>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12" id="corphand" align="center">
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<div class="row">
+					<div class="col-md-12" align="center" id="runinfo">
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12" align="center">
+						<span class="form-group">
+							<span class="icon-credit"></span>
+							<label id="runcreds">5</label>&nbsp;&nbsp;
+							<span class="btn-group" for="run">
+								<button type="button" class="btn btn-default btn-sm btn-cred" val="-1">-</i></button>
+								<button type="button" class="btn btn-default btn-sm btn-cred" val="1">+</i></button>
+							</span>
+						</span>&nbsp;&nbsp;
+						<span class="form-group">
+							<span class="icon-agenda"></span>
+							<label id="runscore">0</label>&nbsp;&nbsp;
+							<span class="btn-group" for="run">
+								<button type="button" class="btn btn-default btn-sm btn-score" val="-1">-</i></button>
+								<button type="button" class="btn btn-default btn-sm btn-score" val="1">+</i></button>
+							</span>
+						</span>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12" align="center" id="runbtns">
+						<b>Draw:&nbsp;</b>
+						<div class="btn-group" for="run">
+							<button type="button" class="btn btn-default btn-sm btn-draw" val="1" id="draw1">1</button>
+							<button type="button" class="btn btn-default btn-sm btn-draw" val="2" id="draw1">2</button>
+							<button type="button" class="btn btn-default btn-sm btn-draw" val="4" id="draw4">4</button>
+							<button type="button" class="btn btn-default btn-sm btn-draw" val="all" id="drawall">All</button>
+							<button type="button" class="btn btn-default btn-sm btn-draw" val="0" id="drawreset">Reset</button>
+						</div>
+						<span id="runcardlist"></span>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12" id="runhand" align="center">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
