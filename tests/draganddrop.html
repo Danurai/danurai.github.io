@@ -28,8 +28,7 @@
 		padding: 2px;
 	}
 	.region	{
-		border: 1px solid;
-		border-color:	#AAAAAA;
+		border: 1px solid	#AAAAAA;
 		border-radius: 5px;
 		min-height: 150px;
 	}
@@ -39,80 +38,134 @@
 	.row	{
 		margin-top: 5px;
 	}
+	.region-title	{
+		color:	#AAAAAA;
+	}
+	#popupmenu	{
+		position: 		absolute;
+		background-color: #FFF;
+		border: 			1px solid #AAAAAA;
+		text-align: 	center;
+	}
 	</style>
 </head>
 <body>
 	<div class="container">
 		<div class="row">
-			<div class="col-md-6">
-				<div id="hand" class="region"></div>
+			<div class="col-md-6">	
+				<div class="row">
+					<div class="col-md-6" id="corparea">
+						<div id="hq" name="HQ" class="region"></div>
+						<div id="archives" name="Archives" class="region"></div>
+						<div id="randd" name="R&D" class="region"></div>
+					</div>
+				</div>
 			</div>
 			<div class="col-md-6">
-			
 			</div>
 		</div>
-		<div class="row">
-			<div class="col-md-6">
-				<div id="played" class="region"></div>
-			</div>
-			<div class="col-md-6">
-			</div>
+		<div id="popupmenu" class="menu" hidden>
 		</div>
 	</div>
 </body>
 <script>
 	$(document).ready(function () {
+		var regions = ["hq","archives","randd"];
 		var _imgs = TAFFY([{"code":"01001","title":"Corp Back","img":"Corp_back.png"},{"code":"01002","title":"Runner Back","img":"Runner_back.png"}]);
 	
-		var hand = ["01001","01002"];
-		var played = [];
-		drawHand();
-		drawPlayed();
+		var regionCrds = [];
+		regionCrds["hq"]= ["01001","01002"];
+		regionCrds["archives"]= [];
+		regionCrds["randd"]= [];
+		
+		drawRegions();
+		
 		$(document)
-		.on('dragstart','.card', function(ev)	{
-			//ev.preventDefault();
-			var jsonData = '{"source":"' + $(this).closest('div').attr('id') + '","idx":"'+ $(this).data('idx') + '"}';
-			console.log(jsonData);
-			ev.originalEvent.dataTransfer.setData('text/plain',jsonData);
-		});
+			.on('dragstart','.card', function(ev)	{
+				//ev.preventDefault();
+				var jsonData = '{"source":"' + $(this).closest('div').attr('id') + '","idx":"'+ $(this).data('idx') + '"}';
+				console.log(jsonData);
+				ev.originalEvent.dataTransfer.setData('text/plain',jsonData);
+			})
+			.on('click','.card', function(ev)	{
+				var outp = '';
+				var thisregion  = $(this).closest('div').attr('id');
+				var thisidx = $(this).data('idx');
+				outp = '<div class="small"><b>Move To:</b></div><div class="btn-group-vertical btn-group-sm" style="padding: 5px;">';
+				$.each(regions,function(idx,rgn)	{
+					if (rgn != thisregion)	{
+						outp += '<button type="button" class="btn btn-default" '
+							+ 'data-src="' + thisregion + '" '
+							+ 'data-idx="' + thisidx + '" '
+							+ 'data-tgt="' + rgn + '" '
+							+ '>' 
+							+ $('#' + rgn).attr('name')
+							+ '</button>';
+					}
+				});
+				outp += '<button type="button" class="btn btn-default" '
+					+ 'data-src="' + thisregion + '" '
+					+ 'data-idx="' + thisidx + '" '
+					+ 'data-tgt="" '
+					+ '>New Region</button>';
+				outp += '</div>';
+				$('#popupmenu').html(outp);
+				$('#popupmenu').css({"left":ev.pageX,"top":ev.pageY});
+				$('#popupmenu').toggle();
+			})
+			;
 		
-		$('.region')
-		.on('dragover',function(ev)	{
-			ev.preventDefault();
-			ev.originalEvent.dataTransfer.dropEffect = 'move'; 
-			$(this).addClass('region-drop');
-		})
-		.on('dragleave',function(ev)	{
-			$(this).removeClass('region-drop');
-		})
-		.on('drop',function(ev)	{
-			ev.preventDefault();
-			$(this).removeClass('region-drop');
-			
-			var crdData = JSON.parse(ev.originalEvent.dataTransfer.getData('text'));
-			src = crdData.source == 'hand' ? hand : played;
-			tgt = $(this).attr('id') == 'hand' ? hand : played;
-			tgt.push(src.splice(crdData.idx,1)[0]);
-			drawHand();
-			drawPlayed();
-		});
-		
-		function drawHand()	{
-			var outp = '';
-			var crd;
-			$.each(hand, function(idx,code)	{
-				crd = _imgs({"code":code}).first();
-				outp += getCardImgEle(crd,idx);
+		$('#corparea')
+			.on('dragover','.region',function(ev)	{
+				ev.preventDefault();
+				ev.originalEvent.dataTransfer.dropEffect = 'move'; 
+				$(this).addClass('region-drop');
+			})
+			.on('dragleave','.region',function(ev)	{
+				$(this).removeClass('region-drop');
+			})
+			.on('drop','.region',function(ev)	{
+				ev.preventDefault();
+				$(this).removeClass('region-drop');
+				
+				var crdData = JSON.parse(ev.originalEvent.dataTransfer.getData('text'));
+				var src = regionCrds[crdData.source];
+				var tgt = regionCrds[$(this).attr('id')];
+				moveCrd(src,crdData.idx,tgt);
 			});
-			$('#hand').html(outp);
+		
+		$('#popupmenu')
+			.on('click','.btn',function()	{
+				var src = regionCrds[$(this).data('src')];
+				var idx = $(this).data('idx');
+				var tgt;
+				
+				if ($(this).data('tgt') == "")	{
+					$('#corparea').append('<div class="region" name="Serverx" id="serverx"></div>');
+					regions.push("serverx");
+					tgt = regionCrds["serverx"] = [];
+				} else	{
+					tgt = regionCrds[$(this).data('tgt')];
+				}
+				moveCrd(src,idx,tgt);
+				$('#popupmenu').toggle();
+			});
+		
+		function moveCrd(src,idx,tgt)	{
+			tgt.push(src.splice(idx,1)[0]);
+			drawRegions();
 		}
-		function drawPlayed()	{
-			var outp = '';
-			$.each(played, function(idx,code)	{
-				crd = _imgs({"code":code}).first();
-				outp += getCardImgEle(crd,idx);
+		function drawRegions()	{
+			var outp;
+			var crd;
+			$.each(regions, function(idx,rgn)	{
+				outp = '<div class="region-title">' + $('#' + rgn).attr('name') + '</div>';
+				$.each(regionCrds[rgn], function(idx,code)	{
+					crd = _imgs({"code":code}).first();
+					outp += getCardImgEle(crd,idx);
+				});
+				$('#' + rgn).html(outp);
 			});
-			$('#played').html(outp);
 		}
 		function getCardImgEle(crd,idx)	{
 			var outp = '<img '
@@ -125,5 +178,6 @@
 			return outp;
 		}
 	});
+	
 </script>
 </html>
