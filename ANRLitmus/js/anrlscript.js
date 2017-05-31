@@ -78,16 +78,16 @@ $(document).ready(function ()	{
 		//$(this).css('opacity', 1.5 - parseFloat($(this).css('opacity')));
 		outp = '<div class="small"><b>Move To:</b></div><div class="btn-group-vertical btn-group-sm" style="padding: 5px;">';
 		$.each(regions[faction],function(rgn,crds)	{
-			if (rgn != thisregion)	{
-				outp += '<button type="button" class="btn btn-default" '
-					+ 'data-src="' + thisregion + '" '
-					+ 'data-idx="' + thisidx + '" '
-					+ 'data-tgt="' + rgn + '" '
-					+ 'for="' + faction + '" '
-					+ '>' 
-					+ $('#' + rgn).attr('name')
-					+ '</button>';
-			}
+			
+			outp += '<button type="button" class="btn btn-default" '
+				+ 'data-src="' + thisregion + '" '
+				+ 'data-idx="' + thisidx + '" '
+				+ 'data-tgt="' + rgn + '" '
+				+ 'for="' + faction + '" '
+				+ '>' 
+				+ $('#' + rgn).attr('name')
+				+ (rgn == thisregion ? ' >>' : '')
+				+ '</button>';
 		});
 		outp += '<button type="button" class="btn btn-default" '
 			+ 'data-src="' + thisregion + '" '
