@@ -10,9 +10,9 @@ function anrDeck(cardIDs)	{
 	this.draw = function(idx=0)	{
 		if (this.deck.length > 0)	{
 			this.hand.push(idx == 0 ? this.deck.shift() : this.deck.splice(idx,1));
-			return true;
+			return this.hand.slice(-1)[0].toString();
 		} else	{
-			return false;
+			return "00000";
 		}
 	}
 
@@ -62,6 +62,7 @@ function shuffle(array) {
 function anrPlayer(faction)	{
 	this.creds = 5;
 	this.score = 0;
+	this.mu = 4;
 	this.faction = faction;
 	this.maxclicks = faction == 'corp' ? 3 : 4;
 	this.clicks = this.maxclicks;
@@ -71,13 +72,16 @@ function anrPlayer(faction)	{
 		this.deck = deck;
 	}
 	this.addCreds = function (n)	{
-		this.creds += n;
+		this.creds = Math.max(this.creds+n, 0);
 	}
 	this.addScore = function(n)	{
-		this.score += n;
+		this.score = Math.max(this.score+n, 0);
 	}
 	this.addClicks = function (n)	{
-		this.clicks += n;
+		this.clicks = Math.max(this.clicks+n, 0);
+	}
+	this.addMU = function (n)	{
+		this.mu = Math.max(this.mu+n, 0)
 	}
 	this.getFaction = function()	{
 		return this.faction;
@@ -87,5 +91,14 @@ function anrPlayer(faction)	{
 	}
 	this.getScore = function()	{
 		return this.score;
+	}
+	this.getMU = function()	{
+		return this.mu;
+	}
+	this.reset = function()	{
+		this.creds = 5;
+		this.score = 0;
+		this.mu = 4;
+		return true;
 	}
 }

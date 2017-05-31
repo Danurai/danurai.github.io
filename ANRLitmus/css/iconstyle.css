@@ -1,6 +1,6 @@
 @font-face {
 	font-family: 'netrunner';
-	/* src:url('fonts/netrunner.eot?h5uykn'); */
+	 src:url('fonts/netrunner.eot?h5uykn');
 	src:url('fonts/netrunner.eot?#iefixh5uykn') format('embedded-opentype'),
 		url('fonts/netrunner.woff?h5uykn') format('woff'),
 		url('fonts/netrunner.ttf?h5uykn') format('truetype'),

@@ -1,4 +1,4 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <head>
 <head>
 <!-- JQuery -->
@@ -59,21 +59,21 @@
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-md-12" align="center">
+					<div class="col-md-12" align="center" id="corpdata">
 						<span class="form-group">
 							<span class="icon-credit"></span>
 							<label id="corpcreds">5</label>&nbsp;&nbsp;
 							<span class="btn-group" for="corp">
-								<button type="button" class="btn btn-default btn-sm btn-cred" val="-1">-</i></button>
-								<button type="button" class="btn btn-default btn-sm btn-cred" val="1">+</i></button>
+								<button type="button" class="btn btn-default btn-sm btn-cred" val="-1">-</button>
+								<button type="button" class="btn btn-default btn-sm btn-cred" val="1">+</button>
 							</span>
 						</span>&nbsp;&nbsp;
 						<span class="form-group">
 							<span class="icon-agenda"></span>
 							<label id="corpscore">0</label>&nbsp;&nbsp;
 							<span class="btn-group" for="corp">
-								<button type="button" class="btn btn-default btn-sm btn-score" val="-1">-</i></button>
-								<button type="button" class="btn btn-default btn-sm btn-score" val="1">+</i></button>
+								<button type="button" class="btn btn-default btn-sm btn-score" val="-1">-</button>
+								<button type="button" class="btn btn-default btn-sm btn-score" val="1">+</button>
 							</span>
 						</span>
 					</div>
@@ -91,9 +91,11 @@
 						<span id="corpcardlist"></span>
 					</div>
 				</div>
-				<div class="row">
-					<div class="col-md-12" id="corphand" align="center">
-					</div>
+				<div class="row" id="corparea">
+					<div class="col-md-12 region" id="corphand" name="Hand" align="center" for="corp"></div>
+					<div class="col-md-12 region" id="archives" name="Archives"" for="corp"></div>
+					<div class="col-md-12 region" id="hq" name="HQ"" for="corp"></div>
+					<div class="col-md-12 region" id="randd" name="R&D"" for="corp"></div>
 				</div>
 			</div>
 			<div class="col-sm-6">
@@ -102,21 +104,29 @@
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-md-12" align="center">
+					<div class="col-md-12" align="center" id="rundata">
 						<span class="form-group">
 							<span class="icon-credit"></span>
 							<label id="runcreds">5</label>&nbsp;&nbsp;
 							<span class="btn-group" for="run">
-								<button type="button" class="btn btn-default btn-sm btn-cred" val="-1">-</i></button>
-								<button type="button" class="btn btn-default btn-sm btn-cred" val="1">+</i></button>
+								<button type="button" class="btn btn-default btn-sm btn-cred" val="-1">-</button>
+								<button type="button" class="btn btn-default btn-sm btn-cred" val="1">+</button>
 							</span>
 						</span>&nbsp;&nbsp;
 						<span class="form-group">
 							<span class="icon-agenda"></span>
 							<label id="runscore">0</label>&nbsp;&nbsp;
 							<span class="btn-group" for="run">
-								<button type="button" class="btn btn-default btn-sm btn-score" val="-1">-</i></button>
-								<button type="button" class="btn btn-default btn-sm btn-score" val="1">+</i></button>
+								<button type="button" class="btn btn-default btn-sm btn-score" val="-1">-</button>
+								<button type="button" class="btn btn-default btn-sm btn-score" val="1">+</button>
+							</span>
+						</span>&nbsp;&nbsp;
+						<span class="form-group">
+							<span class="icon-mu"></span>
+							<label id="runmu">0</label>&nbsp;&nbsp;
+							<span class="btn-group" for="run">
+								<button type="button" class="btn btn-default btn-sm btn-mu" val="-1">-</button>
+								<button type="button" class="btn btn-default btn-sm btn-mu" val="1">+</button>
 							</span>
 						</span>
 					</div>
@@ -134,11 +144,17 @@
 						<span id="runcardlist"></span>
 					</div>
 				</div>
-				<div class="row">
-					<div class="col-md-12" id="runhand" align="center">
-					</div>
+				<div class="row" id="runarea">
+					<div class="col-md-12 region" id="runhand" name="Hand" align="center" for="run"></div>
+					<div class="col-md-12 region" id="program" name="Program" align="center" for="run"></div>
+					<div class="col-md-12 region" id="hardware" name="Hardware" align="center" for="run"></div>
+					<div class="col-md-12 region" id="resource" name="Resource" align="center" for="run"></div>
+					<div class="col-md-12 region" id="trash" name="Trash" for="run"></div>
 				</div>
 			</div>
 		</div>
+	</div>
+	
+	<div id="popupmenu" class="menu" hidden>
 	</div>
 </body>

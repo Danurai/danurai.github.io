@@ -13,3 +13,24 @@
     overflow-y: auto;
     overflow-x: hidden;
 }
+
+.region	{
+	border: 1px solid	#AAAAAA;
+	border-radius: 5px;
+	min-height: 50px;
+}
+.region-drop	{
+	border-color: #AA0000;
+}
+.row	{
+	margin-top: 5px;
+}
+.region-title	{
+	color:	#AAAAAA;
+}
+#popupmenu	{
+	position: 		absolute;
+	background-color: #FFF;
+	border: 			1px solid #AAAAAA;
+	text-align: 	center;
+}
