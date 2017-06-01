@@ -25,6 +25,9 @@ function anrDeck(cardIDs)	{
 	this.cardsInDeck = function()	{
 		return this.deck.length;
 	}
+	this.cardsInDiscard = function()	{
+		return this.discard.length;
+	}
 	
 	this.setMeta = function (key,value)	{
 		this.meta[key] = value;
@@ -37,6 +40,27 @@ function anrDeck(cardIDs)	{
 		this.hand = [];
 		this.discard = [];
 		shuffle(this.deck);
+	}
+	this.returnToDeck = function (code)	{
+		// Base on card code, can be more specific using hand Index
+		var idx = this.hand.indexOf(code);
+		if (idx == -1)	{	// no match
+			return false;
+		} else {
+			this.deck.push(this.hand.splice(idx,1));
+			shuffle(this.deck);
+			return true;
+		}
+	}
+	this.discardCard = function (code)	{
+		// Base on card code, can be more specific using hand Index
+		var idx = this.hand.indexOf(code);
+		if (idx == -1)	{	// no match
+			return false;
+		} else {
+			this.discard.push(this.hand.splice(idx,1));
+			return true;
+		}
 	}
 }
 

@@ -1,4 +1,4 @@
-.deck_card	{
+.card	{
 	width: 100px;
 	padding: 2px;
 }
@@ -27,6 +27,41 @@
 }
 .region-title	{
 	color:	#AAAAAA;
+}
+.region-root	{
+	position: relative;
+}
+.region-installed	{
+	position: relative;
+   display: inline-block;
+}
+.card-count	{
+	position: absolute;
+	bottom: 5px;
+	left: 5px;
+	font-weight: bold;
+	color: #FFFFFF;
+	background-color: #666699;
+	border-radius: 5px;
+	text-align: center;
+	padding: 0px 5px;
+}
+.card-counter	{
+	width: 1.8em;
+	height: 1.8em;
+	position: absolute;
+	bottom: 30%;
+	left: 20%;
+	background-color: #FFAA00;
+	border-radius: 50%;
+	text-align: center;
+}
+.counter-value	{
+	line-height: 1.8em;
+	display: inline-block;
+	vertical-align: middle;
+	font-weight: bold;
+	color: #FFFFFF;
 }
 #popupmenu	{
 	position: 		absolute;

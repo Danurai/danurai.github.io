@@ -14,6 +14,8 @@ $(document).ready(function ()	{
 	var imgurl = nrdb_cards.imageUrlTemplate;
 	
 	// Code. Agenda\Asset\deck \ Upgrade \ Ice. Rezzed. 	
+	// Region = ["{code}",]
+	// Region = ["code":"{code}"]
 	regions['corp'] = {"corphand":[],"hq":[],"archives":[],"randd":[]};
 	regions['run'] = {"runhand":[],"resource":[],"hardware":[],"program":[]};
 	regCount = 0;
@@ -23,13 +25,12 @@ $(document).ready(function ()	{
 		loadDeck(faction);
 		updateInfo(faction);
 		updateRegion(faction);
-		console.log(players[faction]);
-		console.log(decks[faction]);
+		//console.log(players[faction]);
+		//console.log(decks[faction]);
+		//console.log(regions[faction]);
 	});
-	
-	
-	
-	// Listeners
+		
+// Listeners
 	$('.btn-load').on('click',function () {
 		loadDeck($(this).attr('for'));
 	});
@@ -50,79 +51,139 @@ $(document).ready(function ()	{
 		drawCard(faction, $(this).data('index'))
 	});
 	
-	$(document).on('click','.btn-cred',function()	{
-		var faction = $(this).closest('.btn-group').attr('for');
-		var value = parseInt($(this).attr('val'),10);
-		players[faction].addCreds(value);
-		updateInfo(faction);
-	})
-	$(document).on('click','.btn-score',function()	{
-		var faction = $(this).closest('.btn-group').attr('for');
-		var value = parseInt($(this).attr('val'),10);
-		players[faction].addScore(value);
-		updateInfo(faction);
-	});
-	$(document).on('click','.btn-mu',function()	{
-		var faction = $(this).closest('.btn-group').attr('for');
-		var value = parseInt($(this).attr('val'),10);
-		players[faction].addMU(value);
-		updateInfo(faction);
-	});
-	
-	// Create Move Menu
-	$(document).on('click','.deck_card', function(ev)	{
-		var outp = '';
-		var thisregion  = $(this).closest('div').attr('id');
-		var thisidx = $(this).data('idx');
-		var faction = $(this).closest('div').attr('for');
-		//$(this).css('opacity', 1.5 - parseFloat($(this).css('opacity')));
-		outp = '<div class="small"><b>Move To:</b></div><div class="btn-group-vertical btn-group-sm" style="padding: 5px;">';
-		$.each(regions[faction],function(rgn,crds)	{
-			
-			outp += '<button type="button" class="btn btn-default" '
-				+ 'data-src="' + thisregion + '" '
-				+ 'data-idx="' + thisidx + '" '
-				+ 'data-tgt="' + rgn + '" '
-				+ 'for="' + faction + '" '
-				+ '>' 
-				+ $('#' + rgn).attr('name')
-				+ (rgn == thisregion ? ' >>' : '')
-				+ '</button>';
+// Resources
+	$(document)
+		.on('click','.btn-cred',function()	{
+			var faction = $(this).closest('.btn-group').attr('for');
+			var value = parseInt($(this).attr('val'),10);
+			players[faction].addCreds(value);
+			updateInfo(faction);
+		})
+		.on('click','.btn-score',function()	{
+			var faction = $(this).closest('.btn-group').attr('for');
+			var value = parseInt($(this).attr('val'),10);
+			players[faction].addScore(value);
+			updateInfo(faction);
+		})
+		.on('click','.btn-mu',function()	{
+			var faction = $(this).closest('.btn-group').attr('for');
+			var value = parseInt($(this).attr('val'),10);
+			players[faction].addMU(value);
+			updateInfo(faction);
 		});
-		outp += '<button type="button" class="btn btn-default" '
-			+ 'data-src="' + thisregion + '" '
-			+ 'data-idx="' + thisidx + '" '
-			+ 'data-tgt="" '
-			+ 'for="' + faction + '" '
-			+ '>New Region</button>';
-		outp += '</div>';
+	
+// Create Menu
+	$(document).on('click','.card-deck', function(ev)	{
+		var outp = '';
+		var src  = $(this).closest('div.region').attr('id');
+		var idx = $(this).data('idx');
+		var faction = $(this).closest('div.region').attr('for');
+		
+		// Move To: Regions
+		outp = '<div class="small"><b>Move To:</b></div>'
+			+ '<div class="btn-group-vertical btn-group-sm" style="padding: 5px;">';
+		$.each(regions[faction],function(tgt,crds)	{
+			outp += menuButton(src,idx,tgt,faction,$('#' + tgt).attr('name') + (tgt == src ? ' >>' : ''));
+		});
+		// New Region
+		if (faction == 'corp')	{
+			outp += '<span class="btn-separator"></span>';
+			outp += menuButton(src,idx,"new",faction,"New Region");
+		}
+		// Deck
+		outp += '<span class="btn-separator"></span>';
+		outp += menuButton(src,idx,"deck",faction,"Deck & Shuffle");
+		// Trash Card
+		outp += menuButton(src,idx,"actTrash",faction,'<span class="icon-trash"></span> Trash');
+		
+		// Add / remove counters
+		outp += menuButton(src,idx,"actAddCount",faction,'<span class="icon-click"></span> Add Counter');
+		outp += menuButton(src,idx,"actRemCount",faction,'<span class="icon-click"></span> Remove Countera');
+		
 		$('#popupmenu').html(outp);
 		$('#popupmenu').css({"left":ev.pageX,"top":ev.pageY});
 		$('#popupmenu').toggle();
 	});
-
+	function menuButton(src,idx,tgt,faction,btnTxt)	{
+		var btn = '<button type="button" class="btn btn-default" '
+				+ 'data-src="' + src + '" '
+				+ 'data-idx="' + idx + '" '
+				+ 'data-tgt="' + tgt + '" '
+				+ 'for="' + faction + '" '
+				+ '>' 
+				+ btnTxt
+				+ '</button>'
+		return btn;
+	}
+// Click Menu
 	$('#popupmenu').on('click','.btn',function()	{
 		var faction = $(this).attr('for');
 		var src = regions[faction][$(this).data('src')];
 		var idx = $(this).data('idx');
 		var tgt;
-		
-		if ($(this).data('tgt') == "")	{
-		// new region
-			regCount ++;
-			$('#corparea').append('<div class="col-md-12 region remote" for="corp" name="Region ' + regCount + '" id="region' + regCount + '"></div>');
-			tgt = regions[faction]["region" + regCount] = [];
-		} else	{
-			tgt = regions[faction][$(this).data('tgt')];
-		}
-		moveCrd(src,idx,tgt);
 		$('#popupmenu').toggle();
+		switch ($(this).data('tgt')) {
+		// New region
+			case ("new"):
+				regCount ++;
+				$('#corparea').append('<div class="col-md-12 region remote" for="corp" name="Region ' + regCount + '" id="region' + regCount + '"></div>');
+				tgt = regions[faction]["region" + regCount] = [];
+				moveCrd(src,idx,tgt);
+				break;
+			case ("deck"):
+				if (decks[faction].returnToDeck(src[idx].code))	{
+					src.splice(idx,1);
+				}
+				break;
+			case ("actTrash"):
+				if (decks[faction].discardCard(src[idx].code))	{
+					src.splice(idx,1);
+				}
+				break;
+			case ("actAddCount"):
+				src[idx].counters ++;
+				break;
+			case ("actRemCount"):
+				src[idx].counters = 0;
+				break;
+			default:
+				tgt = regions[faction][$(this).data('tgt')];
+				if (typeof tgt !== "undefined")	{
+					moveCrd(src,idx,tgt);
+				}
+		}
+		$.each(['corp','run'],function(idx,faction) {
+			updateRegion(faction);
+			updateChooseList(faction);
+		});
 	});
 
 	function moveCrd(src,idx,tgt)	{
+		var res, gain;
 		tgt.push(src.splice(idx,1)[0]);
-		updateRegion('corp');
-		updateRegion('run');
+		// Adjust Runner Creds etc.
+		var code = tgt.slice(-1)[0].code;
+		var card = _cards({"code":code}).first();
+		var regex = /Gain\s([0-9]+)\[credit\]/gi;
+		
+		card.text.match(regex);
+		res = RegExp.$1;
+		
+		gain = (res == '' ? 0 : parseInt(res,10));
+		
+		if (card.side_code == 'runner')	{
+			players['run'].addCreds(card.cost * -1);
+			players['run'].addCreds(gain);
+		}
+		if (card.side_code == 'corp' && card.type_code == 'operation')	{
+			players['corp'].addCreds(card.cost * -1);
+			players['corp'].addCreds(gain);
+		}
+		$.each(['corp','run'],function(idx,faction) {
+			updateInfo(faction);
+			updateRegion(faction);
+			updateChooseList(faction);
+		});
 	}
 	
 	function loadDeck(faction)	{
@@ -159,14 +220,16 @@ $(document).ready(function ()	{
 	function drawCard(deck, idx=0)	{
 		var faction = deck.getMeta('faction');
 		var code = deck.draw(idx);
+		var isRoot = false;
 		if (code != "00000")	{
-			//var crd = _cards({"code":code}).first();
-			regions[faction][faction + 'hand'].push(code);
+			isRoot = _cards({"code":code,}).first().type_code != 'ice';
+			regions[faction][faction + 'hand'].push({"code":code,"counters":0,"root":isRoot});
 			updateRegion(faction);
 			updateChooseList(faction);
 		}
 	}
-	
+
+// Screen Rendering Functions
 	function updateChooseList(faction)	{
 		var outp='';
 		outp += '<div class="btn-group"><button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">Choose <span class="caret"></span></button>';
@@ -194,36 +257,58 @@ $(document).ready(function ()	{
 	
 	function updateRegion(faction)	{
 		var outp;
-		var crd;
 		// Remove empty corp regions
 		$('#corparea').find('.remote').each(function(idx,ele)	{
 			var rgn = $(ele).attr('id');
 			if (regions['corp'][rgn].length == 0)	{
-				ele.remove();
-				regions['corp'].splice(regions['corp'].indexOf(rgn),1);
 				delete regions['corp'][rgn];
+				ele.remove();
 			}
 		});
 		$.each(regions[faction], function(rgn,crds)	{
 			outp = '<div class="region-title">' + $('#' + rgn).attr('name') + '</div>';
-			$.each(crds, function(idx,code)	{
-				crd = _cards({"code":code}).first();
-				outp += getCardImgEle(crd,idx);
+		// Add Root for HQ, Archives & R&D
+			switch (rgn)	{
+				case ('archives'):
+					outp += '<div class="region-root">';
+					outp += '<img src="img\\corp_back.png" class="card card-root" draggable="false"'
+						+ (decks[faction].cardsInDiscard() == 0 ? ' style="opacity: 0.5;"' : '')
+						+ '></img>';
+					outp += '<span class="card-count">' + decks[faction].cardsInDiscard() + '</span>';
+					break;
+				case ('randd'):
+					outp += '<div class="region-root">';
+					outp += '<img src="img\\corp_back.png" class="card card-root" draggable="false"'
+						+ (decks[faction].cardsInDeck() == 0 ? ' style="opacity: 0.5;"' : '')
+						+ '></img>';
+					outp += '<span class="card-count">' + decks[faction].cardsInDeck() + '</span>';
+					break;
+			}
+			$.each(crds, function(idx,regCrd)	{
+				outp += getCardImgEle(regCrd,idx);
 			});
 			$('#' + rgn).html(outp);
+			//console.log (regions[faction]);
 		});
 	}
-	function getCardImgEle(crd,idx)	{
-		var outp = '<img '
+	function getCardImgEle(regCrd,idx)	{
+		var crd = _cards({"code":regCrd.code}).first();
+		var outp = '<div class="region-installed">';
+		outp += '<img '
 			+ 'src="' + imgurl.replace('{code}',crd.code) + '"'
-			+ 'class="deck_card" draggable="true" '
+			+ 'class="card card-deck" draggable="true" '
 			+ 'alt="' + crd.title + '" '
 			+ 'data-code="'+ crd.code + '" '
 			+ 'data-idx="'+ idx + '">'
 			+ '</img>';
+		if (regCrd.counters > 0)	{
+			outp += '<span class="card-counter"><span class="counter-value">' + regCrd.counters + '</span></span>';
+		}
+		outp += '</div>';
 		return outp;
 	}
-	
+
+// Load Deck Text
 	function parseDeck(data)	{
 	// Create decklist from cards
 	
@@ -255,19 +340,20 @@ $(document).ready(function ()	{
 		//console.log('Deck Loaded:');
 		//console.log(deck);
 		
-		return deck;
-//		console.log (decklist);
-		
+		return deck;		
 	}
 	
-		// Drag and Drop
+// Drag and Drop
 	$(document)
-		.on('dragstart','.deck_card', function(ev)	{
-			var jsonData = '{"source":"' + $(this).closest('div').attr('id') + '","idx":"'+ $(this).data('idx') + '"}';
+		.on('dragstart','.card-deck', function(ev)	{
+			var jsonData = {};
+			jsonData["faction"] = $(this).closest('div.region').attr('for');
+			jsonData["src"] = $(this).closest('div.region').attr('id');
+			jsonData["idx"] = $(this).data('idx');
 			console.log(jsonData);
-			ev.originalEvent.dataTransfer.setData('text/plain',jsonData);
+			ev.originalEvent.dataTransfer.setData('text/plain',JSON.stringify(jsonData));
 		});
-	$('#corparea')
+	$(document)
 		.on('dragover','.region',function(ev)	{
 			ev.preventDefault();
 			ev.originalEvent.dataTransfer.dropEffect = 'move'; 
@@ -280,10 +366,11 @@ $(document).ready(function ()	{
 			ev.preventDefault();
 			$(this).removeClass('region-drop');
 			
-			var crdData = JSON.parse(ev.originalEvent.dataTransfer.getData('text'));
-			var src = regionCrds[crdData.source];
-			var tgt = regionCrds[$(this).attr('id')];
-			moveCrd(src,crdData.idx,tgt);
+			var jsonData = JSON.parse(ev.originalEvent.dataTransfer.getData('text'));
+			var tgt = $(this).attr('id');
+			var tgtFaction = $(this).attr('for');
+			
+			moveCrd(regions[jsonData.faction][jsonData.src],jsonData.idx,regions[tgtFaction][tgt]);
 		});
 	
 	
