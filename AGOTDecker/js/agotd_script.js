@@ -88,7 +88,7 @@ $(document).ready(function ()	{
 				outp += menuButton(src,idx,"new",faction,"New Region");
 			}*/
 			// Return to Deck
-			//outp += menuButton(src,idx,"deck",faction,"Deck & Shuffle");
+			outp += menuButton(src,idx,"deck",faction,"Deck & Shuffle");
 			
 			// Add\Remove counters
 			outp += menuButton(src,idx,"actAddCount",faction,'<span class="icon-power"></span> Add Counter');
