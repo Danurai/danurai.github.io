@@ -55,6 +55,7 @@
 	background-color: #FFAA00;
 	border-radius: 50%;
 	text-align: center;
+	cursor: pointer;
 }
 .counter-value	{
 	line-height: 1.8em;

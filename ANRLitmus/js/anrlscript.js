@@ -16,8 +16,8 @@ $(document).ready(function ()	{
 	// Code. Agenda\Asset\deck \ Upgrade \ Ice. Rezzed. 	
 	// Region = ["{code}",]
 	// Region = ["code":"{code}"]
-	regions['corp'] = {"corphand":[],"hq":[],"archives":[],"randd":[]};
-	regions['run'] = {"runhand":[],"resource":[],"hardware":[],"program":[]};
+	regions['corp'] = {"scored":[],"corphand":[],"hq":[],"archives":[],"randd":[]};
+	regions['run'] = {"stolen":[],"runhand":[],"resource":[],"hardware":[],"program":[]};
 	regCount = 0;
 	
 	$.each(['corp','run'],function(idx,faction)	{
@@ -70,40 +70,90 @@ $(document).ready(function ()	{
 			var value = parseInt($(this).attr('val'),10);
 			players[faction].addMU(value);
 			updateInfo(faction);
-		});
-	
+		})
+		.on('click','.btn-access',function(ev)	{
+			var crdlist = [];
+			var accessdeck;
+			var crd;
+			var src = '';
+			var tgt = 'stolen';
+			var idx;
+			
+			if ($(this).data('tgt') == "hand")	{
+				$.each(regions['corp']['corphand'],function(idx,item)	{
+					crdlist.push(item.code);
+				})
+				accessdeck = new anrDeck(crdlist);
+				accessdeck.resetCards();	//shuffles
+				src = 'corphand';
+			} else {
+				accessdeck = decks['corp'];
+			}
+			crds = accessdeck.getDeck();
+			var outp = "<div>Access:</div>"
+				+ '<div class="btn-group-vertical">'
+			$.each(crds,function(idx,code)	{
+				crd = _cards({"code":code}).first();
+				if ($(this).data('tgt') == "hand") {idx = regions['corp']['corphand'].indexOf(crd.code);}
+				outp += menuButton(src,idx,tgt,'corp',crd.title);
+			})
+			outp += '</div>';
+			$('#popupmenu').html(outp);
+			$('#popupmenu').css({"left":ev.pageX,"top":ev.pageY});
+			$('#popupmenu').toggle();
+		})
+		;
+		
 // Create Menu
-	$(document).on('click','.card-deck', function(ev)	{
-		var outp = '';
-		var src  = $(this).closest('div.region').attr('id');
-		var idx = $(this).data('idx');
-		var faction = $(this).closest('div.region').attr('for');
-		
-		// Move To: Regions
-		outp = '<div class="small"><b>Move To:</b></div>'
-			+ '<div class="btn-group-vertical btn-group-sm" style="padding: 5px;">';
-		$.each(regions[faction],function(tgt,crds)	{
-			outp += menuButton(src,idx,tgt,faction,$('#' + tgt).attr('name') + (tgt == src ? ' >>' : ''));
+	$(document)
+		.on('click','.card-deck', function(ev)	{
+			var outp = '';
+			var src  = $(this).closest('div.region').attr('id');
+			var idx = $(this).data('idx');
+			var faction = $(this).closest('div.region').attr('for');
+			
+			// Move To: Regions
+			outp = '<div class="small"><b>Move To:</b></div>'
+				+ '<div class="btn-group-vertical btn-group-sm" style="padding: 5px;">';
+			$.each(regions[faction],function(tgt,crds)	{
+				outp += menuButton(src,idx,tgt,faction,$('#' + tgt).attr('name') + (tgt == src ? ' >>' : ''));
+			});
+			// New Region
+			if (faction == 'corp')	{
+				outp += '<span class="btn-separator"></span>';
+				outp += menuButton(src,idx,"new",faction,"New Region");
+			}
+			// Deck
+			outp += menuButton(src,idx,"deck",faction,"Deck & Shuffle");
+			// Trash Card
+			outp += menuButton(src,idx,"actTrash",faction,'<span class="icon-trash"></span> Trash');
+			
+			// Add\Remove counters
+			outp += menuButton(src,idx,"actAddCount",faction,'<span class="icon-click"></span> Add Counter');
+			outp += menuButton(src,idx,"actRemAll",faction,'<span class="icon-click"></span> Remove Counters');
+			
+			outp += '</div>';
+			
+			$('#popupmenu').html(outp);
+			$('#popupmenu').css({"left":ev.pageX,"top":ev.pageY});
+			$('#popupmenu').toggle();
+		})
+		.on('click','.card-counter',function(ev)	{
+			var outp = '';
+			var src  = $(this).closest('div.region').attr('id');
+			var idx = $(this).parent().find('.card-deck').data('idx');
+			var faction = $(this).closest('div.region').attr('for');
+			outp = '<div class="small"><b>Move To:</b></div>'
+				+ '<div class="btn-group-vertical btn-group-sm" style="padding: 5px;">'
+				+ menuButton(src,idx,"actAddCount",faction,'<span class="icon-click"></span> Add Counter')
+				+ menuButton(src,idx,"actRemCount",faction,'<span class="icon-click"></span> Remove Counter')
+				+ menuButton(src,idx,"actRemAll",faction,'<span class="icon-click"></span> Remove All')
+				+ '</div>';
+			
+			$('#popupmenu').html(outp);
+			$('#popupmenu').css({"left":ev.pageX,"top":ev.pageY});
+			$('#popupmenu').toggle();
 		});
-		// New Region
-		if (faction == 'corp')	{
-			outp += '<span class="btn-separator"></span>';
-			outp += menuButton(src,idx,"new",faction,"New Region");
-		}
-		// Deck
-		outp += '<span class="btn-separator"></span>';
-		outp += menuButton(src,idx,"deck",faction,"Deck & Shuffle");
-		// Trash Card
-		outp += menuButton(src,idx,"actTrash",faction,'<span class="icon-trash"></span> Trash');
-		
-		// Add / remove counters
-		outp += menuButton(src,idx,"actAddCount",faction,'<span class="icon-click"></span> Add Counter');
-		outp += menuButton(src,idx,"actRemCount",faction,'<span class="icon-click"></span> Remove Countera');
-		
-		$('#popupmenu').html(outp);
-		$('#popupmenu').css({"left":ev.pageX,"top":ev.pageY});
-		$('#popupmenu').toggle();
-	});
 	function menuButton(src,idx,tgt,faction,btnTxt)	{
 		var btn = '<button type="button" class="btn btn-default" '
 				+ 'data-src="' + src + '" '
@@ -144,9 +194,12 @@ $(document).ready(function ()	{
 				src[idx].counters ++;
 				break;
 			case ("actRemCount"):
+				src[idx].counters --;
+				break;
+			case ("actRemAll"):
 				src[idx].counters = 0;
 				break;
-			default:
+			default:	// Region
 				tgt = regions[faction][$(this).data('tgt')];
 				if (typeof tgt !== "undefined")	{
 					moveCrd(src,idx,tgt);
@@ -164,7 +217,7 @@ $(document).ready(function ()	{
 		// Adjust Runner Creds etc.
 		var code = tgt.slice(-1)[0].code;
 		var card = _cards({"code":code}).first();
-		var regex = /Gain\s([0-9]+)\[credit\]/gi;
+		var regex = /^Gain\s([0-9]+)\[credit\]/gi;
 		
 		card.text.match(regex);
 		res = RegExp.$1;
@@ -205,11 +258,11 @@ $(document).ready(function ()	{
 		players[faction].reset();
 		// Clear Regions
 		if (faction == 'corp')	{
-			regions['corp'] = {"corphand":[],"hq":[],"archives":[],"randd":[]};
+			regions['corp'] = {"scored":[],"corphand":[],"hq":[],"archives":[],"randd":[]};
 			regCount = 0;
 		}
 		if (faction == 'run')	{
-			regions['run'] = {"runhand":[],"resource":[],"hardware":[],"program":[],"trash":[]};
+			regions['run'] = {"stolen":[],"runhand":[],"resource":[],"hardware":[],"program":[],"trash":[]};
 		}
 		//Draw 5
 		for (var n=0; n<5; n++)	{drawCard(deck);}
