@@ -352,8 +352,8 @@ $(document).ready(function ()	{
 	// Deck Name
 		deck.title = res[0];
 	// Find Identity
-		deck.idname = res[2];
-		deck.agenda = res[3];
+		deck.idname = res[1];
+		deck.agenda = res[2];
 		/*
 		data.match(/Faction:\n\s(.+)/g);
 		deck.idname = RegExp.$1;
