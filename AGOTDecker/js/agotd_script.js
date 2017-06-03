@@ -347,14 +347,20 @@ $(document).ready(function ()	{
 		deck.title = "";
 		deck.data = [];
 		deck.plot = [];
+	//Deck Name\n\nHouse\nAgenda
+		var res = data.match(/(.+)/g);
 	// Deck Name
-		deck.title = data.match(/(.+)/g)[0];
+		deck.title = res[0];
 	// Find Identity
+		deck.idname = res[2];
+		deck.agenda = res[3];
+		/*
 		data.match(/Faction:\n\s(.+)/g);
 		deck.idname = RegExp.$1;
 		if (deck.idname != "The Night's Watch") { deck.idname = "House " + deck.idname; }
+		*/
 		deck.id = _cards({"name":deck.idname}).first().code; //Special Characters - CT fixed by not using \\uuml; on textarea
-			
+		deck.agendaid = _cards({"name":deck.agenda}).first().code; 
 		//var regex = /([0-9])x\s((.+)\s\s\W+|(.+))/g;				// Look out for STAR special character (ANR)
 		
 		var regex = /([0-9])x\s(.+)\s\((.+)\)/g;
@@ -365,10 +371,12 @@ $(document).ready(function ()	{
 			var qty = parseInt(RegExp.$1, 10);
 			crd = _cards({"name":RegExp.$2,"Set":RegExp.$3}).first();
 			switch(crd.Type)	{
+				/*
 				case ('Agenda'):
 					deck.agenda = crd.name;
 					deck.agendaid = crd.code;
 					break;
+				*/
 				case ('Plot'):
 					deck.plot.push(crd.code);
 					break;
