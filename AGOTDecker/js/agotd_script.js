@@ -120,6 +120,9 @@ $(document).ready(function ()	{
 			$('#popupmenu').html(outp);
 			$('#popupmenu').css({"left":ev.pageX,"top":ev.pageY});
 			$('#popupmenu').toggle();
+		})
+		.on('click','.card-plot',function()	{
+			$(this).css('opacity',1.5 - $(this).css('opacity'));
 		});
 	function menuButton(src,idx,tgt,faction,btnTxt)	{
 		var btn = '<button type="button" class="btn btn-default" '
@@ -321,7 +324,7 @@ $(document).ready(function ()	{
 	function updatePlots(faction)	{
 		var outp = '';
 		$.each(decks[faction].getMeta("plots"),function(idx,code)	{
-			var crd = _cards({"code":code});
+			var crd = _cards({"code":code}).first();
 			outp += '<img '
 				+ 'src="' + crd.img + '"'
 				+ 'class="card-plot" '
