@@ -24,6 +24,7 @@ $(document).ready(function ()	{
 		loadDeck(faction);
 		updateInfo(faction);
 		updateRegion(faction);
+		updatePlots(faction);
 		
 		console.log(players[faction]);
 		console.log(decks[faction]);
@@ -205,6 +206,7 @@ $(document).ready(function ()	{
 		decks[faction].setMeta("agname",deckinfo.agenda);
 		decks[faction].setMeta("agcode",deckinfo.agendaid);
 		decks[faction].setMeta("faction",faction);
+		decks[faction].setMeta("plots",deckinfo.plot);
 		resetDeck(decks[faction]);
 	}
 	
@@ -315,6 +317,21 @@ $(document).ready(function ()	{
 		}
 		outp += '</div>';
 		return outp;
+	}
+	function updatePlots(faction)	{
+		var outp = '';
+		$.each(decks[faction].getMeta("plots"),function(idx,code)	{
+			var crd = _cards({"code":code});
+			outp += '<img '
+				+ 'src="' + crd.img + '"'
+				+ 'class="card-plot" '
+				+ 'draggable="false" '
+				+ 'alt="' + crd.title + '" '
+				+ 'data-code="'+ crd.code + '" '
+				+ 'data-idx="'+ idx + '">'
+				+ '</img>';
+		});
+		$('#' + faction + 'plot').html (outp);
 	}
 
 // Load Deck Text
