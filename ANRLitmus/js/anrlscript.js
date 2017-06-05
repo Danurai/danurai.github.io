@@ -76,10 +76,13 @@ $(document).ready(function ()	{
 			var accessdeck;
 			var crd;
 			var src = '';
+			var accessSrc;
 			var tgt = 'stolen';
 			var idx;
 			
-			if ($(this).data('tgt') == "hand")	{
+			accessSrc = $(this).data('tgt');
+			
+			if (accessSrc == "hand")	{
 				$.each(regions['corp']['corphand'],function(idx,item)	{
 					crdlist.push(item.code);
 				})
@@ -94,7 +97,7 @@ $(document).ready(function ()	{
 				+ '<div class="btn-group-vertical">'
 			$.each(crds,function(idx,code)	{
 				crd = _cards({"code":code}).first();
-				if ($(this).data('tgt') == "hand") {idx = regions['corp']['corphand'].indexOf(crd.code);}
+				if (accessSrc == "hand") {idx = regions['corp']['corphand'].indexOf(crd.code);}
 				outp += menuButton(src,idx,tgt,'corp',crd.title);
 			})
 			outp += '</div>';
@@ -170,7 +173,17 @@ $(document).ready(function ()	{
 		var faction = $(this).attr('for');
 		var src = regions[faction][$(this).data('src')];
 		var idx = $(this).data('idx');
-		var tgt;
+		var tgt = regions[faction][$(this).data('tgt')];
+		
+		if ($(this).data('tgt') == 'stolen')	{
+			tgt = regions['run']['stolen'];
+			if (typeof src == 'undefined')	{
+				drawCard(decks['corp'],idx);
+				src = regions['corp']['corphand'];
+				idx = regions['corp']['corphand'].length-1;
+			} 
+		}
+		
 		$('#popupmenu').toggle();
 		switch ($(this).data('tgt')) {
 		// New region
@@ -200,7 +213,6 @@ $(document).ready(function ()	{
 				src[idx].counters = 0;
 				break;
 			default:	// Region
-				tgt = regions[faction][$(this).data('tgt')];
 				if (typeof tgt !== "undefined")	{
 					moveCrd(src,idx,tgt);
 				}
