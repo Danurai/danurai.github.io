@@ -21,6 +21,7 @@
 	<link rel="stylesheet" href="css/iconstyle.css">
 	<!--script src="js/agotd_cards.js"></script THRONESDB -->
 	<script src="js/agot2_data.js"></script>
+	<script src="js/agotd_decks.js"></script>
 	<script src="js/agotd_class.js"></script>
 	<script src="js/agotd_script.js"></script>
 </head>
@@ -39,11 +40,23 @@
 							<div class="panel-body">
 								<div class="col-sm-6">
 									Deck 1
+									<div class="dropdown">
+										<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Choose Deck
+										<span class="caret"></span></button>
+										<ul class="dropdown-menu dropdown-deck" id="p1decks" for="p1">
+										</ul>
+									</div>
 									<textarea class="form-control" type="text" id="p1dl" rows="5"></textarea>
 									<button type="button" class="btn btn-default btn-load" for="p1">Load</button>
 								</div>
 								<div class="col-sm-6">
 									Deck 2
+									<div class="dropdown">
+										<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Choose Deck
+										<span class="caret"></span></button>
+										<ul class="dropdown-menu dropdown-deck" id="p2decks" for="p2">
+										</ul>
+									</div>
 									<textarea class="form-control" type="text" id="p2dl" rows="5"></textarea>
 									<button type="button" class="btn btn-default btn-load" for="p2">Load</button>
 								</div>
@@ -101,9 +114,9 @@
 					<div class="col-md-12 region" id="p1loc" name="Locations" align="center" for="p1"></div>
 				</div>
 				<div class="row">
-					<div class="col-md-4 region" id="p1deck" name="Deck"" for="p1"></div>
-					<div class="col-md-4 region" id="p1discard" name="Discard"" for="p1"></div>
-					<div class="col-md-4 region" id="p1dead" name="Dead"" for="p1"></div>
+					<div class="col-sm-4 region" id="p1deck" name="Deck"" for="p1"></div>
+					<div class="col-sm-4 region" id="p1discard" name="Discard"" for="p1"></div>
+					<div class="col-sm-4 region" id="p1dead" name="Dead"" for="p1"></div>
 				</div>
 			</div>
 			<div class="col-md-6">
@@ -153,9 +166,9 @@
 					<div class="col-md-12 region" id="p2loc" name="Locations" align="center" for="p2"></div>
 				</div>
 				<div class="row">
-					<div class="col-md-4 region" id="p2deck" name="Deck" for="p2"></div>
-					<div class="col-md-4 region" id="p2discard" name="Discard" for="p2"></div>
-					<div class="col-md-4 region" id="p2dead" name="Dead" for="p2"></div>
+					<div class="col-sm-4 region" id="p2deck" name="Deck" for="p2"></div>
+					<div class="col-sm-4 region" id="p2discard" name="Discard" for="p2"></div>
+					<div class="col-sm-4 region" id="p2dead" name="Dead" for="p2"></div>
 				</div>
 			</div>
 		</div>
