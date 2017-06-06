@@ -41,14 +41,14 @@ function gameDeck(cardIDs)	{
 		this.discard = [];
 		shuffle(this.deck);
 	}
-	this.returnToDeck = function (code)	{
+	this.returnToDeck = function (code,top=false)	{
 		// Base on card code, can be more specific using hand Index
 		var idx = this.hand.indexOf(code);
 		if (idx == -1)	{	// no match
 			return false;
 		} else {
-			this.deck.push(this.hand.splice(idx,1));
-			shuffle(this.deck);
+			this.deck.splice(0,0,this.hand.splice(idx,1));
+			if (!top) {shuffle(this.deck)};
 			return true;
 		}
 	}

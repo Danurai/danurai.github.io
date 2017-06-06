@@ -65,9 +65,9 @@
 	width: 1.8em;
 	height: 1.8em;
 	position: absolute;
-	bottom: 30%;
-	left: 20%;
-	background-color: #FFAA00;
+	bottom: 50%;
+	right: 20%;
+	background-color: #0000AA;
 	border-radius: 50%;
 	text-align: center;
 	cursor: pointer;
