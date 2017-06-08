@@ -28,30 +28,10 @@ $(document).ready(function ()	{
 		console.log(regions[faction]);
 	});
 		
-// Listeners
-	// Load Decks
+/* Listeners */
+// Load Decks
 	$('.btn-load').on('click',function () {
 		loadDeck($(this).attr('for'));
-	});
-
-	/*
-	// Draw cards
-	$('.btn-draw').on('click',function() {
-		var faction = $(this).closest('div').attr('for');
-		var deck = decks[faction];
-		if ($(this).attr('val') == 0) {
-			resetDeck(deck);			
-		} else if ($(this).attr('val') == 'to7')	{
-			for (var i=regions[faction][faction + 'hand'].length; i<7; i++) {drawCard(deck)};
-		} else {
-			var n = $(this).attr('val') == "all" ? deck.cardsInDeck() : $(this).attr('val');
-			for (var i=0; i<n; i++) {drawCard(deck)};
-		}
-	});
-	*/
-	$(document).on('click','li.card-picker',function () {
-		var faction = decks[$(this).closest('ul').attr('for')];
-		drawCard(faction, $(this).data('index'))
 	});
 	
 // Resources
@@ -69,7 +49,7 @@ $(document).ready(function ()	{
 			updateInfo(faction);
 		});
 	
-// Create Menu
+// Create Menus
 	$(document)
 		.on('click','.card-deck', function(ev)	{
 			var outp = '';
@@ -113,9 +93,7 @@ $(document).ready(function ()	{
 			outp += '</div>';
 		*/
 			
-			$('#popupmenu').html(outp);
-			$('#popupmenu').css({"left":ev.pageX,"top":ev.pageY});
-			$('#popupmenu').toggle();
+			showPopUp(ev, outp);
 		})
 		.on('click','.card-counter',function(ev)	{
 			var outp = '';
@@ -128,32 +106,52 @@ $(document).ready(function ()	{
 				+ menuButton(src,idx,"act_rmvpower",faction,'<span class="icon-power"></span> Remove Power')
 				+ menuButton(src,idx,"act_rmvallpower",faction,'<span class="icon-power"></span> Remove All Power')
 				+ '</div>';
-			
-			$('#popupmenu').html(outp);
-			$('#popupmenu').css({"left":ev.pageX,"top":ev.pageY});
-			$('#popupmenu').toggle();
+				
+			showPopUp(ev, outp);
 		})
 		.on('click','.card-root',function(ev)	{
 			var faction = $(this).closest('div').attr('for');
-			var outp = '<div>'
-				+ '<b>Draw:&nbsp;</b>'
-				+ '<div class="btn-group" for="p2" style="padding: 5px;">'
+			var reg = $(this).closest('div').data('region');
+			var outp = '';
+			var regCardCodes = [];
+			var card;
+			
+			outp = '<div><b>Draw Cards</b></div>';
+			if (reg == 'deck')	{
+				outp += '<div class="btn-group" for="' + faction + '" style="padding: 5px;">'
 					+ menuButton(faction + 'deck',1,'act_draw',faction,"1")
 					+ menuButton(faction + 'deck',2,'act_draw',faction,"2")
 					+ menuButton(faction + 'deck',7,'act_draw',faction,"to 7")
 					+ menuButton(faction + 'deck',99,'act_draw',faction,"All")
 					+ menuButton(faction + 'deck',0,'act_draw',faction,"Reset")
-				+ '</div>'
 				+ '</div>';
-			$('#popupmenu').html(outp);
-			$('#popupmenu').css({"left":ev.pageX,"top":ev.pageY});
-			$('#popupmenu').toggle();
+				regCardCodes = decks[faction].getDeck();
+			} else	{
+				$.each(regions[faction][faction + reg], function (id,cardInfo)	{
+					regCardCodes.push(cardInfo.code);
+				});
+			}
+			
+			outp += '<div class="btn-group drop' + ( (ev.pageY - $(window).scrollTop()) / $(window).height() > 0.5 ? 'up' : 'down') + '" style="padding: 5px;">'
+				+ '<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">Choose <span class="caret"></span></button>';
+			outp += '<ul class="dropdown-menu scrollable-menu" role="menu" for="' + faction + '" data-src="' + reg + '">';	
+		
+			$.each(regCardCodes, function(id,cardCode)	{
+				card = _cards({"code":cardCode}).first();
+				if (id == 10) { outp += '<li class="divider"></li>'; }
+				outp += '<li style="cursor: pointer;" role="presentation" class="card-picker" data-index="' + id + '">'
+					+ '<a role="menuitem" class="card-picker" data-code="' + cardCode + '">' + card.name + '</a></li>';
+				});		
+			outp += '</ul>';
+			outp += '</div>';
+			
+			showPopUp(ev, outp);
 		})
 		.on('click','.card-plot',function()	{
 			$(this).css('opacity',1.5 - $(this).css('opacity'));
 		});
 	function menuButton(src,idx,tgt,faction,btnTxt)	{
-		var btn = '<button type="button" class="btn btn-default" '
+		var btn = '<button type="button" class="btn btn-default btn-select" '
 				+ 'data-src="' + src + '" '
 				+ 'data-idx="' + idx + '" '
 				+ 'data-tgt="' + tgt + '" '
@@ -163,17 +161,39 @@ $(document).ready(function ()	{
 				+ '</button>'
 		return btn;
 	}
-// Click Menu
-	$('#popupmenu').on('click','.btn',function()	{
-		var faction = $(this).attr('for');
-		var src = regions[faction][$(this).data('src')];
-		var idx = $(this).data('idx');
-		var action = $(this).data('tgt');
-		
+	function showPopUp(ev, outp)	{
+		$('#popupmenu').html(outp);
+		$('#popupmenu').css({"left":ev.pageX - 20,"top":ev.pageY - 20});
 		$('#popupmenu').toggle();
-		// Attachment - callback
-		changeState(action,faction,src,idx,null);
-	});
+	}
+// Click on Menu
+	$('#popupmenu')
+		.on('click','.btn-select',function()	{
+			var faction = $(this).attr('for');
+			var src = regions[faction][$(this).data('src')];
+			var idx = $(this).data('idx');
+			var action = $(this).data('tgt');
+			
+			$('#popupmenu').toggle();
+			// Attachment - callback
+			changeState(action,faction,src,idx,null);
+		})
+		.on('click','li.card-picker',function () {
+			var faction = $(this).closest('ul').attr('for');
+			var deck = decks[faction];
+			var reg = $(this).closest('ul').data('src') ;
+			var idx = $(this).data('index')
+			if (reg != 'deck')	{
+				changeState('act_drawid',faction,regions[faction][faction + reg],idx,regions[faction][faction + 'hand']);
+			} else	{
+				changeState('act_drawid',faction,[],idx,regions[faction][faction + 'hand']);
+			}
+			$('#popupmenu').toggle();
+			//drawCard(deck, $(this).data('index'));
+		})
+		.on('mouseleave',function()	{
+			$(this).css('display','none');
+		});
 	function changeState(action,faction,src,idx,tgt)	{
 		var cost = 0;
 		var crd;
@@ -254,6 +274,13 @@ $(document).ready(function ()	{
 					default:
 				}
 				break;
+			case 'act_drawid':
+				if (src.length == 0)	{	// deck
+					drawCard(decks[faction],idx);
+				} else	{
+					moveCrd(src,idx,regions[faction][faction + 'hand']);
+				}
+				break;
 			default:
 		}
 		updateRegion(faction);
@@ -271,12 +298,9 @@ $(document).ready(function ()	{
 		var res, gain;
 		tgt.push(src.splice(idx,1)[0]);
 		tgt.slice(-1)[0].standing = true;
-		// Adjust Runner Creds etc.
+		
 		var code = tgt.slice(-1)[0].code;
 		var card = _cards({"code":code}).first();
-		
-		// Update gold when playing cards & undoing
-		
 		
 		$.each(['p1','p2'],function(idx,faction) {
 			updateInfo(faction);
@@ -341,7 +365,7 @@ $(document).ready(function ()	{
 		}
 	}
 
-// Screen Rendering Functions
+/* Screen Rendering Functions */
 	function updateChooseList(faction)	{
 		var outp='';
 		outp += '<div class="btn-group"><button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">Choose <span class="caret"></span></button>';
@@ -392,7 +416,7 @@ $(document).ready(function ()	{
 				case ('p1discard'):
 				case ('p2discard'):
 					count = regions[faction][faction + 'discard'].length;
-					outp += '<div class="region-root">';
+					outp += '<div class="region-root" data-region="discard" for="' + faction + '">';
 					if (count == 0)	{
 						outp += '<img src="img\\card_back.png" class="card card-root" draggable="false" style="opacity: 0.5;"></img>';
 					} else{
@@ -404,7 +428,7 @@ $(document).ready(function ()	{
 				case('p1dead'):
 				case('p2dead'):
 					count = regions[faction][faction + 'dead'].length;
-					outp += '<div class="region-root">';
+					outp += '<div class="region-root" data-region="dead" for="' + faction + '">';
 					if (count == 0)	{
 						outp += '<img src="img\\card_back.png" class="card card-root" draggable="false" style="opacity: 0.5;"></img>';
 					} else {
@@ -461,29 +485,23 @@ $(document).ready(function ()	{
 
 // Load Deck Text
 	function parseDeck(data)	{
-	// Create decklist from cards
-	
+	// Create decklist from cards	
 		var crd;
 		var deck = {};
 		deck.title = "";
 		deck.data = [];
 		deck.plot = [];
-	//Deck Name\n\nHouse\nAgenda
 		var res = data.match(/(.+)/g);
-	// Deck Name
+		
+	// Deck Name, Faction and Agenda
 		deck.title = res[0];
-	// Find Identity
 		deck.idname = res[1];
 		deck.agenda = res[2];
-		/*
-		data.match(/Faction:\n\s(.+)/g);
-		deck.idname = RegExp.$1;
-		if (deck.idname != "The Night's Watch") { deck.idname = "House " + deck.idname; }
-		*/
-		deck.id = _cards({"name":deck.idname}).first().code; //Special Characters - CT fixed by not using \\uuml; on textarea
-		deck.agendaid = _cards({"name":deck.agenda}).first().code; 
-		//var regex = /([0-9])x\s((.+)\s\s\W+|(.+))/g;				// Look out for STAR special character (ANR)
 		
+		deck.id = _cards({"name":deck.idname}).first().code; 		//Special Characters - CT fixed by not using \\uuml; on textarea
+		deck.agendaid = _cards({"name":deck.agenda}).first().code; 
+		
+		//var regex = /([0-9])x\s((.+)\s\s\W+|(.+))/g;				// Look out for STAR special character (ANR)
 		var regex = /([0-9])x\s(.+)\s\((.+)\)/g;
 		var res = data.match(regex);
 				
