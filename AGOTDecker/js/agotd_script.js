@@ -2,39 +2,125 @@ var decks = {};
 var players = {};
 var regions = {};
 var handsize = 7;
+var playerids = ['p1','p2'];
 //var regCount;	//Expandable Regions Only
 
 $(document).ready(function ()	{
-	// Alt: get published decklist from netrunnerdb https://netrunnerdb.com/api/2.0/public/decklist/29088
-	$('#p1dl').html(_decks[0]);
-	$('#p2dl').html(_decks[1]);
-	defaultDecks();
-	
 // Initialisation
 	var _cards = TAFFY(CARDS);
+	var htmlout = '';
 	
-	regions['p1'] = {"p1hand":[],"p1char":[],"p1loc":[],"p1deck":[],"p1discard":[],"p1dead":[]};
-	regions['p2'] = {"p2hand":[],"p2char":[],"p2loc":[],"p2deck":[],"p2discard":[],"p2dead":[]};
+	$.each(_decks, function (idx,strdeck)	{
+		htmlout += '<li data-deckidx="' + idx + '"><a role="menuitem">' + strdeck.match(/(.+)/g)[0] + '</a></li>';
+	});
 	
-	$.each(['p1','p2'],function(idx,faction)	{
+	$.each(playerids,function(id,faction)	{
+	// Pre-populate list of decks :: Alt: get published decklist from netrunnerdb\thronesdb etc https://netrunnerdb.com/api/2.0/public/decklist/29088
+		$('#' + faction + 'decks').html(htmlout);
+	// Load Initial Deck
+		$('#' + faction + 'dl').html(_decks[id]);
+	// Set region arrays
+		regions[faction] = {};
+	// Create new Player and decks
 		players[faction] = new agot2Player(faction);
 		loadDeck(faction);
+	// Update Player Display area(s)
 		updateInfo(faction);
-		updateRegion(faction);
 		updatePlots(faction);
+		updateRegion(faction);
+	})
+	
+	function loadDeck(faction)	{
+		var decklist = $('#' + faction + 'dl').val();
+		var deckinfo = parseDeck(decklist);
+		decks[faction] = new gameDeck(deckinfo.data);
 		
-		console.log(players[faction]);
-		console.log(decks[faction]);
-		console.log(regions[faction]);
-	});
+		decks[faction].setMeta("title",deckinfo.title);
+		decks[faction].setMeta("idcode",deckinfo.idcode);
+		decks[faction].setMeta("idname",deckinfo.idname);
+		decks[faction].setMeta("agname",deckinfo.agenda);
+		decks[faction].setMeta("agcode",deckinfo.agendaid);
+		decks[faction].setMeta("faction",faction);
+		decks[faction].setMeta("plots",deckinfo.plot);
+		resetDeck(decks[faction]);
+	}
+	function resetDeck(deck)	{
+		// Shuffle, draw 5, clear & render
+		var faction = deck.getMeta('faction');
+		deck.resetCards();
+		players[faction].reset();
+		regions[faction][faction + "hand"] = [];
+		regions[faction][faction + "char"] = [];
+		regions[faction][faction + "loc"] = [];
+		regions[faction][faction + "deck"] = [];
+		regions[faction][faction + "discard"] = [];
+		regions[faction][faction + "dead"] = [];
+	//Draw
+		for (var n=0; n<handsize; n++)	{drawCard(deck);}
+	}
+	function drawCard(deck, idx=0)	{
+		var faction = deck.getMeta('faction');
+		var code = deck.draw(idx);
+		var isRoot = false;
+		if (code != "00000")	{
+			isRoot = _cards({"code":code,}).first().type_code != 'ice';
+			regions[faction][faction + 'hand'].push({"code":code,"counters":0,"standing":true});
+			updateRegion(faction);
+			updateChooseList(faction);
+		}
+	}
+	// Create deck from decklist data. Returns deck = {title,id,idname,agenda,agendaid,data[card codes],plot[card codes]}
+	function parseDeck(data)	{
+		var crd;
+		var deck = {};
 		
+	// Deck Name, Faction and Agenda
+		var res = data.match(/(.+)/g);
+		deck.title = res[0];
+		deck.idname = res[1];
+		deck.agenda = res[2];
+		
+		deck.id = _cards({"name":deck.idname}).first().code; 		//Special Characters - CT fixed by not using \\uuml; on textarea
+		deck.agendaid = _cards({"name":deck.agenda}).first().code; 
+		
+		deck.data = [];
+		deck.plot = [];
+		
+		var regex = /([0-9])x\s(.+)\s\((.+)\)/g;						// Nx <Card name> (<pack name>)		/([0-9])x\s((.+)\s\s\W+|(.+))/g;				// Look out for STAR special character (ANR)
+		var res = data.match(regex);
+				
+		$.each(res, function (id, item) {
+			item.match(regex);
+			var qty = parseInt(RegExp.$1, 10);
+			crd = _cards({"name":RegExp.$2,"Set":RegExp.$3}).first();
+			if (crd.Type == 'Plot')	{
+				deck.plot.push(crd.code);
+			} else {
+				for (var i=0; i < qty; i++)	{deck.data.push(crd.code);}
+			}
+		});
+		console.log('Deck Loaded:');
+		console.log(deck);
+		
+		return deck;		
+	}
+			
 /* Listeners */
+
 // Load Decks
+	// Select Deck
+	$('.dropdown-deck').on('click','li',function()	{
+		var idx = $(this).data('deckidx');
+		var faction = $(this).closest('ul').attr('for');
+		$('#' + faction + 'dl').html(_decks[idx]);
+		loadDeck(faction)
+	});
+	// Paste and Load Deck
 	$('.btn-load').on('click',function () {
 		loadDeck($(this).attr('for'));
 	});
 	
-// Resources
+// Update Resources
 	$(document)
 		.on('click','.btn-cred',function()	{
 			var faction = $(this).closest('.btn-group').attr('for');
@@ -166,7 +252,8 @@ $(document).ready(function ()	{
 		$('#popupmenu').css({"left":ev.pageX - 20,"top":ev.pageY - 20});
 		$('#popupmenu').toggle();
 	}
-// Click on Menu
+
+// Click on Menu Item
 	$('#popupmenu')
 		.on('click','.btn-select',function()	{
 			var faction = $(this).attr('for');
@@ -194,6 +281,8 @@ $(document).ready(function ()	{
 		.on('mouseleave',function()	{
 			$(this).css('display','none');
 		});
+
+// Process actions
 	function changeState(action,faction,src,idx,tgt)	{
 		var cost = 0;
 		var crd;
@@ -285,15 +374,6 @@ $(document).ready(function ()	{
 		}
 		updateRegion(faction);
 	}
-	
-// Load Decks
-	$('.dropdown-deck').on('click','li',function()	{
-		var idx = $(this).data('deckidx');
-		var faction = $(this).closest('ul').attr('for');
-		$('#' + faction + 'dl').html(_decks[idx]);
-		loadDeck(faction)
-	});
-	
 	function moveCrd(src,idx,tgt)	{
 		var res, gain;
 		tgt.push(src.splice(idx,1)[0]);
@@ -308,62 +388,9 @@ $(document).ready(function ()	{
 			updateChooseList(faction);
 		});
 	}
+
 	
-	function defaultDecks()	{
-		var res;
-		var outp = '';
-		$.each(_decks, function (idx,strdeck)	{
-			res = strdeck.match(/(.+)/g)[0];
-			outp += '<li data-deckidx="' + idx + '"><a role="menuitem">' + res + '</a></li>';
-		});
-		$('#p1decks').html(outp);
-		$('#p2decks').html(outp);
-	}
-	
-	function loadDeck(faction)	{
-		var decklist = $('#' + faction + 'dl').val();
-		var deckinfo = parseDeck(decklist);
-		decks[faction] = new gameDeck(deckinfo.data);
-		
-		decks[faction].setMeta("title",deckinfo.title);
-		decks[faction].setMeta("idcode",deckinfo.idcode);
-		decks[faction].setMeta("idname",deckinfo.idname);
-		decks[faction].setMeta("agname",deckinfo.agenda);
-		decks[faction].setMeta("agcode",deckinfo.agendaid);
-		decks[faction].setMeta("faction",faction);
-		decks[faction].setMeta("plots",deckinfo.plot);
-		resetDeck(decks[faction]);
-	}
-	
-	function resetDeck(deck)	{
-		// Shuffle, draw 5, clear & render
-		var faction = deck.getMeta('faction');
-		deck.resetCards();
-		players[faction].reset();
-		regions[faction][faction + "hand"] = [];
-		regions[faction][faction + "char"] = [];
-		regions[faction][faction + "loc"] = [];
-		regions[faction][faction + "deck"] = [];
-		regions[faction][faction + "discard"] = [];
-		regions[faction][faction + "dead"] = [];
-	//Draw
-		for (var n=0; n<handsize; n++)	{drawCard(deck);}
-		updateInfo(faction);
-		updateRegion(faction);
-		updatePlots(faction);
-	}
-	
-	function drawCard(deck, idx=0)	{
-		var faction = deck.getMeta('faction');
-		var code = deck.draw(idx);
-		var isRoot = false;
-		if (code != "00000")	{
-			isRoot = _cards({"code":code,}).first().type_code != 'ice';
-			regions[faction][faction + 'hand'].push({"code":code,"counters":0,"standing":true});
-			updateRegion(faction);
-			updateChooseList(faction);
-		}
-	}
+
 
 /* Screen Rendering Functions */
 	function updateChooseList(faction)	{
@@ -403,18 +430,16 @@ $(document).ready(function ()	{
 		var crd;
 		$.each(regions[faction], function(rgn,crds)	{
 			outp = '<div class="region-title">' + $('#' + rgn).attr('name') + '</div>';
-		// Add Root for Deck, Discard and Dead
+			
 			switch (rgn)	{
-				case ('p1deck'):
-				case ('p2deck'):
+				case (faction + 'deck'):
 					outp += '<div class="region-root" data-region="deck" for="' + faction + '">';
 					outp += '<img src="img\\card_back.png" class="card card-root" draggable="false" '
 						+ (decks[faction].cardsInDeck() == 0 ? ' style="opacity: 0.5;" ' : '')
 						+ '></img>';
 					outp += '<span class="card-count">' + decks[faction].cardsInDeck() + '</span>';
 					break;
-				case ('p1discard'):
-				case ('p2discard'):
+				case (faction + 'discard'):
 					count = regions[faction][faction + 'discard'].length;
 					outp += '<div class="region-root" data-region="discard" for="' + faction + '">';
 					if (count == 0)	{
@@ -425,8 +450,7 @@ $(document).ready(function ()	{
 					}
 					outp += '<span class="card-count">' + count + '</span>';
 					break;
-				case('p1dead'):
-				case('p2dead'):
+				case(faction + 'dead'):
 					count = regions[faction][faction + 'dead'].length;
 					outp += '<div class="region-root" data-region="dead" for="' + faction + '">';
 					if (count == 0)	{
@@ -438,12 +462,52 @@ $(document).ready(function ()	{
 					outp += '<span class="card-count">' + count + '</span>';
 					break;
 				default:
-					$.each(crds, function(idx,regCrd)	{
-						outp += getCardImgEle(regCrd,idx);
-					});
+					if (rgn == faction + 'char' || rgn == faction + 'loc')	{
+						updateRegion2(faction, $('#' + rgn), crds);
+					} else {						
+						$.each(crds, function(idx,regCrd)	{
+							outp += getCardImgEle(regCrd,idx);
+						});
+					}
 			}
-			$('#' + rgn).html(outp);
-			//console.log (regions[faction]);
+			if (rgn != faction + 'char' && rgn != faction + 'loc')	{
+				$('#' + rgn).html(outp);
+			}
+		});
+	}
+	function updateRegion2(faction,region,cardList)	{
+		var card;
+		var installedCard;
+		var imgClass;
+		var imgStyle;
+		var i;
+		
+		region.empty();
+		//region.html (JSON.stringify(cardList));
+		$.each(cardList, function (idx,listItem)	{
+			card = _cards({"code":listItem.code}).first();
+			installedCard = region.find('div[data-code="' + card.code + '"]');
+			imgClass = 'card card-deck' + (!listItem.standing ? ' card-kneel' : '');
+			if (installedCard.length == 0 || !card.Unique)	{
+				region.append(
+					'<div class="region-installed" data-code="' + card.code + '">' 
+					+ '<img class="' + imgClass + '" src="' + card.img + '" '
+						+ 'draggable="true" '
+						+ 'alt="' + card.title + '" '
+						+ 'data-code="'+ card.code + '" '
+						+ 'data-idx="' + idx + '"></img>'
+					+ '</div>');
+			} else {
+				i = installedCard.find('img').length * 10;
+				imgStyle = 'position: absolute; left: ' + i * 2 + 'px; ' + 'top: ' + i + 'px';
+				installedCard.append(
+					'<img class="' + imgClass + '" src="' + card.img + '" style="' + imgStyle + '" '
+						+ 'draggable="true" '
+						+ 'alt="' + card.title + '" '
+						+ 'data-code="'+ card.code + '" '
+						+ 'data-idx="' + idx + '"></img>'
+				);
+			}
 		});
 	}
 	function getCardImgEle(regCrd,idx)	{
@@ -483,51 +547,6 @@ $(document).ready(function ()	{
 		$('#' + faction + 'plot').html (outp);
 	}
 
-// Load Deck Text
-	function parseDeck(data)	{
-	// Create decklist from cards	
-		var crd;
-		var deck = {};
-		deck.title = "";
-		deck.data = [];
-		deck.plot = [];
-		var res = data.match(/(.+)/g);
-		
-	// Deck Name, Faction and Agenda
-		deck.title = res[0];
-		deck.idname = res[1];
-		deck.agenda = res[2];
-		
-		deck.id = _cards({"name":deck.idname}).first().code; 		//Special Characters - CT fixed by not using \\uuml; on textarea
-		deck.agendaid = _cards({"name":deck.agenda}).first().code; 
-		
-		//var regex = /([0-9])x\s((.+)\s\s\W+|(.+))/g;				// Look out for STAR special character (ANR)
-		var regex = /([0-9])x\s(.+)\s\((.+)\)/g;
-		var res = data.match(regex);
-				
-		$.each(res, function (id, item) {
-			item.match(regex);
-			var qty = parseInt(RegExp.$1, 10);
-			crd = _cards({"name":RegExp.$2,"Set":RegExp.$3}).first();
-			switch(crd.Type)	{
-				/*
-				case ('Agenda'):
-					deck.agenda = crd.name;
-					deck.agendaid = crd.code;
-					break;
-				*/
-				case ('Plot'):
-					deck.plot.push(crd.code);
-					break;
-				default:
-					for (var i=0; i < qty; i++)	{deck.data.push(crd.code);}
-			}
-		});
-		console.log('Deck Loaded:');
-		console.log(deck);
-		
-		return deck;		
-	}
 	
 // Drag and Drop
 	$(document)

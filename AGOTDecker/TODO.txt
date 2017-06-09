@@ -1,0 +1,50 @@
+ AGOTLitmus
+ ##########
+ o  Dupes (Unique)
+ o  Attachments
+ o  Plot List \ 1 card
+ o  Card view (pop-up)
+ o  Card view (enlarge)
+ o  Regions - change from regions[faction][faction + name] to ...?
+ 
+ 
+ x  New Draw Menu - Select from Deck
+ x  Copy Repo
+ x  Update Filenames \ images etx
+ x  corp/run - p1/p2?
+ x  Load GoT decks
+ x  Update to show GoT cards
+ x  Amend Regions (Character, Location)
+ x  Cut down Region code
+ x  Stand \ Kneel
+ ###########
+ 
+ 
+ ANRLitmus
+#########
+x  Access Hand (runner)
+x  Move between Corp and Runner (Steal Agenda)
+ x Reset move between c&r
+o  Rez (see kneel)
+o  Region Roots
+o  Score - update Agenda Points
+o  Update Creds, MU etc
+ o Update creds for runner...
+o  Click Count / Start turn
+o  Host ON card (AGOT Attach)
+o  Choose
+
+x  Move to Archives - Phantom Card - *Delete Region Issue
+x  Undefined Servers when deleted - *Delete Region Issue?
+x  Return to deck and Shuffle / Shuffle
+x  Trash
+x  Add Counters
+ - card data + #counters & other metadata - refactor.
+ - img in container
+ - add counter to output
+ - Add Counters function
+ - Remove Counters function
+ - Remove Single Counter function
+ - Remove Counters to Counter Element
+ 
+ 
