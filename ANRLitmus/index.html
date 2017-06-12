@@ -22,6 +22,7 @@
 	<script src="js/netrunnerdb_cards.js"></script>
 	<script src="js/anrlclass.js"></script>
 	<script src="js/anrlscript.js"></script>
+	<script src="js/anrldecklists.js"></script>
 </head>
 <body>
 	<div class="container">
@@ -38,11 +39,23 @@
 							<div class="panel-body">
 								<div class="col-sm-6">
 									Corp
+									<div class="dropdown">
+										<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Choose Deck
+										<span class="caret"></span></button>
+										<ul class="dropdown-menu dropdown-deck" id="corpdecks" for="corp">
+										</ul>
+									</div>
 									<textarea class="form-control" type="text" id="corpdl" rows="5"></textarea>
 									<button type="button" class="btn btn-default btn-load" for="corp">Load</button>
 								</div>
 								<div class="col-sm-6">
 									Runner
+									<div class="dropdown">
+										<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Choose Deck
+										<span class="caret"></span></button>
+										<ul class="dropdown-menu dropdown-deck" id="rundecks" for="run">
+										</ul>
+									</div>
 									<textarea class="form-control" type="text" id="rundl" rows="5"></textarea>
 									<button type="button" class="btn btn-default btn-load" for="run">Load</button>
 								</div>

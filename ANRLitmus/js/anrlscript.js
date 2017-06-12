@@ -1,36 +1,97 @@
 var decks = {};
 var players = {};
 var regions = {};
+var handsize = 5;
 var regCount;	//Corp Only
+var playerids = ['corp','run'];
 
 $(document).ready(function ()	{
 	// Alt: get published decklist from netrunnerdb https://netrunnerdb.com/api/2.0/public/decklist/29088
 	// data.name, data.cards = {"{id}":{number}} !Includes ID
-	$('#rundl').html("CT Litmus PreMWL\n\nChaos Theory: Wünderkind\n\nEvent (18)\n3x Diesel\n3x Legwork  &bull;&bull;&bull;&bull;&bull; &bull;\n1x Modded\n2x Quality Time\n3x Scavenge\n1x Stimhack  &bull;\n3x Test Run\n2x Vamp  &bull;&bull;&bull;&bull;\n\nHardware (8)\n2x Astrolabe\n3x Clone Chip\n3x R&D Interface\n\nIcebreaker (7)\n2x Cerberus \"Lady\" H1\n1x Femme Fatale  &bull;\n1x Mimic  &bull;\n1x Sharpshooter\n1x Torch\n1x ZU.13 Key Master\n\nProgram (7)\n1x Clot  &bull;&bull;\n3x Magnum Opus\n3x Self-modifying Code\n\n15 influence spent (max 15, available 0)\n40 cards (min 40)\nCards up to The Valley\n\nDeck built on https://netrunnerdb.com.");
-	$('#corpdl').html("Skorpius HS\n\nSkorpios Defense Systems: Persuasive Power\n\nAgenda (10)\n2x Armored Servers\n1x Graft\n3x Hostile Takeover\n1x Paper Trail\n3x Project Atlas\n\nAsset (5)\n2x Illegal Arms Factory\n3x Snare!  &bull;&bull;&bull;&bull;&bull; &bull;\n\nUpgrade (1)\n1x SanSan City Grid  &star; &bull;&bull;&bull;\n\nOperation (13)\n3x Beanstalk Royalties\n3x Hedge Fund\n2x Housekeeping\n2x Hunter Seeker\n2x Scorched Earth\n1x SEA Source  &bull;&bull;\n\nBarrier (5)\n1x Fire Wall\n3x Ice Wall\n1x Wall of Static\n\nCode Gate (5)\n2x Enigma\n3x Hortum\n\nSentry (5)\n2x Archer\n2x Bloodletter\n1x Colossus\n\n12 influence spent (max 15, available 3)\n18 agenda points (between 18 and 19)\n44 cards (min 40)\nCards up to Terminal Directive\n\nDeck built on https://netrunnerdb.com.")
-	
-// Initialisation
+	var htmlout = '';
 	var _cards = TAFFY(nrdb_cards.data);
 	var imgurl = nrdb_cards.imageUrlTemplate;
+	regCount = 0;
 	
 	// Code. Agenda\Asset\deck \ Upgrade \ Ice. Rezzed. 	
 	// Region = ["{code}",]
 	// Region = ["code":"{code}"]
 	regions['corp'] = {"scored":[],"corphand":[],"hq":[],"archives":[],"randd":[]};
 	regions['run'] = {"stolen":[],"runhand":[],"resource":[],"hardware":[],"program":[]};
-	regCount = 0;
-	
-	$.each(['corp','run'],function(idx,faction)	{
+		
+// Initialisation
+	$.each(playerids,function(id,faction)	{
+		$.each(_decks[faction], function (idx,strdeck)	{
+			htmlout += '<li data-deckidx="' + idx + '"><a role="menuitem">' + strdeck.match(/(.+)/g)[0] + '</a></li>';
+		});
+	// Pre-populate list of decks :: Alt: get published decklist from netrunnerdb\thronesdb etc https://netrunnerdb.com/api/2.0/public/decklist/29088
+		$('#' + faction + 'decks').html(htmlout);
+	// Load Initial Deck
+		$('#' + faction + 'dl').html(_decks[faction][0]);
+	// Create new Player and decks
 		players[faction] = new anrPlayer(faction);
 		loadDeck(faction);
 		updateInfo(faction);
 		updateRegion(faction);
-		//console.log(players[faction]);
-		//console.log(decks[faction]);
-		//console.log(regions[faction]);
 	});
+	
+	function loadDeck(faction)	{
+		var decklist = $('#' + faction + 'dl').val();
+		var deckinfo = parseDeck(decklist);
+		decks[faction] = new anrDeck(deckinfo.data);
+		
+		decks[faction].setMeta("title",deckinfo.title);
+		decks[faction].setMeta("idcode",deckinfo.idcode);
+		decks[faction].setMeta("idname",deckinfo.idname);
+		decks[faction].setMeta("faction",faction);
+		resetDeck(decks[faction]);
+	}	
+	function resetDeck(deck)	{
+		// Shuffle, draw 5, clear & render
+		var faction = deck.getMeta('faction');
+		deck.resetCards();
+		players[faction].reset();
+		// Clear Regions
+		if (faction == 'corp')	{
+			regions['corp'] = {"scored":[],"corphand":[],"hq":[],"archives":[],"randd":[]};
+			regions['run'].stolen = [];
+			regCount = 0;
+		}
+		if (faction == 'run')	{
+			regions['run'] = {"stolen":[],"runhand":[],"resource":[],"hardware":[],"program":[],"trash":[]};
+		}
+		//Draw 5
+		for (var n=0; n<5; n++)	{drawCard(deck);}
+		$.each(players, function (key,data)	{
+			updateInfo(key);
+			updateRegion(key);
+		});
+	}
+	function drawCard(deck, idx=0)	{
+		var faction = deck.getMeta('faction');
+		var code = deck.draw(idx);
+		var isRoot = false;
+		if (code != "00000")	{
+			isRoot = _cards({"code":code,}).first().type_code != 'ice';
+			regions[faction][faction + 'hand'].push({"code":code,"counters":0,"root":isRoot,"rez":faction=='run'});
+			updateRegion(faction);
+			updateChooseList(faction);
+		}
+	}
+
+	
+	
 		
 // Listeners
+
+// Load Decks
+	// Select Deck
+	$('.dropdown-deck').on('click','li',function()	{
+		var idx = $(this).data('deckidx');
+		var faction = $(this).closest('ul').attr('for');
+		$('#' + faction + 'dl').html(_decks[faction][idx]);
+		loadDeck(faction)
+	});
 	$('.btn-load').on('click',function () {
 		loadDeck($(this).attr('for'));
 	});
@@ -48,7 +109,7 @@ $(document).ready(function ()	{
 	
 	$(document).on('click','li.card-picker',function () {
 		var faction = decks[$(this).closest('ul').attr('for')];
-		drawCard(faction, $(this).data('index'))
+		drawCard(faction, $(this).data('index'));
 	});
 	
 // Resources
@@ -95,9 +156,15 @@ $(document).ready(function ()	{
 			crds = accessdeck.getDeck();
 			var outp = "<div>Access:</div>"
 				+ '<div class="btn-group-vertical">'
-			$.each(crds,function(idx,code)	{
+			$.each(crds,function(n,code)	{
 				crd = _cards({"code":code}).first();
-				if (accessSrc == "hand") {idx = regions['corp']['corphand'].indexOf(crd.code);}
+				if (accessSrc == "hand") {
+					$.each(regions['corp']['corphand'],function (i,handcrd)	{
+						if (handcrd.code == crd.code) {
+							idx = i;
+						}
+					});
+				}
 				outp += menuButton(src,idx,tgt,'corp',crd.title);
 			})
 			outp += '</div>';
@@ -106,6 +173,25 @@ $(document).ready(function ()	{
 			$('#popupmenu').toggle();
 		})
 		;
+// Card info
+	$(document)
+		.on('click','.card-info',function(ev) {
+			var outp = '';
+			var card;
+			var code = $(this).data('code');
+			
+			if (typeof code !== 'undefined') {
+				card = _cards({"code":code}).first();
+				outp += '<img class="card-popup" src="' + imgurl.replace("{code}",code) + '"></img>';
+			}
+			$('#popupmenu').html(outp);
+			$('#popupmenu').css({"left":Math.max(ev.pageX - 150,0),"top":ev.pageY - 20});
+			$('#popupmenu').toggle();
+		})
+		.on('click','.card-popup',function () {
+			$('#popupmenu').css("display","none");
+		});
+	
 		
 // Create Menu
 	$(document)
@@ -128,6 +214,8 @@ $(document).ready(function ()	{
 			}
 			// Deck
 			outp += menuButton(src,idx,"deck",faction,"Deck & Shuffle");
+			// Rez Card
+			outp += (faction == 'corp' ? menuButton(src,idx,"actRez",faction,'<span class="icon-subroutine"></span> Rez\\DeRez'):'');
 			// Trash Card
 			outp += menuButton(src,idx,"actTrash",faction,'<span class="icon-trash"></span> Trash');
 			
@@ -168,6 +256,7 @@ $(document).ready(function ()	{
 				+ '</button>'
 		return btn;
 	}
+
 // Click Menu
 	$('#popupmenu').on('click','.btn',function()	{
 		var faction = $(this).attr('for');
@@ -212,6 +301,9 @@ $(document).ready(function ()	{
 			case ("actRemAll"):
 				src[idx].counters = 0;
 				break;
+			case ("actRez"):
+				src[idx].rez = !src[idx].rez;
+				break;
 			default:	// Region
 				if (typeof tgt !== "undefined")	{
 					moveCrd(src,idx,tgt);
@@ -229,7 +321,7 @@ $(document).ready(function ()	{
 		// Adjust Runner Creds etc.
 		var code = tgt.slice(-1)[0].code;
 		var card = _cards({"code":code}).first();
-		var regex = /^Gain\s([0-9]+)\[credit\]/gi;
+		/*var regex = /^Gain\s([0-9]+)\[credit\]/gi;
 		
 		card.text.match(regex);
 		res = RegExp.$1;
@@ -243,7 +335,7 @@ $(document).ready(function ()	{
 		if (card.side_code == 'corp' && card.type_code == 'operation')	{
 			players['corp'].addCreds(card.cost * -1);
 			players['corp'].addCreds(gain);
-		}
+		}*/
 		$.each(['corp','run'],function(idx,faction) {
 			updateInfo(faction);
 			updateRegion(faction);
@@ -251,49 +343,6 @@ $(document).ready(function ()	{
 		});
 	}
 	
-	function loadDeck(faction)	{
-		var decklist = $('#' + faction + 'dl').val();
-		var deckinfo = parseDeck(decklist);
-		decks[faction] = new anrDeck(deckinfo.data);
-		
-		decks[faction].setMeta("title",deckinfo.title);
-		decks[faction].setMeta("idcode",deckinfo.idcode);
-		decks[faction].setMeta("idname",deckinfo.idname);
-		decks[faction].setMeta("faction",faction);
-		resetDeck(decks[faction]);
-	}
-	
-	function resetDeck(deck)	{
-		// Shuffle, draw 5, clear & render
-		var faction = deck.getMeta('faction');
-		deck.resetCards();
-		players[faction].reset();
-		// Clear Regions
-		if (faction == 'corp')	{
-			regions['corp'] = {"scored":[],"corphand":[],"hq":[],"archives":[],"randd":[]};
-			regCount = 0;
-		}
-		if (faction == 'run')	{
-			regions['run'] = {"stolen":[],"runhand":[],"resource":[],"hardware":[],"program":[],"trash":[]};
-		}
-		//Draw 5
-		for (var n=0; n<5; n++)	{drawCard(deck);}
-		updateInfo(faction);
-		updateRegion(faction);
-	}
-	
-	function drawCard(deck, idx=0)	{
-		var faction = deck.getMeta('faction');
-		var code = deck.draw(idx);
-		var isRoot = false;
-		if (code != "00000")	{
-			isRoot = _cards({"code":code,}).first().type_code != 'ice';
-			regions[faction][faction + 'hand'].push({"code":code,"counters":0,"root":isRoot});
-			updateRegion(faction);
-			updateChooseList(faction);
-		}
-	}
-
 // Screen Rendering Functions
 	function updateChooseList(faction)	{
 		var outp='';
@@ -350,18 +399,20 @@ $(document).ready(function ()	{
 					break;
 			}
 			$.each(crds, function(idx,regCrd)	{
-				outp += getCardImgEle(regCrd,idx);
+				outp += getCardImgEle(faction,rgn,regCrd,idx);
 			});
 			$('#' + rgn).html(outp);
 			//console.log (regions[faction]);
 		});
 	}
-	function getCardImgEle(regCrd,idx)	{
+	function getCardImgEle(faction,rgn,regCrd,idx)	{
 		var crd = _cards({"code":regCrd.code}).first();
-		var outp = '<div class="region-installed">';
+		var outp = '<div class="region-installed region-installed-' + faction + '">';
 		outp += '<img '
 			+ 'src="' + imgurl.replace('{code}',crd.code) + '"'
-			+ 'class="card card-deck" draggable="true" '
+			+ 'class="card card-deck'
+			+ (!regCrd.rez && $.inArray(rgn,['corphand'])==-1 ? ' card-unrezzed' : '')
+			+ '" draggable="true" '
 			+ 'alt="' + crd.title + '" '
 			+ 'data-code="'+ crd.code + '" '
 			+ 'data-idx="'+ idx + '">'
@@ -369,6 +420,7 @@ $(document).ready(function ()	{
 		if (regCrd.counters > 0)	{
 			outp += '<span class="card-counter"><span class="counter-value">' + regCrd.counters + '</span></span>';
 		}
+		outp += '<span class="card-info" data-code="' + crd.code + '"><i class="fa fa-info-circle fa-lg" aria-hidden="true"></i></span>';
 		outp += '</div>';
 		return outp;
 	}
