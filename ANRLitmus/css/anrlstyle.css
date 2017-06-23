@@ -26,15 +26,15 @@
 .region	{
 	border: 1px solid	#AAAAAA;
 	border-radius: 5px;
-	min-height: 50px;
+	#min-height: 190px;
 }
 .region-drop	{
 	border-color: #AA0000;
 }
 .region-installed-corp	{
 	background-image:	url('../img/corp_back.png');
-    background-size: 120px;
-    background-repeat: no-repeat;
+   background-size: 120px;
+   background-repeat: no-repeat;
 }
 .row	{
 	margin-top: 5px;
@@ -80,7 +80,16 @@
 }
 #popupmenu	{
 	position: 		absolute;
-	background-color: #FFF;
+	background-color:	rgba(255,255,255,0.8);	
 	border: 			1px solid #AAAAAA;
 	text-align: 	center;
+}
+.errborder	{
+    position:absolute;
+    height:100%;
+    width:100%;
+    left:0px;
+    top:0px;
+    border:3px solid #F00;
+    margin:-3px;
 }

@@ -22,6 +22,9 @@ function anrDeck(cardIDs)	{
 	this.getDeck = function()	{
 		return this.deck;
 	}
+	this.getDiscard = function()	{
+		return this.discard;
+	}
 	this.cardsInDeck = function()	{
 		return this.deck.length;
 	}
@@ -41,14 +44,14 @@ function anrDeck(cardIDs)	{
 		this.discard = [];
 		shuffle(this.deck);
 	}
-	this.returnToDeck = function (code)	{
+	this.returnToDeck = function (code,top=false)	{
 		// Base on card code, can be more specific using hand Index
 		var idx = this.hand.indexOf(code);
 		if (idx == -1)	{	// no match
 			return false;
 		} else {
-			this.deck.push(this.hand.splice(idx,1));
-			shuffle(this.deck);
+			this.deck.splice(0,0,this.hand.splice(idx,1)[0]);
+			if (!top) {shuffle(this.deck)};
 			return true;
 		}
 	}
@@ -58,9 +61,14 @@ function anrDeck(cardIDs)	{
 		if (idx == -1)	{	// no match
 			return false;
 		} else {
-			this.discard.push(this.hand.splice(idx,1));
+			this.discard.push(this.hand.splice(idx,1)[0]);
 			return true;
 		}
+	}
+	this.discardToHand = function(idx)	{
+		// Move card from discard to hand. Based on Discard Index
+		this.hand.push(this.discard.splice(idx,1)[0]);
+		return this.hand.slice(-1)[0].toString();
 	}
 }
 
@@ -90,6 +98,7 @@ function anrPlayer(faction)	{
 	this.faction = faction;
 	this.maxclicks = faction == 'corp' ? 3 : 4;
 	this.clicks = this.maxclicks;
+	this.tags = 0;
 	this.deck;
 	
 	this.addDeck = function (deck)	{
@@ -105,7 +114,10 @@ function anrPlayer(faction)	{
 		this.clicks = Math.max(this.clicks+n, 0);
 	}
 	this.addMU = function (n)	{
-		this.mu = Math.max(this.mu+n, 0)
+		this.mu = this.mu+n;	// Can go Negative
+	}
+	this.addTags = function (n)	{
+		this.tags = Math.max(this.tags+n, 0)
 	}
 	this.getFaction = function()	{
 		return this.faction;
@@ -119,10 +131,18 @@ function anrPlayer(faction)	{
 	this.getMU = function()	{
 		return this.mu;
 	}
+	this.getClicks = function()	{
+		return this.clicks;
+	}
+	this.getTags = function()	{
+		return this.tags;
+	}
 	this.reset = function()	{
 		this.creds = 5;
 		this.score = 0;
 		this.mu = 4;
+		this.clicks = this.maxclicks;
+		this.tags = 0;
 		return true;
 	}
 }
