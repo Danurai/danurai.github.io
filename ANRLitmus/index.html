@@ -21,6 +21,7 @@
 	<link rel="stylesheet" href="css/iconstyle.css">
 	<script src="js/netrunnerdb_cards.js"></script>
 	<script src="js/anrlclass.js"></script>
+	<script src="js/anrlclass.js"></script>
 	<script src="js/anrlscript.js"></script>
 	<script src="js/anrldecklists.js"></script>
 </head>
@@ -69,6 +70,7 @@
 						</div>
 					</div>
 				</div>
+			<!-- Counters -->
 				<div class="row">
 					<div class="col-md-12" align="center" id="corpdata">
 						<span class="form-group">
@@ -105,6 +107,17 @@
 						</span>&nbsp;&nbsp;
 					</div>
 				</div>
+			<!-- Standard Actions -->
+				<div class="row">
+					<div class="col-md-12">
+						<div class="btn-group" for="corp">
+							<button type="button" class="btn btn-default btn-action" data-action="act_newturn" for="corp" disabled>New Turn</button>
+							<button type="button" class="btn btn-default btn-action" data-action="act_draw" for="corp">Draw</button>
+							<button type="button" class="btn btn-default btn-action" data-action="act_credit" for="corp">Credit</button>
+							<button type="button" class="btn btn-default btn-action" data-action="act_purge" for="corp" disabled>Purge</button>
+						</div>
+					</div>
+				</div>
 				<!--
 				<div class="row">
 					<div class="col-md-12" align="center" id="corpbtns">
@@ -123,18 +136,14 @@
 				<div class="row" id="corparea">
 					<div class="col-md-12 region" id="scored" name="Scored" for="corp"></div>
 					<div class="col-md-12 region" id="corphand" name="Hand" align="center" for="corp"></div>
-					<div class="col-md-12 region" id="archives" name="Archives"" for="corp"></div>
-					<div class="col-md-12 region" id="hq" name="HQ"" for="corp"></div>
 					<div class="col-md-12 region" id="randd" name="R&D"" for="corp"></div>
+					<div class="col-md-12 region" id="hq" name="HQ"" for="corp"></div>
+					<div class="col-md-12 region" id="archives" name="Archives"" for="corp"></div>
 				</div>
 			</div>
 			<div class="col-md-6">
 				<div class="row">
 					<div class="col-sm-3" align="center">
-						<div class="btn-group-vertical">
-							<button class="btn btn-default btn-sm btn-access" data-tgt="hand">Access Hand</button>
-							<button class="btn btn-default btn-sm btn-access" data-tgt="deck">Access Deck</button>
-						</div>
 					</div>
 					<div class="col-sm-6" align="center" id="runinfo">
 					</div>
@@ -147,6 +156,7 @@
 						</div>
 					</div>
 				</div>
+			<!-- Counters -->
 				<div class="row">
 					<div class="col-md-12" align="center" id="rundata">
 						<span class="form-group">
@@ -189,6 +199,21 @@
 								<button type="button" class="btn btn-default btn-sm btn-tag" val="1">+</button>
 							</span>
 						</span>
+					</div>
+				</div>
+			<!-- Standard Actions -->
+				<div class="row">
+					<div class="col-md-12">
+						<div class="btn-group" for="run">
+							<button type="button" class="btn btn-default btn-action" data-action="act_newturn" for="run" disabled>New Turn</button>
+							<button type="button" class="btn btn-default btn-action" data-action="act_draw" for="run">Draw</button>
+							<button type="button" class="btn btn-default btn-action" data-action="act_credit" for="run">Credit</button>
+							<button type="button" class="btn btn-default btn-action" data-action="act_removetag" for="run">Clear Tag</button>
+						</div>
+						<div class="btn-group">
+							<button class="btn btn-default btn btn-access" data-tgt="hand">Access Hand</button>
+							<button class="btn btn-default btn btn-access" data-tgt="deck">Access Deck</button>
+						</div>
 					</div>
 				</div>
 				<!--

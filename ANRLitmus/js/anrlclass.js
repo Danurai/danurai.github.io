@@ -134,6 +134,9 @@ function anrPlayer(faction)	{
 	this.getClicks = function()	{
 		return this.clicks;
 	}
+	this.resetClicks = function()	{
+		this.clicks = this.maxclicks;
+	}
 	this.getTags = function()	{
 		return this.tags;
 	}
