@@ -447,7 +447,10 @@ $(document).ready(function ()	{
 				}
 				break;
 			case 'act_rezunrez':
-				src[idx].rez = !src[idx].rez;
+				if (crd.cost <= players['corp'].getCreds())	{
+					players['corp'].addCreds(crd.cost * -1);
+					src[idx].rez = !src[idx].rez;					
+				}
 				break;
 			case 'act_addcounter':
 				src[idx].counters ++;
@@ -667,8 +670,7 @@ $(document).ready(function ()	{
 			jsonData["idx"] = $(this).data('idx');
 			//console.log(jsonData);
 			ev.originalEvent.dataTransfer.setData('text/plain',JSON.stringify(jsonData));
-		});
-	$(document)
+		})
 		.on('dragover','.region',function(ev)	{
 			ev.preventDefault();
 			ev.originalEvent.dataTransfer.dropEffect = 'move'; 
@@ -686,19 +688,15 @@ $(document).ready(function ()	{
 			var tgtFaction = $(this).attr('for');
 			
 			moveCrd(regions[jsonData.faction][jsonData.src],jsonData.idx,regions[tgtFaction][tgt]);
-		});
-	
-	
-	
-	
+		})
+		;
 });
 
 function getMUCost(card)	{
 	var mu = 0;
 	if (typeof card.memory_cost !== 'undefined')	{
 		mu = parseInt(card.memory_cost,10) * -1;
-	} else {
-		card.text.match(/\+([0-9])\[mu\]/g);
+	} else if (card.text.match(/\+([0-9])\[mu\]/g)) {
 		mu = RegExp.$1;
 	}
 	return parseInt(mu,10);
