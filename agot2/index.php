@@ -63,6 +63,12 @@
 <!-- FONT AWESOME -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
 	
+<!-- Chart.js -->
+	<!-- script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script -->
+	<script src="/agot2/js/moment.min.js"></script>
+	<script src="/agot2/js/Chart.min.js"></script>
+	
+<!-- Site Scripts -->	
 	<script src="/agot2/js/agot2_filter.js"></script>
 	
 	<script src="/agot2/js/agot2_data.js"></script>
@@ -72,12 +78,7 @@
 	
 	<link href="/agot2/css/agot2.css" rel="stylesheet">
 	
-	<script>
-		$(document).ready( function() {
-	
-		});
-		
-	</script>
+
 </head>
 <body>
 	<?php 
@@ -217,6 +218,10 @@
 					<div id="deckstats" class="tab-pane">
 						<div class="row">
 							<div class="col-md-12">
+								<canvas id="barIcons" width="400" height="400"></canvas>
+								<canvas id="lineCost" width="400" height="400"></canvas>
+								<canvas id="lineStr" width="400" height="400"></canvas>
+								<canvas id="pieFact" width="400" height="400"></canvas>
 							</div>
 						</div>
 					</div>

@@ -88,4 +88,33 @@ $(document).ready(function () {
 		});
 	});
 	
+	$('#filterlist').on('mouseenter', function () {
+		$(this).qtip({
+			overwrite: false,
+			show: {
+				ready: true
+			},
+			content: {
+				text:  'Search tags:'
+					+ '<br>e:&nbsp;&nbsp;Set Code'
+					+ '<br>f:&nbsp;&nbsp;Faction Code'
+					+ '<br>t:&nbsp;&nbsp;Type'
+					+ '<br>x:&nbsp;&nbsp;Description'
+					+ '<br>c:&nbsp;&nbsp;Claim'
+			},
+			style: {
+				classes: 'qtip-bootstrap',
+				tip: false
+			},
+			position: {
+				my: 'right top',
+				at: 'right top',
+				viewport : $(window)
+			},
+			hide:	{
+				//event: 'unfocus'
+			}
+		});
+	});
+	
 });

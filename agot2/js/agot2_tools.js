@@ -36,6 +36,12 @@ function parsefilter(f)	{
 		outp["CardText"] = {likenocase:res[1].split('|')};
 	}
 	
+	var claim = /c:([0-9])/;
+	res = RegExp(claim).exec(f);
+	if (res != null)	{
+		outp["Claim"] = res[1];
+	}
+	
 	return outp;
 }
 

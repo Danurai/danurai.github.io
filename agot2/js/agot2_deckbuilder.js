@@ -17,14 +17,12 @@ $(document).ready(function () {
 	loadDeck();
 	writedeck();
 	writeoutput();
-	
 	updateTableBody();
-	
 
 /* Decklist */
 	$('#decklist').on('click','.card',function () {
 		var outp = '';
-		var card = _cards({"code":$(this).data("code")}).first();
+		var card = _cards({"code":String($(this).data("code"))}).first();
 		
 		var maxallowed = maxindeck(card);
 		var inset = decklist({"code":card.code}).count() != 0 ? decklist({"code":card.code}).first().qty : 0;
@@ -230,8 +228,9 @@ $(document).ready(function () {
 			if (faction_short != "Watch") {faction = faction_short;}
 		}
 		outp += '<h4>Faction: '
-			+ (decklist({"Type":"Faction"}).count() > 0 ? decklist({"Type":"Faction"}).first().name : '')
-			+ (decklist({"Type":"Agenda"}).count() > 0 ? ' (' + decklist({"Type":"Agenda"}).first().name + ')': '')
+			+ (decklist({"Type":"Faction"}).count() > 0 ? '<span class="card" data-code="' + decklist({"Type":"Faction"}).first().code + '">' + decklist({"Type":"Faction"}).first().name + '</span>': '')
+			+ (decklist({"Type":"Agenda"}).count() > 0 ? ' (<span class="card" data-code="' + decklist({"Type":"Agenda"}).first().code + '">' + decklist({"Type":"Agenda"}).first().name + '</span>)': '')
+			//<span class="card" data-code="10037" data-hasqtip="209" aria-describedby="qtip-209">Kings of Summer</span>
 			+ '</h4>';
 		
 		// Deck Validity 
@@ -273,14 +272,16 @@ $(document).ready(function () {
 		$('#deck-content').val('[' + content.slice(0,-1) + ']');
 		
 		newGame();
+		updateCharts();
 	}
 	function writeoutput() {
 		var exp = '';
 		
-		exp = 'Created using danurai.github.io/agot2 deck builder\n\nFaction:\n ' 
-		exp += typeof decklist({"Type":"Faction"}).first().name != "undefined" ? decklist({"Type":"Faction"}).first().name.replace('House ','') : "";
-		exp += '\n\nTotal Cards: (' + decklist({"Type":["Character","Attachment","Event","Location"]}).sum("qty") + ')';
-		$.each(["Agenda","Plot","Character","Attachment","Event","Location"],function (id,type) {
+		exp = $('#deck-name').val() + '\n\n';
+		exp += decklist({"Type":"Faction"}).first().name + '\n';
+		exp += decklist({"Type":"Agenda"}).first().name + '\n';
+		exp += '\nTotal Cards: (' + decklist({"Type":["Character","Attachment","Event","Location"]}).sum("qty") + ')';
+		$.each(["Plot","Character","Attachment","Event","Location"],function (id,type) {
 			exp += '\n\n' + type;
 			decklist({"Type":type}).order("name").each(function (card) {
 				exp += '\n' + card.qty + 'x ' + card.name + ' (' + card.Set + ')'
@@ -387,15 +388,17 @@ $(document).ready(function () {
 		
 		decklist().remove();
 		
-		str.match(/Faction:\s+(.+)/g);
-		faction = RegExp.$1;
-		
-		if (faction != '') {
-			faction = (faction == "The Night's Watch" ? faction : 'House ' + faction);
-			crd = _cards({"name":faction}).first();
-			crd["qty"] = 1;
-			decklist.insert(crd);
-		}
+		var res = str.match(/(.+)/g);
+		// Deck Name
+		$('#deck-name').val(res[0]);
+		// Faction
+		crd = _cards({"name": res[1]}).first();
+		crd["qty"] = 1;
+		decklist.insert(crd);
+		// Agenda
+		crd = _cards({"name": res[2]}).first();
+		card["qty"] = 1;
+		decklist.insert(crd);
 		
 		var regex = /([0-9])x\s(.+)\s\((.+)\)/g;
 		var res = str.match(regex);
@@ -439,7 +442,7 @@ $(document).ready(function () {
 		//var set = $(this).data('cardset')
 		//var card = _cards({"Number":id,"Set":set}).first();
 		
-		var card = _cards({"code":$(this).data('code')}).first();
+		var card = _cards({"code":$(this).data('code').toString()}).first();
 		$('#plot_data').html ('<h4>Plot: ' + card.name + '</h4>Gold: ' + card.Gold + ' Initiative: ' + card.Initiative + ' Claim: ' + card.Claim + ' Reserve: ' + card.Reserve); // + '<br><br>' + card.CardText);
 	});
 	$('#hand').on('click','.check_card',function() {
@@ -525,10 +528,10 @@ $(document).ready(function () {
 	function updateChooseList()	{
 		var outp='';
 		outp += '<div class="btn-group"><button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">Choose<span class="caret"></span></button>';
-		outp += '<ul style="max-height: 250px; overflow-y: scroll;"class="dropdown-menu scrollable-menu" role="menu">';
+		outp += '<ul class="dropdown-menu scrollable-menu" role="menu">';
 		var x = 0;
 		$.each(deck,function (id,card) {
-			outp += '<li role="presentation"><a role="menuitem" class="card deck_card" data-code="' + card.code + '" data-index="' + x + '">#' + (x+1) + ' ' + card.name + '</a></li>';
+			outp += '<li role="presentation"><a role="menuitem" class="card" data-code="' + card.code + '" data-index="' + x + '">#' + (x+1) + ' ' + card.name + '</a></li>';
 			if (x++ == 9) {
 				outp +='<li role="presentation" class="divider"></li>';
 			}
@@ -551,12 +554,156 @@ $(document).ready(function () {
 		}
 	});
 	
+/* STATS TAB */
+	// Code to compile data and call Charts scripts
+	function updateCharts()	{
+		barIcons();
+		lineCost();
+		lineStrength();
+	}
+	
+	function barIcons()	{
+		var icons = ["Military","Intrigue","Power"];
+		var counts = [0,0,0];
+		
+		decklist({"Type":"Character"}).each(function (char) {
+			$.each(icons, function(idx,icon)	{
+				counts[idx] += ($.inArray(icon,char.Icons) != -1 ? char.qty : 0);
+			});
+		});
+		
+		var ctx = $('#barIcons').get(0).getContext("2d");
+		var bi = new Chart(ctx, {
+			type:	"bar",
+			data:	{
+				labels:	icons,
+				datasets: [{
+					data:		counts,
+					backgroundColor: [
+						'rgb(204, 0, 0)',
+						'rgb(0, 153, 0)',
+						'rgb(0, 0, 153)'
+					]					
+				}]
+			},
+			options:	{
+			  title: {
+					display: true,
+					text: 'Icons',
+					fontSize: 24
+				},
+				legend:	{
+					display: false
+				},
+				responsive: false,
+				scales:	{
+					yAxes: [{
+						ticks: {
+							min:	0,
+							stepSize: 1
+						}
+					}]
+				}
+			}
+		});
+	}
+	function lineCost()	{
+		var maxVal = decklist({"Cost":{"!is":"X"}}).max("Cost");
+		var datavals = [];
+		var datacounts = [];
+		for (var i=0; i<= maxVal; i++)	{
+			datavals.push(String(i));
+			datacounts.push(decklist({"Type":"Character","Cost":String(i)}).sum("qty"));
+		}
+		
+		var ctx = $('#lineCost').get(0).getContext("2d");
+		var ls = new Chart(ctx, {
+			type: 'line',
+			data: {
+				labels: datavals,
+				datasets:	[{
+					label: "Cost",
+					fill: false,
+					data: datacounts,
+					tension: 0
+				}]
+			},
+			options: {
+			  title: {
+					display: true,
+					text: 'Cost',
+					fontSize: 24
+				},
+				legend:	{
+					display: false
+				},
+				responsive: false,
+				scales:	{
+					yAxes: [{
+						ticks: {
+							min:	0,
+							stepSize: 1
+						},
+						scaleLabel:	{
+							display: true,
+							labelString: "Number of cards"
+						}
+					}],
+					xAxes: [{
+						scaleLabel: {
+							display: true,
+							labelString: "Cost (Cost X excluded)"
+						}
+					}]
+				}
+			}
+		});
+	}
+	function lineStrength()	{
+		var _deck = decklist({"Type":["Character","Event","Attachment","Location"]});
+		var maxVal = decklist({"Type":"Character","Strength":{"!is":"X"}}).max("Strength");
+		var datavals = [];
+		var datacounts = [];
+		for (var i=0; i<= maxVal; i++)	{
+			datavals.push(String(i));
+			datacounts.push(decklist({"Type":"Character","Strength":String(i)}).count());
+		}
+		
+		var ctx = $('#lineStr').get(0).getContext("2d");
+		var ls = new Chart(ctx, {
+			type: 'line',
+			data: {
+				labels: datavals,
+				datasets:	[{
+					label: "Strength",
+					fill: false,
+					data: datacounts,
+					tension: 0
+				}]
+			},
+			options: {
+				responsive: false,
+				scales:	{
+					yAxes: [{
+						ticks: {
+							min:	0,
+							stepSize: 1
+						}
+					}]
+				}
+			}
+		});
+	}
+	
 	function showSnack(message) {
 		$('#snackbar').html (message);
 		$('#snackbar').fadeIn(1000).delay(5000).fadeOut(1000);
 	}
 	
 });
+
+
+
 
 /* Fisher-Yates Shuffle  */
 function shuffle(array) {
