@@ -45,7 +45,7 @@ $(document).ready(function ()	{
 		resetDeck(decks[faction]);
 	}
 	function resetDeck(deck)	{
-		// Shuffle, draw 5, clear & render
+		// Shuffle, draw, clear & render
 		var faction = deck.getMeta('faction');
 		deck.resetCards();
 		players[faction].reset();
@@ -105,7 +105,8 @@ $(document).ready(function ()	{
 		return deck;		
 	}
 			
-/* Listeners */
+			
+// Listeners
 
 // Load Decks
 	// Select Deck
@@ -133,7 +134,8 @@ $(document).ready(function ()	{
 			var value = parseInt($(this).attr('val'),10);
 			players[faction].addScore(value);
 			updateInfo(faction);
-		});
+		})
+		;
 	
 // Create Menus
 	$(document)
@@ -142,6 +144,8 @@ $(document).ready(function ()	{
 			var src  = $(this).closest('div.region').attr('id');
 			var idx = $(this).data('idx');
 			var faction = $(this).closest('div.region').attr('for');
+			
+			var kneelstand = regions[faction][src][getFrontCardId(regions[faction][src],idx)].standing?'Kneel':'Stand';
 		
 			// New Options
 			// Play, Dead, Discard, Stand\Kneel, Add Power, Remove Power, Add Icon > Mil\Int\Pwr
@@ -149,7 +153,7 @@ $(document).ready(function ()	{
 			outp = '<div class="small"><b>Action</b></div>'
 				+ '<div class="btn-group-vertical btn-group-sm" style="padding: 5px;">'
 				+ menuButton(src,idx,'act_play',faction,"Play")
-				+ menuButton(src,idx,'act_kneelstand',faction, ($(this).hasClass('card-kneel')?'Stand':'Kneel') )
+				+ menuButton(src,idx,'act_kneelstand',faction, kneelstand )
 				+ menuButton(src,idx,'act_addpower',faction,"Add Power")
 				+ menuButton(src,idx,'act_dead',faction,"Dead")
 				+ menuButton(src,idx,'act_discard',faction,"Discard")
@@ -157,27 +161,6 @@ $(document).ready(function ()	{
 				+ menuButton(src,idx,'act_rtn_topdeck',faction,"Top of Deck")
 				+ menuButton(src,idx,'act_rtn_deckshuffle',faction,"Deck and Shuffle")
 				+ '</div>';
-		/*
-			// Move To: Regions
-			outp = '<div class="small"><b>Move To:</b></div>'
-				+ '<div class="btn-group-vertical btn-group-sm" style="padding: 5px;">';
-			$.each(regions[faction],function(tgt,crds)	{
-				outp += menuButton(src,idx,tgt,faction,$('#' + tgt).attr('name') + (tgt == src ? ' >>' : ''));
-			});
-			
-			// Return to Deck
-			outp += menuButton(src,idx,"deck",faction,"Deck & Shuffle");
-			
-			// Add\Remove counters
-			outp += menuButton(src,idx,"actAddCount",faction,'<span class="icon-power"></span> Add Counter');
-			outp += menuButton(src,idx,"actRemAll",faction,'<span class="icon-power"></span> Remove Counters');
-			
-			// Stand \ Kneel
-			outp += menuButton(src,idx,"actKneel",faction,'Kneel');
-			outp += menuButton(src,idx,"actStand",faction,'Stand');
-			
-			outp += '</div>';
-		*/
 			
 			showPopUp(ev, outp);
 		})
@@ -236,6 +219,7 @@ $(document).ready(function ()	{
 		.on('click','.card-plot',function()	{
 			$(this).css('opacity',1.5 - $(this).css('opacity'));
 		});
+	// Menu Functions
 	function menuButton(src,idx,tgt,faction,btnTxt)	{
 		var btn = '<button type="button" class="btn btn-default btn-select" '
 				+ 'data-src="' + src + '" '
@@ -276,7 +260,6 @@ $(document).ready(function ()	{
 				changeState('act_drawid',faction,[],idx,regions[faction][faction + 'hand']);
 			}
 			$('#popupmenu').toggle();
-			//drawCard(deck, $(this).data('index'));
 		})
 		.on('mouseleave',function()	{
 			$(this).css('display','none');
@@ -312,6 +295,8 @@ $(document).ready(function ()	{
 				}
 				break;
 			case 'act_kneelstand':
+				// Stand or kneel foremost card if unique
+				idx = getFrontCardId(src,idx);
 				src[idx].standing = !src[idx].standing;
 				break;
 			case 'act_addpower':
@@ -388,7 +373,15 @@ $(document).ready(function ()	{
 			updateChooseList(faction);
 		});
 	}
-
+	function getFrontCardId(src,idx)	{
+		var crd = _cards({"code":src[idx].code}).first();
+		if (crd.Unique) {
+			for (var id=idx; id<src.length; id++)	{
+				idx = src[idx].code == src[id].code ? id : idx
+			}
+		}
+		return idx;
+	}
 	
 
 

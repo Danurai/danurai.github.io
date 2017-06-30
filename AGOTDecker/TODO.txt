@@ -1,39 +1,37 @@
- AGOTLitmus
- ##########
- o  Dupes (Unique)
- o  Attachments
- o  Plot List \ 1 card
- o  Card view (pop-up)
- o  Card view (enlarge)
- o  Regions - change from regions[faction][faction + name] to ...?
- 
- 
- x  New Draw Menu - Select from Deck
- x  Copy Repo
- x  Update Filenames \ images etx
- x  corp/run - p1/p2?
- x  Load GoT decks
- x  Update to show GoT cards
- x  Amend Regions (Character, Location)
- x  Cut down Region code
- x  Stand \ Kneel
- ###########
- 
- 
  ANRLitmus
 #########
+o  Show top card of Archives
+o  Discard\deck view cards
+o  Region Roots #2 - proper Root
+o  'Play' Card (corp)
+o  Host ON card (AGOT Attach)
+o  Choose
+o  Refactor
+
+x  Region Roots #1 - insert or add to server
+x  BUG - Empty Regions showing in Move To Popup
+x  BUG - Card from Discard with cards in regions
+x  BUG - Clear down old regions on removal
+x  BUG - Clear down old regions on refresh
+x  Rez Cost
+x  Click Count / Start turn
+x 	Update creds for runner...
+x  Update Creds, MU etc
+x  Tidy Rez
+x  Bug - Access Hand \ Cards ++refresh
+x  Score - update Agenda Points
+x  Draw card with cards protecting randd
+x  Steal Card - Set src
+x  Steal Card - Do not add to Corp Score
+x  UX - Standard Actions - Draw, Credit, Clear Tag, Run, (Purge Virus), Mulligan, 
+x  Corp Reset - don't impact Ayla
+x  Corp Draw (Caused by having Cards in R&D not in Deck)
+x  Card From Heap / Trash
+x  Card view (pop-up)
 x  Access Hand (runner)
 x  Move between Corp and Runner (Steal Agenda)
  x Reset move between c&r
-o  Rez (see kneel)
-o  Region Roots
-o  Score - update Agenda Points
-o  Update Creds, MU etc
- o Update creds for runner...
-o  Click Count / Start turn
-o  Host ON card (AGOT Attach)
-o  Choose
-
+x  Rez (see kneel)
 x  Move to Archives - Phantom Card - *Delete Region Issue
 x  Undefined Servers when deleted - *Delete Region Issue?
 x  Return to deck and Shuffle / Shuffle
@@ -46,5 +44,38 @@ x  Add Counters
  - Remove Counters function
  - Remove Single Counter function
  - Remove Counters to Counter Element
+
+ AGOTLitmus
+ ##########
+ BUG List
+  
+ Features
+ o  UX - Corp Play
+ o  RUN - Select Server & Mark
+ o  Bottom of Deck
+ o  Remove from game
+ o  Attachments
+ o  Plot List \ 1 card
+ x  Card view (pop-up)
+ o  Regions - TD change from regions[faction][faction + name] to ...?
+ o  Uniques
  
+ o  Sort out regions \ array \ card class etc.
+ 
+ x  Dupes (Unique)
+ x  New Draw Menu - Select from Deck
+ x  Copy Repo
+ x  Update Filenames \ images etx
+ x  corp/run - p1/p2?
+ x  Load GoT decks
+ x  Update to show GoT cards
+ x  Amend Regions (Character, Location)
+ x  Cut down Region code
+ x  Stand \ Kneel
+ 
+ 
+
+ 
+ XFire
+ ##########
  
