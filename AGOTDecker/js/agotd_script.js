@@ -10,6 +10,7 @@ $(document).ready(function ()	{
 	var _cards = TAFFY(CARDS);
 	var htmlout = '';
 	
+	htmlout = '<li data-deckidx="-1"><a role="menuitem"><b><em>Paste Deck</em></b></a></li>';
 	$.each(_decks, function (idx,strdeck)	{
 		htmlout += '<li data-deckidx="' + idx + '"><a role="menuitem">' + strdeck.match(/(.+)/g)[0] + '</a></li>';
 	});
@@ -18,20 +19,19 @@ $(document).ready(function ()	{
 	// Pre-populate list of decks :: Alt: get published decklist from netrunnerdb\thronesdb etc https://netrunnerdb.com/api/2.0/public/decklist/29088
 		$('#' + faction + 'decks').html(htmlout);
 	// Load Initial Deck
-		$('#' + faction + 'dl').html(_decks[id]);
+		//$('#' + faction + 'dl').html(_decks[id]);
 	// Set region arrays
 		regions[faction] = {};
 	// Create new Player and decks
 		players[faction] = new agot2Player(faction);
-		loadDeck(faction);
-	// Update Player Display area(s)
-		updateInfo(faction);
-		updatePlots(faction);
-		updateRegion(faction);
+		loadDeck(_decks[id],faction);
+	// Update Player Display area(s) - Part of resetDeck
+		//updateInfo(faction);
+		//updatePlots(faction);
+		//updateRegion(faction);
 	})
 	
-	function loadDeck(faction)	{
-		var decklist = $('#' + faction + 'dl').val();
+	function loadDeck(decklist,faction)	{
 		var deckinfo = parseDeck(decklist);
 		decks[faction] = new gameDeck(deckinfo.data);
 		
@@ -55,8 +55,11 @@ $(document).ready(function ()	{
 		regions[faction][faction + "deck"] = [];
 		regions[faction][faction + "discard"] = [];
 		regions[faction][faction + "dead"] = [];
+		updateInfo(faction);
+		updatePlots(faction);
 	//Draw
 		for (var n=0; n<handsize; n++)	{drawCard(deck);}
+		//updateRegion(faction);
 	}
 	function drawCard(deck, idx=0)	{
 		var faction = deck.getMeta('faction');
@@ -66,7 +69,6 @@ $(document).ready(function ()	{
 			isRoot = _cards({"code":code,}).first().type_code != 'ice';
 			regions[faction][faction + 'hand'].push({"code":code,"counters":0,"standing":true});
 			updateRegion(faction);
-			updateChooseList(faction);
 		}
 	}
 	// Create deck from decklist data. Returns deck = {title,id,idname,agenda,agendaid,data[card codes],plot[card codes]}
@@ -113,12 +115,18 @@ $(document).ready(function ()	{
 	$('.dropdown-deck').on('click','li',function()	{
 		var idx = $(this).data('deckidx');
 		var faction = $(this).closest('ul').attr('for');
-		$('#' + faction + 'dl').html(_decks[idx]);
-		loadDeck(faction)
+		if (idx < 0)	{
+			$('#decklist').val('');
+			$('#loadModal').data('faction',faction);
+			$('#loadModal').modal('show');
+		}	else {
+			loadDeck(_decks[idx],faction);
+		}
 	});
 	// Paste and Load Deck
 	$('.btn-load').on('click',function () {
-		loadDeck($(this).attr('for'));
+		$('#loadModal').modal('hide');
+		loadDeck($('#decklist').val(),$('#loadModal').data('faction'));
 	});
 	
 // Update Resources
@@ -321,12 +329,10 @@ $(document).ready(function ()	{
 			case 'act_rtn_topdeck':
 				decks[faction].returnToDeck(src[idx].code,true);
 				src.splice(idx,1);
-				updateChooseList(faction);
 				break;
 			case 'act_rtn_deckshuffle':
 				decks[faction].returnToDeck(src[idx].code);
 				src.splice(idx,1);
-				updateChooseList(faction);
 				break;
 			case 'act_draw':
 				switch (idx)	{
@@ -370,7 +376,6 @@ $(document).ready(function ()	{
 		$.each(['p1','p2'],function(idx,faction) {
 			updateInfo(faction);
 			updateRegion(faction);
-			updateChooseList(faction);
 		});
 	}
 	function getFrontCardId(src,idx)	{
@@ -386,22 +391,7 @@ $(document).ready(function ()	{
 
 
 /* Screen Rendering Functions */
-	function updateChooseList(faction)	{
-		var outp='';
-		outp += '<div class="btn-group"><button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">Choose <span class="caret"></span></button>';
-		outp += '<ul class="dropdown-menu scrollable-menu" role="menu" for="' + faction + '">';
 		
-		$.each(decks[faction].getDeck(),function (id,code) {
-			card = _cards({"code":code}).first();
-			if (id == 10) { outp += '<li class="divider"></li>'; }
-			outp += '<li style="cursor: pointer;" role="presentation" class="card-picker" data-index="' + id + '"><a role="menuitem" class="card-picker" data-code="' + code + '">' + card.name + '</a></li>';
-		});
-		
-		outp += '</ul>';
-		outp += '</div>';
-		$('#' + faction + 'cardlist').html (outp);
-	}
-	
 	function updateInfo(faction)	{
 		var deck = decks[faction];
 		var infoout = '<h3>' + deck.getMeta('title') + '</h3>'

@@ -135,13 +135,14 @@ $(document).ready(function ()	{
 		var idx = $(this).data('deckidx');
 		var faction = $(this).closest('ul').attr('for');
 		if (idx < 0)	{
+			//$('#decklist').val();
 			$('#loadModal').modal('show');
 		}	else {
 			loadDeck(_decks[faction][idx]);
 		}
 	});
 	// Paste and Load Deck
-	$('.btn-load').on('click',function () {
+	$('.btn-load').on('click',function () {		
 		$('#loadModal').modal('hide');
 		loadDeck($('#decklist').val());
 	});

@@ -28,83 +28,46 @@
 <body>
 	<div class="container">
 		<div class="row">
-			<div class="col-md-12">
-				<div class="panel-group" style="margin-bottom: 0px;">
-					<div class="panel panel-default">
-						<div class="panel-heading">
-							<h4 class="panel-title">
-							<a data-toggle="collapse" href="#collapse1">Load Decks</a>
-							</h4>
-						</div>
-						<div id="collapse1" class="panel-collapse collapse">
-							<div class="panel-body">
-								<div class="col-sm-6">
-									Deck 1
-									<div class="dropdown">
-										<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Choose Deck
-										<span class="caret"></span></button>
-										<ul class="dropdown-menu dropdown-deck" id="p1decks" for="p1">
-										</ul>
-									</div>
-									<textarea class="form-control" type="text" id="p1dl" rows="5"></textarea>
-									<button type="button" class="btn btn-default btn-load" for="p1">Load</button>
-								</div>
-								<div class="col-sm-6">
-									Deck 2
-									<div class="dropdown">
-										<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Choose Deck
-										<span class="caret"></span></button>
-										<ul class="dropdown-menu dropdown-deck" id="p2decks" for="p2">
-										</ul>
-									</div>
-									<textarea class="form-control" type="text" id="p2dl" rows="5"></textarea>
-									<button type="button" class="btn btn-default btn-load" for="p2">Load</button>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="row">
 			<div class="col-md-6">
+			<!-- INFO -->
 				<div class="row">
-					<div class="col-md-12" align="center" id="p1info">
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-12" align="center" id="p1data">
-						<span class="form-group">
+					<div class="col-sm-4" align="left">
+						<div class="dropdown">
+							<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Choose Deck
+							<span class="caret"></span></button>
+							<ul class="dropdown-menu dropdown-deck" id="p1decks" for="p1">
+							</ul>
+						</div>
+						<br />
+						<div class="form-group">
 							<i class="fa fa-circle-o"></i>
 							<label id="p1creds">8</label>&nbsp;&nbsp;
 							<span class="btn-group" for="p1">
 								<button type="button" class="btn btn-default btn-sm btn-cred" val="-1">-</button>
 								<button type="button" class="btn btn-default btn-sm btn-cred" val="1">+</button>
 							</span>
-						</span>&nbsp;&nbsp;
-						<span class="form-group">
+						</div> 
+						<div class="form-group">
 							<span class="icon-power"></span>
 							<label id="p1score">0</label>&nbsp;&nbsp;
 							<span class="btn-group" for="p1">
 								<button type="button" class="btn btn-default btn-sm btn-score" val="-1">-</button>
 								<button type="button" class="btn btn-default btn-sm btn-score" val="1">+</button>
 							</span>
-						</span>
+						</div>
+					</div>
+					<div class="col-sm-4" align="center" id="p1info">
+					</div>
+					<div class="col-sm-4" align="right">
+					Plots?
 					</div>
 				</div>
-				<!--div class="row">
-					<div class="col-md-12" align="center" id="p1btns">
-						<b>Draw:&nbsp;</b>
-						<div class="btn-group" for="p1">
-							<button type="button" class="btn btn-default btn-sm btn-draw" val="1" id="p1draw1">1</button>
-							<button type="button" class="btn btn-default btn-sm btn-draw" val="2" id="p1draw2">2</button>
-							<button type="button" class="btn btn-default btn-sm btn-draw" val="to7" id="p1drawup">to 7</button>
-							<button type="button" class="btn btn-default btn-sm btn-draw" val="all" id="p1drawall">All</button>
-							<button type="button" class="btn btn-default btn-sm btn-draw" val="0" id="p1drawreset">Reset</button>
-						</div>
-						<span id="p1cardlist"></span>
-					</div>
-				</div-->
+			<!-- Stats -->
+				<div class="row">
+					<div class="col-sm-4 region" id="p1deck" name="Deck"" for="p1"></div>
+					<div class="col-sm-4 region" id="p1discard" name="Discard"" for="p1"></div>
+					<div class="col-sm-4 region" id="p1dead" name="Dead"" for="p1"></div>
+				</div>
 				<div class="row" id="p1plotarea">
 					<div class="col-md-12 region-plot" id="p1plot" align="center" for="p1"></div>
 				</div>
@@ -113,50 +76,45 @@
 					<div class="col-md-12 region" id="p1char" name="Characters" align="center" for="p1"></div>
 					<div class="col-md-12 region" id="p1loc" name="Locations" align="center" for="p1"></div>
 				</div>
-				<div class="row">
-					<div class="col-sm-4 region" id="p1deck" name="Deck"" for="p1"></div>
-					<div class="col-sm-4 region" id="p1discard" name="Discard"" for="p1"></div>
-					<div class="col-sm-4 region" id="p1dead" name="Dead"" for="p1"></div>
-				</div>
 			</div>
 			<div class="col-md-6">
 				<div class="row">
-					<div class="col-md-12" align="center" id="p2info">
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-12" align="center" id="p2data">
-						<span class="form-group">
+					<div class="col-sm-4" align="left">
+						<div class="dropdown">
+							<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Choose Deck
+							<span class="caret"></span></button>
+							<ul class="dropdown-menu dropdown-deck" id="p2decks" for="p2">
+							</ul>
+						</div>
+						<br />
+						<div class="form-group">
 							<i class="fa fa-circle-o"></i>
 							<label id="p2creds">8</label>&nbsp;&nbsp;
 							<span class="btn-group" for="p2">
 								<button type="button" class="btn btn-default btn-sm btn-cred" val="-1">-</button>
 								<button type="button" class="btn btn-default btn-sm btn-cred" val="1">+</button>
 							</span>
-						</span>&nbsp;&nbsp;
-						<span class="form-group">
+						</div>
+						<div class="form-group">
 							<span class="icon-power"></span>
 							<label id="p2score">0</label>&nbsp;&nbsp;
 							<span class="btn-group" for="p2">
 								<button type="button" class="btn btn-default btn-sm btn-score" val="-1">-</button>
 								<button type="button" class="btn btn-default btn-sm btn-score" val="1">+</button>
 							</span>
-						</span>
+						</div>
+					</div>
+					<div class="col-sm-4" align="center" id="p2info">
+					</div>
+					<div class="col-sm-4" align="right">
+						Plots?
 					</div>
 				</div>
-				<!--div class="row">
-					<div class="col-md-12" align="center" id="p2btns">
-						<b>Draw:&nbsp;</b>
-						<div class="btn-group" for="p2">
-							<button type="button" class="btn btn-default btn-sm btn-draw" val="1" id="p2draw1">1</button>
-							<button type="button" class="btn btn-default btn-sm btn-draw" val="2" id="p2draw1">2</button>
-							<button type="button" class="btn btn-default btn-sm btn-draw" val="to7" id="p2draw7">to 7</button>
-							<button type="button" class="btn btn-default btn-sm btn-draw" val="all" id="p2drawall">All</button>
-							<button type="button" class="btn btn-default btn-sm btn-draw" val="0" id="p2drawreset">Reset</button>
-						</div>
-						<span id="p2cardlist"></span>
-					</div>
-				</div-->
+				<div class="row">
+					<div class="col-sm-4 region" id="p2deck" name="Deck" for="p2"></div>
+					<div class="col-sm-4 region" id="p2discard" name="Discard" for="p2"></div>
+					<div class="col-sm-4 region" id="p2dead" name="Dead" for="p2"></div>
+				</div>
 				<div class="row" id="p2plotarea">
 					<div class="col-md-12 region-plot" id="p2plot" align="center" for="p2"></div>
 				</div>
@@ -165,15 +123,29 @@
 					<div class="col-md-12 region" id="p2char" name="Characters"align="center" for="p2"></div>
 					<div class="col-md-12 region" id="p2loc" name="Locations" align="center" for="p2"></div>
 				</div>
-				<div class="row">
-					<div class="col-sm-4 region" id="p2deck" name="Deck" for="p2"></div>
-					<div class="col-sm-4 region" id="p2discard" name="Discard" for="p2"></div>
-					<div class="col-sm-4 region" id="p2dead" name="Dead" for="p2"></div>
-				</div>
 			</div>
 		</div>
 	</div>
 	
 	<div id="popupmenu" class="menu" hidden>
+	</div>
+	<div id="loadModal" class="modal fade" role="dialog" data-faction="">
+		<div class="modal-dialog">
+		<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Load Deck</h4>
+				</div>
+				<div class="modal-body">
+					<p>Paste text below in the format:</p>
+					<span>Deck name<br>Faction<br>Banner<br>Card list: Xx &lt;card name&gt;</span>
+					<textarea class="form-control" type="text" id="decklist" rows="5"></textarea>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default btn-load" >Load</button>
+				</div>
+			</div>
+		</div>
 	</div>
 </body>
