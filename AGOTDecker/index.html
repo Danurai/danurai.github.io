@@ -7,6 +7,10 @@
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 	
+<!-- Bootstrap Select -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.3/js/bootstrap-select.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.3/css/bootstrap-select.min.css">
+	
 <!-- jquery QTIPs -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/qtip2/2.1.1/jquery.qtip.css">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/qtip2/2.1.1/jquery.qtip.js"></script>
@@ -15,6 +19,7 @@
 
 <!-- FONT AWESOME -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+
 
 <!-- Site Pages -->
 	<link rel="stylesheet" href="css/agotd_style.css">
@@ -58,8 +63,11 @@
 					</div>
 					<div class="col-sm-4" align="center" id="p1info">
 					</div>
-					<div class="col-sm-4" align="right">
-					Plots?
+					<div class="col-sm-4" align="right" id="p1plota">
+						<select class="selectpicker">
+							<option data-content="<img src='http://lcg-cdn.fantasyflightgames.com/got2nd/GT08_46.jpg' class='card-plot'>"></option>
+							<option data-content="<img src='http://lcg-cdn.fantasyflightgames.com/got2nd/GT06_100.jpg'>"></option>
+						</select>
 					</div>
 				</div>
 			<!-- Stats -->
@@ -106,8 +114,7 @@
 					</div>
 					<div class="col-sm-4" align="center" id="p2info">
 					</div>
-					<div class="col-sm-4" align="right">
-						Plots?
+					<div class="col-sm-4" align="right" id="p2plota">
 					</div>
 				</div>
 				<div class="row">

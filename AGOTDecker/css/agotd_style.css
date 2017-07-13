@@ -64,12 +64,29 @@
 	position: absolute;
 	bottom: 50%;
 	right: 20%;
-	background-color: #0000AA;
+	background-color: #AA0000;
 	border-radius: 50%;
 	text-align: center;
 	cursor: pointer;
 }
 .counter-value	{
+	line-height: 1.8em;
+	display: inline-block;
+	vertical-align: middle;
+	font-weight: bold;
+	color: #FFFFFF;
+}
+.dupe-counter	{
+	width: 1.8em;
+	height: 1.8em;
+	position: absolute;
+	bottom: 10%;
+	right: 10%;
+	background-color: #000088;
+	border-radius: 10%;
+	text-align: center;
+}
+.dupe-value	{
 	line-height: 1.8em;
 	display: inline-block;
 	vertical-align: middle;

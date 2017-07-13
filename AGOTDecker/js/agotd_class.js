@@ -95,6 +95,7 @@ function anrPlayer(faction)	{
 	this.addDeck = function (deck)	{
 		this.deck = deck;
 	}
+	
 	this.addCreds = function (n)	{
 		this.creds = Math.max(this.creds+n, 0);
 	}
@@ -137,6 +138,9 @@ function agot2Player(faction)	{
 		this.gold = 8;
 	}
 	
+	this.setCreds = function (n)	{
+		this.gold = parseInt(n,10);
+	}
 	this.addCreds = function (n)	{
 		this.gold = Math.max(this.gold + n, 0);
 	}

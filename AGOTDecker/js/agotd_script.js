@@ -3,7 +3,6 @@ var players = {};
 var regions = {};
 var handsize = 7;
 var playerids = ['p1','p2'];
-//var regCount;	//Expandable Regions Only
 
 $(document).ready(function ()	{
 // Initialisation
@@ -18,23 +17,17 @@ $(document).ready(function ()	{
 	$.each(playerids,function(id,faction)	{
 	// Pre-populate list of decks :: Alt: get published decklist from netrunnerdb\thronesdb etc https://netrunnerdb.com/api/2.0/public/decklist/29088
 		$('#' + faction + 'decks').html(htmlout);
-	// Load Initial Deck
-		//$('#' + faction + 'dl').html(_decks[id]);
 	// Set region arrays
 		regions[faction] = {};
 	// Create new Player and decks
 		players[faction] = new agot2Player(faction);
 		loadDeck(_decks[id],faction);
 	// Update Player Display area(s) - Part of resetDeck
-		//updateInfo(faction);
-		//updatePlots(faction);
-		//updateRegion(faction);
 	})
 	
 	function loadDeck(decklist,faction)	{
 		var deckinfo = parseDeck(decklist);
 		decks[faction] = new gameDeck(deckinfo.data);
-		
 		decks[faction].setMeta("title",deckinfo.title);
 		decks[faction].setMeta("idcode",deckinfo.idcode);
 		decks[faction].setMeta("idname",deckinfo.idname);
@@ -71,7 +64,7 @@ $(document).ready(function ()	{
 			updateRegion(faction);
 		}
 	}
-	// Create deck from decklist data. Returns deck = {title,id,idname,agenda,agendaid,data[card codes],plot[card codes]}
+// Create deck from decklist data. Returns deck = {title,id,idname,agenda,agendaid,data[card codes],plot[card codes]}
 	function parseDeck(data)	{
 		var crd;
 		var deck = {};
@@ -116,7 +109,7 @@ $(document).ready(function ()	{
 		var idx = $(this).data('deckidx');
 		var faction = $(this).closest('ul').attr('for');
 		if (idx < 0)	{
-			$('#decklist').val('');
+			//$('#decklist').val('');
 			$('#loadModal').data('faction',faction);
 			$('#loadModal').modal('show');
 		}	else {
@@ -226,6 +219,10 @@ $(document).ready(function ()	{
 		})
 		.on('click','.card-plot',function()	{
 			$(this).css('opacity',1.5 - $(this).css('opacity'));
+			var crd = _cards({"code":$(this).data("code")}).first();
+			var faction = $(this).data("faction");
+			players[faction].setCreds(crd.Gold);
+			updateInfo(faction);
 		});
 	// Menu Functions
 	function menuButton(src,idx,tgt,faction,btnTxt)	{
@@ -283,23 +280,25 @@ $(document).ready(function ()	{
 		}
 		switch (action)	{
 			case 'act_play':
-				// Play Duplicates
-				
+				// Set Target Region
+				switch (crd.Type)	{
+					case 'Attachment':
+					case 'Character':
+						tgt = faction + 'char';
+						break;
+					case 'Location':
+						tgt = faction + 'loc';
+						break;
+					default:
+						tgt = faction + 'discard';
+						break;
+				}
+				// Check Duplicates
+				if ($('#' + tgt).find('div[data-code="' + crd.code + '"]').length > 0 && crd.Unique)	{	cost = 0; }
+				// Check Cost
 				if (cost <= players[faction].getCreds())	{
 					players[faction].addCreds(cost * -1);
-					switch (crd.Type)	{
-						case 'Attachment':
-						case 'Character':
-							tgt = regions[faction][faction + 'char'];
-							break;
-						case 'Location':
-							tgt = regions[faction][faction + 'loc'];
-							break;
-						default:
-							tgt = regions[faction][faction + 'discard'];
-							break;
-					}
-					moveCrd(src,idx,tgt);
+					moveCrd(src,idx,regions[faction][tgt]);
 				}
 				break;
 			case 'act_kneelstand':
@@ -446,7 +445,7 @@ $(document).ready(function ()	{
 					break;
 				default:
 					if (rgn == faction + 'char' || rgn == faction + 'loc')	{
-						updateRegion2(faction, $('#' + rgn), crds);
+						updateRegionCards(faction, $('#' + rgn), crds);
 					} else {						
 						$.each(crds, function(idx,regCrd)	{
 							outp += getCardImgEle(regCrd,idx);
@@ -458,7 +457,7 @@ $(document).ready(function ()	{
 			}
 		});
 	}
-	function updateRegion2(faction,region,cardList)	{
+	function updateRegionCards(faction,region,cardList)	{
 		var card;
 		var installedCard;
 		var imgClass;
@@ -466,7 +465,7 @@ $(document).ready(function ()	{
 		var i;
 		
 		region.empty();
-		//region.html (JSON.stringify(cardList));
+		
 		$.each(cardList, function (idx,listItem)	{
 			card = _cards({"code":listItem.code}).first();
 			installedCard = region.find('div[data-code="' + card.code + '"]');
@@ -481,6 +480,14 @@ $(document).ready(function ()	{
 						+ 'data-idx="' + idx + '"></img>'
 					+ '</div>');
 			} else {
+			// Duplicate
+				var dupecounter = installedCard.find('.dupe-value');
+				if (dupecounter.length == 0)	{
+					installedCard.append('<span class="dupe-counter"><span class="dupe-value">2</span></span>');
+				} else {
+					dupecounter.html (parseInt(dupecounter.html(),10)+1);
+				}
+				/*
 				i = installedCard.find('img').length * 10;
 				imgStyle = 'position: absolute; left: ' + i * 2 + 'px; ' + 'top: ' + i + 'px';
 				installedCard.append(
@@ -490,6 +497,7 @@ $(document).ready(function ()	{
 						+ 'data-code="'+ card.code + '" '
 						+ 'data-idx="' + idx + '"></img>'
 				);
+				*/
 			}
 		});
 	}
@@ -514,7 +522,7 @@ $(document).ready(function ()	{
 		return outp;
 	}
 	
-	function updatePlots(faction)	{
+	function updatePlotsX(faction)	{
 		var outp = '';
 		$.each(decks[faction].getMeta("plots"),function(idx,code)	{
 			var crd = _cards({"code":code}).first();
@@ -528,6 +536,28 @@ $(document).ready(function ()	{
 				+ '</img>';
 		});
 		$('#' + faction + 'plot').html (outp);
+		updatePlots2(faction);
+	}
+	function updatePlots(faction)	{
+		var outp = '';
+		outp = '<label for="' + faction + 'plotsel">Plots</label>'
+			+ '<select class="selectpicker" id="' + faction + 'plotsel">'
+		$.each(decks[faction].getMeta("plots"),function(idx,code)	{
+			var crd = _cards({"code":code}).first();
+			outp += '<option data-content=\"'
+				+ '<img '
+				+ 'src=\'' + crd.img + '\''
+				+ 'class=\'card-plot\' '
+				+ 'draggable=\'false\' '
+				+ 'alt=\'' + crd.name + '\' '
+				+ 'data-code=\''+ crd.code + '\' '
+				+ 'data-faction=\'' + faction + '\' '
+				+ 'data-idx=\'' + idx + '\'>'
+				+ '</img>"'
+				+ '</option>';
+		});
+		outp += '</select>'
+		$('#' + faction + 'plota').html(outp);
 	}
 
 	
