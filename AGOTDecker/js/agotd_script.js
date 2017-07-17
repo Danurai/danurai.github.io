@@ -75,7 +75,7 @@ $(document).ready(function ()	{
 		deck.idname = res[1];
 		deck.agenda = res[2];
 		
-		deck.id = _cards({"name":deck.idname}).first().code; 		//Special Characters - CT fixed by not using \\uuml; on textarea
+		deck.idcode = _cards({"name":deck.idname}).first().code; 		//Special Characters - CT fixed by not using \\uuml; on textarea
 		deck.agendaid = _cards({"name":deck.agenda}).first().code; 
 		
 		deck.data = [];
@@ -217,13 +217,42 @@ $(document).ready(function ()	{
 			
 			showPopUp(ev, outp);
 		})
+		;
+// Plot actions
+	$(document)
 		.on('click','.card-plot',function()	{
-			$(this).css('opacity',1.5 - $(this).css('opacity'));
+			var opacity = 1.5 - $(this).css('opacity');
+			$(this).css('opacity',opacity);
 			var crd = _cards({"code":$(this).data("code")}).first();
 			var faction = $(this).data("faction");
+			// Update Gold to match Faction 
+			// TODO + [GOLD] modifiers 
 			players[faction].setCreds(crd.Gold);
+			// Mark dropdown as 'Used'
+			if (opacity == 1)	{
+				$('#' + faction + 'plota').find('option[data-code="' + crd.code + '"]').removeClass('plot-used');
+			} else{
+				$('#' + faction + 'plota').find('option[data-code="' + crd.code + '"]').addClass('plot-used');				
+			}
 			updateInfo(faction);
-		});
+		})
+		.on('click','.select-plot',function()	{
+			var option = $(this.selectedOptions[0]);
+			var crd = _cards({"code":option.data('code')}).first();
+			var faction = $(this).closest('div').data('faction');
+			
+			var plotcard = $('#' + faction + 'plotarea').find('img');
+			var plotcardinfo = $('#' + faction + 'plotarea').find('.card-info');
+			plotcard.attr('src',crd.img);
+			plotcard.data('code',crd.code);
+			plotcardinfo.data('code',crd.code);
+			if ( option.hasClass('plot-used') )	{
+				plotcard.css('opacity',0.5);
+			}	else	{
+				plotcard.css('opacity',1);
+			}
+		})
+		;
 	// Menu Functions
 	function menuButton(src,idx,tgt,faction,btnTxt)	{
 		var btn = '<button type="button" class="btn btn-default btn-select" '
@@ -267,9 +296,35 @@ $(document).ready(function ()	{
 			$('#popupmenu').toggle();
 		})
 		.on('mouseleave',function()	{
-			$(this).css('display','none');
+			//$(this).css('display','none');
 		});
 
+// Card info
+	$(document)
+		.on('click','.card-info, .card-info-id',function(ev) {
+			var outp = '';
+			var card;
+			var code = $(this).data('code').toString();
+			
+			if (typeof code !== 'undefined') {
+				card = _cards({"code":code}).first();
+				outp += '<img class="card-popup" src="' + card.img + '"></img>';
+			}
+			$('#popupmenu').html(outp);
+			
+			var tmpimg = new Image();
+			tmpimg.src = card.img;
+			tmpimg.onload = function() {
+				var w = $('#popupmenu').outerWidth();
+				var h = $('#popupmenu').outerHeight();
+				$('#popupmenu').css({"left":Math.min(Math.max(ev.pageX - (w/2),0),$(document).width() - w),"top":Math.max(ev.pageY - (h/2),0)});
+				$('#popupmenu').toggle();
+			}
+			
+		})
+		.on('click','.card-popup',function () {
+			$('#popupmenu').css("display","none");
+		});
 // Process actions
 	function changeState(action,faction,src,idx,tgt)	{
 		var cost = 0;
@@ -393,11 +448,19 @@ $(document).ready(function ()	{
 		
 	function updateInfo(faction)	{
 		var deck = decks[faction];
+		var icon = '';
+		deck.getMeta('idname').match(/House\s(.+)/);
+		icon = RegExp.$1;
+		icon = (icon == '' ? 'nightswatch' : icon.toLowerCase());
 		var infoout = '<h3>' + deck.getMeta('title') + '</h3>'
-			+ '<span data-code="' + deck.getMeta('idcode') + '">'
-			+ '<b>' + deck.getMeta('idname') + '</b></span>'
-			+ '<br><span data-code="' + deck.getMeta('agcode') + '">'
-			+ '<b>' + deck.getMeta('agname') + '</b></span>';
+			+ '<span class="card-info-id" data-code="' + deck.getMeta('idcode') + '">'
+				+ '<b>' + deck.getMeta('idname') + '</b>'
+				+ '&nbsp;<span class="icon-' + icon + '"></span>'
+			+ '</span>'
+			+ '<br>'
+			+ '<span class="card-info-id" data-code="' + deck.getMeta('agcode') + '">'
+				+ '<b>' + deck.getMeta('agname') + '</b>'
+			+ '</span>';
 		$('#' + faction + 'info').html (infoout);
 		$('#' + faction + 'creds').html(players[faction].getCreds());
 		$('#' + faction + 'score').html(players[faction].getScore());
@@ -478,6 +541,8 @@ $(document).ready(function ()	{
 						+ 'alt="' + card.title + '" '
 						+ 'data-code="'+ card.code + '" '
 						+ 'data-idx="' + idx + '"></img>'
+						+ '<span class="card-info" data-code="' + card.code + '">'
+						+ '<i class="fa fa-info-circle fa-lg" aria-hidden="true"></i></span>'
 					+ '</div>');
 			} else {
 			// Duplicate
@@ -518,46 +583,38 @@ $(document).ready(function ()	{
 		if (regCrd.counters > 0)	{
 			outp += '<span class="card-counter"><span class="counter-value">' + regCrd.counters + '</span></span>';
 		}
+		// Card Info Link
+		outp += '<span class="card-info" data-code="' + crd.code + '">'
+			+ '<i class="fa fa-info-circle fa-lg" aria-hidden="true"></i>'
+			+ '</span>';
 		outp += '</div>';
 		return outp;
 	}
 	
-	function updatePlotsX(faction)	{
-		var outp = '';
-		$.each(decks[faction].getMeta("plots"),function(idx,code)	{
-			var crd = _cards({"code":code}).first();
-			outp += '<img '
-				+ 'src="' + crd.img + '"'
-				+ 'class="card-plot" '
-				+ 'draggable="false" '
-				+ 'alt="' + crd.title + '" '
-				+ 'data-code="'+ crd.code + '" '
-				+ 'data-idx="'+ idx + '">'
-				+ '</img>';
-		});
-		$('#' + faction + 'plot').html (outp);
-		updatePlots2(faction);
-	}
 	function updatePlots(faction)	{
 		var outp = '';
-		outp = '<label for="' + faction + 'plotsel">Plots</label>'
-			+ '<select class="selectpicker" id="' + faction + 'plotsel">'
+		
+	// Plot Select		
+		outp += '<div class="input-group" data-faction="' + faction + '">'
+			+ '<span class="input-group-addon">Plot</span>'
+			+ '<select class="select-plot form-control input-sm" id="' + faction + 'plotsel">';
 		$.each(decks[faction].getMeta("plots"),function(idx,code)	{
 			var crd = _cards({"code":code}).first();
-			outp += '<option data-content=\"'
-				+ '<img '
-				+ 'src=\'' + crd.img + '\''
-				+ 'class=\'card-plot\' '
-				+ 'draggable=\'false\' '
-				+ 'alt=\'' + crd.name + '\' '
-				+ 'data-code=\''+ crd.code + '\' '
-				+ 'data-faction=\'' + faction + '\' '
-				+ 'data-idx=\'' + idx + '\'>'
-				+ '</img>"'
+			outp += '<option class="opt-plot" data-code="' + crd.code + '">' 
+				+ crd.name 
 				+ '</option>';
 		});
-		outp += '</select>'
-		$('#' + faction + 'plota').html(outp);
+		outp += '<select>'
+			+ '</div>';
+	// Image Block
+		outp += '<div class="region-installed">'
+			+ '<img class="card-plot" data-faction="' + faction + '"></img>'
+			+ '<span class="card-info">'
+			+ '<i class="fa fa-info-circle fa-lg" aria-hidden="true"></i>'
+			+ '</span>'
+			+ '</div>';
+		$('#' + faction + 'plotarea').html(outp);
+		
 	}
 
 	

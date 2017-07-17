@@ -3,8 +3,19 @@
 	padding: 2px;
 }
 .card-plot	{
-	height: 120px;
+	width: 220px;
 	padding: 2px;
+}
+.card-info	{
+	position:	absolute;
+	right:	5px;
+	bottom:	0px;
+	color:	#FFFFFF;
+	opacity:	0.7;
+}
+.plot-used	{
+	color: #DD0000;
+	font-weight: bold;
 }
 
 .dropdown-menu {
@@ -98,4 +109,5 @@
 	background-color:	rgba(255,255,255,0.8);	
 	border: 			1px solid #AAAAAA;
 	text-align: 	center;
+	z-index:			9999;
 }
