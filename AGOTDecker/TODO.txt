@@ -48,20 +48,24 @@ x  Add Counters
  AGOTLitmus
  ##########
  BUG List
-  
+ o  Kneel only one copy of a non-unique card - move toward using DOM for element management?
+ 
  Features
- o  UX - Corp Play
- o  RUN - Select Server & Mark
+ x  Deck List on Deck Name Click
+ o  Attachments
  o  Bottom of Deck
  o  Remove from game
- o  Attachments
- o  Plot List \ 1 card
- x  Card view (pop-up)
- o  Regions - TD change from regions[faction][faction + name] to ...?
- o  Uniques
  
+ o  Regions - TD change from regions[faction][faction + name] to ...?
  o  Sort out regions \ array \ card class etc.
  
+ Features
+ x  !Intrigue Claim
+ x  Stand All
+ x  Stand \ Kneel animation
+ x  Plot List \ 1 card
+ x  Card view (pop-up)
+ x  Uniques
  x  Dupes (Unique)
  x  New Draw Menu - Select from Deck
  x  Copy Repo
@@ -73,7 +77,12 @@ x  Add Counters
  x  Cut down Region code
  x  Stand \ Kneel
  
- 
+ Bugs
+ x  Power Counters - not showing
+ x  Kneel Unique updateRegion
+ x  Multiple Identical Plots
+ x  Used Plots (Click)
+ x  Plot used by index - multiple plots with the same name all highlighted as used.
 
  
  XFire

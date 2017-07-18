@@ -22,6 +22,9 @@ function gameDeck(cardIDs)	{
 	this.getDeck = function()	{
 		return this.deck;
 	}
+	this.getCards = function()	{
+		return this.initdeck;
+	}
 	this.cardsInDeck = function()	{
 		return this.deck.length;
 	}
