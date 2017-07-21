@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<head>
+<head>
+<!-- JQuery -->
+	<script src="https://code.jquery.com/jquery-2.2.2.min.js" integrity="sha256-36cp2Co+/62rEAAYHLmRCPIych47CvdM+uTBJwSzWjI=" crossorigin="anonymous"></script>
+<!-- BOOTSTRAP -->
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+	
+<!-- jquery QTIPs -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/qtip2/2.1.1/jquery.qtip.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/qtip2/2.1.1/jquery.qtip.js"></script>
+<!-- TAFFYdb -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/taffydb/2.7.2/taffy-min.js"></script>
+
+<!-- FONT AWESOME -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+
+
+<!-- Site Pages -->
+	<link rel="stylesheet" href="css/agotL_style.css">
+	<link rel="stylesheet" href="css/iconstyle.css">
+	
+	<script src="js/agot2_data.js"></script>
+	<script src="js/agotL_decks.js"></script>
+	
+	<script src="js/agotL_class.js"></script>
+	<script src="js/agotL_script.js"></script>
+	<script src="js/agotL_scriptdeck.js"></script>
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+<!-- Player 1 -->
+			<div class="col-md-6">
+			<!-- Choose deck -->
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="dropdown" align="left">
+							<button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown">Change Deck
+							<span class="caret"></span></button>
+							<ul class="dropdown-menu dropdown-deck" id="p1decks" data-faction="p1">
+							</ul>
+						</div>
+					</div>
+				</div>
+			<!-- INFO -->
+				<div class="row">
+					<div class="col-sm-7" align="center">
+						<div id="p1info"  data-faction="p1">
+						</div>
+						<div id="p1resource" data-faction="p1">
+							<br />
+							<span class="form-group">
+								<i class="fa fa-circle-o"></i>
+								<label id="p1creds">8</label>&nbsp;&nbsp;
+								<span class="btn-group">
+									<button type="button" class="btn btn-default btn-sm btn-cred" val="-1">-</button>
+									<button type="button" class="btn btn-default btn-sm btn-cred" val="1">+</button>
+								</span>
+							</span>&nbsp;&nbsp;
+							<span class="form-group">
+								<span class="icon-power"></span>
+								<label id="p1score">0</label>&nbsp;&nbsp;
+								<span class="btn-group">
+									<button type="button" class="btn btn-default btn-sm btn-score" val="-1">-</button>
+									<button type="button" class="btn btn-default btn-sm btn-score" val="1">+</button>
+								</span>
+							</span>					
+						</div>
+						<div id="p1plotinfo">
+						</div>
+					</div>
+					<div class="col-sm-5" align="right" data-faction="p1" id="p1plotarea">
+					</div>
+				</div>
+			<!-- Stats -->
+				<div class="row" align="center">
+					<div class="col-sm-4 region" id="p1deck" name="Deck" data-faction="p1">
+						<div class="region-title">Deck</div>
+						<div class="region-root" data-region="deck" data-faction="p1">
+							<img src="img\card_back.png" class="card card-root" draggable="false">
+							<span class="card-count">53</span>
+						</div>
+					</div>
+					<div class="col-sm-4 region" id="p1discard" name="Discard" data-faction="p1">
+						<div class="region-title">Discard</div>
+						<div class="region-root" data-region="discard" data-faction="p1">
+							<img src="img\card_back.png" style="opacity: 0.5;" class="card card-root" draggable="false">
+							<span class="card-count">0</span>
+						</div>
+					</div>
+					<div class="col-sm-4 region" id="p1dead" name="Dead" data-faction="p1">
+						<div class="region-title">Dead</div>
+						<div class="region-root" data-region="dead" data-faction="p1">
+							<img src="img\card_back.png" style="opacity: 0.5;" class="card card-root" draggable="false">
+							<span class="card-count">0</span>
+						</div>
+					</div>
+				</div>
+				<div class="row" id="p1area">
+					<div class="col-md-12 region" id="p1hand" name="Hand" align="center" data-faction="p1">
+						<div class="region-title">Hand</div>
+						<button class="btn btn-default btn-claim-int"><span class="icon-intrigue"></span>&nbsp;Claim</button>
+					</div>
+					<div class="col-md-12 region" name="Play" align="center" data-faction="p1">
+						<div class="region-title">Playmat</div>
+						<div class="col-md-12" id="p1char" name="Characters" align="center" data-faction="p1"></div>
+						<div class="col-md-12" id="p1loc" name="Locations" align="center" data-faction="p1"></div>
+					</div>
+				</div>
+			</div>
+<!-- Player 2 -->
+			<div class="col-md-6">
+			<!-- Choose deck -->
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="dropdown" align="left">
+							<button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown">Change Deck
+							<span class="caret"></span></button>
+							<ul class="dropdown-menu dropdown-deck" id="p2decks" data-faction="p2">
+							</ul>
+						</div>
+					</div>
+				</div>
+			<!-- INFO -->
+				<div class="row">
+					<div class="col-sm-7" align="center">	
+						<div id="p2info" data-faction="p2">
+						</div>	
+						<div id="p2resource" data-faction="p2">
+							<br />
+							<span class="form-group">
+								<i class="fa fa-circle-o"></i>
+								<label id="p2creds">8</label>&nbsp;&nbsp;
+								<span class="btn-group">
+									<button type="button" class="btn btn-default btn-sm btn-cred" val="-1">-</button>
+									<button type="button" class="btn btn-default btn-sm btn-cred" val="1">+</button>
+								</span>
+							</span>
+							<span class="form-group">
+								<span class="icon-power"></span>
+								<label id="p2score">0</label>&nbsp;&nbsp;
+								<span class="btn-group">
+									<button type="button" class="btn btn-default btn-sm btn-score" val="-1">-</button>
+									<button type="button" class="btn btn-default btn-sm btn-score" val="1">+</button>
+								</span>
+							</span>
+						</div>
+						<div id="p2plotinfo">
+						</div>
+					</div>
+					<div class="col-sm-5" align="right" data-faction="p2" id="p2plotarea">
+					</div>
+				</div>
+			<!-- Stats -->
+				<div class="row">
+					<div class="col-sm-4 region" id="p2deck" name="Deck" data-faction="p2">
+						<div class="region-root" data-region="deck">
+							<img src="img\card_back.png" class="card card-root" draggable="false"></img>
+							<span class="card-count"></span>
+						</div>
+					</div>
+					<div class="col-sm-4 region" id="p2discard" name="Discard" data-faction="p2"></div>
+						<div class="region-root" data-region="discard">
+							<img src="img\card_back.png" style="opacity: 0.5;" class="card card-root" draggable="false"></img>
+							<span class="card-count">0</span>
+						</div>
+					</div>
+					<div class="col-sm-4 region" id="p2dead" name="Dead" data-faction="p2">
+						<div class="region-root" data-region="dead">
+							<img src="img\card_back.png" style="opacity: 0.5;" class="card card-root" draggable="false"></img>
+							<span class="card-count">0</span>
+						</div>
+					</div>
+				</div>
+				<div class="row" id="p2area">
+					<div class="col-md-12 region" id="p2hand" name="Hand" align="center" data-faction="p2">
+						<button class="btn btn-default btn-claim-int"><span class="icon-intrigue"></span>&nbsp;Claim</button>
+					</div>
+					<div class="col-md-12 region" id="p2char" name="Characters"align="center" data-faction="p2"></div>
+					<div class="col-md-12 region" id="p2loc" name="Locations" align="center" data-faction="p2"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div id="popupmenu" class="menu" hidden>
+	</div>
+	
+	<div id="loadModal" class="modal fade" role="dialog" data-faction="">
+		<div class="modal-dialog">
+		<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Load Deck</h4>
+				</div>
+				<div class="modal-body">
+					<p>Paste text below in the format:</p>
+					<span>Deck name<br>Faction<br>Banner<br>Card list: Xx &lt;card name&gt;</span>
+					<textarea class="form-control" type="text" id="decklist" rows="5"></textarea>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default btn-load" >Load</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
