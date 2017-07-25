@@ -9,7 +9,7 @@ function anrDeck(cardIDs)	{
 	
 	this.draw = function(idx=0)	{
 		if (this.deck.length > 0)	{
-			this.hand.push(idx == 0 ? this.deck.shift() : this.deck.splice(idx,1));
+			this.hand.push(idx == 0 ? this.deck.shift() : this.deck.splice(idx,1)[0]);
 			return this.hand.slice(-1)[0].toString();
 		} else	{
 			return "00000";

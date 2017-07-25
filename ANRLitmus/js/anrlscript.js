@@ -212,6 +212,7 @@ $(document).ready(function ()	{
 				}
 			}
 		})
+	// Brain Damage
 		;
 // Card info
 	$(document)
@@ -312,9 +313,10 @@ $(document).ready(function ()	{
 		
 			$.each(regCardCodes, function(id,cardCode)	{
 				card = _cards({"code":cardCode}).first();
-				//if (id == 10) { outp += '<li class="divider"></li>'; }
+				//if (id == 10) { outp += '<li class="divider"></li>'; }	// Divider
 				outp += '<li style="cursor: pointer;" role="presentation" class="card-picker" data-index="' + id + '">'
-					+ '<a role="menuitem" class="card-picker" data-code="' + cardCode + '">' + card.title + '</a></li>';
+					+ '<a role="menuitem">' + card.title + '</a></li>';
+					//+ '<a role="menuitem" data-code="' + cardCode + '">' + card.title + '</a></li>';
 				});		
 			outp += '</ul>';
 			outp += '</div>';
@@ -426,11 +428,23 @@ $(document).ready(function ()	{
 		})
 		.on('click','li.card-picker',function () {
 			var faction = $(this).closest('ul').attr('for');
-			var reg = $(this).closest('ul').data('src') ;
-			var idx = $(this).data('index')
+			var reg = $(this).closest('ul').data('src');
+			var idx = $(this).data('index');
+			var src;
 			$('#popupmenu').toggle();
 			
-			changeState('act_drawid',faction,regions[faction][reg],idx,regions[faction][faction + 'hand'],null,reg);
+			switch (reg)	{
+				case 'heap':
+				case 'archives':
+				case 'stack':
+				case 'randd':
+					src = [];
+					break;
+				default:
+					src = regions[faction][reg];
+			}
+			
+			changeState('act_drawid',faction,src,idx,regions[faction][faction + 'hand'],null,reg);
 		})
 		.on('mouseleave',function()	{
 			//$(this).css('display','none');
@@ -530,6 +544,7 @@ $(document).ready(function ()	{
 					drawCard(decks[faction],idx);
 				} else if (srcrgn == 'archives' || srcrgn == 'heap')	{
 					regions[faction][faction + 'hand'].push({"code":decks[faction].discardToHand(idx),"counters":0,"root":false,"rez":faction=='run'});
+					updateRegion(faction);
 				} else {
 					moveCrd(src,idx,regions[faction][faction + 'hand']);
 				}
@@ -580,22 +595,6 @@ $(document).ready(function ()	{
 	}
 	
 // Screen Rendering Functions
-	/*
-	function updateChooseList(faction)	{
-		var outp='';
-		outp += '<div class="btn-group"><button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">Choose <span class="caret"></span></button>';
-		outp += '<ul class="dropdown-menu scrollable-menu" role="menu" for="' + faction + '">';
-		
-		$.each(decks[faction].getDeck(),function (id,code) {
-			card = _cards({"code":code}).first();
-			outp += '<li style="cursor: pointer;" role="presentation" class="card-picker" data-index="' + id + '"><a role="menuitem" class="card-picker" data-code="' + code + '">' + card.title + '</a></li>';
-		});
-		
-		outp += '</ul>';
-		outp += '</div>';
-		$('#' + faction + 'cardlist').html (outp);
-	}
-	*/
 	
 	function updateInfo(faction)	{
 		var deck = decks[faction];

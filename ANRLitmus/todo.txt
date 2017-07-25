@@ -1,0 +1,54 @@
+ ANRLitmus
+#########
+Bugs
+o  Return Card from Archives to Hand with Ice protecting it - Region vs Region:Archives.
+x  Return Card (MOpus) from Trash - (undefined)
+
+
+Changes
+o  Show top card of Archives
+o  Discard\deck view cards
+o  Region Roots #2 - proper Root
+o  'Play' Card (corp)
+o  Host ON card (AGOT Attach)
+o  Choose
+o  Refactor
+
+x  Region Roots #1 - insert or add to server
+x  BUG - Empty Regions showing in Move To Popup
+x  BUG - Card from Discard with cards in regions
+x  BUG - Clear down old regions on removal
+x  BUG - Clear down old regions on refresh
+x  Rez Cost
+x  Click Count / Start turn
+x 	Update creds for runner...
+x  Update Creds, MU etc
+x  Tidy Rez
+x  Bug - Access Hand \ Cards ++refresh
+x  Score - update Agenda Points
+x  Draw card with cards protecting randd
+x  Steal Card - Set src
+x  Steal Card - Do not add to Corp Score
+x  UX - Standard Actions - Draw, Credit, Clear Tag, Run, (Purge Virus), Mulligan, 
+x  Corp Reset - don't impact Ayla
+x  Corp Draw (Caused by having Cards in R&D not in Deck)
+x  Card From Heap / Trash
+x  Card view (pop-up)
+x  Access Hand (runner)
+x  Move between Corp and Runner (Steal Agenda)
+ x Reset move between c&r
+x  Rez (see kneel)
+x  Move to Archives - Phantom Card - *Delete Region Issue
+x  Undefined Servers when deleted - *Delete Region Issue?
+x  Return to deck and Shuffle / Shuffle
+x  Trash
+x  Add Counters
+ - card data + #counters & other metadata - refactor.
+ - img in container
+ - add counter to output
+ - Add Counters function
+ - Remove Counters function
+ - Remove Single Counter function
+ - Remove Counters to Counter Element
+
+ 
