@@ -454,18 +454,55 @@ $(document).ready(function ()	{
 	function changeState(action,faction,src,idx,tgt,ev,srcrgn)	{
 		var cost = 0;
 		var crd;
+		var loginfo = '';
+		var clicks = 0;
+		
 		if (src.length > 0) {
 			crd = _cards({"code":src[idx].code}).first();
 			cost = parseInt(crd.Cost,10);
 		}
 		switch (action)	{
 			case 'act_corpplay':
-				moveToPopUp(faction,srcrgn,idx,ev);
+				if (crd.type_code == 'operation')	{
+					if (crd.cost <= players["corp"].getCreds())	{
+						players['corp'].addCreds(crd.cost * -1);
+						players['corp'].addClicks(-1);
+						
+						loginfo = 'Corp Played ' + card.title;
+						clicks = 1;
+						
+						var res = crd.text.match(/Gain [0-9]*\[credit\]|\nGain [0-9]*\[credit\]/g);
+						if (res)	{
+							res[0].match(/Gain ([0-9]*)\[credit\]/g)	//RegExp.$1;
+							var creds = RegExp.$1;
+							players['corp'].addCreds(parseInt(creds,10));
+							loginfo += ' to gain ' + creds + ' creds';
+						}
+						decks['corp'].discardCard(src[idx].code);
+						src.splice(idx,1);
+					}	else	{
+					// show error border
+						console.log ('Not enough creds!');
+					}
+				} else {
+					moveToPopUp(faction,srcrgn,idx,ev);
+				}
 				break;
 			case 'act_runplay':
 				if (crd.cost <= players['run'].getCreds())	{	// #afford
 					players['run'].addCreds(crd.cost * -1);
 					players['run'].addMU(getMUCost(crd));
+					players['run'].addClicks(-1);
+					
+					loginfo = "Runner played " + crd.title;
+					clicks = 1;
+					
+					if (crd.text.match(/^Gain ([0-9]*)\[credit\]/g))	{
+						var creds = RegExp.$1;
+						loginfo += 'Runner played ' + crd.title;
+						players['run'].addCreds(creds);
+						loginfo += ' to gain ' + creds + ' creds';
+					}
 					
 					if (crd.type_code == 'event') {
 						decks['run'].discardCard(src[idx].code);
