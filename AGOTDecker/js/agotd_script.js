@@ -162,25 +162,25 @@ $(document).ready(function ()	{
 	$(document)
 		.on('click','.card-deck', function(ev)	{
 			var outp = '';
-			var src  = $(this).closest('div.region').attr('id');
-			var idx = $(this).data('idx');
-			var faction = $(this).closest('div.region').attr('for');
-			
-			//var kneelstand = regions[faction][src][idx].standing?'Kneel':'Stand';
-			var kneelstand = $(this).closest('.region-installed').hasClass('card-kneel')?'Stand':'Kneel';
-			
+			var src  = $(this).closest('div.region').attr('id');				// Source Region
+			var faction = $(this).closest('div.region').data('faction');	// Faction
+			var ri = $(this).closest('.region-installed');						// Region Installed
+			var idx = $(this).data('idx');											// Base Array Index
+			var srcidx = $('#' + src).find('.region-installed').index(ri);	// Region Index
+						
 			// New Options
 			// Play, Dead, Discard, Stand\Kneel, Add Power, Remove Power, Add Icon > Mil\Int\Pwr
 			// Return to > Hand, Top of Deck, Deck and Shuffle 
 			outp = '<div class="small"><b>Action</b></div>'
 				+ '<div class="btn-group-vertical btn-group-sm" style="padding: 5px;">'
 				+ menuButton(src,idx,'act_play',faction,"Play")
-				+ menuButton(src,idx,'act_kneelstand',faction, kneelstand )
+				+ menuButton(src,idx,'act_kneelstand',faction, ri.hasClass('card-kneel')?'Stand':'Kneel' )
 				+ menuButton(src,idx,'act_addpower',faction,"Add Power")
 				+ menuButton(src,idx,'act_dead',faction,"Dead")
 				+ menuButton(src,idx,'act_discard',faction,"Discard")
 				+ menuButton(src,idx,'act_rtn_hand',faction,"Hand")
 				+ menuButton(src,idx,'act_rtn_topdeck',faction,"Top of Deck")
+				+ menuButton(src,idx,'act_rtn_btndeck',faction,"Bottom of Deck")
 				+ menuButton(src,idx,'act_rtn_deckshuffle',faction,"Deck and Shuffle")
 				+ menuButton(src,idx,'act_standall',faction,"Stand All")
 				+ '</div>';
@@ -191,7 +191,7 @@ $(document).ready(function ()	{
 			var outp = '';
 			var src  = $(this).closest('div.region').attr('id');
 			var idx = $(this).parent().find('.card-deck').data('idx');
-			var faction = $(this).closest('div.region').attr('for');
+			var faction = $(this).closest('div.region').data('faction');
 			outp = '<div class="small"><b>Move To:</b></div>'
 				+ '<div class="btn-group-vertical btn-group-sm" style="padding: 5px;">'
 				+ menuButton(src,idx,"act_addpower",faction,'<span class="icon-power"></span> Add Power')
@@ -286,6 +286,7 @@ $(document).ready(function ()	{
 		var btn = '<button type="button" class="btn btn-default btn-select" '
 				+ 'data-src="' + src + '" '
 				+ 'data-idx="' + idx + '" '
+				+ 'data-idx="' + idx + '" '
 				+ 'data-tgt="' + tgt + '" '
 				+ 'for="' + faction + '" '
 				+ '>' 
@@ -312,7 +313,7 @@ $(document).ready(function ()	{
 			var action = $(this).data('tgt');
 			
 			$('#popupmenu').toggle();
-			// Attachment - callback
+			// Attachment - callback?
 			changeState(action,faction,src,idx,null,region);
 			
 		})
@@ -452,10 +453,12 @@ $(document).ready(function ()	{
 			case 'act_rtn_topdeck':
 				decks[faction].returnToDeck(src[idx].code,true);
 				src.splice(idx,1);
+				updateRegion(faction);
 				break;
 			case 'act_rtn_deckshuffle':
 				decks[faction].returnToDeck(src[idx].code);
 				src.splice(idx,1);
+				updateRegion(faction);
 				break;
 			case 'act_draw':
 				switch (idx)	{
@@ -501,9 +504,6 @@ $(document).ready(function ()	{
 			updateRegion(faction);
 		});
 	}
-	
-	
-
 
 /* Screen Rendering Functions */
 		
@@ -644,7 +644,7 @@ $(document).ready(function ()	{
 			+ 'card card-deck'
 			+ '"'
 			+ 'draggable="true" '
-			+ 'alt="' + crd.title + '" '
+			+ 'alt="' + crd.name + '" '
 			+ 'data-code="'+ crd.code + '" '
 			+ 'data-idx="'+ idx + '">'
 			+ '</img>';
@@ -669,6 +669,11 @@ $(document).ready(function ()	{
 			var card = _cards({"code":code}).first();
 			outp += '<option class="opt-plot" data-code="' + card.code + '" data-idx="' + idx + '">' 
 				+ card.name 
+				+ '&nbsp;&nbsp;'
+				+ card.Gold + '/'
+				+ card.Initiative + '/'
+				+ card.Claim
+				+ '&nbsp;(' + card.Reserve + ')'
 				+ '</option>';
 		});
 		outp += '<select>'
@@ -689,7 +694,7 @@ $(document).ready(function ()	{
 	$(document)
 		.on('dragstart','.card-deck', function(ev)	{
 			var jsonData = {};
-			jsonData["faction"] = $(this).closest('div.region').attr('for');
+			jsonData["faction"] = $(this).closest('div.region').data('faction');
 			jsonData["src"] = $(this).closest('div.region').attr('id');
 			jsonData["idx"] = $(this).data('idx');
 			console.log(jsonData);
