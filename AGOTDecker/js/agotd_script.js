@@ -111,7 +111,7 @@ $(document).ready(function ()	{
 	// Select Deck
 	$('.dropdown-deck').on('click','li',function()	{
 		var idx = $(this).data('deckidx');
-		var faction = $(this).closest('ul').attr('for');
+		var faction = $(this).closest('ul').data('faction');
 		if (idx < 0)	{
 			//$('#decklist').val('');
 			$('#loadModal').data('faction',faction);
@@ -129,13 +129,13 @@ $(document).ready(function ()	{
 // Update Resources
 	$(document)
 		.on('click','.btn-cred',function()	{
-			var faction = $(this).closest('.btn-group').attr('for');
+			var faction = $(this).closest('.btn-group').data('faction');
 			var value = parseInt($(this).attr('val'),10);
 			players[faction].addCreds(value);
 			updateInfo(faction);
 		})
 		.on('click','.btn-score',function()	{
-			var faction = $(this).closest('.btn-group').attr('for');
+			var faction = $(this).closest('.btn-group').data('faction');
 			var value = parseInt($(this).attr('val'),10);
 			players[faction].addScore(value);
 			updateInfo(faction);
@@ -146,7 +146,7 @@ $(document).ready(function ()	{
 	$(document)
 		.on('click','.btn-claim-int',function()	{
 			//var faction = $(this).closest('div').data('faction');
-			var faction = $(this).closest('div').attr('for');
+			var faction = $(this).closest('div').data('faction');
 			// Confirm?
 			// Select Random card from hand
 			//var cardlist = $(this).siblings('.region-installed');
@@ -202,7 +202,7 @@ $(document).ready(function ()	{
 			showPopUp(ev, outp);
 		})
 		.on('click','.card-root',function(ev)	{
-			var faction = $(this).closest('div').attr('for');
+			var faction = $(this).closest('div').data('faction');
 			var reg = $(this).closest('div').data('region');
 			var outp = '';
 			var regCardCodes = [];
@@ -210,7 +210,7 @@ $(document).ready(function ()	{
 			
 			outp = '<div><b>Draw Cards</b></div>';
 			if (reg == 'deck')	{
-				outp += '<div class="btn-group" for="' + faction + '" style="padding: 5px;">'
+				outp += '<div class="btn-group" data-faction="' + faction + '" style="padding: 5px;">'
 					+ menuButton(faction + 'deck',1,'act_draw',faction,"1")
 					+ menuButton(faction + 'deck',2,'act_draw',faction,"2")
 					+ menuButton(faction + 'deck',7,'act_draw',faction,"to 7")
@@ -226,7 +226,7 @@ $(document).ready(function ()	{
 			
 			outp += '<div class="btn-group drop' + ( (ev.pageY - $(window).scrollTop()) / $(window).height() > 0.5 ? 'up' : 'down') + '" style="padding: 5px;">'
 				+ '<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">Choose <span class="caret"></span></button>';
-			outp += '<ul class="dropdown-menu scrollable-menu" role="menu" for="' + faction + '" data-src="' + reg + '">';	
+			outp += '<ul class="dropdown-menu scrollable-menu" role="menu" data-faction="' + faction + '" data-src="' + reg + '">';	
 		
 			$.each(regCardCodes, function(id,cardCode)	{
 				card = _cards({"code":cardCode}).first();
@@ -263,7 +263,7 @@ $(document).ready(function ()	{
 		})
 		.on('change','.select-plot',function()	{
 			var option = $(this.selectedOptions[0]);
-			var crd = _cards({"code":option.data('code')}).first();
+			var crd = _cards({"code":option.data('code').toString()}).first();
 			var faction = $(this).closest('div').data('faction');
 			var idx = $(this).find(":selected").index();
 			
@@ -288,7 +288,7 @@ $(document).ready(function ()	{
 				+ 'data-idx="' + idx + '" '
 				+ 'data-idx="' + idx + '" '
 				+ 'data-tgt="' + tgt + '" '
-				+ 'for="' + faction + '" '
+				+ 'data-faction="' + faction + '" '
 				+ '>' 
 				+ btnTxt
 				+ '</button>'
@@ -306,7 +306,7 @@ $(document).ready(function ()	{
 			$('#popupmenu').css('display','none');
 		})
 		.on('click','.btn-select',function()	{
-			var faction = $(this).attr('for');
+			var faction = $(this).data('faction');
 			var region = $(this).data('src');
 			var src = regions[faction][region];
 			var idx = $(this).data('idx');
@@ -318,7 +318,7 @@ $(document).ready(function ()	{
 			
 		})
 		.on('click','li.card-picker',function () {
-			var faction = $(this).closest('ul').attr('for');
+			var faction = $(this).closest('ul').data('faction');
 			var deck = decks[faction];
 			var reg = $(this).closest('ul').data('src') ;
 			var idx = $(this).data('index')
@@ -539,7 +539,7 @@ $(document).ready(function ()	{
 			
 			switch (rgn)	{
 				case (faction + 'deck'):
-					outp += '<div class="region-root" data-region="deck" for="' + faction + '">';
+					outp += '<div class="region-root" data-region="deck" data-faction="' + faction + '">';
 					outp += '<img src="img\\card_back.png" class="card card-root" draggable="false" '
 						+ (decks[faction].cardsInDeck() == 0 ? ' style="opacity: 0.5;" ' : '')
 						+ '></img>';
@@ -547,7 +547,7 @@ $(document).ready(function ()	{
 					break;
 				case (faction + 'discard'):
 					count = regions[faction][faction + 'discard'].length;
-					outp += '<div class="region-root" data-region="discard" for="' + faction + '">';
+					outp += '<div class="region-root" data-region="discard" data-faction="' + faction + '">';
 					if (count == 0)	{
 						outp += '<img src="img\\card_back.png" class="card card-root" draggable="false" style="opacity: 0.5;"></img>';
 					} else{
@@ -558,7 +558,7 @@ $(document).ready(function ()	{
 					break;
 				case(faction + 'dead'):
 					count = regions[faction][faction + 'dead'].length;
-					outp += '<div class="region-root" data-region="dead" for="' + faction + '">';
+					outp += '<div class="region-root" data-region="dead" data-faction="' + faction + '">';
 					if (count == 0)	{
 						outp += '<img src="img\\card_back.png" class="card card-root" draggable="false" style="opacity: 0.5;"></img>';
 					} else {
@@ -715,7 +715,7 @@ $(document).ready(function ()	{
 			
 			var jsonData = JSON.parse(ev.originalEvent.dataTransfer.getData('text'));
 			var tgt = $(this).attr('id');
-			var tgtFaction = $(this).attr('for');
+			var tgtFaction = $(this).data('faction');
 			
 			moveCrd(regions[jsonData.faction][jsonData.src],jsonData.idx,regions[tgtFaction][tgt]);
 		});
