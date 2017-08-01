@@ -152,9 +152,13 @@ $(document).ready(function() {
 // Menus
 	$(document)
 		.on('click','.card-deck',function()	{
-			$(document).find('.card-deck').removeClass('card-selected');
-			$(this).addClass('card-selected');
-			showCtxMenu(this);
+			if ( $(this).hasClass('card-selected'))	{
+				$(document).find('.card-deck').removeClass('card-selected');
+				$('#popupmenu').css('display','none');
+			} else {
+				$(this).addClass('card-selected');
+				showCtxMenu(this);
+			}
 		})
 		.on('click','.btn-select',function()	{
 			$('#popupmenu').css('display','none');
@@ -224,8 +228,10 @@ $(document).ready(function() {
 		});
 		outp += '</div>';		
 		
+		var menuL = $(ele).offset().left + $(ele).closest('.region-installed').width() + 5;
+		var menuT = $(ele).offset().top;
 		$('#popupmenu').html(outp);
-		var position = {"left": $(ele).offset().left + $(ele).width(), "top": $(ele).offset().top }
+		var position = {"left": menuL, "top": menuT }
 		$('#popupmenu').css(position);
 		$('#popupmenu').css('display','block');
 	}
