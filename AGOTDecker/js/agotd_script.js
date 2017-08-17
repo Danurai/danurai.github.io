@@ -220,7 +220,7 @@ $(document).ready(function ()	{
 				regCardCodes = decks[faction].getDeck();
 			} else	{
 				$.each(regions[faction][faction + reg], function (id,cardInfo)	{
-					regCardCodes.push(cardInfo.code);
+					regCardCodes.push(cardInfo.code.toString());
 				});
 			}
 			
