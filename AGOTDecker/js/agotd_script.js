@@ -89,7 +89,7 @@ $(document).ready(function ()	{
 		$.each(res, function (id, item) {
 			item.match(regex);
 			var qty = parseInt(RegExp.$1, 10);
-			crd = _cards({"name":RegExp.$2,"Set":RegExp.$3}).first();
+			crd = _cards({"name":{isnocase:RegExp.$2},"Set":{isnocase:RegExp.$3}}).first();
 			for (var i=0; i < qty; i++)	{
 				if (crd.Type == 'Plot')	{
 					deck.plot.push(crd.code);
@@ -220,7 +220,7 @@ $(document).ready(function ()	{
 				regCardCodes = decks[faction].getDeck();
 			} else	{
 				$.each(regions[faction][faction + reg], function (id,cardInfo)	{
-					regCardCodes.push(cardInfo.code.toString());
+					regCardCodes.push(cardInfo.code);
 				});
 			}
 			
