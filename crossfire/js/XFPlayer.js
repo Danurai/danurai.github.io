@@ -6,23 +6,37 @@ function XFGame()	{
 	
 }
 
+// Shadowrun CrossFire (XF) Player Class
 function XFPlayer(metaType,roleType)	{		//OptionalArg = 'defaultValue'
 	this.meta = metaType;
 	this.role = roleType;
 	this.hits = this.maxhits = metaType.starthits;
 	this.nuyen = metaType.startnuyen;
-	//this.startcards = metaType.startcards;
 	this.cards = new XFDeck(roleType.startdeck);
 	
-	this.playsheet = function() {
+	this.playsheet_info = function() {
 		var outp;
+		
 		outp = '<div>' + this.meta.meta + ' - ' + this.role.rolename + '</div>'
 			+ '<div>' + this.hits + '/' + this.maxhits + ' hits'
-			+ '<br>' + this.nuyen + ' nuYen</div>';
+			+ '<br>' + this.nuyen + ' nuYen';
+			+ '<br>Deck: (' + this.cards.cardsInDeck() + ')'
+			+ '</div>';
 		return outp;
+	}
+	this.playsheet_hand = function()	{
+		var outp = '';;
+		var card;
+			
+		$.each(this.cards.getHand(), function (idx, crdID)	{
+			card = _BMDB({"id":crdID}).first()
+			outp += '<img class="card-bmkt" data-id="' + card.id + '" alt="' + card.name + '"></img>'	// src="img\\bmkt_' + ('00' + crd.id).substring(crd.id.toString().length) + '.png"></img>';
+		})
+		return outp;				
 	}
 }
 
+// Shadowrun CrossFire (XF) Deck Class
 function XFDeck(cardIDs)	{
 	this.deck = cardIDs.slice();
 	this.hand = [];
@@ -33,9 +47,16 @@ function XFDeck(cardIDs)	{
 			this.deck = shuffle(this.discard.splice());
 		}
 		this.hand.push(this.deck.shift());
+		return this.hand.slice(-1)[0];
 	}
 	this.discard = function(id)	{
-		
+		this.discard.push( this.hand.splice(id,1) );
+	}
+	this.getHand = function() {
+		return this.hand;
+	}
+	this.cardsInDeck = function()	{
+		return this.deck.length;
 	}
 }
 
@@ -46,7 +67,7 @@ function shuffle(array) {
 	// While there remain elements to shuffle…
 	while (m) {
 
-		// Pick a remaining element…
+		// Pick a random remaining element…
 		i = Math.floor(Math.random() * m--);
 
 		// And swap it with the current element.

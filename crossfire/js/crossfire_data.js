@@ -3,52 +3,52 @@ _roles = [{
 	"rolename": "Street Samurai",
 	"rolecode": "S",
 	"rolecolour":	"000000",
-	"startdeck": [1, 1 ,1 ,1 ,2 ,3 ,4]
+	"startdeck": [13, 13 ,13 ,13 ,1 ,5 ,9]
 }, {
 	"id": 2,
 	"rolename": "Mage",
 	"rolecode": "M",
 	"rolecolour":	"333399",
-	"startdeck": [2, 2, 2, 2, 1, 3, 4]
+	"startdeck": [5, 5, 5, 5, 1, 9, 13]
 }, {
 	"id": 3,
 	"rolename": "Decker",
 	"rolecode": "D",
 	"rolecolour":	"006600",
-	"startdeck": [3, 3, 3, 3, 1, 2, 4]
+	"startdeck": [1, 1, 1, 1, 5, 9, 13]
 }, {
 	"id": 4,
 	"rolename": "Face",
 	"rolecode": "F",
 	"rolecolour":	"cc0000",
-	"startdeck": [4, 4, 4, 4, 1, 2, 3]
+	"startdeck": [9, 9, 9, 9, 1, 5, 13]
 }];
 
 _metas = [{
 	"id": 1,
 	"meta": "Elf",
-	"sex": "F",
+	"gender": "F",
 	"starthits": 4,
 	"startcards": 4,
 	"startnuyen": 4
 }, {
 	"id": 2,
 	"meta": "Human",
-	"sex": "M",
+	"gender": "M",
 	"starthits": 5,
 	"startcards": 4,
 	"startnuyen": 3
 }, {
 	"id": 3,
 	"meta": "Troll",
-	"sex": "F",
+	"gender": "F",
 	"starthits": 7,
 	"startcards": 3,
 	"startnuyen": 2
 }, {
 	"id": 4,
 	"meta": "Ork",
-	"sex": "M",
+	"gender": "M",
 	"starthits": 6,
 	"startcards": 5,
 	"startnuyen": 1
@@ -57,267 +57,968 @@ _metas = [{
 _obstacles = [{
 	"id": 1,
 	"name": "Out of Ammo",
+	"democount": 1,
+	"corecount": 1,
 	"level": 1,
-	"role": "S",
+	"role": "W",
 	"type": "Tech",
 	"nuyen": 4,
 	"attack": 1,
-	"ability": "You can't play more than 2 cards on your turn.",
-	"track": ["W", "3"]
+	"track": ["W", "3"],
+	"ability": "You can't play more than 2 cards on your turn."
 }, {
 	"id": 2,
 	"name": "Corporate Adept",
+	"democount": 1,
+	"corecount": 1,
 	"level": 1,
 	"role": "M",
 	"type": "Human",
 	"nuyen": 4,
 	"attack": 1,
-	"ability": "You can't be healed or heal any runner.",
-	"track": ["M", "4"]
+	"track": ["M", "3"],
+	"ability": "You can't be healed or heal any runner."
 }, {
 	"id": 3,
 	"name": "Ork Fixer",
+	"democount": 1,
+	"corecount": 1,
 	"level": 1,
-	"role": "F",
+	"role": "S",
 	"type": "Ork",
 	"nuyen": 4,
 	"attack": 1,
-	"ability": "You can't buy cards.",
-	"track": ["S", "3"]
+	"track": ["S", "3"],
+	"ability": "You can't buy cards."
 }, {
 	"id": 4,
 	"name": "Deckhead",
+	"democount": 1,
+	"corecount": 1,
 	"level": 1,
-	"role": "S",
+	"role": "W",
 	"type": "Human",
 	"nuyen": 4,
 	"attack": 1,
-	"ability": "",
-	"track": ["2", "H", "1", "W"]
+	"track": ["2", "H", "1", "W"],
+	"ability": ""
 }, {
 	"id": 5,
 	"name": "Astral Shiver",
+	"democount": 1,
+	"corecount": 1,
 	"level": 1,
 	"role": "M",
 	"type": "6th World",
 	"nuyen": 4,
 	"attack": 1,
-	"ability": "",
-	"track": ["3", "M", "M"]
+	"track": ["3", "M", "M"],
+	"ability": ""
 }, {
 	"id": 6,
 	"name": "Sudden Fade",
+	"democount": 1,
+	"corecount": 1,
 	"level": 1,
 	"role": "H",
 	"type": "Tech",
 	"nuyen": 4,
 	"attack": 1,
-	"ability": "",
-	"track": ["3", "H", "H"]
+	"track": ["3", "H", "H"],
+	"ability": ""
 }, {
 	"id": 7,
 	"name": "Eye Alarm",
+	"democount": 1,
+	"corecount": 1,
 	"level": 1,
-	"role": "F",
+	"role": "S",
 	"type": "6th World",
 	"nuyen": 4,
 	"attack": 1,
-	"ability": "",
-	"track": ["2", "S", "1", "M"]
+	"track": ["2", "S", "1", "M"],
+	"ability": ""
 }, {
 	"id": 8,
 	"name": "Ancients Ganger",
+	"democount": 1,
+	"corecount": 1,
 	"level": 1,
-	"role": "S",
+	"role": "W",
 	"type": "Elf",
 	"nuyen": 5,
 	"attack": 2,
-	"ability": "",
-	"track": ["M", "3", "W"]
+	"track": ["M", "3", "W"],
+	"ability": ""
 }, {
 	"id": 9,
 	"name": "Fire Adept",
+	"democount": 1,
+	"corecount": 1,
 	"level": 1,
 	"role": "M",
 	"type": "Human",
 	"nuyen": 5,
 	"attack": 2,
-	"ability": "",
-	"track": ["3", "M", "W"]
+	"track": ["3", "M", "W"],
+	"ability": ""
 }, {
 	"id": 10,
 	"name": "Trip Beams",
+	"democount": 1,
+	"corecount": 1,
 	"level": 1,
 	"role": "H",
 	"type": "Tech",
 	"nuyen": 5,
 	"attack": 2,
-	"ability": "",
-	"track": ["S", "3", "H"]
+	"track": ["S", "3", "H"],
+	"ability": ""
 }, {
 	"id": 11,
 	"name": "Gutter Punks",
+	"democount": 1,
+	"corecount": 1,
+	"level": 1,
+	"role": "W",
+	"type": "Human",
+	"nuyen": 5,
+	"attack": 1,
+	"track": ["2", "W", "3"],
+	"ability": "DEFEATED: Choose a runner. That runner heals 1 HP."
+}, {
+	"id": 12,
+	"name": "Wage Mage",
+	"democount": 1,
+	"corecount": 1,
+	"level": 1,
+	"role": "M",
+	"type": "Human",
+	"nuyen": 5,
+	"attack": 1,
+	"track": ["3", "M", "2"],
+	"ability": "FLIPPED: You can cycle 1 non-SPELL card in the Black Market."
+}, {
+	"id": 13,
+	"name": "Customs Officer",
+	"democount": 1,
+	"corecount": 1,
 	"level": 1,
 	"role": "S",
 	"type": "Human",
 	"nuyen": 5,
 	"attack": 1,
-	"ability": "DEFEATED: Choose a runner. That runner heals 1 HP.",
-	"track": ["2", "W", "3"]
-}, {
-	"id": 13,
-	"name": "Customs Officer",
-	"level": 1,
-	"role": "F",
-	"type": "Human",
-	"nuyen": 5,
-	"attack": 1,
-	"ability": "DEFEATED: Chose another runner. That runner draws 1 card.",
-	"track": ["3", "S", "2"]
+	"track": ["3", "S", "2"],
+	"ability": "DEFEATED: Chose another runner. That runner draws 1 card."
 }, {
 	"id": 14,
 	"name": "Elf Shaman",
+	"democount": 1,
+	"corecount": 1,
 	"level": 1,
 	"role": "M",
 	"type": "Elf",
 	"nuyen": 6,
 	"attack": 1,
-	"ability": "When THIS attacks, it heals 1 level.",
-	"track": ["2", "2", "S", "2", "M"]
+	"track": ["2", "2", "S", "2", "M"],
+	"ability": "When THIS attacks, it heals 1 level."
 }, {
 	"id": 15,
 	"name": "Light Combat Drone",
+	"democount": 1,
+	"corecount": 1,
 	"level": 1,
 	"role": "H",
 	"type": "Tech",
 	"nuyen": 6,
 	"attack": 1,
-	"ability": "FLIPPED: You discard 1 card.",
-	"track": ["4", "H", "1", "W", "1"]
+	"track": ["4", "H", "1", "W", "1"],
+	"ability": "FLIPPED: You discard 1 card."
 }, {
 	"id": 16,
 	"name": "Demolittions Expert",
+	"democount": 1,
+	"corecount": 1,
 	"level": 1,
-	"role": "F",
+	"role": "S",
 	"type": "Human",
 	"nuyen": 8,
 	"attack": 2,
-	"ability": "DEFEATED: Deal 1 level of damage to another obstacle.",
-	"track": ["3", "2", "S", "2", "W"]
+	"track": ["3", "2", "S", "2", "W"],
+	"ability": "DEFEATED: Deal 1 level of damage to another obstacle."
 }, {
 	"id": 17,
 	"name": "Aerial Combat Drone",
+	"democount": 1,
+	"corecount": 1,
 	"level": 1,
 	"role": "H",
 	"type": "Tech",
 	"nuyen": 8,
 	"attack": 2,
-	"ability": "DEFEATED: Choose another runner. That runner draws 1 card, then discards 1 card.",
-	"track": ["2", "H", "1", "W", "1", "H", "1", "S"]
+	"track": ["2", "H", "1", "W", "1", "H", "1", "S"],
+	"ability": "DEFEATED: Choose another runner. That runner draws 1 card, then discards 1 card."
+}, {
+	"id": 18,
+	"name": "Buzzback",
+	"democount": 0,
+	"corecount": 1,
+	"level": 1,
+	"role": "H",
+	"type": "Tech",
+	"nuyen": 4,
+	"attack": 1,
+	"track": ["H", "6"],
+	"ability": "You can’t draw cards."
+}, {
+	"id": 19,
+	"name": "Yak Muscle",
+	"democount": 0,
+	"corecount": 1,
+	"level": 1,
+	"role": "W",
+	"type": "Human",
+	"nuyen": 5,
+	"attack": 2,
+	"track": ["3", "W", "H"],
+	"ability": ""
+}, {
+	"id": 20,
+	"name": "Ancients Sentry",
+	"democount": 0,
+	"corecount": 1,
+	"level": 1,
+	"role": "S",
+	"type": "Elf",
+	"nuyen": 5,
+	"attack": 2,
+	"track": ["M", "3", "S"],
+	"ability": ""
+}, {
+	"id": 21,
+	"name": "Chipped Decker",
+	"democount": 0,
+	"corecount": 1,
+	"level": 1,
+	"role": "H",
+	"type": "Human",
+	"nuyen": 5,
+	"attack": 1,
+	"track": ["2", "H", "3"],
+	"ability": "FLIPPED: You can cycle 1 non-HACKING card in the Black Market."
+}, {
+	"id": 22,
+	"name": "Lone Star Trooper",
+	"democount": 0,
+	"corecount": 1,
+	"level": 1,
+	"role": "W",
+	"type": "Human",
+	"nuyen": 6,
+	"attack": 1,
+	"track": ["5", "H", "W"],
+	"ability": "When THIS attacks it also attacks the Street Samurai unless it’s already facing that runner."
+}, {
+	"id": 23,
+	"name": "Freelance Assassin",
+	"democount": 0,
+	"corecount": 1,
+	"level": 1,
+	"role": "W",
+	"type": "Ork",
+	"nuyen": 6,
+	"attack": 1,
+	"track": ["3", "W", "W", "1", "H"],
+	"ability": "After THIS attacks, discard the top card of the Black Market deck. Move THIS to face the matching coloured runner."
+}, {
+	"id": 24,
+	"name": "Spirit of Air",
+	"democount": 0,
+	"corecount": 1,
+	"level": 1,
+	"role": "M",
+	"type": "6th World",
+	"nuyen": 6,
+	"attack": 1,
+	"track": ["5", "M", "M"],
+	"ability": "When THIS attacks it also attacks the Mage unless it’s already facing that runner."
+}, {
+	"id": 25,
+	"name": "Aztlan Decker",
+	"democount": 0,
+	"corecount": 1,
+	"level": 1,
+	"role": "H",
+	"type": "Human",
+	"nuyen": 6,
+	"attack": 1,
+	"track": ["3", "S", "2", "H"],
+	"ability": "When THIS attacks it also attacks the Decker unless it’s already facing that runner."
+}, {
+	"id": 26,
+	"name": "Jaguar Shifter",
+	"democount": 0,
+	"corecount": 1,
+	"level": 1,
+	"role": "S",
+	"type": "6th World",
+	"nuyen": 6,
+	"attack": 1,
+	"track": ["2", "S", "2", "M", "S"],
+	"ability": "When THIS attacks it also attacks the Face unless it’s already facing that runner."
+}, {
+	"id": 27,
+	"name": "Wired Merc",
+	"democount": 0,
+	"corecount": 1,
+	"level": 1,
+	"role": "H",
+	"type": "Dwarf",
+	"nuyen": 11,
+	"attack": 2,
+	"track": ["4", "H", "3", "W", "2", "H"],
+	"ability": "FLIPPED (2+): Each non-Dwarf runner facing a Green obstacle discards 2 cards."
+}, {
+	"id": 28,
+	"name": "Bonelaced Adept",
+	"democount": 0,
+	"corecount": 1,
+	"level": 1,
+	"role": "M",
+	"type": "Troll",
+	"nuyen": 6,
+	"attack": 2,
+	"track": ["4", "M", "1", "W"],
+	"ability": "FLIPPED: Cycle all SPELL and WEAPON cards in the Black Market Deck."
+}, {
+	"id": 29,
+	"name": "Spell Sniper",
+	"democount": 0,
+	"corecount": 1,
+	"level": 1,
+	"role": "M",
+	"type": "Human",
+	"nuyen": 5,
+	"attack": 1,
+	"track": ["1", "M", "4", "M"],
+	"ability": "FLIPPED: Each runner places 2 cards from the top of their deck into their discard."
+}, {
+	"id": 30,
+	"name": "Combat Decker",
+	"democount": 0,
+	"corecount": 1,
+	"level": 1,
+	"role": "H",
+	"type": "Human",
+	"nuyen": 5,
+	"attack": 1,
+	"track": ["1", "S", "3", "W", "H"],
+	"ability": "FLIPPED: Cycle the card in the Black Market that has the lowest cost."
+}, {
+	"id": 31,
+	"name": "Gang Leader",
+	"democount": 0,
+	"corecount": 1,
+	"level": 1,
+	"role": "S",
+	"type": "Ork",
+	"nuyen": 5,
+	"attack": 1,
+	"track": ["S", "5", "S"],
+	"ability": "FLIPPED: Each runner places 4 cards from the top of their deck into their discard."
+}, {
+	"id": 32,
+	"name": "Troll Enforcer",
+	"democount": 0,
+	"corecount": 1,
+	"level": 1,
+	"role": "W",
+	"type": "Troll",
+	"nuyen": 6,
+	"attack": 2,
+	"track": ["2", "W", "2", "2", "M"],
+	"ability": ""
+}, {
+	"id": 33,
+	"name": "Covert Ops Specialist",
+	"democount": 0,
+	"corecount": 1,
+	"level": 1,
+	"role": "S",
+	"type": "Human",
+	"nuyen": 6,
+	"attack": 1,
+	"track": ["3", "3", "S", "S"],
+	"ability": "FLIPPED: Choose a runner. That runner takes 1 damage."
+}, {
+	"id": 34,
+	"name": "Security Goons",
+	"democount": 0,
+	"corecount": 1,
+	"level": 1,
+	"role": "W",
+	"type": "Human",
+	"nuyen": 8,
+	"attack": 2,
+	"track": ["3", "2", "H", "2", "W"],
+	"ability": "FLIPPED: Cycle 1 non-WEAPON card in the Black Market. DEFEATED: Choose a runner. That runner heals 1 HP."
+}, {
+	"id": 35,
+	"name": "Astral Scout",
+	"democount": 0,
+	"corecount": 1,
+	"level": 1,
+	"role": "M",
+	"type": "6th World",
+	"nuyen": 8,
+	"attack": 2,
+	"track": ["1", "2", "3", "M", "1", "M"],
+	"ability": "DEFEATED: Look at the top Crossfire card and replace it either on top or on bottom."
+}, {
+	"id": 36,
+	"name": "Courier",
+	"democount": 0,
+	"corecount": 1,
+	"level": 1,
+	"role": "S",
+	"type": "Human",
+	"nuyen": 8,
+	"attack": 2,
+	"track": ["2", "S", "2", "2", "H", "S"],
+	"ability": "FLIPPED: The next runner who buys a card from the Black Market can pay 1 less Nuyen for that card."
+}, {
+	"id": 37,
+	"name": "Ork Bounty Hunter",
+	"democount": 0,
+	"corecount": 1,
+	"level": 1,
+	"role": "W",
+	"type": "Ork",
+	"nuyen": 11,
+	"attack": 2,
+	"track": ["3", "H", "3", "W", "W", "3"],
+	"ability": "FLIPPED (2+): Each non-Ork runner facing a Black obstacle discards 2 cards."
+}, {
+	"id": 38,
+	"name": "Troll Mage",
+	"democount": 0,
+	"corecount": 1,
+	"level": 1,
+	"role": "M",
+	"type": "Troll",
+	"nuyen": 11,
+	"attack": 2,
+	"track": ["3", "W", "3", "M", "2", "2"],
+	"ability": "FLIPPED (2+): Each non-Troll runner facing a Blue obstacle discards 2 cards."
+}, {
+	"id": 39,
+	"name": "Mercenary Elf Decker",
+	"democount": 0,
+	"corecount": 1,
+	"level": 1,
+	"role": "H",
+	"type": "Elf",
+	"nuyen": 6,
+	"attack": 2,
+	"track": ["2", "H", "1", "S", "2"],
+	"ability": "FLIPPED: Cycle all HACKING and SKILL cards in the Black Market Deck."
+}, {
+	"id": 40,
+	"name": "Scrybot Tracer",
+	"democount": 0,
+	"corecount": 1,
+	"level": 1,
+	"role": "S",
+	"type": "Tech",
+	"nuyen": 11,
+	"attack": 2,
+	"track": ["5", "M", "5", "S"],
+	"ability": "FLIPPED (2+): Each runner facing a Red obstacle discards 2 cards."
 }, {
 	"id": 41,
 	"name": "Lightning Mage",
+	"democount": 1,
+	"corecount": 1,
 	"level": 2,
 	"role": "M",
 	"type": "Human",
 	"nuyen": 3,
 	"attack": 1,
-	"ability": "Runners can’t be healed.",
-	"track": ["3", "M", "M", "1"]
+	"track": ["3", "M", "M", "1"],
+	"ability": "Runners can’t be healed."
 }, {
 	"id": 42,
 	"name": "Knight Errant Field Agent",
+	"democount": 1,
+	"corecount": 1,
 	"level": 2,
-	"role": "F",
+	"role": "S",
 	"type": "Dwarf",
 	"nuyen": 3,
 	"attack": 2,
-	"ability": "",
-	"track": ["4", "H", "3", "S"]
+	"track": ["4", "H", "3", "S"],
+	"ability": ""
 }, {
 	"id": 43,
 	"name": "Armored Troopers",
+	"democount": 1,
+	"corecount": 1,
 	"level": 2,
-	"role": "S",
+	"role": "W",
 	"type": "Human",
 	"nuyen": 4,
 	"attack": 2,
-	"ability": "DEFEATED: Choose a runner. That runner heals 2 HP.",
-	"track": ["4", "W", "2", "S", "2", "W"]
+	"track": ["4", "W", "2", "S", "2", "W"],
+	"ability": "DEFEATED: Choose a runner. That runner heals 2 HP."
 }, {
 	"id": 44,
 	"name": "Spirit of Fire",
+	"democount": 1,
+	"corecount": 1,
 	"level": 2,
 	"role": "M",
 	"type": "6th World",
 	"nuyen": 4,
 	"attack": 2,
-	"ability": "FLIPPED: Deal 1 level of damage to another obstacle.",
-	"track": ["3", "4", "W", "2", "M"]
+	"track": ["3", "4", "W", "2", "M"],
+	"ability": "FLIPPED: Deal 1 level of damage to another obstacle."
 }, {
 	"id": 45,
 	"name": "Warded Decker",
+	"democount": 1,
+	"corecount": 1,
 	"level": 2,
 	"role": "H",
 	"type": "Human",
 	"nuyen": 4,
 	"attack": 2,
-	"ability": "FLIPPED: You draw 2 cards, then discard 1 card.",
-	"track": ["2", "M", "S", "3", "3", "H"]
+	"track": ["2", "M", "S", "3", "3", "H"],
+	"ability": "FLIPPED: You draw 2 cards, then discard 1 card."
 }, {
 	"id": 46,
 	"name": "Chromed Samurai",
+	"democount": 1,
+	"corecount": 1,
 	"level": 2,
-	"role": "S",
+	"role": "W",
 	"type": "Human",
 	"nuyen": 5,
 	"attack": 2,
-	"ability": "",
-	"track": ["4", "H", "W", "2", "M", "2", "W"]
+	"track": ["4", "H", "W", "2", "M", "2", "W"],
+	"ability": ""
 }, {
 	"id": 47,
 	"name": "Drone Rigger",
+	"democount": 1,
+	"corecount": 1,
 	"level": 2,
 	"role": "H",
 	"type": "Human",
 	"nuyen": 5,
 	"attack": 2,
-	"ability": "",
-	"track": ["5", "W", "1", "H", "3", "H"]
+	"track": ["5", "W", "1", "H", "3", "H"],
+	"ability": ""
 }, {
 	"id": 48,
 	"name": "Security Chief",
+	"democount": 1,
+	"corecount": 1,
 	"level": 2,
-	"role": "F",
+	"role": "S",
 	"type": "Human",
 	"nuyen": 5,
 	"attack": 2,
-	"ability": "",
-	"track": ["4", "S", "W", "3", "S", "2"]
-}];
-
-_blackmarket = [{
-	"id": 1,
+	"track": ["4", "S", "W", "3", "S", "2"],
+	"ability": ""
+}, {
+	"id": 49,
+	"name": "Drake Enforcer",
+	"democount": 0,
+	"corecount": 1,
+	"level": 2,
+	"role": "W",
+	"type": "6th World",
+	"nuyen": 2,
+	"attack": 1,
+	"track": ["H", "W", "M", "S"],
+	"ability": "When THIS attacks discard the top card of the Black Market deck. Each runner discards 1 matching colour card."
+}, {
+	"id": 50,
+	"name": "Lone Star Sergeant",
+	"democount": 0,
+	"corecount": 1,
+	"level": 2,
+	"role": "W",
+	"type": "Human",
+	"nuyen": 3,
+	"attack": 1,
+	"track": ["2", "W", "2", "W"],
+	"ability": "Runners can't buy cards."
+}, {
+	"id": 51,
+	"name": "IC",
+	"democount": 0,
+	"corecount": 1,
+	"level": 2,
+	"role": "H",
+	"type": "Tech",
+	"nuyen": 3,
+	"attack": 1,
+	"track": ["3", "H", "H", "H"],
+	"ability": "When THIS attacks, each runner discards 1 card."
+}, {
+	"id": 52,
+	"name": "Trickster Initiate",
+	"democount": 0,
+	"corecount": 1,
+	"level": 2,
 	"role": "S",
-	"basic": 1,
-	"type": "Weapon",
-	"name": "Quick Shot",
-	"count": 8,
-	"cost": 0,
-	"damage": ["S"],
-	"notes": ""
+	"type": "Human",
+	"nuyen": 3,
+	"attack": 1,
+	"track": ["1", "M", "S", "3"],
+	"ability": "Obstacles ignore colorless damage applied to them."
 }, {
-	"id": 2,
+	"id": 53,
+	"name": "Drake Assassin",
+	"democount": 0,
+	"corecount": 1,
+	"level": 2,
+	"role": "W",
+	"type": "6th World",
+	"nuyen": 4,
+	"attack": 1,
+	"track": ["H", "W", "M", "S", "H", "W", "M", "S"],
+	"ability": "When THIS attacks, discard the top card of the Black Market deck. Each runner discards matching cost."
+}, {
+	"id": 54,
+	"name": "Border War Vet",
+	"democount": 0,
+	"corecount": 1,
+	"level": 2,
+	"role": "W",
+	"type": "Ork",
+	"nuyen": 3,
+	"attack": 2,
+	"track": ["4", "M", "W", "W", "2"],
+	"ability": ""
+}, {
+	"id": 55,
+	"name": "Mage Hunter",
+	"democount": 0,
+	"corecount": 1,
+	"level": 2,
 	"role": "M",
-	"basic": 1,
-	"type": "Spell",
-	"name": "Mana",
-	"count": 8,
-	"cost": 0,
-	"damage": ["M"],
-	"notes": ""
+	"type": "Elf",
+	"nuyen": 3,
+	"attack": 2,
+	"track": ["2", "2", "S", "3", "M"],
+	"ability": ""
 }, {
-	"id": 3,
+	"id": 56,
+	"name": "Indentured Otaku",
+	"democount": 0,
+	"corecount": 1,
+	"level": 2,
+	"role": "H",
+	"type": "Human",
+	"nuyen": 3,
+	"attack": 2,
+	"track": ["5", "H", "1", "H"],
+	"ability": ""
+}, {
+	"id": 57,
+	"name": "Lone Start Lieutenant",
+	"democount": 0,
+	"corecount": 1,
+	"level": 2,
+	"role": "W",
+	"type": "Human",
+	"nuyen": 4,
+	"attack": 2,
+	"track": ["3", "H", "5", "W"],
+	"ability": "You can’t buy cards. Any runner can discard a WEAPON to cancel until next turn."
+}, {
+	"id": 58,
+	"name": "Spirit of Earth",
+	"democount": 0,
+	"corecount": 1,
+	"level": 2,
+	"role": "M",
+	"type": "6th World",
+	"nuyen": 4,
+	"attack": 2,
+	"track": ["1", "2", "3", "S", "2", "M"],
+	"ability": "You can't play cards. Any runner can discard a SPELL to cancel until next turn."
+}, {
+	"id": 59,
+	"name": "Military Spec IC",
+	"democount": 0,
+	"corecount": 1,
+	"level": 2,
+	"role": "H",
+	"type": "Tech",
+	"nuyen": 4,
+	"attack": 2,
+	"track": ["3", "S", "4", "H", "1"],
+	"ability": "You don’t receive Nuyen (discarded). Any runner can discard a HACKING to cancel until next turn."
+}, {
+	"id": 60,
+	"name": "Ares Field Rep",
+	"democount": 0,
+	"corecount": 1,
+	"level": 2,
+	"role": "S",
+	"type": "Human",
+	"nuyen": 4,
+	"attack": 2,
+	"track": ["4", "4", "S", "S"],
+	"ability": "You can’t draw cards. Any runner can discard a SKILL to cancel until next turn."
+}, {
+	"id": 61,
+	"name": "Tir Ghost",
+	"democount": 0,
+	"corecount": 1,
+	"level": 2,
+	"role": "S",
+	"type": "Elf",
+	"nuyen": 4,
+	"attack": 2,
+	"track": ["S", "5", "M", "2", "W"],
+	"ability": "FLIPPED: Each non-Elf runner discards their hand, then draws that number of cards."
+}, {
+	"id": 62,
+	"name": "Renraku Red Samurai",
+	"democount": 0,
+	"corecount": 1,
+	"level": 2,
+	"role": "S",
+	"type": "Human",
+	"nuyen": 4,
+	"attack": 2,
+	"track": ["7", "S", "W", "S"],
+	"ability": "FLIPPED: Each non-Human runner discards their hand, then draws that number of cards."
+}, {
+	"id": 63,
+	"name": "Bug Spirit",
+	"democount": 0,
+	"corecount": 1,
+	"level": 2,
+	"role": "M",
+	"type": "6th World",
+	"nuyen": 3,
+	"attack": 1,
+	"track": ["1", "M", "6", "W", "M"],
+	"ability": "FLIPPED: Each runner discards their hand, then draws that number of cards."
+}, {
+	"id": 64,
+	"name": "Guy in the Van",
+	"democount": 0,
+	"corecount": 1,
+	"level": 2,
+	"role": "H",
+	"type": "Dwarf",
+	"nuyen": 3,
+	"attack": 1,
+	"track": ["6", "H", "H", "1", "W"],
+	"ability": "FLIPPED: The runner with the most HP draws 2 cards and takes 2 damage."
+}, {
+	"id": 65,
+	"name": "Grey Ops Riggers Team",
+	"democount": 0,
+	"corecount": 1,
+	"level": 2,
+	"role": "H",
+	"type": "Tech",
+	"nuyen": 3,
+	"attack": 1,
+	"track": ["3", "H", "2", "M", "1", "S", "H"],
+	"ability": "FLIPPED: Cycle all cards in the Black Market."
+}, {
+	"id": 66,
+	"name": "Unusual Suspects",
+	"democount": 0,
+	"corecount": 1,
+	"level": 2,
+	"role": "S",
+	"type": "6th World",
+	"nuyen": 4,
+	"attack": 2,
+	"track": ["4", "M", "2", "H", "1", "H", "S"],
+	"ability": "DEFEATED: Choose 2 different runners. One runner heals 1 HP, the other draws 1 card."
+}, {
+	"id": 67,
+	"name": "Weapons Specialist",
+	"democount": 0,
+	"corecount": 1,
+	"level": 2,
+	"role": "W",
+	"type": "Human",
+	"nuyen": 5,
+	"attack": 1,
+	"track": ["6", "S", "3", "W"],
+	"ability": "At the start of your turn all runners facing Black take 1 damage. Any runner can discard WEAPON to cancel until next turn."
+}, {
+	"id": 68,
+	"name": "Corporate Shaman",
+	"democount": 0,
+	"corecount": 1,
+	"level": 2,
+	"role": "M",
+	"type": "Dwarf",
+	"nuyen": 5,
+	"attack": 1,
+	"track": ["4", "1", "H", "4", "M"],
+	"ability": "At the start of your turn each Blue obstacle heals 1 level. Any runner can discard a SPELL to cancel until next turn."
+}, {
+	"id": 69,
+	"name": "Banshee Virus",
+	"democount": 0,
+	"corecount": 1,
+	"level": 2,
+	"role": "H",
+	"type": "Tech",
+	"nuyen": 5,
+	"attack": 1,
+	"track": ["5", "4", "H", "H"],
+	"ability": "At the start of your turn pay 1 for each Green you face. Any runner can discard a HACKING to cancel until next turn."
+}, {
+	"id": 70,
+	"name": "Saeder-Krupp Observer",
+	"democount": 0,
+	"corecount": 1,
+	"level": 2,
+	"role": "S",
+	"type": "Human",
+	"nuyen": 5,
+	"attack": 1,
+	"track": ["3", "S", "3", "W", "2", "S"],
+	"ability": "At the start of your turn each RED obstacle heals 1 level. Any runner can discard a SKILL to cancel until next turn."
+}, {
+	"id": 71,
+	"name": "Gunslinger Adept",
+	"democount": 0,
+	"corecount": 1,
+	"level": 2,
+	"role": "M",
+	"type": "Ork",
+	"nuyen": 5,
+	"attack": 1,
+	"track": ["6", "M", "W", "2", "M"],
+	"ability": "Damage can’t be applied to THIS. Any runner can discard a WEAPON or SPELL to cancel until next turn."
+}, {
+	"id": 72,
+	"name": "Fomorian Mage",
+	"democount": 0,
+	"corecount": 1,
+	"level": 2,
+	"role": "M",
+	"type": "Troll",
+	"nuyen": 5,
+	"attack": 2,
+	"track": ["5", "S", "M", "3", "W", "M"],
+	"ability": ""
+}, {
+	"id": 73,
+	"name": "Gargoyle",
+	"democount": 0,
+	"corecount": 1,
+	"level": 2,
+	"role": "W",
+	"type": "6th World",
+	"nuyen": 6,
+	"attack": 2,
+	"track": ["6", "6", "W", "W"],
+	"ability": "DEFEATED: Choose a runner. That runner takes 1 damage."
+}, {
+	"id": 74,
+	"name": "Elf Blademaster",
+	"democount": 0,
+	"corecount": 1,
+	"level": 2,
+	"role": "W",
+	"type": "Elf",
+	"nuyen": 6,
+	"attack": 2,
+	"track": ["6", "S", "H", "M", "3", "W", "H"],
+	"ability": "FLIPPED (3+): Between them, the team discards cards equal to the number of runners."
+}, {
+	"id": 75,
+	"name": "Combat Shaman",
+	"democount": 0,
+	"corecount": 1,
+	"level": 2,
+	"role": "M",
+	"type": "Human",
+	"nuyen": 6,
+	"attack": 2,
+	"track": ["4", "H", "M", "6", "M", "M"],
+	"ability": "(3+): When THIS attacks each obstacle heals 1 level."
+}, {
+	"id": 76,
+	"name": "Mercenary Technomancer",
+	"democount": 0,
+	"corecount": 1,
+	"level": 2,
+	"role": "M",
+	"type": "Ork",
+	"nuyen": 6,
+	"attack": 2,
+	"track": ["3", "M", "M", "5", "W", "W", "2"],
+	"ability": "FLIPPED: The runner with the most cards in their hand discards 1 card."
+}, {
+	"id": 77,
+	"name": "Chaos Sprite",
+	"democount": 0,
+	"corecount": 1,
+	"level": 2,
+	"role": "H",
+	"type": "Tech",
+	"nuyen": 6,
+	"attack": 2,
+	"track": ["4", "M", "S", "H", "4", "3"],
+	"ability": "FLIPPED (2+): Each runner discards their hand then draws that number of cards minus one."
+}, {
+	"id": 78,
+	"name": "GODwire",
+	"democount": 0,
+	"corecount": 1,
+	"level": 2,
+	"role": "H",
+	"type": "Tech",
+	"nuyen": 6,
+	"attack": 2,
+	"track": ["8", "W", "S", "2", "H", "H"],
+	"ability": "When this attacks it heals 2 levels."
+}, {
+	"id": 79,
+	"name": "Aztlan Veteran",
+	"democount": 0,
+	"corecount": 1,
+	"level": 2,
+	"role": "S",
+	"type": "Human",
+	"nuyen": 6,
+	"attack": 2,
+	"track": ["5", "S", "5", "W", "1", "S"],
+	"ability": "FLIPPED: The runner with the most HP takes 1 damage."
+}, {
+	"id": 80,
+	"name": "Vampire Operative",
+	"democount": 0,
+	"corecount": 1,
+	"level": 2,
+	"role": "S",
+	"type": "6th World",
+	"nuyen": 6,
+	"attack": 2,
+	"track": ["2", "S", "6", "M", "S", "3"],
+	"ability": "(3+): When THIS attacks it also deals 1 damage to each runner."
+}]
+
+_blackmarket = [
+{
+	"id": 1,
 	"role": "H",
 	"basic": 1,
 	"type": "Hacking",
@@ -327,7 +1028,77 @@ _blackmarket = [{
 	"damage": ["H"],
 	"notes": ""
 }, {
+	"id": 2,
+	"role": "H",
+	"basic": 0,
+	"type": "Hacking",
+	"name": "Jacked In",
+	"count": 4,
+	"cost": 3,
+	"damage": ["H", "1"],
+	"notes": "Discard one card to return Jacked In from discard"
+}, {
+	"id": 3,
+	"role": "H",
+	"basic": 0,
+	"type": "Hacking",
+	"name": "Icon Grab",
+	"count": 4,
+	"cost": 2,
+	"damage": ["H", "*"],
+	"notes": "* = If you played another HACKING card + B, L, or R damage"
+}, {
 	"id": 4,
+	"role": "H",
+	"basic": 0,
+	"type": "Hacking",
+	"name": "Retrieval Agent",
+	"count": 2,
+	"cost": 4,
+	"damage": ["H", "1"],
+	"notes": "Return a HACKING card from discard"
+}, {
+	"id": 5,
+	"role": "M",
+	"basic": 1,
+	"type": "Spell",
+	"name": "Mana",
+	"count": 8,
+	"cost": 0,
+	"damage": ["M"],
+	"notes": ""
+}, {
+	"id": 6,
+	"role": "M",
+	"basic": 0,
+	"type": "Spell",
+	"name": "Clairvoyance",
+	"count": 3,
+	"cost": 2,
+	"damage": ["M"],
+	"notes": "Draw 1, discard 1 - ASSIST: Draw 1, discard 1, & L Damage"
+}, {
+	"id": 7,
+	"role": "M",
+	"basic": 0,
+	"type": "Spell",
+	"name": "Deathtouch",
+	"count": 4,
+	"cost": 4,
+	"damage": ["L", "L", "X"],
+	"notes": "Reveal and replace top 3 cards in choice order: X = # SPELL cards"
+}, {
+	"id": 8,
+	"role": "M",
+	"basic": 0,
+	"type": "Spell",
+	"name": "Lightning Bolt",
+	"count": 2,
+	"cost": 6,
+	"damage": ["*"],
+	"notes": "* = Deal two levels of damage - Requires SPELL to Buy"
+}, {
+	"id": 9,
 	"role": "F",
 	"basic": 1,
 	"type": "Skill",
@@ -337,7 +1108,47 @@ _blackmarket = [{
 	"damage": ["F"],
 	"notes": ""
 }, {
-	"id": 5,
+	"id": 10,
+	"role": "F",
+	"basic": 0,
+	"type": "Skill",
+	"name": "Negotiation",
+	"count": 3,
+	"cost": 3,
+	"damage": ["F"],
+	"notes": "Next SKILL card purchase cost -1¥ for each SKILL card played - ASSIST: Current runner pays -1¥ less on next buy + R1 Damage"
+}, {
+	"id": 11,
+	"role": "F",
+	"basic": 0,
+	"type": "Skill",
+	"name": "Coordinated Attack",
+	"count": 3,
+	"cost": 4,
+	"damage": ["F", "1"],
+	"notes": "Another runner draws 1 card and plays 1 card"
+}, {
+	"id": 12,
+	"role": "F",
+	"basic": 0,
+	"type": "Skill",
+	"name": "Doc Wagon Contract",
+	"count": 3,
+	"cost": 5,
+	"damage": [],
+	"notes": "Heal 2 anyone - ASSIST: Heal 1 and do R damage"
+}, {
+	"id": 13,
+	"role": "S",
+	"basic": 1,
+	"type": "Weapon",
+	"name": "Quick Shot",
+	"count": 8,
+	"cost": 0,
+	"damage": ["S"],
+	"notes": ""
+}, {
+	"id": 14,
 	"role": "S",
 	"basic": 0,
 	"type": "Weapon",
@@ -347,6 +1158,21 @@ _blackmarket = [{
 	"damage": ["S"],
 	"notes": "Move obstacle to you, which can't attack if you played another WEAPON card this turn"
 }, {
+	"id": 15,
+	"role": "S",
+	"basic": 0,
+	"type": "Weapon",
+	"name": "Katana",
+	"count": 3,
+	"cost": 4,
+	"damage": ["S", "S"],
+	"notes": "Other WEAPON cards get + 1 damage"
+}
+
+
+];
+/*
+, {
 	"id": 6,
 	"role": "S",
 	"basic": 0,
@@ -356,16 +1182,6 @@ _blackmarket = [{
 	"cost": 3,
 	"damage": ["S", "1", "*"],
 	"notes": "* = Deal this damage to all obstacles facing 1 runner"
-}, {
-	"id": 7,
-	"role": "S",
-	"basic": 0,
-	"type": "Weapon",
-	"name": "Katana",
-	"count": 3,
-	"cost": 4,
-	"damage": ["S", "S"],
-	"notes": "Other WEAPON cards get + 1 damage"
 }, {
 	"id": 8,
 	"role": "S",
@@ -397,16 +1213,6 @@ _blackmarket = [{
 	"damage": ["S", "S", "2"],
 	"notes": "Move # of obstacles equal to runner count in front of youObstacles can't attack this turn"
 }, {
-	"id": 11,
-	"role": "M",
-	"basic": 0,
-	"type": "Spell",
-	"name": "Clairvoyance",
-	"count": 3,
-	"cost": 2,
-	"damage": ["M"],
-	"notes": "Draw 1, discard 1 - ASSIST: Draw 1, discard 1, & L Damage"
-}, {
 	"id": 12,
 	"role": "M",
 	"basic": 0,
@@ -427,26 +1233,6 @@ _blackmarket = [{
 	"damage": ["L", "X"],
 	"notes": "Reveal and replace top card on deck: X Damage = Cost of reveal"
 }, {
-	"id": 14,
-	"role": "M",
-	"basic": 0,
-	"type": "Spell",
-	"name": "Deathtouch",
-	"count": 4,
-	"cost": 4,
-	"damage": ["L", "L", "X"],
-	"notes": "Reveal and replace top 3 cards in choice order: X = # SPELL cards"
-}, {
-	"id": 15,
-	"role": "M",
-	"basic": 0,
-	"type": "Spell",
-	"name": "Lightning Bolt",
-	"count": 2,
-	"cost": 6,
-	"damage": ["*"],
-	"notes": "* = Deal two levels of damage - Requires SPELL to Buy"
-}, {
 	"id": 16,
 	"role": "M",
 	"basic": 0,
@@ -457,26 +1243,6 @@ _blackmarket = [{
 	"damage": ["L", "L", "2", "*"],
 	"notes": "* = Deal 1 level of damage to 3 different obstacles"
 }, {
-	"id": 17,
-	"role": "H",
-	"basic": 0,
-	"type": "Hacking",
-	"name": "Icon Grab",
-	"count": 4,
-	"cost": 2,
-	"damage": ["H", "*"],
-	"notes": "* = If you played another HACKING card + B, L, or R damage"
-}, {
-	"id": 18,
-	"role": "H",
-	"basic": 0,
-	"type": "Hacking",
-	"name": "Jacked In",
-	"count": 4,
-	"cost": 3,
-	"damage": ["H", "1"],
-	"notes": "Discard one card to return Jacked In from discard"
-}, {
 	"id": 19,
 	"role": "H",
 	"basic": 0,
@@ -486,16 +1252,6 @@ _blackmarket = [{
 	"cost": 4,
 	"damage": ["H", "2"],
 	"notes": "ASSIST: Cancel obstacle abilities + G damage"
-}, {
-	"id": 20,
-	"role": "H",
-	"basic": 0,
-	"type": "Hacking",
-	"name": "Retrieval Agent",
-	"count": 2,
-	"cost": 4,
-	"damage": ["H", "1"],
-	"notes": "Return a HACKING card from discard"
 }, {
 	"id": 21,
 	"role": "H",
@@ -527,36 +1283,6 @@ _blackmarket = [{
 	"damage": ["F"],
 	"notes": "Buy a card from Black Market into hand during Play Cards phase"
 }, {
-	"id": 24,
-	"role": "F",
-	"basic": 0,
-	"type": "Skill",
-	"name": "Negotiation",
-	"count": 3,
-	"cost": 3,
-	"damage": ["F"],
-	"notes": "Next SKILL card purchase cost -1¥ for each SKILL card played - ASSIST: Current runner pays -1¥ less on next buy + R1 Damage"
-}, {
-	"id": 25,
-	"role": "F",
-	"basic": 0,
-	"type": "Skill",
-	"name": "Coordinated Attack",
-	"count": 3,
-	"cost": 4,
-	"damage": ["F", "1"],
-	"notes": "Another runner draws 1 card and plays 1 card"
-}, {
-	"id": 26,
-	"role": "F",
-	"basic": 0,
-	"type": "Skill",
-	"name": "Doc Wagon Contract",
-	"count": 3,
-	"cost": 5,
-	"damage": [],
-	"notes": "Heal 2 anyone - ASSIST: Heal 1 and do R damage"
-}, {
 	"id": 27,
 	"role": "F",
 	"basic": 0,
@@ -576,7 +1302,8 @@ _blackmarket = [{
 	"cost": 9,
 	"damage": ["F", "F", "2"],
 	"notes": "Each runner draws a card"
-}];
+}
+*/
 
 _crossfire = [{
 	"id": 1,
