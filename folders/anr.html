@@ -31,6 +31,10 @@
 		.card{
 			width: 200px;
 		}
+		.folders	{
+			position:	sticky;
+			top:	0px;
+		}
 	</style>
 	
 	
@@ -43,7 +47,7 @@
 				<div id="packlist"></div>
 			</div>
 		</div>
-		<div class="col-sm-8">
+		<div class="col-sm-8 folders">
 			<div class="row" style="position: relative;">
 				<div class="col-sm-6">
 					<h2>Virtual Folders</h2>
@@ -70,6 +74,7 @@
 	var section = [];
 	var factions = [];
 	var pages = [];
+	var filter_date = {};	//{"date_release":{isNull:false}};
 	
 	$(document).ready(function () {
 		var _cycles;
@@ -85,6 +90,7 @@
 		
 		var filter_pack = [];
 		var faction_code;
+		
 		
 		// LOAD DATA
 		$.getJSON('https://netrunnerdb.com/api/2.0/public/cycles?jsoncallback', function (data) {
@@ -105,7 +111,9 @@
 							_cycles().order("position").each( function (cycle) {
 								indent = false;
 								cyclepacks = _packs({"cycle_code":cycle.code}).select("code");
-								_packs({"cycle_code":cycle.code,"date_release":{isNull:false}}).order("position").each( function (pack,idx) {
+								var filter_checklist = Object.assign({},filter_date)
+								filter_checklist["cycle_code"] = cycle.code;
+								_packs(filter_checklist).order("position").each( function (pack,idx) {
 																
 									if (cycle.name != pack.name && idx == 0) {
 										indent = true;
@@ -132,7 +140,7 @@
 							
 							// Set PACKS Checkboxes
 							if (typeof(Storage) !== "undefined")	{
-								_packs({"date_release":{isNull:false}}).order("position").each( function (pack,idx) {
+								_packs(filter_date).order("position").each( function (pack,idx) {
 									// get localstorage value
 									checked = localStorage.getItem("anr-pack-" + pack.code) == null ? true : localStorage.getItem("anr-pack-" + pack.code) == "true";
 									// un-check child and parent
@@ -168,7 +176,7 @@
 		// Data Pack Filter: filter_pack
 		function set_filter_pack()	{
 			filter_pack = [];
-			_packs({"date_release":{isNull:false}}).order("position").each( function (pack) {
+			_packs(filter_date).order("position").each( function (pack) {
 				if (typeof(Storage) !== "undefined") {
 					if (localStorage.getItem("anr-pack-" + pack.code) == null || localStorage.getItem("anr-pack-" + pack.code) == "true") {
 						filter_pack.push(pack.code);
@@ -203,117 +211,41 @@
 			pagenum = Math.max(0,pagenum);
 			pagenum = Math.min(pagecount-1,pagenum);
 			
-			var outp = _factions({"code":faction_code}).first().name 
-				+ ' page ' + (pagenum + 1)
-				+ ' of ' + pagecount
-				+ ' :: ' + _types({"code":pages[pagenum*9].type_code}).first().name;
-				
-			outp += '<table class="table">';
-			for (var i=0; i<3; i++)	{
-				outp += '<tr>';
-				for (var x=0; x<3; x++)	{
-					id = (pagenum*9)+(i*3)+x;
-					outp += '<td data-code="' + (id < pages.length ? pages[id].code : '') + '">';
-					if (pages[id].title != "-") {
-						if ($('#showimg').prop('checked'))	{
-							outp += '<div><img class="card" src="' + imageUrlTemplate.replace('{code}',pages[id].code) + '"><div>';
-							pages[id].code
+			if (pages.length == 0)	{
+				outp = 'Page 0 of 0';
+			} else {
+				outp = _factions({"code":faction_code}).first().name 
+					+ ' page ' + (pagenum + 1)
+					+ ' of ' + pagecount
+					+ ' :: ' + _types({"code":pages[pagenum*9].type_code}).first().name;
+					
+				outp += '<table class="table">';
+				for (var i=0; i<3; i++)	{
+					outp += '<tr>';
+					for (var x=0; x<3; x++)	{
+						id = (pagenum*9)+(i*3)+x;
+						outp += '<td data-code="' + (id < pages.length ? pages[id].code : '') + '">';
+						if (pages[id].title != "-") {
+							if ($('#showimg').prop('checked'))	{
+								outp += '<div><img class="card" src="' + imageUrlTemplate.replace('{code}',pages[id].code) + '"><div>';
+								pages[id].code
+							} else {
+								outp += '<div>' + pages[id].title + '</div>'
+									+ '<br><div class="footer">' + _cycles({"code":_packs({"code":pages[id].pack_code}).first().cycle_code}).first().name + ' #' + pages[id].position + '</div>';
+							}
+							//	+ '<br><div class="footer">' + _packs({"code":pages[id].pack_code}).first().name + ' #' + pages[id].position + '</div>';
 						} else {
-							outp += '<div>' + pages[id].title + '</div>'
-								+ '<br><div class="footer">' + _cycles({"code":_packs({"code":pages[id].pack_code}).first().cycle_code}).first().name + ' #' + pages[id].position + '</div>';
+							outp += '-';
 						}
-						//	+ '<br><div class="footer">' + _packs({"code":pages[id].pack_code}).first().name + ' #' + pages[id].position + '</div>';
-					} else {
-						outp += '-';
+						outp += '</div></td>';
+							//<br><div class="small">' +  pages[id].text + '</div>'
 					}
-					outp += '</div></td>';
-						//<br><div class="small">' +  pages[id].text + '</div>'
+					outp += '</tr>';
 				}
-				outp += '</tr>';
+				outp += '</table>';
 			}
-			outp += '</table>';
 			$('#folderpages').html(outp);
 		}
-		
-		
-		
-		/*
-		function updateFolder() {
-			var outp = '';
-			var filter_pack = [];
-			var plots;
-		
-		// Pack Filter
-			_packs({"date_release":{isNull:false}}).order("position").each( function (pack) {
-				if (typeof(Storage) !== "undefined") {
-					if (localStorage.getItem("anr-pack-" + pack.code) == null || localStorage.getItem("anr-pack-" + pack.code) == "true") {
-						filter_pack.push(pack.code);
-					}
-				} else {
-					filter_pack.push(pack.code)
-				}
-			});
-			
-			outp = '<ul class="breadcrumb">'
-			_factions().each( function (faction, idx)	{
-				outp += '<li data-faction="' + faction.code + '"><a href="#" style="color: #' + faction.color + '">' + faction.name + '</a></li>';
-				
-				factions[faction.code] = [];
-				_types().order("position").each( function (type) {
-					_cycles().order("position").each( function (cycle)	{
-						// Order by Cycle \ Title
-						cycle_packs = _packs({"code":filter_pack,"cycle_code":cycle.code}).order("position").select("code");
-						factions[faction.code] = factions[faction.code].concat(_cards({"type_code":type.code,"faction_code":faction.code,"pack_code":cycle_packs}).order("title").get());
-					});
-					if (_cards({"faction_code":faction.code,"pack_code":filter_pack}).count() > 9) {
-						while (factions[faction.code].length % 9 != 0) { factions[faction.code].push({"title":"-"}); }
-					}
-				});
-				
-			});
-			outp += '</ul>';
-			
-			$('#foldersections').html(outp);
-			
-			pagenum = 0;
-			section = factions[_factions().first().code];
-			drawpage();
-		}
-		
-		function drawpage()	{
-			var id;
-			var pages = Math.floor(section.length/9);
-			pagenum = Math.max(0,pagenum);
-			pagenum = Math.min(pages,pagenum)
-			var outp = '';
-			outp = '<div><b>' + _factions({"code":section[0].faction_code}).first().name + '</b> :: Page ' + (pagenum + 1) + ' of ' + (pages) + ' :: ' + _types({"code":section[pagenum*9].type_code}).first().name;
-			outp += '<table class="table">';
-			for (var i=0; i<3; i++)	{
-				outp += '<tr>';
-				for (var x=0; x<3; x++)	{
-					id = (pagenum*9)+(i*3)+x;
-					outp += '<td data-code="' + (id < section.length ? section[id].code : '') + '">';
-					if (section[id].title != "-") {
-						if ($('#showimg').prop('checked'))	{
-							outp += '<div><img class="card" src="' + imageUrlTemplate.replace('{code}',section[id].code) + '"><div>';
-							section[id].code
-						} else {
-							outp += '<div>' + section[id].title + '</div>'
-								+ '<br><div class="footer">' + _cycles({"code":_packs({"code":section[id].pack_code}).first().cycle_code}).first().name + ' #' + section[id].position + '</div>';
-						}
-						//	+ '<br><div class="footer">' + _packs({"code":section[id].pack_code}).first().name + ' #' + section[id].position + '</div>';
-					} else {
-						outp += '-';
-					}
-					outp += '</div></td>';
-						//<br><div class="small">' +  section[id].text + '</div>'
-				}
-				outp += '</tr>';
-			}
-			outp += '</table>';
-			$('#folderpages').html(outp);
-		}
-		*/
 		
 // Listeners //
 		$('#foldersections').on('click','li',function () {
@@ -325,14 +257,20 @@
 		
 		$('#packlist')
 			.on('click','input.pack',function () {
-				localStorage.setItem("anr-pack-" + $(this).data('code'),$(this).prop('checked') );			
+				localStorage.setItem("anr-pack-" + $(this).data('code'),$(this).prop('checked') );
 				set_filter_pack();
 			})
 		// Parent/child checkboxes
 			.on("click","li.checkbox.pa",function()	{
+				var packcode;
 				var checkchild = $(this).find("input[type='checkbox']").prop("checked");
 				var cyclecode = $(this).find("input[type='checkbox']").data("cycle");
-				$(this).parent().find("[data-cycle='" + cyclecode + "']input[type='checkbox']").prop("checked",checkchild);
+				$(this).parent().find("[data-cycle='" + cyclecode + "']input[type='checkbox'].pack").each(function (id,chkbox)	{
+					$(chkbox).prop("checked",checkchild);
+					packcode = $(chkbox).data('code');
+					localStorage.setItem("anr-pack-" + packcode,checkchild);
+				});
+				set_filter_pack();
 			})
 			.on("click","li.checkbox.ch",function()	{
 				var checkpar = $(this).parent().find("input[type='checkbox']:checked").length == $(this).parent().find("input[type='checkbox']").length;
