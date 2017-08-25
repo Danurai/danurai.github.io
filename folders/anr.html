@@ -192,11 +192,29 @@
 			// Query
 			// Section by - types
 			pages = [];
+			var icetypes = ['barrier','code gate','sentry'];
 			_types().order("position").each(function (type)	{	//{"side_code":_factions({"code":faction_code}).first().side_code,"is_subtype":false}
 				// section ice by subtype
-				pages = pages.concat(_cards({"faction_code":faction_code,"type_code":type.code,"pack_code":filter_pack}).order("title").get());
-				if (_cards({"faction_code":faction_code,"pack_code":filter_pack}).count() > 9) {
-					while (pages.length % 9 != 0) { pages.push({"title":"-"}); }
+				if (type.code == 'ice')	{
+					var factionice = _cards({"faction_code":faction_code,"type_code":type.code,"pack_code":filter_pack});
+					
+					$.each(icetypes,function(id,icetype)	{
+						pages = pages.concat(factionice.filter({"keywords":{likenocase:icetype}}).order("title").get());
+						if (_cards({"faction_code":faction_code,"pack_code":filter_pack}).count() > 9) {
+							while (pages.length % 9 != 0) { pages.push({"title":"-"}); }
+						}
+						factionice.filter({"keywords":{likenocase:icetype}}).remove();
+					});
+					pages = pages.concat(factionice.order("title").get());
+					if (_cards({"faction_code":faction_code,"pack_code":filter_pack}).count() > 9) {
+						while (pages.length % 9 != 0) { pages.push({"title":"-"}); }
+					}
+				}	else	{
+					pages = pages.concat(_cards({"faction_code":faction_code,"type_code":type.code,"pack_code":filter_pack}).order("title").get());
+					// Fill page with empty slots
+					if (_cards({"faction_code":faction_code,"pack_code":filter_pack}).count() > 9) {
+						while (pages.length % 9 != 0) { pages.push({"title":"-"}); }
+					}
 				}
 			});
 			while (pages.length % 9 != 0) { pages.push({"title":"-"}); }
