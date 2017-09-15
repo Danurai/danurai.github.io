@@ -18,7 +18,6 @@ $(document).ready(function ()	{
 				// Deck Builder
 				
 				// Populate table
-				f = {"faction_code":["guardian","neutral"]};
 				updateTableBody();
 				// Card Draw Sim
 				
