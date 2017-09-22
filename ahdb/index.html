@@ -17,6 +17,7 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
 
 <!-- Site Pages -->
+	<link rel="stylesheet" href="css/ahicons.css">
 	<link rel="stylesheet" href="css/ahdb_style.css">
 	<script src="js/ahdb_script.js"></script>
 	
@@ -32,20 +33,32 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-sm-6 decklist">
+			<div class="col-sm-6 decklist" id="navdecklist">
+				<ul class="nav nav-tabs">
+					<li class="active"><a data-toggle="tab" href="#decklist0" id="invtab0">Investigator</a></li>
+					<li><a data-toggle="tab" href="#decklist1" id="invtab1">Investigator</a></li>
+					<li><a data-toggle="tab" href="#decklist2" id="invtab2">Investigator</a></li>
+					<li><a data-toggle="tab" href="#decklist3" id="invtab3">Investigator</a></li>
+				</ul>
+				<div class="tab-content">
+					<div id="decklist0" class="tab-pane active"></div>
+					<div id="decklist1" class="tab-pane"></div>
+					<div id="decklist2" class="tab-pane"></div>
+					<div id="decklist3" class="tab-pane"></div>
+				</div>
 				
 			</div>
 			
 			<div class="col-sm-6">
 				<ul class="nav nav-tabs">
 					<li class="active"><a data-toggle="tab" href="#deckbuild">Build</a></li>
-					<li><a data-toggle="tab" href="#decksets">Sets</a></li>
+					<li><a data-toggle="tab" href="#decksets">Collection</a></li>
 					<!--li><a data-toggle="tab" href="#deckloader">Load</a></li>
 					<li><a data-toggle="tab" href="#deckcheck">Check</a></li>
 					<li><a data-toggle="tab" href="#deckstats">Stats</a></li-->
 				</ul>
 				<div class="tab-content">
-					<div id="deckbuild">
+					<div id="deckbuild" class="tab-pane active">
 						<div class="row">
 							<div class="col-sm-12">
 								<input type="text" class="form-control" placeholder="Filter List" id="filterlist">
@@ -74,13 +87,24 @@
 						<div class="row">
 							<table class="table table-responsive">
 								<thead><tr>
-									<th>Name</th><th>Class</th><th>Type</th><th>Lvl</th>
+									<th>Qty</th><th>Name</th><th>Class</th><th>Type</th><th>Lvl</th>
 								</tr></thead>
 								<tbody id="tblcards"></tbody>
 							</table>
 						</div>
 					</div>
-					<div id="decksets">
+					<div id="decksets" class="tab-pane">
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="btn-group" data-toggle="buttons" id="coresets">
+									<label class="btn btn-xs btn-default active"><input type="radio" name="qty-core" value="1">1</label>
+									<label class="btn btn-xs btn-default"><input type="radio" name="qty-core" value="2">2</label>
+									&nbsp;Core Sets
+								</div>
+								<div id="packlist">
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
