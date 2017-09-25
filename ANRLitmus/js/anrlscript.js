@@ -29,22 +29,30 @@ $(document).ready(function ()	{
 		players[faction] = new anrPlayer(faction);
 		loadDeck(_decks[faction][0]);
 	});
-	
 	function loadDeck(decklist)	{
 		//var decklist = $('#' + faction + 'dl').val();
-		var deckinfo = parseDeck(decklist);
-		var faction = deckinfo.faction;
-		decks[faction] = new anrDeck(deckinfo.data);
+		var deckinfo;
+		var faction;
 		
-		decks[faction].setMeta("title",deckinfo.title);
-		decks[faction].setMeta("idcode",deckinfo.idcode);
-		decks[faction].setMeta("idname",deckinfo.idname);
-		decks[faction].setMeta("faction",faction);
+		deckinfo = parseDeck(decklist);
 		
-		resetDeck(faction);
+		faction = deckinfo.faction;
 		
-		updateInfo(faction);
-		updateRegion(faction);
+		if (faction != 'none')	{
+			decks[faction] = new anrDeck(deckinfo.data);
+			
+			decks[faction].setMeta("title",deckinfo.title);
+			decks[faction].setMeta("idcode",deckinfo.idcode);
+			decks[faction].setMeta("idname",deckinfo.idname);
+			decks[faction].setMeta("faction",faction);
+			
+			resetDeck(faction);
+			
+			updateInfo(faction);
+			updateRegion(faction);
+		}	else	{
+			console.log ('Deck Load Failed: ' + deckinfo);
+		}
 	}	
 	function resetDeck(faction)	{
 		// Shuffle, draw, clear & render
@@ -101,6 +109,27 @@ $(document).ready(function ()	{
 		}
 	}
 	// Create deck from decklist data. Returns deck = {title,id,idname,agenda,agendaid,data[card codes],plot[card codes]}
+	
+	function quickLoad(deckid)	{
+		var decklist;
+		var cardinfo;
+				
+		$.getJSON('https://netrunnerdb.com/api/2.0/public/deck/' + deckid, function (json) {
+						
+			
+			$.each(json.data[0].cards, function (code,qty)	{
+				cardinfo = _cards({"code":code}).first();
+				if (cardinfo.type_code == 'identity')	{
+					decklist = json.data[0].name + '\n\n' +  cardinfo.title + '\n\n' + decklist;
+				}	else	{
+					decklist += qty + 'x ' + cardinfo.title + '\n';
+				}
+			});
+			loadDeck(decklist);
+		});
+		
+		
+	}
 	function parseDeck(data)	{
 		var crd;
 		var deck = {};
@@ -111,17 +140,22 @@ $(document).ready(function ()	{
 		deck.idname = res[1];
 		
 		var idcard = _cards({"title":deck.idname}).first();
-		deck.idcode = idcard.code; //Special Characters - CT fixed by not using \\uuml; on textarea
+		deck.idcode = idcard.code;
+		//Special Characters - CT fixed by not using \\uuml; on textarea - Fixed with <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 		deck.faction = idcard.side_code == 'runner' ? 'run' : 'corp';
 		
 		var regex = /([0-9])x\s((.+)\s\s\W+|(.+))/g;				// Look out for STAR special character
+		//var regex = /([0-9])x\s((.+)(\s\u2605)|(.+)(\s\s\u25CF)|(.+))/g;
+		
 		var res = data.match(regex);
 		
 		deck.data = [];
 		$.each(res, function (id, item) {
 			item.match(regex);
+			
 			var qty = parseInt(RegExp.$1, 10);
-			var cname = (RegExp.$4 != "" ? RegExp.$2 : RegExp.$3);
+			var cname = (RegExp.$3 != "" ? RegExp.$3 : RegExp.$2);
+			
 			crd = _cards({"title":cname}).first();
 			for (var i=0; i < qty; i++)	{deck.data.push(crd.code);}
 		});
@@ -130,6 +164,12 @@ $(document).ready(function ()	{
 			
 // Listeners
 // Load Decks
+	// Quickload
+	$('#quickload').submit(function(e)	{
+		e.preventDefault();
+		var deckid = $('#txtquickload').val();
+		quickLoad(deckid);
+	});
 	// Select Deck
 	$('.dropdown-deck').on('click','li',function()	{
 		var idx = $(this).data('deckidx');
@@ -465,10 +505,10 @@ $(document).ready(function ()	{
 			case 'act_corpplay':
 				if (crd.type_code == 'operation')	{
 					if (crd.cost <= players["corp"].getCreds())	{
-						players['corp'].addCreds(crd.cost * -1);
+						players['corp'].addCreds(parseInt(crd.cost,10) * -1);
 						players['corp'].addClicks(-1);
 						
-						loginfo = 'Corp Played ' + card.title;
+						loginfo = 'Corp Played ' + crd.title;
 						clicks = 1;
 						
 						var res = crd.text.match(/Gain [0-9]*\[credit\]|\nGain [0-9]*\[credit\]/g);
@@ -490,7 +530,7 @@ $(document).ready(function ()	{
 				break;
 			case 'act_runplay':
 				if (crd.cost <= players['run'].getCreds())	{	// #afford
-					players['run'].addCreds(crd.cost * -1);
+					players['run'].addCreds(parseInt(crd.cost,10) * -1);
 					players['run'].addMU(getMUCost(crd));
 					players['run'].addClicks(-1);
 					
@@ -500,7 +540,7 @@ $(document).ready(function ()	{
 					if (crd.text.match(/^Gain ([0-9]*)\[credit\]/g))	{
 						var creds = RegExp.$1;
 						loginfo += 'Runner played ' + crd.title;
-						players['run'].addCreds(creds);
+						players['run'].addCreds(parseInt(creds,10));
 						loginfo += ' to gain ' + creds + ' creds';
 					}
 					

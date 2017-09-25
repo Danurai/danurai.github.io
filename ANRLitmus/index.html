@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <head>
-<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 <!-- JQuery -->
 	<script src="https://code.jquery.com/jquery-2.2.2.min.js" integrity="sha256-36cp2Co+/62rEAAYHLmRCPIych47CvdM+uTBJwSzWjI=" crossorigin="anonymous"></script>
 <!-- BOOTSTRAP -->
@@ -31,7 +31,18 @@
 	<nav id="navbar" class="navbar navbar-default navbar-fixed-top navbar-corp">
 		<span id="navbar-run" class="navbar-run"></span>
 		<div class="container-fluid">
-			 <ul class="nav navbar-nav navbar-right">
+			<div class="navbar-form navbar-left">
+				<form id="quickload">
+					<div class="input-group">
+						<span class="input-group-addon">Quick Load</span>
+						<input type="text" class="form-control" id="txtquickload" placeholder="Enter Deck ID">
+						<span class="input-group-btn">
+							<button class="btn btn-secondary" type="submit" id="btnquickload"><i class="fa fa-cloud-download"></i></button>
+						</span>
+					</div>
+				</form>
+			</div>
+			<ul class="nav navbar-nav navbar-right">
 				<li class="navbar-brand">Corp</li>
 				<li style="padding: 5px 5px 0px 0px;">
 					<label class="switch">
@@ -40,40 +51,11 @@
 					</label>
 				</li>
 				<li class="navbar-brand">Runner</li>
-			 </ul>
+			</ul>
 		</div>
 	</nav>
 	
 	<div class="container-fluid">
-		<!--
-		<div class="row">
-			<div class="col-md-12">
-				<div class="panel-group" style="margin-bottom: 0px;">
-					<div class="panel panel-default">
-						<div class="panel-heading">
-							<h4 class="panel-title">
-							<a data-toggle="collapse" href="#collapse1">Load Decks</a>
-							</h4>
-						</div>
-						<div id="collapse1" class="panel-collapse collapse">
-							<div class="panel-body">
-								<div class="col-sm-6">
-									Corp
-									<textarea class="form-control" type="text" id="corpdl" rows="5"></textarea>
-									<button type="button" class="btn btn-default btn-load" for="corp">Load</button>
-								</div>
-								<div class="col-sm-6">
-									Runner
-									<textarea class="form-control" type="text" id="rundl" rows="5"></textarea>
-									<button type="button" class="btn btn-default btn-load" for="run">Load</button>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		-->
 		<div class="row">
 			<div class="col-md-6">
 				<div class="row">
@@ -140,21 +122,6 @@
 						<!--div class="pull-right"><button type="button" class="btn btn-default"><i class="fa fa-check-circle" style="color: green;"></i></button></div-->
 					</div>
 				</div>
-				<!--
-				<div class="row">
-					<div class="col-md-12" align="center" id="corpbtns">
-						<b>Draw:&nbsp;</b>
-						<div class="btn-group" for="corp">
-							<button type="button" class="btn btn-default btn-sm btn-draw" val="1" id="draw1">1</button>
-							<button type="button" class="btn btn-default btn-sm btn-draw" val="2" id="draw1">2</button>
-							<button type="button" class="btn btn-default btn-sm btn-draw" val="4" id="draw4">4</button>
-							<button type="button" class="btn btn-default btn-sm btn-draw" val="all" id="drawall">All</button>
-							<button type="button" class="btn btn-default btn-sm btn-draw" val="0" id="drawreset">Reset</button>
-						</div>
-						<span id="corpcardlist"></span>
-					</div>
-				</div>
-				-->
 				<div class="row" id="corparea">
 					<div class="col-md-12 region" id="scored" name="Scored" for="corp"></div>
 					<div class="col-md-12 region" id="corphand" name="Hand" align="center" for="corp"></div>
@@ -238,21 +205,6 @@
 						</div>
 					</div>
 				</div>
-				<!--
-				<div class="row">
-					<div class="col-md-12" align="center" id="runbtns">
-						<b>Draw:&nbsp;</b>
-						<div class="btn-group" for="run">
-							<button type="button" class="btn btn-default btn-sm btn-draw" val="1" id="draw1">1</button>
-							<button type="button" class="btn btn-default btn-sm btn-draw" val="2" id="draw1">2</button>
-							<button type="button" class="btn btn-default btn-sm btn-draw" val="4" id="draw4">4</button>
-							<button type="button" class="btn btn-default btn-sm btn-draw" val="all" id="drawall">All</button>
-							<button type="button" class="btn btn-default btn-sm btn-draw" val="0" id="drawreset">Reset</button>
-						</div>
-						<span id="runcardlist"></span>
-					</div>
-				</div>
-				-->
 				<div class="row">
 					<div class="col-xs-4 region" id="stack" name="Stack" for="run"></div>
 					<div class="col-xs-4 region" id="heap" name="Heap" for="run"></div>
