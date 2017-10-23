@@ -57,8 +57,10 @@
 	
 	<div class="container-fluid">
 		<div class="row">
+<!-- CORP  -->		
 			<div class="col-md-6">
-				<div class="row">
+		<!-- Info -->
+				<div class="row deckinfo">
 					<div class="col-sm-3">
 					</div>
 					<div class="col-sm-6" align="center" id="corpinfo">
@@ -75,6 +77,10 @@
 			<!-- Counters -->
 				<div class="row">
 					<div class="col-md-12" align="center" id="corpdata">
+						<span class="form-group">
+							<label>T:&nbsp;</label>
+							<label id="corpturn"></label>&nbsp;&nbsp;
+						</span>
 						<span class="form-group">
 							<span class="icon-credit"></span>
 							<label id="corpcreds">5</label>&nbsp;&nbsp;
@@ -113,13 +119,12 @@
 				<div class="row">
 					<div class="col-md-12">
 						<div class="btn-group" for="corp">
-							<button type="button" class="btn btn-default btn-action" data-action="act_newturn" for="corp" disabled>New Turn</button>
+							<button type="button" class="btn btn-default btn-action" data-action="act_newturn" data-faction="corp">New Turn</button>
 							<button type="button" class="btn btn-default btn-action" data-action="act_draw" for="corp">Draw</button>
 							<button type="button" class="btn btn-default btn-action" data-action="act_credit" for="corp">Credit</button>
 							<button type="button" class="btn btn-default btn-action" data-action="act_purge" for="corp" disabled>Purge</button>
 							<button type="button" class="btn btn-default btn-action" data-action="act_damage" for="corp">Damage</button>
 						</div>
-						<!--div class="pull-right"><button type="button" class="btn btn-default"><i class="fa fa-check-circle" style="color: green;"></i></button></div-->
 					</div>
 				</div>
 				<div class="row" id="corparea">
@@ -130,8 +135,9 @@
 					<div class="col-md-12 region" id="archives" name="Archives"" for="corp"></div>
 				</div>
 			</div>
+<!-- RUNNER  -->		
 			<div class="col-md-6">
-				<div class="row">
+				<div class="row deckinfo">
 					<div class="col-sm-3" align="center">
 					</div>
 					<div class="col-sm-6" align="center" id="runinfo">
@@ -148,6 +154,10 @@
 			<!-- Counters -->
 				<div class="row">
 					<div class="col-md-12" align="center" id="rundata">
+						<span class="form-group">
+							<label>T:&nbsp;</label>
+							<label id="runturn"></label>&nbsp;&nbsp;
+						</span>
 						<span class="form-group">
 							<span class="icon-credit"></span>
 							<label id="runcreds">5</label>&nbsp;&nbsp;
@@ -194,7 +204,7 @@
 				<div class="row">
 					<div class="col-md-12">
 						<div class="btn-group" for="run">
-							<button type="button" class="btn btn-default btn-action" data-action="act_newturn" for="run" disabled>New Turn</button>
+							<button type="button" class="btn btn-default btn-action" data-action="act_newturn" data-faction="run">New Turn</button>
 							<button type="button" class="btn btn-default btn-action" data-action="act_draw" for="run">Draw</button>
 							<button type="button" class="btn btn-default btn-action" data-action="act_credit" for="run">Credit</button>
 							<button type="button" class="btn btn-default btn-action" data-action="act_removetag" for="run">Clear Tag</button>
@@ -206,16 +216,18 @@
 					</div>
 				</div>
 				<div class="row">
+					<div class="col-md-12 region" id="stolen" name="Stolen" for="corp"></div>
+				</div>
+				<div class="row">
 					<div class="col-xs-4 region" id="stack" name="Stack" for="run"></div>
 					<div class="col-xs-4 region" id="heap" name="Heap" for="run"></div>
 					<div class="col-xs-4 region" id="identity" name="Identity" for="run"></div>
 				</div>
-				<div class="row" id="runarea">
+				<div class="row">
 					<div class="col-md-12 region" id="runhand" name="Hand" align="center" for="run"></div>
 					<div class="col-md-12 region" id="program" name="Program" align="center" for="run"></div>
 					<div class="col-md-12 region" id="hardware" name="Hardware" align="center" for="run"></div>
 					<div class="col-md-12 region" id="resource" name="Resource" align="center" for="run"></div>
-					<div class="col-md-12 region" id="stolen" name="Stolen" for="corp"></div>
 				</div>
 			</div>
 		</div>

@@ -100,6 +100,7 @@ function anrPlayer(faction)	{
 	this.clicks = this.maxclicks;
 	this.tags = 0;
 	this.deck;
+	this.turn = 1;
 	
 	this.addDeck = function (deck)	{
 		this.deck = deck;
@@ -140,12 +141,19 @@ function anrPlayer(faction)	{
 	this.getTags = function()	{
 		return this.tags;
 	}
+	this.addTurn = function()	{
+		this.turn++;
+	}
+	this.getTurn = function()	{
+		return this.turn;
+	}
 	this.reset = function()	{
 		this.creds = 5;
 		this.score = 0;
 		this.mu = 4;
 		this.clicks = this.maxclicks;
 		this.tags = 0;
+		this.turn = 1;
 		return true;
 	}
 }

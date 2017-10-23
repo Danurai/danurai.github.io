@@ -4,7 +4,7 @@ var regions = {};
 var handsize = 5;
 var regCount;	//Corp Only
 var playerids = ['corp','run'];
-var turn = 0;
+var turn;
 
 $(document).ready(function ()	{
 // Initialisation
@@ -114,7 +114,7 @@ $(document).ready(function ()	{
 		var decklist;
 		var cardinfo;
 				
-		$.getJSON('https://netrunnerdb.com/api/2.0/public/deck/' + deckid, function (json) {
+		$.getJSON('https://netrunnerdb.com/api/2.0/public/deck/' + deckid, {_: new Date().getTime()}, function (json) {
 						
 			
 			$.each(json.data[0].cards, function (code,qty)	{
@@ -234,13 +234,17 @@ $(document).ready(function ()	{
 			var faction = $(this).closest('div').attr('for');
 			var action = $(this).data('action');
 			if (action == 'act_newturn')	{
-				if (players[faction].getClicks() == 0)	{
+				//if (players[faction].getClicks() == 0)	{
 					players[faction].resetClicks();
 					updateInfo(faction);
 					if (faction == 'corp')	{ 
 						changeState('act_draw','corp',[],1,null,null,null);
-					}
-				}
+					} 
+					players[faction].addTurn();
+					updateInfo(faction);
+					// Set Toggle
+					//$('#turncheck').toggle();
+				//}
 			} else if (players[faction].getClicks() > 0)	{
 				//players[faction].addClicks(-1);
 				// newturn, credit, draw
@@ -556,9 +560,12 @@ $(document).ready(function ()	{
 				}
 				break;
 			case 'act_rezunrez':
+				if (crd.type_code == 'agenda')	{
+					src[idx].rez = !src[idx].rez;					
+				}
 				if (crd.cost <= players['corp'].getCreds())	{
 					players['corp'].addCreds(crd.cost * -1);
-					src[idx].rez = !src[idx].rez;					
+					src[idx].rez = !src[idx].rez;
 				}
 				break;
 			case 'act_addcounter':
@@ -680,6 +687,7 @@ $(document).ready(function ()	{
 		$('#' + faction + 'score').html(players[faction].getScore());
 		$('#' + faction + 'clicks').html(players[faction].getClicks());
 		$('#' + faction + 'tags').html(players[faction].getTags());
+		$('#' + faction + 'turn').html(players[faction].getTurn());
 		if (faction == 'run') {
 			$('#runmu').html(players['run'].getMU());
 		}
