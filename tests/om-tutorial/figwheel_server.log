@@ -1,0 +1,56 @@
+[0mCompiling "resources/public/js/main.js" from ["src"]...[0m
+Compiling D:\projects\om-tutorial\src\om_tutorial\core.cljs
+Compiling target\figwheel_temp\dev\figwheel\connect\build_dev.cljs
+Copying file:/D:/projects/om-tutorial/src/om_tutorial/core.cljs to resources\public\js\om_tutorial\core.cljs
+[32mSuccessfully compiled "resources/public/js/main.js" in 2.748 seconds.[0m
+notifying browser that file changed:  resources/public/js/goog/deps.js
+notifying browser that file changed:  resources/public/js/cljs_deps.js
+notifying browser that file changed:  resources\public\js\om_tutorial\core.js
+[0mCompiling "resources/public/js/main.js" from ["src"]...[0m
+Compiling D:\projects\om-tutorial\src\om_tutorial\core.cljs
+Compiling target\figwheel_temp\dev\figwheel\connect\build_dev.cljs
+Copying file:/D:/projects/om-tutorial/src/om_tutorial/core.cljs to resources\public\js\om_tutorial\core.cljs
+[32mSuccessfully compiled "resources/public/js/main.js" in 3.363 seconds.[0m
+notifying browser that file changed:  resources\public\js\om_tutorial\core.js
+[0mCompiling "resources/public/js/main.js" from ["src"]...[0m
+Compiling D:\projects\om-tutorial\src\om_tutorial\core.cljs
+Compiling target\figwheel_temp\dev\figwheel\connect\build_dev.cljs
+Copying file:/D:/projects/om-tutorial/src/om_tutorial/core.cljs to resources\public\js\om_tutorial\core.cljs
+[32mSuccessfully compiled "resources/public/js/main.js" in 3.143 seconds.[0m
+notifying browser that file changed:  resources\public\js\om_tutorial\core.js
+[0mCompiling "resources/public/js/main.js" from ["src"]...[0m
+Compiling D:\projects\om-tutorial\src\om_tutorial\core.cljs
+Compiling target\figwheel_temp\dev\figwheel\connect\build_dev.cljs
+Copying file:/D:/projects/om-tutorial/src/om_tutorial/core.cljs to resources\public\js\om_tutorial\core.cljs
+[32mSuccessfully compiled "resources/public/js/main.js" in 2.597 seconds.[0m
+notifying browser that file changed:  resources\public\js\om_tutorial\core.js
+[0mCompiling "resources/public/js/main.js" from ["src"]...[0m
+Compiling D:\projects\om-tutorial\src\om_tutorial\core.cljs
+Compiling target\figwheel_temp\dev\figwheel\connect\build_dev.cljs
+Copying file:/D:/projects/om-tutorial/src/om_tutorial/core.cljs to resources\public\js\om_tutorial\core.cljs
+[32mSuccessfully compiled "resources/public/js/main.js" in 2.67 seconds.[0m
+notifying browser that file changed:  resources\public\js\om_tutorial\core.js
+[0mCompiling "resources/public/js/main.js" from ["src"]...[0m
+Compiling D:\projects\om-tutorial\src\om_tutorial\core.cljs
+Compiling target\figwheel_temp\dev\figwheel\connect\build_dev.cljs
+Copying file:/D:/projects/om-tutorial/src/om_tutorial/core.cljs to resources\public\js\om_tutorial\core.cljs
+[32mSuccessfully compiled "resources/public/js/main.js" in 2.667 seconds.[0m
+notifying browser that file changed:  resources\public\js\om_tutorial\core.js
+[0mCompiling "resources/public/js/main.js" from ["src"]...[0m
+Compiling D:\projects\om-tutorial\src\om_tutorial\core.cljs
+Compiling target\figwheel_temp\dev\figwheel\connect\build_dev.cljs
+Copying file:/D:/projects/om-tutorial/src/om_tutorial/core.cljs to resources\public\js\om_tutorial\core.cljs
+[32mSuccessfully compiled "resources/public/js/main.js" in 2.554 seconds.[0m
+notifying browser that file changed:  resources\public\js\om_tutorial\core.js
+[0mCompiling "resources/public/js/main.js" from ["src"]...[0m
+Compiling D:\projects\om-tutorial\src\om_tutorial\core.cljs
+Compiling target\figwheel_temp\dev\figwheel\connect\build_dev.cljs
+Copying file:/D:/projects/om-tutorial/src/om_tutorial/core.cljs to resources\public\js\om_tutorial\core.cljs
+[32mSuccessfully compiled "resources/public/js/main.js" in 3.558 seconds.[0m
+notifying browser that file changed:  resources\public\js\om_tutorial\core.js
+[0mCompiling "resources/public/js/main.js" from ["src"]...[0m
+Compiling D:\projects\om-tutorial\src\om_tutorial\core.cljs
+Compiling target\figwheel_temp\dev\figwheel\connect\build_dev.cljs
+Copying file:/D:/projects/om-tutorial/src/om_tutorial/core.cljs to resources\public\js\om_tutorial\core.cljs
+[32mSuccessfully compiled "resources/public/js/main.js" in 3.536 seconds.[0m
+notifying browser that file changed:  resources\public\js\om_tutorial\core.js
