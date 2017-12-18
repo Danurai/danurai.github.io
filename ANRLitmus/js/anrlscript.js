@@ -8,6 +8,12 @@ var turn;
 
 $(document).ready(function ()	{
 // Initialisation
+	
+	// Get latest card data - needs to be synchronous!
+	//$.getJSON('https://netrunnerdb.com/api/2.0/public/cards', {_: new Date().getTime()}, function (json) {
+	//	nrdb_cards = json.data
+	//});
+		
 	var _cards = TAFFY(nrdb_cards.data);
 	var htmlout = '';
 	var imgurl = nrdb_cards.imageUrlTemplate;
@@ -267,7 +273,7 @@ $(document).ready(function ()	{
 			
 			if (typeof code !== 'undefined') {
 				card = _cards({"code":code}).first();
-				outp += '<img class="card-popup" src="' + imgurl.replace("{code}",code) + '"></img>';
+				outp += '<img class="card-popup" src="' + getImageUrl(card) + '"></img>';
 			}
 			$('#popupmenu').html(outp);
 			$('#popupmenu').css({"left":Math.max(ev.pageX - 150,0),"top":ev.pageY - 20});
@@ -727,7 +733,7 @@ $(document).ready(function ()	{
 					var idcard = _cards({'code':decks[faction].getMeta('idcode')}).first();
 					outp += '<div class="region-installed region-installed-' + faction + '">'
 					   + '<div class="region-root" data-region="' + rgn + '" for="' + faction + '">'
-						+ '<img src="' + imgurl.replace('{code}',idcard.code) + '" '
+						+ '<img src="' + getImageUrl(idcard) + '" '
 						+ 'class="card" '
 						+ 'draggable="false">'
 						+ '</img>'
@@ -738,7 +744,7 @@ $(document).ready(function ()	{
 					var idcard = _cards({'code':decks[faction].getMeta('idcode')}).first();
 					outp += '<div class="region-installed region-installed-' + faction + '">'
 					   + '<div class="region-root" data-region="' + rgn + '" for="' + faction + '">'
-						+ '<img src="' + imgurl.replace('{code}',idcard.code) + '" '
+						+ '<img src="' + getImageUrl(idcard) + '" '
 						+ 'class="card" '
 						+ 'draggable="false">'
 						+ '</img>'
@@ -767,7 +773,7 @@ $(document).ready(function ()	{
 		var crd = _cards({"code":regCrd.code}).first();
 		var outp = '<div class="region-installed region-installed-' + faction + '">';
 		outp += '<img '
-			+ 'src="' + imgurl.replace('{code}',crd.code) + '"'
+			+ 'src="' + getImageUrl(crd) + '"'
 			+ 'class="card card-deck'
 			+ (!regCrd.rez && $.inArray(rgn,['corphand'])==-1 ? ' card-unrezzed' : '')
 			+ '" draggable="true" '
@@ -781,6 +787,13 @@ $(document).ready(function ()	{
 		outp += '<span class="card-info" data-code="' + crd.code + '"><i class="fa fa-info-circle fa-lg" aria-hidden="true"></i></span>';
 		outp += '</div>';
 		return outp;
+	}
+	function getImageUrl(crd)	{
+		var rtnurl = crd.image_url;
+		if (typeof rtnurl === 'undefined')	{
+			rtnurl = imgurl.replace('{code}',crd.code)
+		}
+		return rtnurl;
 	}
 
 // Turn Transitions
