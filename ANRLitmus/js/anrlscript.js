@@ -269,7 +269,7 @@ $(document).ready(function ()	{
 		.on('click','.card-info',function(ev) {
 			var outp = '';
 			var card;
-			var code = $(this).data('code');
+			var code = $(this).data('code').toString();
 			
 			if (typeof code !== 'undefined') {
 				card = _cards({"code":code}).first();
@@ -305,6 +305,7 @@ $(document).ready(function ()	{
 				+ menuButton(src,idx,'act_rtn_hand',faction,"Hand")
 				+ menuButton(src,idx,'act_rtn_topdeck',faction,"Top of Deck")
 				+ menuButton(src,idx,'act_rtn_deckshuffle',faction,"Deck and Shuffle")
+				+ menuButton(src,idx,'act_rtn_btmdeck',faction,"Bottom of Deck")
 				+ '</div>';
 			
 			showPopUp(ev, outp);
@@ -591,7 +592,11 @@ $(document).ready(function ()	{
 				moveCrd(src,idx,regions[faction][faction + 'hand']);
 				break;
 			case 'act_rtn_topdeck':
-				decks[faction].returnToDeck(src[idx].code,true);
+				decks[faction].returnToDeck(src[idx].code,0,false);	// card code, splice index, shuffle
+				src.splice(idx,1);
+				break;
+			case 'act_rtn_btmdeck':
+				decks[faction].returnToDeck(src[idx].code,-1,false);
 				src.splice(idx,1);
 				break;
 			case 'act_rtn_deckshuffle':

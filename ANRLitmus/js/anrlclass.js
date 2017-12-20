@@ -44,14 +44,18 @@ function anrDeck(cardIDs)	{
 		this.discard = [];
 		shuffle(this.deck);
 	}
-	this.returnToDeck = function (code,top=false)	{
+	this.returnToDeck = function (code,pos=0,shuffle=true)	{
 		// Base on card code, can be more specific using hand Index
 		var idx = this.hand.indexOf(code);
 		if (idx == -1)	{	// no match
 			return false;
 		} else {
-			this.deck.splice(0,0,this.hand.splice(idx,1)[0]);
-			if (!top) {shuffle(this.deck)};
+			if (pos = -1) {
+				this.deck.push(this.hand.splice(idx,1)[0]);
+			} else {
+				this.deck.splice(pos,0,this.hand.splice(idx,1)[0]);
+			}
+			if (shuffle) {shuffle(this.deck)};
 			return true;
 		}
 	}
