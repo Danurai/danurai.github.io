@@ -304,7 +304,6 @@ $(document).ready(function ()	{
 				+ menuButton(src,idx,'act_discard',faction,"Discard")
 				+ menuButton(src,idx,'act_rtn_hand',faction,"Hand")
 				+ menuButton(src,idx,'act_rtn_topdeck',faction,"Top of Deck")
-				+ menuButton(src,idx,'act_rtn_deckshuffle',faction,"Deck and Shuffle")
 				+ menuButton(src,idx,'act_rtn_btmdeck',faction,"Bottom of Deck")
 				+ '</div>';
 			
@@ -345,6 +344,7 @@ $(document).ready(function ()	{
 						+ menuButton('',99,'act_draw',faction,"All")
 						+ menuButton('',0,'act_draw',faction,"Mulligan")
 						+ menuButton('',-1,'act_draw',faction,"Reset")
+						+ menuButton('',-2,'act_draw',faction,"Shuffle")
 					+ '</div>';
 					regCardCodes = decks[faction].getDeck();
 					break;
@@ -592,19 +592,18 @@ $(document).ready(function ()	{
 				moveCrd(src,idx,regions[faction][faction + 'hand']);
 				break;
 			case 'act_rtn_topdeck':
-				decks[faction].returnToDeck(src[idx].code,0,false);	// card code, splice index, shuffle
+				decks[faction].returnToDeck(src[idx].code,true);	// card code, top?
 				src.splice(idx,1);
 				break;
 			case 'act_rtn_btmdeck':
-				decks[faction].returnToDeck(src[idx].code,-1,false);
-				src.splice(idx,1);
-				break;
-			case 'act_rtn_deckshuffle':
-				decks[faction].returnToDeck(src[idx].code);
+				decks[faction].returnToDeck(src[idx].code,false);
 				src.splice(idx,1);
 				break;
 			case 'act_draw':
 				switch (idx)	{
+					case -2:	//shuffle
+						decks[faction].shuffleDeck();
+						break;
 					case -1:	// Reset
 						resetDeck(faction);
 						break;
