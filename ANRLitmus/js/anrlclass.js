@@ -50,7 +50,7 @@ function anrDeck(cardIDs)	{
 		if (idx == -1)	{	// no match
 			return false;
 		} else {
-			if (pos = -1) {
+			if (pos == -1) {
 				this.deck.push(this.hand.splice(idx,1)[0]);
 			} else {
 				this.deck.splice(pos,0,this.hand.splice(idx,1)[0]);
