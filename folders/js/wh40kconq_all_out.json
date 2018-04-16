@@ -3679,7 +3679,7 @@
 		"pack": "Gift of the Ethereals",
 		"pack_code": "gote",
 		"position": "0058",
-		"quantity": 1,
+		"quantity": 3,
 		"illustrator": "Justin Adams"
 	},
 	{
@@ -3698,7 +3698,7 @@
 		"pack": "Descendants of Isha",
 		"pack_code": "doi",
 		"position": "0127",
-		"quantity": 1,
+		"quantity": 3,
 		"illustrator": "Vincent Devault"
 	},
 	{
@@ -3856,7 +3856,7 @@
 		"pack": "Descendants of Isha",
 		"pack_code": "doi",
 		"position": "0113",
-		"quantity": 3,
+		"quantity": 1,
 		"illustrator": "Federico Musetti"
 	},
 	{
@@ -9879,7 +9879,7 @@
 	},
 	{
 		"img": "http://s3.amazonaws.com/LCG/40kconquest/med_WHK12_71.jpg",
-		"name": "“Subject: Ω-X62113”",
+		"name": "“Subject: Ω-X62113”",
 		"unique": true,
 		"faction": "Tyranids",
 		"faction_code": "tyranids",
