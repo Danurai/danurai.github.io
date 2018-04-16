@@ -44,5 +44,10 @@
 		"name": "Necrons",
 		"color": "grey",
 		"ally_codes": ["common"]
+		},{
+		"code": "neutral",
+		"name": "Neutral",
+		"color", "black",
+		"ally_codes": []
 		}
 	]}
