@@ -531,15 +531,6 @@ $(document).ready(function () {
 	});
 	
 	// Make cards 50% opaque when clicked
-	$('#plot_cards').on('click','.check_card',function() {
-		$(this).css('opacity', 1.5 - parseFloat($(this).css('opacity')));
-		//var id = $(this).data('cardno');
-		//var set = $(this).data('cardset')
-		//var card = _cards({"Number":id,"Set":set}).first();
-		
-		var card = _cards({"code":$(this).data('code').toString()}).first();
-		$('#plot_data').html ('<h4>Plot: ' + card.name + '</h4>Gold: ' + card.Gold + ' Initiative: ' + card.Initiative + ' Claim: ' + card.Claim + ' Reserve: ' + card.Reserve); // + '<br><br>' + card.CardText);
-	});
 	$('#hand').on('click','.check_card',function() {
 		$(this).css('opacity', 1.5 - parseFloat($(this).css('opacity')));
 	})
@@ -792,9 +783,5 @@ $(document).ready(function () {
 		});
 	}
 	
-	function showSnack(message) {
-		$('#snackbar').html (message);
-		$('#snackbar').fadeIn(1000).delay(5000).fadeOut(1000);
-	}
-	
+
 });
