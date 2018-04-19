@@ -9,8 +9,11 @@ $(document).ready(function () {
 	var facFilter = [];
 	var setFilter = [];
   
+  var LS_pre = 'whk-pack';    // Local Storage Prefix
+  
   var _planets;
   var _sets;
+  var _cycles;
   var _factions;
 	
 	var decklist = TAFFY();
@@ -22,17 +25,21 @@ $(document).ready(function () {
     $.getJSON("js/data/wh40k_factions.json",{_: new Date().getTime()}, function (data) {
       _factions = TAFFY(data.data);
       
-      $.getJSON("js/data/wh40k_packs.json",{_: new Date().getTime()}, function (data) {
-        _sets = TAFFY(data.data);
+      $.getJSON("js/data/wh40k_cycles.json",{_: new Date().getTime()}, function (data) {
+        _cycles = TAFFY(data.data);
         
-        $('#deck-content').val('[{"code":"010006","qty":1},{"code":"010123","qty":4},{"code":"010124","qty":1},{"code":"010125","qty":2},{"code":"010126","qty":1}]');
-        
-        updateSets();      
-        loadDeck();
-        writedeck();
-        writeoutput();
-        
-        updateTableBody();
+        $.getJSON("js/data/wh40k_packs.json",{_: new Date().getTime()}, function (data) {
+          _sets = TAFFY(data.data);
+          
+          $('#deck-content').val('[{"code":"010006","qty":1},{"code":"010123","qty":4},{"code":"010124","qty":1},{"code":"010125","qty":2},{"code":"010126","qty":1}]');
+          
+          updateSets();      
+          loadDeck();
+          writedeck();
+          writeoutput();
+          
+          updateTableBody();
+        });
       });
     });
   });
@@ -253,7 +260,7 @@ $(document).ready(function () {
 		return (outp);
 	}
 	function maxindeck(r) {
-		var core = localStorage.getItem('whk-set-core') == null ? 1 : localStorage.getItem('whk-set-core') ;
+		var core = localStorage.getItem( LS_pre + '-core-count') == null ? 1 : localStorage.getItem( LS_pre + '-core-count') ;
 		var maxallowed = 3;
 		
 		switch (r.type_code) {
@@ -369,39 +376,95 @@ $(document).ready(function () {
 	// SETS: Json {Set: {code: code: number: number}}
 	// <div id="setlist"></div>
 	
-	$('#setlist').on('click','input',function() {
-		localStorage.setItem($(this).attr('name'),this.checked);
-		updateSetFilter();
-	});
-	$('#setlist').on('change','input[type=radio]',function() {
-		localStorage.setItem('whk-set-core',$(this).val());
-		updateSetFilter();
-	});
+	$('#setlist')
+    .on('change','input[type=radio]',function() {
+      localStorage.setItem($(this).attr('name'),$(this).val());
+      updateSetFilter();
+    })
+    .on('click','input.pack',function () {
+      localStorage.setItem("whk-pack-" + $(this).data('code'),$(this).prop('checked').toString() );
+      updateSetFilter();
+    })
+  // Parent/child checkboxes
+    .on("click","div.form-check.pa",function()	{
+      var packcode;
+      var checkchild = $(this).find("input[type='checkbox']").prop("checked");
+      var cyclecode = $(this).find("input[type='checkbox']").data("cycle");
+      $(this).parent().find("[data-cycle='" + cyclecode + "']input[type='checkbox'].pack").each(function (id,chkbox)	{
+        $(chkbox).prop("checked",checkchild);
+        packcode = $(chkbox).data('code');
+        localStorage.setItem("whk-pack-" + packcode,checkchild);
+      });
+      updateSetFilter();
+    })
+    .on("click","div.form-check.ch",function()	{
+      var checkpar = $(this).parent().find("input[type='checkbox']:checked").length == $(this).parent().find("input[type='checkbox']").length;
+      var cyclecode = $(this).find("input[type='checkbox']").data("cycle");
+      $(this).parent().parent().find("div.form-check.pa [data-cycle='" + cyclecode + "']input[type='checkbox']").prop("checked",checkpar);
+      updateSetFilter();
+    });
+    
 	
-	function updateSets()	{
-		var outp = '';
-		var core = localStorage.getItem('whk-set-core') == null ? 1 : localStorage.getItem('set-core') ;
-		
-    _sets().each(function (set) {
-      if (set.name == "Core Set") {
-        outp += '<div><span class="mr-2">Core Sets</span>'
-              + '<div class="btn-group btn-group-toggle" data-toggle="buttons">';
-        for (var i=1; i<4; i++) {
-          outp += '<label class="btn btn-sm btn-light' + (i==core?' active':'') + '">'
-                + '<input type="radio" name="whk-set-core" value="' + i + '">' + i 
-                + '</label>';
+  function updateSets() {
+    var outp = '';
+		var core = localStorage.getItem(LS_pre + '-core-count') == null ? 1 : localStorage.getItem(LS_pre + '-core-count');
+    
+    _cycles().order("position").each( function (cycle) {
+      indent = false;
+      cyclepacks = _sets({"cycle_code":cycle.code}).select("code");
+      _sets({"cycle_code":cycle.code}).order("position").each( function (pack,idx) {
+        if (pack.name == "Core Set") {
+          outp += '<div class="my-2"><span class="mr-2">Core Sets</span>'
+                + '<div class="btn-group btn-group-toggle" data-toggle="buttons">';
+          for (var i=1; i<4; i++) {
+            outp += '<label class="btn btn-sm btn-light' + (i==core?' active':'') + '">'
+                  + '<input type="radio" name="whk-pack-core-count" value="' + i + '">' + i 
+                  + '</label>';
+          }
+          outp += '</div></div>';
+        } else {
+                      
+          if (cycle.name != pack.name && idx == 0) {
+            indent = true;
+            outp += '<div class="form-check pa">'
+              + '<input class="form-check-input cycle" type="checkbox" data-cycle="' + pack.cycle_code + '" checked="checked">'
+              + '<label class="form-check-label"><b>'
+              + cycle.name
+              + '</b></label></div>';
+              outp += '<ul>';
+          }
+          outp += '<div class="form-check ch">'
+            + '<input class="form-check-input pack" type="checkbox" data-code="' + pack.code + '" data-cycle="' + pack.cycle_code + '" checked="checked">'
+            + '<label class="form-check-label">'
+            + (cycle.name == pack.name ? '<b>' : '') 
+            + pack.name 
+            + (cycle.name == pack.name ? '</b>' : '')
+            + ' (' + _cards({"pack_code":pack.code}).sum("quantity") + ')'
+            + '</label></div>';
         }
-        outp += '</div></div>';
-      } else {
-        var setowned = localStorage.getItem('whk-set-' + set.code);
-        outp += '<div class="form-check">'
-              + '<input class="form-check-input" type="checkbox" value="" name="whk-set-' + set.code + '"' + (setowned=="true"?' checked':'') + '>'
-              + '<label class="form-check-label">' + set.name + '</label></div>';
+      });
+      if (indent == true)	{
+        outp += '</ul>';
       }
     });
     $('#setlist').html (outp);
-    updateSetFilter();
-	}
+    
+    // Set PACKS Checkboxes
+    if (typeof(Storage) !== "undefined")	{
+      _sets({"code":{"!in":"core"}}).order("position").each( function (pack,idx) {
+        // get localstorage value
+        checked = localStorage.getItem("whk-pack-" + pack.code) == null ? true : localStorage.getItem("whk-pack-" + pack.code) == "true";
+        // un-check child and parent
+        if (checked == false)	{
+          $('#setlist').find('input[data-code="' + pack.code + '"]').prop("checked",checked);
+          $('#setlist').find('input.cycle[data-cycle="' + pack.cycle_code + '"]').prop("checked",checked);
+        }
+      });
+    }
+		
+    updateSetFilter();				
+  }
+  
 	function updateSetFilter() {
 		/* build set filter */
 		setFilter = [];
@@ -409,7 +472,7 @@ $(document).ready(function () {
 			if (set.code == 'core') {
 				setFilter.push ('core');
 			} else {
-				if (localStorage.getItem('whk-set-' + set.code) == "true") {
+				if (localStorage.getItem(LS_pre + '-' + set.code) == "true") {
 					setFilter.push (set.code)
 				}
 			}
