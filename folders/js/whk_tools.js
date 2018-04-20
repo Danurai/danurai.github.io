@@ -13,6 +13,12 @@ function parsefilter(f)	{
 	var res;
 	var outp = {};
 	
+  var txt = /x:(.+)/;
+  res = RegExp(txt).exec(f);
+  if (res != null) {
+    outp["text"] = {likenocase:res[1]};
+  }
+  
 	var set = /e:(\S+)/;
 	res = RegExp(set).exec(f)
 	if (res !== null)	{

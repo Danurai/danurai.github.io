@@ -28,7 +28,7 @@
   </head>
   <body>
   
-    <nav class="navbar sticky-top transparent navbar-expand-lg navbar-dark bg-info">
+    <nav class="navbar sticky-top transparent navbar-expand-lg navbar-dark" style="background-color: teal;">
     <!-- Home Decks Collection      Search Login/Logout -->
       <a class="navbar-brand mb-0 h1" href="/"><i class="fas fa-cog mx-2"></i>Home</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -58,8 +58,8 @@
       </div>
     </nav>
     
-    <div class="container my-2">
-      <div class="row">
+    <div class="container">
+      <div class="row my-2">
         <div class="col-md-4">
           <h2>Packs</h2>
           <div id="packlist">
@@ -107,15 +107,15 @@
 		
 		
 		// LOAD DATA
-		$.getJSON('js/data/wh40k_cycles.json',{_: new Date().getTime()}, function (data) {
+		$.getJSON('js/data/wh40k_cycles.json', function (data) {      //,{_: new Date().getTime()}
 			_cycles = TAFFY(data.data);			//console.log (data.data);
-			$.getJSON('js/data/wh40k_packs.json',{_: new Date().getTime()}, function (data) {
+			$.getJSON('js/data/wh40k_packs.json', function (data) {
 				_packs = TAFFY(data.data);			//console.log(data.data);
-				$.getJSON('js/data/wh40k_factions.json',{_: new Date().getTime()}, function (data) {
+				$.getJSON('js/data/wh40k_factions.json', function (data) {
 					_factions = TAFFY(data.data);	// NOTE: data.data
-					$.getJSON('js/data/wh40k_types.json',{_: new Date().getTime()}, function (data) {
+					$.getJSON('js/data/wh40k_types.json', function (data) {
 						_types = TAFFY(data.data);	// NOTE: data.data
-						$.getJSON('js/data/wh40k_cards.json',{_: new Date().getTime()}, function (data) {
+						$.getJSON('js/data/wh40k_cards.json', function (data) {
 							_cards = TAFFY(data.data);	//console.log(data);
 							
 							
@@ -173,6 +173,7 @@
 								outp += '<li data-faction="' + faction.code + '" class="breadcrumb-item">'
                       + '<a href="#" style="color: ' + faction.color + '">' + faction.name + '</a></li>';
 							});
+              outp += '<li data-faction="planets" class="breadcrumb-item"><a href="#">Planets</a></li>';
 							outp += '</ol>';
 							
 							$('#foldersections').html(outp);
@@ -203,30 +204,36 @@
 		function updateFolder()	{
 			pages = [];
 			
-			_types({"code":{"!is":"token"}}).order("position").each(function (type)	{
-				if (type.name == "Warlord Unit"){
-					_cards({"faction_code":faction_code,"type":type.name,"pack_code":filter_pack}).each(function (warlord) {
-						pages.push (warlord);
-						//pages.push ($.extend(warlord, {"text":"Bloodied"}));
-						pages.push({"name":""});
-						pages.push({"name":""});
-						pages = pages.concat(_cards({"signature_squad":warlord.signature_squad,"type_code":{"!is":"warlord_unit"}}).order("position").get());
-						
-						while (pages.length % 9 != 0) { pages.push({"name":""}); }
-					});
-				} else {
-					_cards({"faction_code":faction_code,
-									 "type":type.name,
-									 "pack_code":filter_pack,
-                   "signature_loyal":{"!is":"Signature"}}).order("name").each (function (card) {
-            pages.push (card);
-          });
-				}
-				// Fill page with empty slots
-				if (_cards({"faction_code":faction_code,"pack_code":filter_pack}).count() > 9) {
-					while (pages.length % 9 != 0) { pages.push({"name":""}); }
-				}
-			});
+      if (faction_code == "planets") {
+        _cards({"type_code":"planet"}).each(function (card) {
+          pages.push (card);
+        });
+      } else {
+        _types({"code":{"!is":"token"}}).order("position").each(function (type)	{
+          if (type.name == "Warlord Unit"){
+            _cards({"faction_code":faction_code,"type":type.name,"pack_code":filter_pack}).each(function (warlord) {
+              pages.push (warlord);
+              //pages.push ($.extend(warlord, {"text":"Bloodied"}));
+              pages.push({"name":""});
+              pages.push({"name":""});
+              pages = pages.concat(_cards({"signature_squad":warlord.signature_squad,"type_code":{"!is":"warlord_unit"}}).order("position").get());
+              
+              while (pages.length % 9 != 0) { pages.push({"name":""}); }
+            });
+          } else {
+            _cards({"faction_code":faction_code,
+                     "type":type.name,
+                     "pack_code":filter_pack,
+                     "signature_loyal":{"!is":"Signature"}}).order("name").each (function (card) {
+              pages.push (card);
+            });
+          }
+          // Fill page with empty slots
+          if (_cards({"faction_code":faction_code,"pack_code":filter_pack}).count() > 9) {
+            while (pages.length % 9 != 0) { pages.push({"name":""}); }
+          }
+        });
+      }
 			while (pages.length % 9 != 0) { pages.push({"name":""}); }
 			drawpage();
 		}
@@ -334,7 +341,7 @@
 				$(this).parent().parent().find("div.form-check.pa [data-cycle='" + cyclecode + "']input[type='checkbox']").prop("checked",checkpar);
 			});
 		
-		// Folder Page Nav
+	// Folder Page Nav
     $('#folderpager').on('click','a',function(e)  {
       e.preventDefault();
       switch ($(this).data('page')) {
@@ -382,28 +389,33 @@
 				}
 			});
 		});
-    
     function generateQtipBody (r) {
       return '<div><h4>' + r.name + '</h4></div>'
            + '<div class="my-2">'
-            + (typeof r.cost != 'undefined' ? '<span class="mx-2"><i class="fas fa-cog"></i>' + r.cost + '</span>' : '')
-            + (typeof r.command_icons != 'undefined' ? '<span class="mx-2"><i class="fas fa-gavel"></i>' + r.command_icons + '</span>' : '')
-            + (typeof r.shields != 'undefined' ? '<span class="mx-2"><i class="fas fa-shield-alt"></i>' + r.shields + '</span>' : '')
-            + (typeof r.attack != 'undefined' ? '<span class="mx-2"><i class="fas fa-bolt"></i>' + r.attack + '</span>' : '')
-            + (typeof r.hp != 'undefined' ? '<span class="mx-2"><i class="fas fa-heartbeat"></i>' + r.hp + '</span>' : '')
+            + (typeof r.cost != 'undefined' ? '<i class="fas fa-cog mx-2"></i>' + r.cost  : '')
+            + (typeof r.command_icons != 'undefined' ? '<i class="fas fa-gavel mx-2"></i>' + r.command_icons : '')
+            + (typeof r.shields != 'undefined' ? '<i class="fas fa-shield-alt mx-2"></i>' + r.shields : '')
+            + (typeof r.attack != 'undefined' ? '<i class="fas fa-bolt mx-2"></i>' + r.attack : '')
+            + (typeof r.hp != 'undefined' ? '<i class="fas fa-heartbeat mx-2"></i>' + r.hp  : '')
+            // Planets:
+            + (typeof r.card_bonus !== "undefined" ? '<i class="fas fa-plus-square mx-2"></i>: ' + r.card_bonus : '') 	
+            + (typeof r.resource_bonus !== "undefined" ? '<i class="fas fa-cogs mx-2"></i>: ' + r.resource_bonus  : '') 	
+            
            + '</div>'
-           + '<div class="my-2">' +  r.text + '</div>'
-           + '<div class="small mt-2 text-right">' + r.faction
-            + (r.signature_loyal != null ? ' (' + r.signature_loyal + ')' : '')
-            + ' :: ' + r.type
+           + '<div class="my-2">' +  r.text.replace('[RESOURCE]','<i class="fas fa-cog mx-1"></i>') + '</div>'
+           + '<div class="small mt-2 text-right">' 
+            + (typeof r.faction !== 'undefined' 
+               ? r.faction + (r.signature_loyal != null ? ' (' + r.signature_loyal + ')'  : '') + ' :: '
+               : '')
+            + r.type
            + '</div>'
            + '<div class="small text-right">' 
-             + _cycles({"code":_packs({"code":r.pack_code}).first().cycle_code}).first().name + ' :: '  //WARNING _cycles
-             + r.pack + ' #' + parseInt(r.position,10) 
+           + _cycles({"code":_packs({"code":r.pack_code}).first().cycle_code}).first().name //WARNING _cycles
+           + ' :: ' + r.pack + ' #' + parseInt(r.position,10) 
            + '</div>';
-
     }
-	});
+	
+  });
   
 
 </script>

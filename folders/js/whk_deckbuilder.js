@@ -18,21 +18,21 @@ $(document).ready(function () {
 	
 	var decklist = TAFFY();
 	
-  $.getJSON("js/data/wh40k_cards.json",{_: new Date().getTime()}, function (data) {
+/* INITIALISATION */
+  $.getJSON("js/data/wh40k_cards.json", function (data) {   //,{_: new Date().getTime()}
     _cards = TAFFY(data.data);
     _planets = JSON.parse(_cards({"type_code":"planet"}).stringify());
     
-    $.getJSON("js/data/wh40k_factions.json",{_: new Date().getTime()}, function (data) {
+    $.getJSON("js/data/wh40k_factions.json", function (data) {
       _factions = TAFFY(data.data);
       
-      $.getJSON("js/data/wh40k_cycles.json",{_: new Date().getTime()}, function (data) {
+      $.getJSON("js/data/wh40k_cycles.json", function (data) {
         _cycles = TAFFY(data.data);
         
-        $.getJSON("js/data/wh40k_packs.json",{_: new Date().getTime()}, function (data) {
+        $.getJSON("js/data/wh40k_packs.json", function (data) {
           _sets = TAFFY(data.data);
           
-          $('#deck-content').val('[{"code":"010006","qty":1},{"code":"010123","qty":4},{"code":"010124","qty":1},{"code":"010125","qty":2},{"code":"010126","qty":1}]');
-          
+          $('#deck-content').val('[{"code":"010001","qty":1},{"code":"010009","qty":1},{"code":"010008","qty":4},{"code":"010011","qty":1},{"code":"010010","qty":2},{"code":"010015","qty":2},{"code":"010016","qty":1},{"code":"010023","qty":1},{"code":"010020","qty":1},{"code":"010014","qty":1},{"code":"010021","qty":1},{"code":"010017","qty":1},{"code":"010022","qty":1},{"code":"010013","qty":2},{"code":"010018","qty":1},{"code":"010019","qty":1},{"code":"010012","qty":1},{"code":"010027","qty":1},{"code":"010028","qty":1},{"code":"010024","qty":1},{"code":"010026","qty":1},{"code":"010025","qty":1},{"code":"010029","qty":1},{"code":"010030","qty":1},{"code":"010174","qty":1},{"code":"010172","qty":1},{"code":"010169","qty":1},{"code":"010173","qty":1},{"code":"010040","qty":1},{"code":"010046","qty":1},{"code":"010045","qty":2},{"code":"010039","qty":1},{"code":"010044","qty":1},{"code":"010035","qty":2},{"code":"010037","qty":1},{"code":"010041","qty":1},{"code":"010049","qty":1},{"code":"010170","qty":1},{"code":"010048","qty":1},{"code":"010053","qty":1},{"code":"010051","qty":1},{"code":"010171","qty":1}]');
           updateSets();      
           loadDeck();
           writedeck();
@@ -44,7 +44,14 @@ $(document).ready(function () {
     });
   });
 
-/* Decklist */
+/* DELETE Confirm */
+	$('#delete_deck').on('click',function () {
+		if (confirm("Are you sure you want to delete " + $('#deckname') + '?')) {
+			alert ("Dodelerte");
+		}
+	});
+	
+/* Decklist Listeners*/
 	$('#decklist').on('click','.card-tooltip',function () {
 		var outp = '';
 		var card = _cards({"code":String($(this).data("code"))}).first();
@@ -86,10 +93,8 @@ $(document).ready(function () {
 	});
 
 
-/* LOAD DECK */
-	
-	
 /* BUILD TAB */
+
 	$('#tablebody').on('change','input[type=radio]:enabled',function() {
 		updateDeck(this.name.substring(4), parseInt($(this).val(),10));
 	});
@@ -289,16 +294,28 @@ $(document).ready(function () {
     var identity = decklist({"type_code":"warlord_unit"}).first();
     faction_code = typeof identity == 'undefined' ? 'neutral' : identity.faction_code;
     
-    // Check Validity
-		outp = '<div class="row">' + checkValidity() + '</div>';
+    var deckTypes = ["Army Unit","Synapse Unit","Attachment","Event","Support"];
     
-    
-		// Cards
-		deckTypes = ["Warlord Unit","Army Unit","Synapse Unit","Attachment","Event","Support"];
-		outp += '<div class="row"><h4>Total Cards: (' + decklist({"type":deckTypes}).sum("qty") + ')</h4></div>';
+    // Header
+    outp += '<div class="row">'
+          + '<div class="col-3">'
+            + '<img class="rounded img-fluid" src="' + identity.img + '"></img>'
+          + '</div>'
+          + '<div class="col">'
+            + '<div><a href="/card/' + identity.code + '" class="card-tooltip h4" data-code="' + identity.code + '">'
+            + identity.name + '</a>'
+            + '<div class="h5 text-muted">' 
+            + /^<b>(.+)<\/b><br>/.exec(identity.text)[1]
+            + '</div>'
+            + '<div class="h5">Total Cards: (' + decklist({"type":deckTypes}).sum("qty") + ')</div>'
+          // Check Validity
+            + '<div>' + checkValidity() + '</div>'
+          + '</div></div>';
 		outp += '<div class="row"><div class="col-sm">';	
+
+    // Content
 		$.each(deckTypes, function (id,cardtype) {
-			outp += (id == 3 ? '</div><div class="col-sm">' : '');
+			outp += (id == 2 ? '</div><div class="col-sm">' : '');
 			if (decklist({"type":cardtype}).count() > 0) {
 				outp += '<div class="my-2"><b>' + cardtype + ' (' + decklist({"type":cardtype}).sum("qty") + ')</b>';
 				decklist({"type":cardtype}).order("name").each(function (card) {
@@ -323,7 +340,7 @@ $(document).ready(function () {
 		})
 		
 		$('#deck-content').val('[' + content.slice(0,-1) + ']');
-		//newGame();
+		newGame();
 	}
 	function writeoutput() {
 		var exp = '';
@@ -361,17 +378,17 @@ $(document).ready(function () {
     var faction_code = decklist({"type_code":"warlord_unit"}).first().faction_code;
     if (typeof faction_code !== 'undefined')  {
       var sigloyal = [];
-      decklist({"faction_code":{"!is":faction_code}}).each(function (r) {
+      decklist({"faction_code":{"!is":faction_code},"signature_loyal":["Signature","Loyal"]}).each(function (r) {
           sigloyal.push ('<a href="/card/' + r.code + '" data-code="' + r.code + '" class="card-tooltip" data-toggle="modal" data-target="#cardmodal">' + r.name + '</a>');
       });
       if (sigloyal.length > 0) {
         validresult.push ('Cannot include Loyal cards from other factions: <span class="text-danger">' + sigloyal.join(', ') + '</span>');
       }
-      
     }
-    
     return (validresult.length > 0 ? validresult.join('<p>') : "Deck is Valid");
   }
+  
+  
 /* SETS TAB */
 	// SETS: Json {Set: {code: code: number: number}}
 	// <div id="setlist"></div>
@@ -483,40 +500,7 @@ $(document).ready(function () {
 	}
 		
 /* CHECK TAB */
-	$('#loaddeck').on('click',function () {
-	// Create decklist from cards
-		var str = $('#deckload').val();
-		var crd;
-		
-		decklist().remove();
-		
-		var res = str.match(/(.+)/g);
-		// Deck Name
-		$('#deck-name').val(res[0]);
-		
-		var regex = /([0-9])x\s(.+)\s\((.+)\)/g;
-		var res = str.match(regex);
-				
-		$.each(res, function (id, item) {
-			item.match(regex);
-			var qty = parseInt(RegExp.$1, 10);
-			crd = _cards({"name":RegExp.$2,"pack":RegExp.$3}).first();
-			crd.qty = qty;
-			
-			//decklist.insert(crd);
-      updateDeck(crd.code,qty);
-		});
-		console.log('Deck Loaded');
-		console.log (decklist);
-		
-		updateTableBody();
-		writedeck();
-		
-		
-		// _deck[], deck[], plot[]
-		// newGame();
-	});
-	
+
 	$('.btn-draw').on('click',function() {
 		if ($(this).attr('val') == 0) {
 			newGame();
@@ -534,37 +518,13 @@ $(document).ready(function () {
 	$('#hand').on('click','.check_card',function() {
 		$(this).css('opacity', 1.5 - parseFloat($(this).css('opacity')));
 	})
-			
-	$('#deckload').on("mouseenter",function () {
-		$(this).qtip({
-			overwrite: false,
-			show: {
-				ready: true
-			},
-			content: {
-				text: 'Paste in a decklist in <a href="http://www.cardgamedb.com">CardGameDB.com</a> format.'
-				//+ '<br><br>Faction should be in the format:<br><em>Faction:<br>&nbsp;&lt;faction&gt;</em>'
-				//+ '<br><br>Cards should be in the format:<br><em>3x &lt;card name&gt; (&lt;Card Set&gt;)</em>'
-				//+ '<br><br>Agenda listed as a standard card e.g. <em>1x Fealty (Core Set)</em>'
-			},
-			style: {
-				classes: 'qtip-bootstrap',
-				tip: false,
-				width: 500
-			},
-			position: {
-				my: 'left-center',
-				at: 'right-center'
-			},
-			hide:	{
-				//event: 'unfocus'
-			}
-		});
-	});
 	
 	function newGame() {
 		_deck = [];
-		decklist({"Type":["Character","Event","Attachment","Location"]}).each(function(card) {
+    var warlord = decklist({"type_code":"warlord_unit"}).first()
+    var starting_hand = (typeof warlord === 'undefined' ? 0 : warlord.starting_hand);
+    
+		decklist({"type_code":{"!is":"warlord_unit"}}).each(function(card) {
 			for (i=0; i<card.qty; i++) {
 				_deck.push({"code":card.code,"img":card.img,"name":card.name});
 			}
@@ -572,72 +532,30 @@ $(document).ready(function () {
 		_deck = shuffle(_deck);
 		deck = _deck.slice();
 		
-		drawFactionPlots();
 		$('#hand').html ('');
-		drawCards(7);
+		drawCards(starting_hand);
+    drawPlanets();
 	}
 	
-	function drawFactionPlots()	{
-		var outp = '';
-		
-		// Faction and Agenda
-		var faction = decklist({"Type":"Faction"}).count()>0 ? decklist({"Type":"Faction"}).first() : '';
-		var agenda = decklist({"Type":"Agenda"}).count()>0 ? decklist({"Type":"Agenda"}).first() : '';
-		
-		outp += faction != '' ? '<h2 class="card faction" data-code="' + faction.code + '">' + faction.name + '</h2>'  : '';
-		outp += agenda != '' ? '<h4 class="card agenda" data-code="' + agenda.code + '">' + agenda.name + '</h4>' : '';
-				
-		$('#faction_name').html (outp);
-		
-		outp='';
-		// Plots
-		decklist({"Type":"Plot"}).each(function (plot) {
-			for (var i=0; i<plot.qty; i++) {
-				outp += '<img src="' + plot.img + '" class="check_card plot_card" data-code="' + plot.code + '"></img>';
-			}
-		});
-		$('#plot_cards').html (outp);
-		$('#plot_data').html("Gold: 8");
-	}
-	
+  function drawPlanets()  {
+    var outp = '';
+    
+    _cards({"type_code":"planet"}).each( function (r) {
+      outp += '<img src = "' + r.img + '" class="deck_card_planet" data-code="' + r.code + '"></img>';
+    });
+    
+    $('#planets').html (outp);
+  }
+  
 	function drawCards(n) {
 		var card;
 		n = Math.min(n, deck.length);
 		for (var i = 0; i < n; i++) {
 			card = deck.shift();
 			$('#hand').append('<img src="' + card.img + '" class="check_card deck_card" data-code="' + card.code + '"></img>');
-			updateChooseList();
 		}
 	}
-	
-	function updateChooseList()	{
-		var outp='';
-		outp += '<div class="btn-group"><button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">Choose<span class="caret"></span></button>';
-		outp += '<ul class="dropdown-menu scrollable-menu" role="menu">';
-		var x = 0;
-		$.each(deck,function (id,card) {
-			outp += '<li role="presentation"><a role="menuitem" class="card" data-code="' + card.code + '" data-index="' + x + '">#' + (x+1) + ' ' + card.name + '</a></li>';
-			if (x++ == 9) {
-				outp +='<li role="presentation" class="divider"></li>';
-			}
-		});
-		outp += '</ul>';
-		outp += '</div>';
-		$('#choosecardlist').html (outp);
-	}
-	
-	$('#choosecardlist').on('click','a',function () {
-		var card = deck.splice($(this).data('index'),1)[0];
-		$('#hand').append('<img src="' + card.img + '" class="check_card deck_card" data-code="' + card.code + '"></img>');
-		updateChooseList();
-	});
-	
-/* DELETE Confirm */
-	$('#delete_deck').on('click',function () {
-		if (confirm("Are you sure you want to delete " + $('#deckname') + '?')) {
-			alert ("Dodelerte");
-		}
-	});
+
 	
 /* STATS TAB */
 	// Code to compile data and call Charts scripts
@@ -784,4 +702,66 @@ $(document).ready(function () {
 	}
 	
 
+/* LOAD TAB */
+
+	$('#deckload').on("mouseenter",function () {
+		$(this).qtip({
+			overwrite: false,
+			show: {
+				ready: true
+			},
+			content: {
+				text: 'Paste in a decklist in <a href="http://www.cardgamedb.com">CardGameDB.com</a> format.'
+				//+ '<br><br>Faction should be in the format:<br><em>Faction:<br>&nbsp;&lt;faction&gt;</em>'
+				//+ '<br><br>Cards should be in the format:<br><em>3x &lt;card name&gt; (&lt;Card Set&gt;)</em>'
+				//+ '<br><br>Agenda listed as a standard card e.g. <em>1x Fealty (Core Set)</em>'
+			},
+			style: {
+				classes: 'qtip-bootstrap',
+				tip: false,
+				width: 500
+			},
+			position: {
+				my: 'left-center',
+				at: 'right-center'
+			},
+			hide:	{
+				//event: 'unfocus'
+			}
+		});
+	});
+	$('#loaddeck').on('click',function () {
+	// Create decklist from cards
+		var str = $('#deckload').val();
+		var crd;
+		
+		decklist().remove();
+		
+		var res = str.match(/(.+)/g);
+		// Deck Name
+		$('#deck-name').val(res[0]);
+		
+		var regex = /([0-9])x\s(.+)\s\((.+)\)/g;
+		var res = str.match(regex);
+				
+		$.each(res, function (id, item) {
+			item.match(regex);
+			var qty = parseInt(RegExp.$1, 10);
+			crd = _cards({"name":RegExp.$2,"pack":RegExp.$3}).first();
+			crd.qty = qty;
+			
+			//decklist.insert(crd);
+      updateDeck(crd.code,qty);
+		});
+		console.log('Deck Loaded');
+		console.log (decklist);
+		
+		updateTableBody();
+		writedeck();
+		
+		newGame();
+	});
+			
+	
+	
 });

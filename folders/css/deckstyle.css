@@ -1,27 +1,31 @@
-body { font-family: 'Exo 2', sans-serif; }
-a       { color: darkslategrey; }
+/* Styling for the deckbuilder page */
+
+/* Main Decklist */
+
 #decklist {min-height: 200px;}
-#folderpages td { 
-  width: 33%; 
-  position: relative;
-  text-align: center;
+
+/* Check Tab */
+.deck_card {
+  padding: 2px;
+  width: 120px;
 }
-.footer	{
+.deck_card_planet {
+  padding: 2px;
+  width: 50%;
+}
+/*.footer	{
   font-size: 0.8em;
   position: absolute;
   bottom: 	0;
   right:	0;
 }
-.folders	{
-  position:	sticky !important;
-  top:	0px;
+*/
+
+
+/* Qtip Styling */
+.qtip {
+  max-width: 350px;
 }
-.cardimg    { width: 250px; }
-.qtip       { max-width: 300px !important; }
-.icon-sig   { color: gold; }
-.icon-loyal { color: slateblue; }
-
-
 .cardthumb {
   width: 120px;
   height: 120px;

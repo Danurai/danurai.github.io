@@ -32,7 +32,7 @@
   </head>
   <body>
   
-    <nav class="navbar sticky-top transparent navbar-expand-lg navbar-dark bg-info">
+    <nav class="navbar sticky-top navbar-expand-lg navbar-dark" style="background-color: teal;">
     <!-- Home Decks Collection      Search Login/Logout -->
       <a class="navbar-brand mb-0 h1" href="/"><i class="fas fa-cog mx-2"></i>Home</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -61,18 +61,19 @@
         <a href="/login" class="nav-item nav-link" title="Login/Logout"><i class="fas fa-user"></i></a>
       </div>
     </nav>
-    
-    <div class="container my-2">
-      <div class="row">
+  
+    <div class="container">
+      <div class="row my-2">
         <div class="col-md decklist">
           <div class="row">
             <div class="col" id="decklist">
             </div>
           </div>
           <div class="row">
-            <form class="form-inline" method="POST" action="#" id="save_form" role="form">
-              <input type="text" id="deck-content" value="" hidden></input>
-              <p>load, save etc
+            <form class="form-inline" method="POST" action="/decks/save" id="save_form" role="form">
+              <input type="text" id="deck-content" name="deck-content" value="" hidden></input>
+              <input class="form-control" type="text" id="deck-name" name="deck-name" value="New Deck"></input>
+              <button class="btn btn-warning" role="submit">Save Deck</button>
             </form>
           </div>
         </div>
@@ -80,7 +81,6 @@
           <ul class="nav nav-tabs nav-fill">
             <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#deckbuild">Build</a></li>
             <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#deckcheck">Check</a></li>
-            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#deckstats">Stats</a></li>
             <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#decksets">Sets</a></li>
             <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#deckloader">Load</a></li>
           </ul>
@@ -137,45 +137,41 @@
               </div>
             </div>
             <div id="deckcheck" class="tab-pane" role="tabpanel">
-              <div class="row">
-                <div class="col-md-12">
-                  <div id="faction_name"></div>
-                  <div id="plot_cards"></div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-12">
-                  <div id="plot_data"></div>
+              <div class="row justify-content-center my-2">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-sm btn-light" disabled>Draw:</button>
+                  <button type="button" class="btn btn-sm btn-light btn-draw" val="1" id="draw1">1</button>
+                  <button type="button" class="btn btn-sm btn-light btn-draw" val="2" id="draw2">2</button>
+                  <button type="button" class="btn btn-sm btn-light btn-draw" val="7" id="draw7">7</button>
+                  <button type="button" class="btn btn-sm btn-light btn-draw" val="all" id="drawall">All</button>
+                  <button type="button" class="btn btn-sm btn-light btn-draw" val="0" id="drawreset">Reset</button>
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-12" align="center">
-                  <b>Draw:&nbsp;</b>
-                  <div class="btn-group">
-                    <button type="button" class="btn btn-default btn-sm btn-draw" val="1" id="draw1">1</button>
-                    <button type="button" class="btn btn-default btn-sm btn-draw" val="2" id="draw2">2</button>
-                    <button type="button" class="btn btn-default btn-sm btn-draw" val="3" id="draw3">3</button>
-                    <button type="button" class="btn btn-default btn-sm btn-draw" val="4" id="draw4">4</button>
-                    <button type="button" class="btn btn-default btn-sm btn-draw" val="7" id="draw7">7</button>
-                    <button type="button" class="btn btn-default btn-sm btn-draw" val="all" id="drawall">All</button>
-                    <button type="button" class="btn btn-default btn-sm btn-draw" val="0" id="drawreset">Reset</button>
+                <!-- Sample Draw -->
+                  <div class="row justify-content-between border-bottom border-primary mb-2">
+                    <i class="fas fa-play"></i>
+                    <a href="#hand" data-toggle="collapse">Sample draw</a>
                   </div>
-                  <span id="choosecardlist"></span>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-12" align="center">
-                  <div id="hand"></div>
-                </div>
-              </div>
-            </div>
-            <div id="deckstats" class="tab-pane" role="tabpanel">
-              <div class="row">
-                <div class="col-md-12">
-                  <canvas id="barIcons" width="400" height="400"></canvas>
-                  <canvas id="lineCost" width="400" height="400"></canvas>
-                  <canvas id="lineStr" width="400" height="400"></canvas>
-                  <canvas id="pieFact" width="400" height="400"></canvas>
+                  <div class="collapse show" id="hand"></div>
+                <!-- Planets -->
+                  <div class="row justify-content-between border-bottom border-primary mb-2">
+                    <i class="fas fa-globe"></i>
+                    <a href="#planets" data-toggle="collapse">Planets</a>
+                  </div>
+                  <div class="collapse" id="planets"></div>
+                <!-- Charts -->
+                  <div class="row justify-content-between border-bottom border-primary mb-2">
+                    <i class="fas fa-chart-bar"></i>
+                    <a href="#charts" data-toggle="collapse">Charts</a>
+                  </div>
+                  <div class="collapse" id="charts">
+                    <canvas id="barIcons" width="400" height="400"></canvas>
+                    <canvas id="lineCost" width="400" height="400"></canvas>
+                    <canvas id="lineStr" width="400" height="400"></canvas>
+                    <canvas id="pieFact" width="400" height="400"></canvas>
+                  </div>
                 </div>
               </div>
             </div>
