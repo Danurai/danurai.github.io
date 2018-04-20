@@ -91,7 +91,14 @@ $(document).ready(function () {
 		updateDeck(this.name.substring(4), parseInt($(this).val(),10));
 		$('#cardmodal').modal('hide');
 	});
-
+  $('#newdeck').on('click',function() {
+    if (confirm("Are you sure you want to create a new deck?")) {
+      decklist().remove();
+      writedeck();
+      writeoutput();
+      updateTableBody();
+    }
+  });
 
 /* BUILD TAB */
 
@@ -296,39 +303,42 @@ $(document).ready(function () {
     
     var deckTypes = ["Army Unit","Synapse Unit","Attachment","Event","Support"];
     
-    // Header
-    outp += '<div class="row">'
-          + '<div class="col-3">'
-            + '<img class="rounded img-fluid" src="' + identity.img + '"></img>'
-          + '</div>'
-          + '<div class="col">'
-            + '<div><a href="/card/' + identity.code + '" class="card-tooltip h4" data-code="' + identity.code + '">'
-            + identity.name + '</a>'
-            + '<div class="h5 text-muted">' 
-            + /^<b>(.+)<\/b><br>/.exec(identity.text)[1]
+    if (decklist().count() == 0) {
+      outp = '<div class="row h5">Empty Deck</div>';
+    } else {
+      // Header
+      outp += '<div class="row">'
+            + '<div class="col-3">'
+              + '<img class="rounded img-fluid" src="' + identity.img + '"></img>'
             + '</div>'
-            + '<div class="h5">Total Cards: (' + decklist({"type":deckTypes}).sum("qty") + ')</div>'
-          // Check Validity
-            + '<div>' + checkValidity() + '</div>'
-          + '</div></div>';
-		outp += '<div class="row"><div class="col-sm">';	
+            + '<div class="col">'
+              + '<div><a href="/card/' + identity.code + '" class="card-tooltip h4" data-code="' + identity.code + '">'
+              + identity.name + '</a>'
+              + '<div class="h5 text-muted">' 
+              + /^<b>(.+)<\/b><br>/.exec(identity.text)[1]
+              + '</div>'
+              + '<div class="h5">Total Cards: (' + decklist({"type":deckTypes}).sum("qty") + ')</div>'
+            // Check Validity
+              + '<div>' + checkValidity() + '</div>'
+            + '</div></div>';
+      outp += '<div class="row"><div class="col-sm">';	
 
-    // Content
-		$.each(deckTypes, function (id,cardtype) {
-			outp += (id == 2 ? '</div><div class="col-sm">' : '');
-			if (decklist({"type":cardtype}).count() > 0) {
-				outp += '<div class="my-2"><b>' + cardtype + ' (' + decklist({"type":cardtype}).sum("qty") + ')</b>';
-				decklist({"type":cardtype}).order("name").each(function (card) {
-					outp += '<br>' + card.qty + 'x <a href="/card/' + card.code + '" class="card-tooltip" data-code="' + card.code + '" data-toggle="modal" data-remote="false" data-target="#cardmodal">' + card.name + '</a>';
-					if (card.faction_code != faction_code) { outp += ' <i class="fa fa-flag ' + card.faction_code + '"></i>'; }
-					if (card.signature_loyal == "Signature") { outp += ' <i class="fa fa-cog icon-sig"></i>'; }
-					//if (card.signature_loyal == "Loyal") { outp += ' <i class="fa fa-crosshairs icon-loyal"></i>'; }
-				});
-				outp += '</div>';
-			}
-		});
-    outp += '</div></div>';
-				
+      // Content
+      $.each(deckTypes, function (id,cardtype) {
+        outp += (id == 2 ? '</div><div class="col-sm">' : '');
+        if (decklist({"type":cardtype}).count() > 0) {
+          outp += '<div class="my-2"><b>' + cardtype + ' (' + decklist({"type":cardtype}).sum("qty") + ')</b>';
+          decklist({"type":cardtype}).order("name").each(function (card) {
+            outp += '<br>' + card.qty + 'x <a href="/card/' + card.code + '" class="card-tooltip" data-code="' + card.code + '" data-toggle="modal" data-remote="false" data-target="#cardmodal">' + card.name + '</a>';
+            if (card.faction_code != faction_code) { outp += ' <i class="fa fa-flag ' + card.faction_code + '"></i>'; }
+            if (card.signature_loyal == "Signature") { outp += ' <i class="fa fa-cog icon-sig"></i>'; }
+            //if (card.signature_loyal == "Loyal") { outp += ' <i class="fa fa-crosshairs icon-loyal"></i>'; }
+          });
+          outp += '</div>';
+        }
+      });
+      outp += '</div></div>';
+		}		
 		$('#decklist').html(outp);
 		
 		//updateCharts();
