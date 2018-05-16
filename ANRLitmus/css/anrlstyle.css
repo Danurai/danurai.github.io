@@ -68,12 +68,14 @@ body {
 	position: relative;
 	min-width: 120px;
 	min-height: 165px;
+	vertical-align: top;
 }
 .region-installed	{
+   	display: inline-block;
 	position: relative;
 	min-width: 120px;
 	min-height: 165px;
-   	display: inline-block;
+	vertical-align: top;
 }
 .card-count	{
 	position: absolute;
