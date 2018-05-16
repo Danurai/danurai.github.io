@@ -66,10 +66,14 @@ body {
 }
 .region-root	{
 	position: relative;
+	min-width: 120px;
+	min-height: 165px;
 }
 .region-installed	{
 	position: relative;
-   display: inline-block;
+	min-width: 120px;
+	min-height: 165px;
+   	display: inline-block;
 }
 .card-count	{
 	position: absolute;
