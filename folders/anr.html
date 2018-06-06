@@ -99,7 +99,7 @@
 				_packs = TAFFY(data.data);			//console.log(data.data);
 				$.getJSON('https://netrunnerdb.com/api/2.0/public/types?jsoncallback', function (data) {
 					_types = TAFFY(data.data);					//console.log (data.data);
-					$.getJSON('https://netrunnerdb.com/api/2.0/public/cards?jsoncallback', function (data) {
+					$.getJSON('https://netrunnerdb.com/api/2.0/public/cards?jsoncallback',{_: new Date().getTime()}, function (data) {
 						_cards = TAFFY(data.data);		//console.log (data.imageUrlTemplate);	console.log(data.data);
 						imageUrlTemplate = data.imageUrlTemplate;
 						
