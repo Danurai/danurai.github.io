@@ -245,7 +245,7 @@
 						outp += '<td data-code="' + (id < pages.length ? pages[id].code : '') + '">';
 						if (pages[id].title != "-") {
 							if ($('#showimg').prop('checked'))	{
-								outp += '<div><img class="card" src="' + pages[id].image_url + '"><div>';
+								outp += '<div><img class="card" src="' + (typeof(pages[id].image_url) !== "undefined" ? pages[id].image_url : imageUrlTemplate.replace('{code}',pages[id].code))  + '"><div>';
 								pages[id].code
 							} else {
 								outp += '<div>' + pages[id].title + '</div>'
