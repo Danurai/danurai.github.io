@@ -249,8 +249,7 @@ $(document).ready(function ()	{
 					players[faction].addTurn();
 					updateInfo(faction);
 					// Set Toggle
-					//$('#turncheck').toggle();
-				//}
+          $('#turncheck').prop("checked",(faction == 'run')).change();
 			} else if (players[faction].getClicks() > 0)	{
 				//players[faction].addClicks(-1);
 				// newturn, credit, draw
@@ -612,6 +611,7 @@ $(document).ready(function ()	{
 							decks[faction].returnToDeck(regions[faction][faction+'hand'][0].code);
 							regions[faction][faction+'hand'].splice(0,1);
 						}
+            decks[faction].shuffleDeck();
 						for (var i=0; i<handsize; i++)	{ drawCard(decks[faction]); }
 						break;
 					case 99:	// All
