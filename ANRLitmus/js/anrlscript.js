@@ -249,7 +249,12 @@ $(document).ready(function ()	{
 					players[faction].addTurn();
 					updateInfo(faction);
 					// Set Toggle
-          $('#turncheck').prop("checked",(faction == 'run')).change();
+          var oldstate = $('#turncheck').prop("checked");
+          $('#turncheck').prop("checked",(faction == "run"));
+          if (oldstate != (faction == "run"))  {
+            $('#turncheck').change();
+          }
+          
 			} else if (players[faction].getClicks() > 0)	{
 				//players[faction].addClicks(-1);
 				// newturn, credit, draw
