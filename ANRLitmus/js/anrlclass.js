@@ -106,7 +106,7 @@ function anrPlayer(faction)	{
 	this.clicks = this.maxclicks;
 	this.tags = 0;
 	this.deck;
-	this.turn = 1;
+	this.turn = 0;
 	
 	this.addDeck = function (deck)	{
 		this.deck = deck;
