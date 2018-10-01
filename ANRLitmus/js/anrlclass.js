@@ -159,7 +159,7 @@ function anrPlayer(faction)	{
 		this.mu = 4;
 		this.clicks = this.maxclicks;
 		this.tags = 0;
-		this.turn = 1;
+		this.turn = 0;
 		return true;
 	}
 }
