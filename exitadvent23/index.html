@@ -105,7 +105,9 @@
 				$(e).val(val);
 				setSolution(clr, val);
 			});
-			$('#code_r').focus()
+			setTimeout(() => {
+				$('#code_r').focus()
+			}, 500);
 		}
 
 		function setSolution(clr, val) {
