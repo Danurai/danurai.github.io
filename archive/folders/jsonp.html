@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- JQuery -->
+	<script src="https://code.jquery.com/jquery-2.2.2.min.js" integrity="sha256-36cp2Co+/62rEAAYHLmRCPIych47CvdM+uTBJwSzWjI=" crossorigin="anonymous"></script>
+<!-- BOOTSTRAP -->
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+	
+<!-- jquery QTIPs -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/qtip2/2.1.1/jquery.qtip.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/qtip2/2.1.1/jquery.qtip.js"></script>
+<!-- TAFFYdb -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/taffydb/2.7.2/taffy-min.js"></script>
+
+	<link href="https://fonts.googleapis.com/css?family=Cinzel" rel="stylesheet">
+	
+	
+	
+	<script>
+		
+		$(document).ready(function () {
+		
+			var _packs;
+		
+			/*
+			$.getJSON('https://netrunnerdb.com/api/2.0/public/packs', function (data) {
+				console.log(data);
+				_packs = TAFFY(data);
+				$('#dump').html(_packs().stringify());
+			});
+			*/
+			
+			/*
+			$.ajax({
+				datatype: "json",
+				url: "https://netrunnerdb.com/api/2.0/public/packs",
+				success: function (data) {
+					_packs = TAFFY(data)
+					$('#dump').html(_packs().stringify());
+				}
+			}); 
+			*/
+			
+			$.ajax({
+				datatype: "jsonp",
+				jsonp: "callback",
+				url: "https://thronesdb.com/api/2.0/public/packs",
+				success: function (data) {
+					_packs = TAFFY(data)
+					$('#dump').html(_packs().stringify());
+				}
+			})
+			
+		});
+	</script>
+</head>
+<body>
+<div id="dump">No Update</div>
+</body>
+</html>

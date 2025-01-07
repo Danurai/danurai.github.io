@@ -1,0 +1,14 @@
+[
+{"id":1,"name":"Harmen","text":"Wounded","squad":"sword","team":"blue","range":2,"set":"DJ01"},
+{"id":2,"name":"Aegil","text":"Sharp Point","squad":"sword","team":"blue","range":2,"set":"DJ01"},
+{"id":3,"name":"Golben","text":"Wise","squad":"book","team":"gray","range":2,"set":"DJ01"},
+{"id":4,"name":"Hannien","text":"Intelligent","squad":"book","team":"gray","range":2,"set":"DJ01"},
+{"id":5,"name":"Sarnion","text":"Pebble/stone","squad":"hammer","team":"green","range":2,"set":"DJ01"},
+{"id":6,"name":"Garthil","text":"Fortress","squad":"hammer","team":"green","range":0,"set":"DJ01"},
+{"id":7,"name":"Gurion","text":"Death","squad":"flamer","team":"purple","range":2,"set":"DJ01"},
+{"id":8,"name":"Ruindolwen","text":"Red Haired","squad":"flamer","team":"purple","range":1,"set":"DJ01"},
+{"id":9,"name":"Caundir","text":"Valor","squad":"assault","team":"red","range":3,"set":"DJ01"},
+{"id":10,"name":"Daugnith","text":"","squad":"assault","team":"red","range":2,"set":"DJ01"},
+{"id":11,"name":"Faredir","text":"To Hunt","squad":"claw","team":"yellow","range":0,"set":"DJ01"},
+{"id":12,"name":"Dolthrien","text":"","squad":"claw","team":"yellow","range":2,"set":"DJ01"}
+]

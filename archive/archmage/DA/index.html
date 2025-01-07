@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Death Angel</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="mobile-web-app-capable" content="yes">
+	
+<!-- JQuery -->
+	<script src="https://code.jquery.com/jquery-2.2.2.min.js" integrity="sha256-36cp2Co+/62rEAAYHLmRCPIych47CvdM+uTBJwSzWjI=" crossorigin="anonymous"></script>
+<!-- BOOTSTRAP -->
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+	
+<!-- jquery QTIPs -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/qtip2/2.1.1/jquery.qtip.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/qtip2/2.1.1/jquery.qtip.js"></script>
+<!-- TAFFYdb -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/taffydb/2.7.2/taffy-min.js"></script>
+<!-- Font Awesome -->
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-XdYbMnZ/QjLh6iI4ogqCTaIjrFk87ip+ekIjefZch0Y+PvJ8CDYtEs1ipDmPorQ+" crossorigin="anonymous">
+<!-- Foundation Icons -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/foundation-icons/3.0/foundation-icons.min.css">
+	
+<!-- DA Scripts -->
+	<script src="da_engine.js"></script>
+	<script src="/DA/res/js/da_drawing.js"></script>
+	<link rel="stylesheet" href="da.css">
+	
+	<script>
+		$(document).ready(function () {
+			$('#tests')
+				.on('shown.bs.collapse',function () {
+					$(this)
+						.parent()
+						.find(".fa-plus-square-o")
+						.removeClass("fa-plus-square-o")
+						.addClass("fa-minus-square-o");
+				})
+				.on('hidden.bs.collapse',function () {
+					$(this)
+						.parent()
+						.find(".fa-minus-square-o")
+						.removeClass("fa-minus-square-o")
+						.addClass("fa-plus-square-o");
+				});
+		});
+	</script>
+</head>
+<body>
+	<div class="ordertable" id="teamorders" hidden></div>
+	<div class="dice" id="dice"><span class="dice-value inset">5</span></div>
+		
+	<div class="background">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12">
+					<div>
+						Test Area
+						<div class="btn" data-target="#tests" data-toggle="collapse" id="tests_toggle"><i class="fa fa-plus-square-o"></i></div>
+					</div>
+					<div class="hulk">SIN OF DAMNATION</div>
+					<div id="tests" class="collapse">
+						<div class="btn-group">
+							<div class="btn btn-warning" id="testbutton">TEST</div>
+							<div class="btn btn-default" id="savebutton">Save State</div>
+							<div class="btn btn-default" id="loadbutton">Load State</div>
+						</div>
+						<div>
+							<textarea id="savedstate" cols="75" rows="5"></textarea>
+						</div>
+					</div>
+					
+					<div id="addinfo"></div>
+					<table align="center">
+						<thead>
+							<tr id="decks">
+								<td rowspan="2"></td>
+								<td>
+									<img src="/DA/res/img/blip.png" class="card" data-tt="Blip Discard Pile"></img>
+									<div id="blip_discard" class="topleft counter">blip_discard</div>
+								</td>
+								<td>
+									<img src="/DA/res/img/blip.png" class="card" data-tt="Blip Pile"></img>
+									<div id="blip_deck" class="topleft counter">blip_deck</div>
+								</td>
+								<td>
+									<img src="/DA/res/img/event_back.png" class="card" data-tt="Event Deck"></img>
+									<div id="event_deck">event_deck</div>
+								</td>
+								<td rowspan="2" valign="top" style="min-width: 175px;">
+									<img src="/DA/res/img/event_backV.png" class="card" data-tt="Current Event"></img>
+									<div id="event_active">event_active</div>
+								</td>
+							</tr>
+							<tr id="location">
+								<td  valign="top">
+									<img src="/DA/res/img/blip.png" class="card" data-tt="Blip Deck (L)"></img>
+									<div id="blipL">blipL</div>
+								</td>
+								<td>
+									<!-- div id="location_deck"></div -->
+									<img src="/DA/res/img/voidlock.png" class="card" data-tt="Current Location"></img>
+									<div id="location_active">location_active</div>
+								</td>
+								<td  valign="top">
+									<img src="/DA/res/img/blip.png" class="card" data-tt="Blip Deck (R)"></img>
+									<div id="blipR">blipR</div>
+								</td>
+							</tr>
+						</thead>
+						<tbody id="playmat">
+						</tbody>
+					</table>
+				</div>
+				<div class="col-sm-12">
+					<div style="height: 100px; background-color: black;"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div>
+		<div id='menu-marine' class='menu' hidden>
+			<div class='clickable btn-da' id='btn-slay'>[ Slay ]</div>
+			<div class='clickable btn-da' id='btn-close' align="right">[ x ]</div>
+			<input type='text' id='menu-marine-data' hidden>
+		</div>
+		<div id='menu-support' class='menu' hidden>
+			<div class='clickable btn-da' id='btn-remove'>[ Remove ]</div>
+			<div class='clickable btn-da' id='support-add'>[ +Support+ ]</div>
+			<div class='clickable btn-da' id='support-sub'>[ - Support - ]</div>
+			<div class='clickable btn-da' id='btn-close' align="right">[ x ]</div>
+			<input type='text' id='menu-support-data' hidden>
+		</div>
+		<div id='menu-stealer' class='menu' hidden>
+			<div class='clickable btn-da' id='btn-slay'>[ Slay ]</div>
+			<div class='clickable btn-da' id='btn-rtnblipL' title="Return to Left Blip Pile">[ Add to Blip L ]</div>
+			<div class='clickable btn-da' id='btn-rtnblipR' title="Return to Right Blip Pile">[ Add to Blip R ]</div>
+			<div class='clickable btn-da' id='support-add'>[ +Support+ ]</div>
+			<div class='clickable btn-da' id='support-sub'>[ - Support - ]</div>
+			<div class='clickable btn-da' id='btn-close' title="Close" align="right">[ x ]</div>
+			<input type='text' id='menu-stealer-data' hidden>
+		</div>
+	</div>
+</body>
+</html>

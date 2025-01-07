@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<!-- JQuery -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<!-- BOOTSTRAP -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+
+<!-- jquery QTIPs -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/qtip2/2.1.1/jquery.qtip.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/qtip2/2.1.1/jquery.qtip.js"></script>
+<!-- TAFFYdb -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/taffydb/2.7.2/taffy-min.js"></script>
+
+	
+	<script src="js/data/lotrdb.js" charset="UTF-8"></script>
+
+	<!--link href="https://fonts.googleapis.com/css?family=Cinzel" rel="stylesheet"-->
+	<link href="https://fonts.googleapis.com/css?family=Eczar" rel="stylesheet">
+	<style>
+		body { font-family: 'Eczar', serif; font-size: 18px;}
+		#folderpages td { 
+			width: 33%; 
+			position: relative;
+			text-align: center;
+		}
+		.footer	{
+			font-size: 0.8em;
+			position: absolute;
+			bottom: 	0;
+			right:	0;
+		}
+		.card{
+			width: 200px;
+		}
+		.folders	{
+			position:	sticky;
+			top:	0px;
+		}
+	</style>
+	
+	 
+</head>
+<body>
+	<div class="container my-3">
+		<div class="row">
+			<div class="col-sm-4">
+				<div class="row">
+					<div class="d-flex">
+						<h2 class="me-2">Packs</h2>
+						<div id="checkall" class="my-auto">
+							<a href="#" id="checkAll">All</a>
+							<a href="#" id="checkNone">None</a>
+						</div>
+					</div>
+					<div id="packlist"></div>
+				</div>
+			</div>
+			<div class="col-sm-8 folders">
+				<div class="row" style="position: relative;">
+					<div class="col-sm-6">
+						<h2>Virtual Folders</h2>
+					</div>
+					<div class="footer col-sm-6">
+						<label class="pull-right"><input type="checkbox" id="showimg" value> Show Card Images</label>
+					</div>
+				</div>
+				<div class="row">
+					<nav><ol id="foldersections" class="breadcrumb"></ol></nav>
+					<nav>
+						<ul class="pagination justify-content-between">
+							<li class="page-item"><a id="pagePrev" class="page-link" href="#">&larr; Previous</a></li>
+							<li class="page-item"><div id="pageinfo"></div></li>
+							<li class="page-item"><a id="pageNext"  class="page-link" href="#">Next &rarr;</a></li>
+						</ul>
+					</nav>
+					<div id="folderpages"></div>
+					
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script>
+	var pagenum = 0;
+	var section = [];
+	var factions = [];
+	var pages = [];
+	var filter_date = {};	//{"date_release":{isNull:false}};
+	
+	$(document).ready(function () {
+		var _cycles;
+		var _packs;
+		var _cards;
+		
+		//var imageUrlTemplate;
+		
+		var outp = '';
+		var checked = false;
+		var _factions;
+		var _types;
+		
+		var filter_pack = [];
+		var faction_code;
+		
+		var apipath = 'https://ringsdb.com/api/public/';
+		
+		// LOAD DATA
+		//$.getJSON(apipath + 'cycles?jsoncallback', function (data) {
+			_cycles = TAFFY(lotr_cycles);
+			$.getJSON(apipath + 'packs/', function (data) {
+				_packs = TAFFY(data);			//console.log(data.data);
+				//$.getJSON(apipath + 'types?jsoncallback', function (data) {
+					_types = TAFFY(lotr_types);					//console.log (data.data);
+					$.getJSON(apipath + 'cards/',{_: new Date().getTime()}, function (data) {
+						_cards = TAFFY(data);		//console.log (data.imageUrlTemplate);	console.log(data.data);
+						//imageUrlTemplate = data.imageUrlTemplate;
+						
+						//$.getJSON(apipath + 'factions/', function (data) {
+							_factions = TAFFY(lotr_spheres);						//console.log (data.data);
+						
+							// PACKS Checklist
+							$('#packlist').empty();
+							_cycles().order("position").each( function (cycle) {
+
+								indent = false;
+								cyclepacks = _packs({"cycle_position":cycle.position}).select("code");
+								var filter_checklist = Object.assign({},filter_date)
+								filter_checklist["cycle_position"] = cycle.position;
+								_packs(filter_checklist).order("position").each( function (pack,idx) {
+														 		
+									if (cycle.name.normalize() != pack.name.normalize() && idx == 0) {
+										indent = true;
+										outp = `<div class="d-flex checkbox pa">
+													<input class="form-check-input cycle me-2" type="checkbox" data-cycle="${pack.cycle_position}" checked="checked"></input>
+													<label class="form-check-label fw-normal">${cycle.name}</label>
+												</div>`;
+										$('#packlist').append(outp);
+									}
+									outp = `<div class="d-flex checkbox ch${indent?" ps-4":""}">
+												<input class="form-check-input pack me-2" type="checkbox" data-code="${pack.code}" data-cycle="${pack.cycle_position}" checked="checked">
+												<label class="form-check-label me-2${cycle.name == pack.name ? " fw-normal" : ""}">${pack.name}</label>
+												<label class="form-check-label">(${_cards({"pack_code":pack.code}).sum("quantity")})</label>
+											</div>`;
+									$('#packlist').append(outp);
+								});
+								
+							});
+							
+							// Set PACKS Checkboxes
+							if (typeof(Storage) !== "undefined")	{
+								_packs(filter_date).order("position").each( function (pack,idx) {
+									// get localstorage value
+									checked = localStorage.getItem("lotr-pack-" + pack.code) == null ? true : localStorage.getItem("lotr-pack-" + pack.code) == "true";
+									// un-check child and parent
+									if (checked == false)	{
+										$(`#packlist input.pack[data-code="${pack.code}"]`).prop("checked",false);
+										$(`#packlist input.cycle[data-cycle="${pack.cycle_position}"]`).prop("checked",false);
+									}
+								});
+							}
+
+							// Initialise Pack filter for list of cards
+							faction_code = _factions().first().code;
+							set_filter_pack();
+							// PACKS :: END
+											
+							// FACTIONS Breadcrumb Nav
+							$('#foldersections').empty();
+							_factions().each( function (faction, idx)	{	//.order("side_code,name")
+								$('#foldersections').append(`<li class="breadcrumb-item" data-faction="${faction.code}"><a href="#" style="color: ${faction.color}">${faction.name}</a></li>`)
+							});
+
+							//updateFolder()
+							//showFolder();
+						//});
+					});
+				//});
+			});
+		//});
+		
+		// Data Pack Filter: filter_pack
+		function set_filter_pack()	{
+			filter_pack = [];
+			_packs(filter_date).order("position").each( function (pack) {
+				if (typeof(Storage) !== "undefined") {
+					if (localStorage.getItem("lotr-pack-" + pack.code) == null || localStorage.getItem("lotr-pack-" + pack.code) == "true") {
+						filter_pack.push(pack.code);
+					}
+				} else {
+					true; //filter_pack.push(pack.code)
+				}
+			});
+			filter_pack = filter_pack.filter( p => ['MotKA','TSR','ALePMotKA'].indexOf(p) == -1);
+			updateFolder();
+		}
+		
+		function updateFolder()	{
+			// Query
+			// Section by - types
+			pages = [];
+			_types().order("position").each(function (type)	{	//{"side_code":_factions({"code":faction_code}).first().side_code,"is_subtype":false}
+			
+			
+				pages = pages.concat(_cards({"sphere_code":faction_code,"type_code":type.code,"pack_code":filter_pack}).order("name").get());
+				// Fill page with empty slots
+				if (_cards({"sphere_code":faction_code,"pack_code":filter_pack}).count() > 9) {
+					while (pages.length % 9 != 0) { pages.push({"title":"-"}); }
+				}
+			
+			});
+			while (pages.length % 9 != 0) { pages.push({"title":"-"}); }
+			drawpage();
+		}
+		
+		function drawpage()	{
+			var pagecount = (pages.length/9);
+			var outp = '';
+			var id;
+			
+			pagenum = Math.max(0,pagenum);
+			pagenum = Math.min(pagecount-1,pagenum);
+			
+			if (pages.length == 0)	{
+				outp = 'Page 0 of 0';
+			} else {
+				$('#pageinfo').html(
+					`${_factions({"code":faction_code}).first().name } page ${(pagenum + 1)} of ${pagecount} - ${_types({"code":pages[pagenum*9].type_code}).first().name}`);
+					
+				outp = '<table class="table">';
+				for (var i=0; i<3; i++)	{
+					outp += '<tr>';
+					for (var x=0; x<3; x++)	{
+						id = (pagenum*9)+(i*3)+x;
+						outp += '<td data-code="' + (id < pages.length ? pages[id].code : '') + '">';
+						if (pages[id].title != "-") {
+							if ($('#showimg').prop('checked'))	{
+								outp += '<div><img class="card" src="' 
+									+ (typeof(pages[id].image_url) !== "undefined" ? pages[id].image_url : imageUrlTemplate.replace('{code}',pages[id].code))  
+									+ '"><div>';
+								pages[id].code
+							} else {
+								outp += '<div>' + pages[id].name + '</div>'
+									+ '<br><div class="footer">' + _cycles({"position":_packs({"code":pages[id].pack_code}).first().cycle_position}).first().name + ' #' + pages[id].position + '</div>';
+							}
+							//	+ '<br><div class="footer">' + _packs({"code":pages[id].pack_code}).first().name + ' #' + pages[id].position + '</div>';
+						} else {
+							outp += '-';
+						}
+						outp += '</div></td>';
+							//<br><div class="small">' +  pages[id].text + '</div>'
+					}
+					outp += '</tr>';
+				}
+				outp += '</table>';
+			}
+			$('#folderpages').html(outp);
+		}
+		
+// Listeners //
+		$('#checkall').on('click','a',function (e) {
+			e.preventDefault();
+			check = this.id == "checkAll"
+			$('#packlist .form-check-input').prop('checked',check);
+			if (typeof(Storage) !== "undefined") {
+				$('#packlist input.form-check-input').toArray().map(c=>$(c).data("code")).filter(c=>typeof(c)!="undefined").forEach(pack=> {
+					localStorage.setItem("lotr-pack-" + pack,check);
+				});
+
+			};
+			set_filter_pack();
+		})
+
+		$('#foldersections').on('click','li',function () {
+			pagenum = 0;
+			section = factions[$(this).data('faction')];
+			faction_code = $(this).data('faction');
+			updateFolder();
+		});
+		
+		$('#packlist')
+			.on('click','input.pack',function () {
+				localStorage.setItem("lotr-pack-" + $(this).data('code'),$(this).prop('checked') );
+				set_filter_pack();
+			})
+		// Parent/child checkboxes
+			.on("click","input.cycle",function()	{
+				var packcode;
+				var checkchild = $(this).prop("checked");
+				var cyclecode = $(this).data("cycle");
+				$(`#packlist [data-cycle="${cyclecode}"]`).each(function (id,chkbox)	{
+					$(chkbox).prop("checked",checkchild);
+					packcode = $(chkbox).data('code');
+					localStorage.setItem("lotr-pack-" + packcode,checkchild);
+				});
+				set_filter_pack();
+			})
+			.on("click","div.checkbox.ch",function()	{
+				var cycleCode = $($(this).children()[0]).data('cycle');
+				var checkPa = $(`#packlist div.checkbox.ch input.form-check-input[data-cycle="${cycleCode}"]`).length == $(`#packlist div.checkbox.ch input.form-check-input[data-cycle="${cycleCode}"]:checked`).length
+				$(`#packlist div.checkbox.pa input.form-check-input[data-cycle="${cycleCode}"]`).prop("checked",checkPa);
+			});
+		
+		// Folder Page Nav
+		$('#pagePrev').on('click',e => {
+			e.preventDefault();
+			pagenum--;
+			drawpage();
+		});
+		$('#pageNext').on('click',e => {
+			e.preventDefault();
+			pagenum++;
+			drawpage();
+		});
+		// Show Card Images checkbox
+		$('#showimg').on('change',function() {
+			drawpage();
+		});
+	
+	// card qtip
+		$('#folderpages').on('mouseover','td',function() {
+			var card = _cards({"code":$(this).data('code').toString()}).first();
+			$(this).qtip({
+				overwrite: false,
+				show: {
+					ready: true
+				},
+				content: {
+					text: 
+						'<div><h4>' + card.name + '</h4></div>'
+						+ '<div class="small">' +  card.text + '</div>'
+						+ '<br><div style="font-size: 0.8em">' 
+						+ _cycles({"position":_packs({"code":card.pack_code}).first().cycle_position}).first().name
+						+ ' - '							 
+						+ _packs({"code":card.pack_code}).first().name + ' #' + card.position + '</div>'
+				},
+				style: {
+					classes: 'qtip-bootstrap',
+					tip: false
+				},
+				position: {
+					my: 'left center',
+					at: 'right center',
+					viewport : $(window)
+				},
+				hide:	{
+					//event: 'unfocus'
+				}
+			});
+		});
+	});
+
+</script>
+
+	
+</html>
