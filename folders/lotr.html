@@ -238,7 +238,8 @@
 						if (pages[id].title != "-") {
 							if ($('#showimg').prop('checked'))	{
 								outp += '<div><img class="card" src="' 
-									+ (typeof(pages[id].image_url) !== "undefined" ? pages[id].image_url : imageUrlTemplate.replace('{code}',pages[id].code))  
+									+ 'https://ringsdb.com' + pages[id].imagesrc
+									//+ (typeof(pages[id].image_url) !== "undefined" ? pages[id].image_url : imageUrlTemplate.replace('{code}',pages[id].code))  
 									+ '"><div>';
 								pages[id].code
 							} else {
