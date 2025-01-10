@@ -21,10 +21,11 @@
     a[data-select] {color: inherit; text-decoration: none;}
     #pageType, #pageNumber, #pagePager {flex-grow: 1; flex-basis: 0;}
     .card-footer {font-size: 0.8em;}
-	img {border-radius: 4%; width: 100%;}
-    .blankCard {opacity: 0.5; aspect-ratio: 25/35 !important;}
+	#folder img {border-radius: 3%; width: 100%; aspect-ratio: 25/35 !important; background-color: black;}
+    .blankCard {opacity: 0.5;}
     .cardQty {position: absolute; top: 5px; right: 5px; background-color: white; opacity: 0.85; border-radius: 10px; min-width: 2rem; text-align: center;}
     .packlink:hover, .cyclelink:hover {text-decoration: underline; cursor: pointer;}
+    .cardLink {cursor: pointer; text-decoration: underline;}
 </style>
 
 <body>
@@ -257,7 +258,7 @@
                 cardlist.append(
                     `<div class="list-group-item">
                         <div class="d-flex justify-content-between" style="color: ${sphere.color}">
-                            <div>${c.name}</div><div>${c.pack_code} #${c.position}</div>
+                            <div class="cardLink" data-code="${c.code}">${c.name}</div><div>${c.pack_code} #${c.position}</div>
                         </div>
                     </div>`);
                 }
@@ -374,6 +375,16 @@
     $('#hidePackBar').on('click', function() {
         $('#packCol').toggle();
         $(this).html( $('#packCol').css('display')=="none"?"&raquo; Show Packs":"&laquo; Hide Packs");
+    });
+
+    $('#folderModal').on('click', '.cardLink', function () {
+        $('#folderModal').modal('hide');
+        var card = _cards.find(c=>c.code==$(this).data('code'));
+        if (checkedPacks().indexOf(card.pack_code)>-1 || card.pack_code == "Core") {
+            loadCards(card.sphere_code);
+            drawPage(Math.floor(_cardlist.map(c=>c.code).indexOf(card.code)/9));
+
+        }
     })
 </script>
 
