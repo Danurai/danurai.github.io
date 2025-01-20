@@ -25,7 +25,7 @@
     .card-footer {font-size: 0.8em;}
 	#folder img {border-radius: 3%; width: 100%; aspect-ratio: 25/35 !important; background-color: black;}
     .blankCard {opacity: 0.5;}
-    .cardQty {position: absolute; top: 5px; right: 5px; background-color: white; opacity: 0.85; border-radius: 10px; min-width: 2rem; text-align: center;}
+    .cardQty {position: absolute; top: 5px; right: 5px; background-color: white; opacity: 0.75; border-radius: 10px; min-width: 2rem; text-align: center;}
     .packlink:hover, .cyclelink:hover {text-decoration: underline; cursor: pointer;}
     .cardLink {cursor: pointer; text-decoration: underline;}
 </style>
@@ -93,7 +93,8 @@
 	const apipath = 'https://ringsdb.com/api/public/';
     
 	var checkedPacks = () => $('#packsOwned input[data-pack]:checked').toArray().map(e=>$(e).data('pack')); 
-    
+    const typeOrder = ["Hero","Ally","Event","Attachment"];
+
 	$.getJSON(apipath + 'packs/', function (data) {
 		_packs = data;
 		$.getJSON(apipath + 'cards/', function (data) {
@@ -115,6 +116,9 @@
                         `<div class="d-flex">
                             <div class="h5 my-auto packlink" data-pack="Core">Core Set</div>
                             <div class="btn-group btn-group-sm ms-auto" role="group" id="corePacks">
+                                <input type="radio" class="btn-check" name="btnradio" id="btnradio0" data-core=0>
+                                <label class="btn btn-outline-secondary" for="btnradio0">0</label>
+
                                 <input type="radio" class="btn-check" name="btnradio" id="btnradio1" data-core=1>
                                 <label class="btn btn-outline-secondary" for="btnradio1">1</label>
 
@@ -176,7 +180,7 @@
 
     function loadCards( sphere = "" ) {
         // get all cards 
-        var packCodes = ["Core"].concat(checkedPacks())
+        var packCodes = (readCore()>0?["Core"]:[]).concat(checkedPacks())
         var cardsInPacks = _cards.filter(c => packCodes.indexOf(c.pack_code)>-1)
         // write all Spheres
         var spheresInPacks = cardsInPacks.map(c=>c.sphere_code).filter((v, i, a) => a.indexOf(v)==i);
@@ -194,7 +198,14 @@
             }
         })
         // split by folder
-        var types = cardsInSphere.map(c=>c.type_name).filter((v,i,a)=>a.indexOf(v)==i);
+        var types = cardsInSphere
+                        .map(c=>c.type_name)
+                        .filter((v,i,a)=>a.indexOf(v)==i)
+                        .sort((a,b)=>{
+                            var idxa = typeOrder.indexOf(a)==-1?99:typeOrder.indexOf(a);
+                            var idxb = typeOrder.indexOf(b)==-1?99:typeOrder.indexOf(b);
+                            return idxa==idxb?0:idxa<idxb?-1:0
+                        });
 
         _cardlist = [];
         types.forEach(t => {
@@ -209,46 +220,48 @@
 
     function drawPage(n) {
         // write header and pager
-        _cardPage = n;
-        sphere = _spheres.filter(sp=>sp.code==$('#spheres .breadcrumb-item.active').data('sphere'))[0]
-        $('#pageType').html(`${$('#spheres .breadcrumb-item.active').data('sphere')} - ${_cardlist[n*9].type_name}`);
-        $('#pageNumber').html(`${_cardPage+1}/${_cardlist.length/9}`);
-        // write cards
         $('#folder').empty()
-        for (n=0; n<9; n++) {
-            var card = _cardlist[(_cardPage * 9) + n];
-            var multi = card.pack_code=="Core"?readCore():1;
-            
-            var cardElement = $('<div class="col mb-2"></div>');
-            if ($('#showImg').prop('checked')) {
-                cardElement.append(
-                    card.name=="blank"
-                        ? `<img class="img-fluid blankCard" src="./img/player_back.webp">`
-                        : `<div class="position-relative">
-                            <img class="img-fluid card" src="https://ringsdb.com${card.imagesrc}">
-                            <span class="cardQty py-1 px-2 fs-5 fw-bold">${card.quantity*multi}</span>
-                        </div>`
-                )
-            } else {
-                cardElement.append(
-                    `<div class="card h-100" style="border-color: ${sphere.color}">
-                        <div class="card-body">
-                            <h5 class="card-title text-center">${card.name!="blank"?card.name:""}</h5>
-                        </div>
-                        ${card.name!="blank"
-                            ?`<div class="card-footer d-flex">
-                                <div>
-                                    <div>${_cycles.find(c => _packs.find(p=>p.code==card.pack_code).cycle_position==c.position).name}</div>
-                                    <div>${card.pack_name} #${card.position}</div>
-                                </div>
-                                <div class="ms-auto fs-5 fw-normal">x${card.quantity*multi}</div>
+        if (_cardlist.length > 0) {
+            _cardPage = n;
+            sphere = _spheres.filter(sp=>sp.code==$('#spheres .breadcrumb-item.active').data('sphere'))[0]
+            $('#pageType').html(`${$('#spheres .breadcrumb-item.active').data('sphere')} - ${_cardlist[n*9].type_name}`);
+            $('#pageNumber').html(`${_cardPage+1}/${_cardlist.length/9}`);
+            // write cards
+            for (n=0; n<9; n++) {
+                var card = _cardlist[(_cardPage * 9) + n];
+                var multi = card.pack_code=="Core"?readCore():1;
+                
+                var cardElement = $('<div class="col mb-2"></div>');
+                if ($('#showImg').prop('checked')) {
+                    cardElement.append(
+                        card.name=="blank"
+                            ? `<img class="img-fluid blankCard" src="./img/player_back.webp">`
+                            : `<div class="position-relative">
+                                <img class="img-fluid card" src="https://ringsdb.com${card.imagesrc}">
+                                <span class="cardQty py-1 px-2 fs-5 fw-bold">${card.quantity*multi}</span>
                             </div>`
-                            :""}
-                        </div>
-                    </div>`
-                )
+                    )
+                } else {
+                    cardElement.append(
+                        `<div class="card h-100" style="border-color: ${sphere.color}">
+                            <div class="card-body">
+                                <h5 class="card-title text-center">${card.name!="blank"?card.name:""}</h5>
+                            </div>
+                            ${card.name!="blank"
+                                ?`<div class="card-footer d-flex">
+                                    <div>
+                                        <div>${_cycles.find(c => _packs.find(p=>p.code==card.pack_code).cycle_position==c.position).name}</div>
+                                        <div>${card.pack_name} #${card.position}</div>
+                                    </div>
+                                    <div class="ms-auto fs-5 fw-normal">x${card.quantity*multi}</div>
+                                </div>`
+                                :""}
+                            </div>
+                        </div>`
+                    )
+                }
+                $('#folder').append(cardElement);
             }
-            $('#folder').append(cardElement);
         } 
     }
 
@@ -305,7 +318,7 @@
     }
     function writeCore() {
         if (typeof(localStorage)!="undefined") {
-            coreOwned = $($('#packsOwned input[type="radio"]:checked').first()).data('core') || 1
+            coreOwned = $('#packsOwned input[type="radio"]:checked').first().data('core') 
             localStorage.setItem('lotrCoreOwned', coreOwned);
         }
     }
