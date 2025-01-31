@@ -216,6 +216,12 @@
             }
         })
         // write pager
+        $('#pager').empty();
+        $('#pager').append('<li class="page-item"><a class="page-link" href="#" data-page=-1>&laquo;</a></li>');
+        types.forEach( t => {
+            $('#pager').append(`<li class="page-item"><a class="page-link" href="#" data-type="${t}" data-page=0>${t}</a></li>`)
+        })
+        $('#pager').append('<li class="page-item"><a class="page-link" href="#" data-page=1>&raquo;</a></li>');
         drawPage(0);
     }
 
@@ -383,9 +389,13 @@
         var newPageNo = _cardPage + parseInt(n);
         return Math.min((_cardlist.length/9)-1,Math.max(0,newPageNo));
     }
-    $('a.page-link').on('click', function(e) {
+    $('#pager').on('click','a.page-link', function(e) {
         e.preventDefault();
-        drawPage(getNewPageNo($(this).data('page')));
+        if ($(this).data("page")!=0) {
+            drawPage(getNewPageNo($(this).data('page')));
+        } else {
+            drawPage(_cardlist.findIndex(c=>c.type_name===$(this).data('type'))/9);
+        }
     });
 
     $('#showImg').on('click',function () {
