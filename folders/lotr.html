@@ -222,7 +222,7 @@
         $('#pager').empty();
         $('#pager').append('<li class="page-item"><a class="page-link" href="#" data-page=-1>&laquo;</a></li>');
         types.forEach( t => {
-            $('#pager').append(`<li class="page-item"><a class="page-link" href="#" data-type="${t}" data-page=0>${t}</a></li>`)
+            $('#pager').append(`<li class="page-item"><a class="page-link" href="#" data-type="${t}" data-page=0>${t=="Player Side Quest"?"Quest":t}</a></li>`)
         })
         $('#pager').append('<li class="page-item"><a class="page-link" href="#" data-page=1>&raquo;</a></li>');
         drawPage(0);
